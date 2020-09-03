@@ -1,16 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header/header.js';
-import Footer from './components/Footer/footer.js'; 
-import Login from './components/main/login.js';
+import Main from './components/main/main.js';
+import { useHistory } from 'react-router-dom';
 
 function App() {
   return (
       <div className="App">
-          <Header/>
-          <Login/>
-          <Footer/>
+            <Main history={useHistory()}/>
     </div>
   );
 }

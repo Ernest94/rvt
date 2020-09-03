@@ -1,5 +1,6 @@
 package nu.educom.rvt.repositories;
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -40,6 +41,22 @@ public class UserRepository {
 	
 	protected void delete() {
 		
+	}
+
+	public User readByEmail(String email) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return (User) session
+					.createQuery("from User where email =:email", User.class)
+					.setParameter("email", email)
+					.getSingleResult();
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 }
