@@ -12,10 +12,30 @@ public class UserService {
 		User dbUser = userRepo.readByEmail(user.getEmail());
 		
 		if (dbUser != null && BCrypt.checkpw(user.getPassword(), dbUser.getPassword())) {
-//			Boolean validPassword = BCrypt.checkpw(user.getPassword(), dbUser.getPassword());
 			return dbUser;
 		}
 		
+		return null;
+	}
+	
+	public User giveUserById(User user) {
+		UserRepository userRepo = new UserRepository();
+		User dbUser = userRepo.readById(user.getId());
+		
+		if (dbUser != null && BCrypt.checkpw(user.getPassword(), dbUser.getPassword())) {
+			return dbUser;
+		}
+		
+		return null;
+	}
+	
+	public User changePassword(User user, String password) {
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		UserRepository userRepo = new UserRepository();
+		User changedUser = userRepo.updatePassword(user, hashedPassword);
+		if (changedUser != null) {
+			return changedUser;
+		}
 		return null;
 	}
 }

@@ -50,6 +50,12 @@ public class User {
 		this.role = role;
 	}
 
+	public User(int id, String password) {
+		super();
+		this.id = id;
+		this.password = password;
+	}
+
 	public User(String name, String email, String password, Role role, LocalDateTime datumActive,
 			LocalDateTime datumInactive) {
 		super();

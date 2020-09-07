@@ -59,4 +59,20 @@ public class UserRepository {
 		}
 	}
 	
+	public User updatePassword(User user, String password) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			session.evict(user);
+			user.setPassword(password);
+			
+			return (User) session.merge(user);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
 }

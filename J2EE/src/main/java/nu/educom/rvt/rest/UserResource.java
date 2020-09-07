@@ -8,10 +8,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.services.UserService;
 
 @Path("user")
-public class LoginResource {
+public class UserResource {
 
 	@POST
 	@Path("/login")
@@ -32,5 +33,23 @@ public class LoginResource {
 					.build();
 		}
 		
+	}
+	
+	@POST
+	@Path("/password")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changePassword(PasswordChange change) {
+		User user = new User(change.getUserId(), change.getCurrentPassword());
+		UserService userServ = new UserService();
+		User foundUser = userServ.giveUserById(user);
+		if (foundUser != null) {
+			User changedUser = userServ.changePassword(foundUser, change.getNewPassword());
+			if (changedUser != null) {
+				return Response.status(200)
+						.entity(changedUser).build();
+			}
+		}
+		return Response.status(401).build();
 	}
 }
