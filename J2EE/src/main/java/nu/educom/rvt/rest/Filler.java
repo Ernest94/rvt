@@ -71,7 +71,7 @@ public class Filler {
 		relationTypeRepo.create(relationType1);
 		relationTypeRepo.create(relationType2);
 		
-		User admin = new User("Admin", "admin@educom.nu", "password", rolesRepo.readById(1));
+		User admin = new User("Admin", "admin@educom.nu", "$2a$12$jj0hte6Vh9thhjsZEMeiLebqN.QryPRru6KcGXNjWRX0xc3v3zhVq", rolesRepo.readById(1));
 		UserRepository userRepo = new UserRepository();
 		userRepo.create(admin);
 	}

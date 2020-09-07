@@ -34,7 +34,7 @@ public class HibernateSession {
 
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
 
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt_2");
 
                 settings.put(Environment.USER, "admin_rvt");
 
