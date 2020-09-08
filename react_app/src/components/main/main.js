@@ -4,6 +4,7 @@ import Header from '../Header/header.js';
 import Footer from '../Footer/footer.js'; 
 import Login from './login.js';
 import Home from './home.js';
+import Settings from './settings.js';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from './privateRoute.js';
 
@@ -13,6 +14,7 @@ class Main extends React.Component {
         
         this.handleSuccesfullAuth = this.handleSuccesfullAuth.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
+        this.handleReturnToHome = this.handleReturnToHome.bind(this);
         this.state = {
             loggedIn : false
         }
@@ -36,6 +38,10 @@ class Main extends React.Component {
         this.props.history.push('/');
     }
     
+    handleReturnToHome(data) {
+        this.props.history.push('/');
+    }
+    
     render() {
         return (
             
@@ -44,6 +50,7 @@ class Main extends React.Component {
                 <Switch>
                     <Route exact path="/login"> <Login handleSuccessfulAuth={this.handleSuccesfullAuth}/> </Route>
                     <PrivateRoute exact path="/" isLoggedIn={this.state.loggedIn} component={Home} />
+                    <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} handleReturnToHome={this.handleReturnToHome}/> 
                 </Switch>
                 <Footer/>
             </div >

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 
-import constraints from '../../constraints';
+import constraints from '../../constraints/constraints';
 
 class Login extends React.Component {
     
@@ -63,19 +63,18 @@ class Login extends React.Component {
                 <ul className="errors">{this.state.errors}</ul>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
-                        <label for="email">Email:</label>
-                        <input class="form-control" id="email" type="email" name="email" onChange={this.handleFormChange}/>
+                        <label htmlFor="email">Email:</label>
+                        <input className="form-control" id="email" type="email" name="email" onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
-                        <label for="password">Password:</label>
-                        <input class="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
+                        <label htmlFor="password">Wachtwoord:</label>
+                        <input className="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
                     </div>
                     {(this.state.loading) ? <button type="submit" disabled> Laden...</button>: 
                     <button type="submit">Log in </button>}
                 </form>
             </div >
-
         )
     }
 }

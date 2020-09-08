@@ -34,12 +34,11 @@ public class HibernateSession {
 
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
 
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt_2");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt_2?createDatabaseIfNotExist=true");
 
                 settings.put(Environment.USER, "admin_rvt");
 
                 settings.put(Environment.PASS, "EducomRVT");
-
 
                 settings.put(Environment.SHOW_SQL, "true");
 
@@ -49,18 +48,9 @@ public class HibernateSession {
 
                 configuration.setProperties(settings);
 
-                configuration.addAnnotatedClass(Concept.class);
-                configuration.addAnnotatedClass(Curriculum.class);
-                configuration.addAnnotatedClass(CurriculumConcept.class);
-                configuration.addAnnotatedClass(Review.class);
-                configuration.addAnnotatedClass(ReviewStatus.class);
+                
                 configuration.addAnnotatedClass(Role.class);
-                configuration.addAnnotatedClass(Star.class);
-                configuration.addAnnotatedClass(Theme.class);
                 configuration.addAnnotatedClass(User.class);
-                configuration.addAnnotatedClass(UserRelation.class);
-                configuration.addAnnotatedClass(UserRelationType.class);
-                configuration.addAnnotatedClass(Weekblock.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 

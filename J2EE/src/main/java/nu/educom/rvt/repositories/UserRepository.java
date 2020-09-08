@@ -3,6 +3,7 @@ package nu.educom.rvt.repositories;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.User;
 
@@ -63,11 +64,12 @@ public class UserRepository {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
-			session.evict(user);
+			Transaction tx = session.beginTransaction();
+			session.update(user);
 			user.setPassword(password);
-			
-			return (User) session.merge(user);
-		}
+			tx.commit();
+			return user;
+					}
 		finally {
 			if (session != null) {
 				session.close();

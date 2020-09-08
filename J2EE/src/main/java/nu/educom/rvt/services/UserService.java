@@ -18,11 +18,11 @@ public class UserService {
 		return null;
 	}
 	
-	public User giveUserById(User user) {
+	public User checkUserPasswordById(int id, String password) {
 		UserRepository userRepo = new UserRepository();
-		User dbUser = userRepo.readById(user.getId());
+		User dbUser = userRepo.readById(id);
 		
-		if (dbUser != null && BCrypt.checkpw(user.getPassword(), dbUser.getPassword())) {
+		if (dbUser != null && BCrypt.checkpw(password, dbUser.getPassword())) {
 			return dbUser;
 		}
 		
