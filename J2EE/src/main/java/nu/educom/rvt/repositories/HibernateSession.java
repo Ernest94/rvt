@@ -49,18 +49,9 @@ public class HibernateSession {
 
                 configuration.setProperties(settings);
 
-                configuration.addAnnotatedClass(Concept.class);
-                configuration.addAnnotatedClass(Curriculum.class);
-                configuration.addAnnotatedClass(CurriculumConcept.class);
-                configuration.addAnnotatedClass(Review.class);
-                configuration.addAnnotatedClass(ReviewStatus.class);
+                
                 configuration.addAnnotatedClass(Role.class);
-                configuration.addAnnotatedClass(Star.class);
-                configuration.addAnnotatedClass(Theme.class);
                 configuration.addAnnotatedClass(User.class);
-                configuration.addAnnotatedClass(UserRelation.class);
-                configuration.addAnnotatedClass(UserRelationType.class);
-                configuration.addAnnotatedClass(Weekblock.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 
