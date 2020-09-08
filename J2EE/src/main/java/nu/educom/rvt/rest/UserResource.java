@@ -40,9 +40,8 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response changePassword(PasswordChange change) {
-		User user = new User(change.getUserId(), change.getCurrentPassword());
 		UserService userServ = new UserService();
-		User foundUser = userServ.giveUserById(user);
+		User foundUser = userServ.checkUserPasswordById(change.getUserId(), change.getCurrentPassword());
 		if (foundUser != null) {
 			User changedUser = userServ.changePassword(foundUser, change.getNewPassword());
 			if (changedUser != null) {
