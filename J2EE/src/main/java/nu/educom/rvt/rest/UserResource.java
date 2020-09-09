@@ -1,6 +1,9 @@
 package nu.educom.rvt.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -8,7 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.RoleJson;
 import nu.educom.rvt.models.PasswordChange;
+import nu.educom.rvt.models.Role;
 import nu.educom.rvt.services.UserService;
 
 @Path("user")
@@ -51,4 +56,23 @@ public class UserResource {
 		}
 		return Response.status(401).build();
 	}
+	
+	@GET
+	@Path("/Roles")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRoles() {
+		if (Filler.isDatabaseEmpty()) {
+			Filler.fillDatabase();
+		}
+		UserService userServ = new UserService();
+		List<Role> roles = userServ.getRoles();	
+		
+		RoleJson Jroles = new RoleJson();
+		Jroles.setRoles(roles);
+				
+		
+		return Response.status(200)
+					   .entity(Jroles).build();
+	}
+	
 }
