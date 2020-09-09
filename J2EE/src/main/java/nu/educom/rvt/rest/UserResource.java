@@ -58,7 +58,7 @@ public class UserResource {
 	}
 	
 	@GET
-	@Path("/Roles")
+	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
 		if (Filler.isDatabaseEmpty()) {
@@ -73,6 +73,17 @@ public class UserResource {
 		
 		return Response.status(200)
 					   .entity(Jroles).build();
+	}
+	
+	@POST
+	@Path("/create")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createUser (User user) {
+		UserService userServ = new UserService();
+		userServ.addUser(user);
+		
+		return Response.status(201).build();
+
 	}
 	
 }

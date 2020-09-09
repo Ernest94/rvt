@@ -1,5 +1,6 @@
 package nu.educom.rvt.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -41,6 +42,18 @@ public class UserService {
 			return changedUser;
 		}
 		return null;
+	}
+	
+	public User makeUser(String name, String email, String password, Role role, LocalDateTime datumActive)
+	{
+		User user = new User(name, email, password, role, datumActive, null);
+		return user;
+	}
+	
+	public void addUser(User user)
+	{
+		UserRepository userRepo = new UserRepository();
+		userRepo.create(user);
 	}
 	
 	public List<Role> getRoles() {
