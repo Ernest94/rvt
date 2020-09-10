@@ -80,7 +80,11 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser (User user) {
 		UserService userServ = new UserService();
-		userServ.addUser(user);
+		
+		boolean valid = userServ.validateUser(user);
+		
+		if(valid) userServ.addUser(user);
+		else return Response.status(412).build();		
 		
 		return Response.status(201).build();
 

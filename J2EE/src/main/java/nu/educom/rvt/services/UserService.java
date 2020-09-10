@@ -44,15 +44,24 @@ public class UserService {
 		return null;
 	}
 	
+	public boolean validateUser(User user) {
+		UserRepository userRepo = new UserRepository();
+		User foundUser = userRepo.readByEmail(user.getEmail());
+		if (foundUser != null) return true;
+		else return false;
+	}
+	
 	public User makeUser(String name, String email, String password, Role role, LocalDateTime datumActive)
 	{
-		User user = new User(name, email, password, role, datumActive, null);
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		User user = new User(name, email, hashedPassword, role, datumActive, null);
 		return user;
 	}
 	
 	public void addUser(User user)
 	{
 		UserRepository userRepo = new UserRepository();
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
 	}
 	
