@@ -11,14 +11,7 @@
 
 .App-header {
   background-color: #aeab9e;
-  display: flex;
-  font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: white;
-  text-decoration: none;
 }
 
 @keyframes App-logo-spin {
@@ -36,5 +29,20 @@
 
 .errors {
     color: red;
-    margin-top: 2cm;
+    margin-top: 1cm;
 }
+
+h2 {
+    margin-top: 1cm;
+}
+
+.center {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
