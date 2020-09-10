@@ -34,7 +34,7 @@ class Login extends React.Component {
                     this.props.handleSuccessfulAuth(response.data);
                 })
                 .catch((error) => {
-                    // this.props.handleSuccessfulAuth({id: 1, name: "test", role: {name: "Admin"}}); // Tuse this line to log in without use of database
+                    // this.props.handleSuccessfulAuth({id: 1, name: "test", role: {name: "Admin"}}); // use this line to log in without use of database
                     console.log("an error occorured " + error);  
                     this.setErrors({login: ["Mislukt om in te loggen."]}); 
                     this.setState({loading: false});
