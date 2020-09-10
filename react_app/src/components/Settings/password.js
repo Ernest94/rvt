@@ -4,7 +4,7 @@ import { validate } from 'validate.js';
 
 import constraints from '../../constraints/passwordChangeConstraints';
 
-class Settings extends React.Component {
+class Password extends React.Component {
     
     constructor(props) {
         super(props);
@@ -33,7 +33,7 @@ class Settings extends React.Component {
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
-                    this.props.handleReturnToHome(response.data);
+                    this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
@@ -65,10 +65,12 @@ class Settings extends React.Component {
     }
     
     render() {
+        const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         return (
             <div className="container main-container">
+
                 <h2>Verander uw wachtwoord</h2>
-                <ul className="errors">{this.state.errors}</ul>
+                {errorsList}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="current">Huidig wachtwoord:</label>
@@ -93,4 +95,4 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
+export default Password;

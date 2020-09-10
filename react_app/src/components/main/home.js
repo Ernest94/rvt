@@ -4,8 +4,8 @@ class Home extends React.Component {
     
     render() {
         return (
-            <div>
-                <p>Welcome on the home page!</p>
+            <div className="container center">
+                <p>Welkom op de home pagina!</p>
             </div >
 
         )
