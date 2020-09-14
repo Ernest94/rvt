@@ -46,9 +46,6 @@ class Main extends React.Component {
     }
 
     isUserAdmin() {
-        console.log("User is admin: ");
-        console.log(sessionStorage.getItem("userRole") === "Admin");
-        console.log(sessionStorage.getItem("userRole"));
         return sessionStorage.getItem("userRole") === "Admin";
     }
     

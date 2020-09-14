@@ -28,7 +28,7 @@ class AddUser extends React.Component {
     
     getRoles() {
         axios.get('http://localhost:8080/J2EE/webapi/user/roles')
-            .then((response) => {console.log(response.data); this.setState({roles: response.data.roles, pageLoading: false})})
+            .then((response) => {this.setState({roles: response.data.roles, pageLoading: false})})
     .catch(() => {
         this.setState({roles: null, pageLoading: false});
         });
@@ -52,7 +52,7 @@ class AddUser extends React.Component {
     
     onChangeRole= (e) => {
         this.setState({
-           role: this.state.roles.find(role => role.id === e.target.value.parseInt()),
+           role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
            roleDisplayName: e.target.value
         });
     }
