@@ -11,9 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.view.RoleJson;
+import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Location;
 import nu.educom.rvt.services.UserService;
 
 @Path("user")
@@ -27,6 +28,7 @@ public class UserResource {
 		if (Filler.isDatabaseEmpty()) {
 			Filler.fillDatabase();
 		}
+		
 		UserService userServ = new UserService();
 		User foundUser = userServ.checkUser(user);
 		if (foundUser != null) {
@@ -66,13 +68,15 @@ public class UserResource {
 		}
 		UserService userServ = new UserService();
 		List<Role> roles = userServ.getRoles();	
+		List<Location> locations = userServ.getLocations();
 		
-		RoleJson Jroles = new RoleJson();
-		Jroles.setRoles(roles);
+		RoleLocationJson rlJson = new RoleLocationJson() ;
+		rlJson.setRoles(roles);
+		rlJson.setLocations(locations);
 				
 		
 		return Response.status(200)
-					   .entity(Jroles).build();
+					   .entity(rlJson).build();
 	}
 	
 	@POST
@@ -84,7 +88,7 @@ public class UserResource {
 		boolean valid = userServ.validateUser(user);
 		
 		if(valid) userServ.addUser(user);
-		else return Response.status(412).build();		
+		else return Response.status(412).build();
 		
 		return Response.status(201).build();
 

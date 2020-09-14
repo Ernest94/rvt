@@ -22,6 +22,8 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
+	@JoinColumn(name="location_id")
+	private Location location;
 	@Column(name="datumActive")
 	private LocalDateTime datumActive;
 	

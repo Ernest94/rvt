@@ -6,7 +6,9 @@ import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
 import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserRepository;
 
@@ -68,5 +70,11 @@ public class UserService {
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
 		return roleRepo.readAll(); 
+	}
+	
+	public List<Location> getLocations()
+	{
+		LocationRepository locRepo = new LocationRepository();
+		return locRepo.readAll();
 	}
 }
