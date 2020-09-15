@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const constraints = {
     name: {
       presence: {
@@ -26,6 +28,17 @@ export const constraints = {
             tooLong: "^Wachtwoord heeft teveel tekens. Maximum is %{count} tekens."
         }
     },
+    dateActive: {
+        presence: {
+            allowEmpty: false,
+            message: "^Een datum is verplicht."
+        },
+        datetime: {
+            dateOnly: true,
+            earliest: moment().subtract(1, 'days'),
+            message: "^Gebruiker kan pas vanaf vandaag actief worden."
+        }
+    }
 };
 
 export default constraints;

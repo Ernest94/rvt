@@ -38,7 +38,8 @@ class Main extends React.Component {
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
-        this.props.history.push('/');
+        sessionStorage.setItem("userLocation", data.location.name);
+        this.props.history.push('/settings');
     }
     
     handleReturnToSettings() {
@@ -49,6 +50,16 @@ class Main extends React.Component {
         return sessionStorage.getItem("userRole") === "Admin";
     }
     
+    canAddUser() {
+        let isAdmin = sessionStorage.getItem("userRole") === "Admin";
+        let isDocent = sessionStorage.getItem("userRole") === "Docent";
+        return (isAdmin || isDocent);
+    }
+    
+    goToAddUserSpecification(role, location) {
+        this.props.history.push('/addUser');
+    }
+    
     render() {
         return (
             
@@ -57,9 +68,9 @@ class Main extends React.Component {
                 <Switch>
                     <Route exact path="/login"> <Login handleSuccessfulAuth={this.handleSuccesfullAuth}/> </Route>
                     <PrivateRoute exact path="/" isLoggedIn={this.state.loggedIn} component={Home} />
-                    <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.isUserAdmin}/>
+                    <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
                     <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings}/>
-                    <AdminRoute exact path="/addUser" userIsAdmin={this.isUserAdmin} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
+                    <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
                 </Switch>
                 <Footer/>
             </div >

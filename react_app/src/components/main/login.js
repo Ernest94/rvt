@@ -34,7 +34,7 @@ class Login extends React.Component {
                     this.props.handleSuccessfulAuth(response.data);
                 })
                 .catch((error) => {
-                    // this.props.handleSuccessfulAuth({id: 1, name: "test", role: {name: "Admin"}}); // use this line to log in without use of database
+                    //this.props.handleSuccessfulAuth({id: 1, name: "test", role: {name: "Admin"}, location: {name: "Utrecht"}}); // use this line to log in without use of database
                     console.log("an error occorured " + error);  
                     this.setErrors({login: ["Mislukt om in te loggen."]}); 
                     this.setState({loading: false});
@@ -76,8 +76,8 @@ class Login extends React.Component {
                         <label htmlFor="password">Wachtwoord:</label>
                         <input className="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
                     </div>
-                    {(this.state.loading) ? <button type="submit" disabled> Laden...</button>: 
-                    <button type="submit">Log in </button>}
+                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                    <button className="btn btn-primary float-right" type="submit">Log in </button>}
                 </form>
             </div >
         )

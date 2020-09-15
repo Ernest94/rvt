@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
+import RoleAndLocation from './roleAndLocation.js';
+import UserInfo from './userInfo.js';
 
 import constraints from '../../constraints/addUserConstraints';
 
@@ -9,28 +11,63 @@ class AddUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentStep: 1,
             name: "",
             email: "",
             password: "",
+            dateActive: "",
             role: null,
-            roleDisplayName: 1,
+            location: null,
+            roleDisplayName: "",
+            locationDisplayName: "",
             roles : [],
+            locations: [],
             errors: null,
             loading: false,
-            pageLoading: false
+            pageLoading: false,
+            isDocent: sessionStorage.getItem("userRole") === "Docent"
         };
+        
+        this.handleFormChange = this.handleFormChange.bind(this);
+        this.onChangeRole = this.onChangeRole.bind(this);
+        this.onChangeLocation = this.onChangeLocation.bind(this);
+        this._next = this._next.bind(this);
+        this._prev = this._prev.bind(this);
     }
+    
+    
     
     componentDidMount() {
-        this.setState({pageLoading: true});
-        this.getRoles();
+        if (this.state.isDocent) {
+            this.setState({
+                currentStep: 2,
+                role: {name: "Trainee"},
+                location: {name: sessionStorage.getItem("userLocation")}
+            });
+        }
+        else {
+            this.setState({pageLoading: true});
+            this.getLocationsAndRoles();
+        }
+        
     }
-    
-    getRoles() {
+   
+    getLocationsAndRoles() {
+        
         axios.get('http://localhost:8080/J2EE/webapi/user/roles')
-            .then((response) => {this.setState({roles: response.data.roles, pageLoading: false})})
-    .catch(() => {
-        this.setState({roles: null, pageLoading: false});
+            .then( response => {
+                    this.setState({
+                        roles: response.data.roles,
+                        locations: response.data.locations,
+                        pageLoading: false
+                    });
+                })
+        .catch(() => {
+            this.setState({
+                roles: null, // [{id: 1, name: "test"}]
+                locations: null,  // [{id: 1, name: "test"}]
+                pageLoading: false
+            });
         });
     }
     
@@ -56,6 +93,70 @@ class AddUser extends React.Component {
            roleDisplayName: e.target.value
         });
     }
+    
+    onChangeLocation= (e) => {
+        this.setState({
+           location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
+           locationDisplayName: e.target.value
+        });
+    }
+    
+    _next() {
+        if (this.state.role != null && this.state.location != null) {
+            this.setState({currentStep: 2, errors: null});
+        }
+        else {
+            this.setErrors({roleAndLoc: ["Rol en locatie zijn verplicht."]})
+        }
+    }
+    
+    _prev() {
+        this.setState({currentStep: 1, errors: null});
+    }
+    
+    get previousButton() {
+        let currentStep = this.state.currentStep;
+        
+        if (currentStep > 1 &&  !this.state.isDocent) {
+            return (
+                <button
+                    className="btn btn-secondary"
+                    type="button" onClick={this._prev}>
+                    Vorige
+                </button>
+            )
+        }
+        return null;
+    }
+    
+    get nextButton() {
+        let currentStep = this.state.currentStep;
+        
+        if (currentStep <= 1 ) {
+            return (
+                <button
+                    className="btn btn-primary float-right"
+                    type="button" onClick={this._next}>
+                    Volgende
+                </button>
+            )
+        }
+        return null;
+    }
+    
+    get submitButton() {
+        let currentStep = this.state.currentStep;
+        
+        if (currentStep === 2) {
+            return (
+                (this.state.loading) ? 
+                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button> : 
+                <button className="btn btn-primary float-right" type="submit">Opslaan </button>
+            )
+        }
+        return null;
+    }
+    
     
     handleSubmit = (event) => {
         event.preventDefault();
@@ -85,21 +186,17 @@ class AddUser extends React.Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            role: this.state.role
+            role: this.state.role,
+            location: this.state.location,
+            datumActive: this.state.date
         }
     }
-
+    
     render() {
         const pageLoading = this.state.pageLoading;
-        const roles = this.state.roles;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
-        if (roles === null) return <div className="container center"><span> Problemen met laden van de pagina. </span></div>;
-        const rolesOptions = roles.map((role) => {
-           return (
-                <option key={role.id} value={role.id}>{role.name}</option>
-           ) 
-        });
+        
         return (
             <div className="container main-container">
 
@@ -107,30 +204,33 @@ class AddUser extends React.Component {
                 
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Naam:</label>
-                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input className="form-control " id="email" type="email" name="email" value={this.state.email} onChange={this.handleFormChange}/>
-                    </div>
                     
-                    <div className="form-group">
-                        <label htmlFor="password">Wachtwoord:</label>
-                        <input className="form-control " id="password" type="password" name="password"  value={this.state.password} onChange={this.handleFormChange}/>
-                    </div>
+                    <RoleAndLocation
+                        currentStep={this.state.currentStep}
+                        getLocationsAndRoles={this.getLocationsAndRoles}
+                        roles={this.state.roles}
+                        locations={this.state.locations}
+                        roleDisplayName={this.state.roleDisplayName}
+                        locationDisplayName={this.state.locationDisplayName}
+                        onChangeRole={this.onChangeRole}
+                        onChangeLocation={this.onChangeLocation}
+                    />
                     
-                    <div className="form-group">
-                        <label htmlFor="role">Rol:</label>
-                        <select name="role" id="role" value={this.state.roleDisplayName} onChange={this.onChangeRole}>
-                            {rolesOptions}
-                        </select>
-                    </div>
+                    <UserInfo
+                        currentStep={this.state.currentStep}
+                        name={this.state.name}
+                        email={this.state.email}
+                        date={this.state.dateActive}
+                        role={this.state.role}
+                        location={this.state.location}
+                        password={this.state.password}
+                        handleFormChange={this.handleFormChange}
+                    />
                     
-                    {(this.state.loading) ? <button type="submit" disabled> Laden...</button>: 
-                    <button type="submit">Opslaan </button>}
+                    {this.nextButton}
+                    {this.previousButton}
+                    {this.submitButton}
+                    
                 </form>
                 
             </div>
