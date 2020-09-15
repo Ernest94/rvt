@@ -49,6 +49,7 @@ public class HibernateSession {
                 
                 configuration.addAnnotatedClass(Role.class);
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(Location.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 

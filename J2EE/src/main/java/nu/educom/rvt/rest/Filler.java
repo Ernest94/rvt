@@ -29,7 +29,12 @@ public class Filler {
 		rolesRepo.create(role5);
 		
 		
-		User admin = new User("Admin", "admin@educom.nu", "$2a$12$jj0hte6Vh9thhjsZEMeiLebqN.QryPRru6KcGXNjWRX0xc3v3zhVq", role1);
+		Location location1 = new Location("Utrecht");
+		LocationRepository locationRepo = new LocationRepository();
+		locationRepo.create(location1);
+		
+		
+		User admin = new User("Admin", "admin@educom.nu", "$2a$12$jj0hte6Vh9thhjsZEMeiLebqN.QryPRru6KcGXNjWRX0xc3v3zhVq", role1, location1);
 		UserRepository userRepo = new UserRepository();
 		userRepo.create(admin);
 	}

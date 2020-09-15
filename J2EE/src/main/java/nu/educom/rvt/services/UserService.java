@@ -50,7 +50,7 @@ public class UserService {
 	public boolean validateUser(User user) {
 		UserRepository userRepo = new UserRepository();
 		User foundUser = userRepo.readByEmail(user.getEmail());
-		if (foundUser != null) return true;
+		if (foundUser == null) return true;
 		else return false;
 	}
 	
@@ -74,7 +74,8 @@ public class UserService {
 		List<Role> rolesMinTra = new ArrayList<>();
 		for(Role role: roles)
 		{
-			if(role.getName() != "trainee")
+			
+			if(!role.getName().equals("Trainee"))
 			{
 				rolesMinTra.add(role);
 			}		

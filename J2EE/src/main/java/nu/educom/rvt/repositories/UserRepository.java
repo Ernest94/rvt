@@ -1,6 +1,8 @@
 package nu.educom.rvt.repositories;
 
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -52,6 +54,9 @@ public class UserRepository {
 					.createQuery("from User where email =:email", User.class)
 					.setParameter("email", email)
 					.getSingleResult();
+		}
+		catch (NoResultException ex) {
+			return null;
 		}
 		finally {
 			if (session != null) {
