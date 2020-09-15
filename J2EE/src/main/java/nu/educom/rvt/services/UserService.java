@@ -1,12 +1,15 @@
 package nu.educom.rvt.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserRepository;
 
@@ -51,10 +54,10 @@ public class UserService {
 		else return false;
 	}
 	
-	public User makeUser(String name, String email, String password, Role role, LocalDateTime datumActive)
+	public User makeUser(String name, String email, String password, Role role, Location location, LocalDateTime datumActive)
 	{
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-		User user = new User(name, email, hashedPassword, role, datumActive, null);
+		User user = new User(name, email, hashedPassword, role, location, datumActive, null);
 		return user;
 	}
 	
@@ -67,6 +70,21 @@ public class UserService {
 	
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
-		return roleRepo.readAll(); 
+		List<Role> roles = roleRepo.readAll(); 
+		List<Role> rolesMinTra = new ArrayList<>();
+		for(Role role: roles)
+		{
+			if(role.getName() != "trainee")
+			{
+				rolesMinTra.add(role);
+			}		
+		}	
+		return rolesMinTra;
+	}
+	
+	public List<Location> getLocations()
+	{
+		LocationRepository locRepo = new LocationRepository();
+		return locRepo.readAll();
 	}
 }

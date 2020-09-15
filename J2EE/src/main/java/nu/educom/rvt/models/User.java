@@ -22,6 +22,8 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
+	@JoinColumn(name="location_id")
+	private Location location;
 	@Column(name="datumActive")
 	private LocalDateTime datumActive;
 	
@@ -30,7 +32,7 @@ public class User {
 
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, LocalDateTime datumActive,
+	public User(int id, String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
 			LocalDateTime datumInactive) {
 		super();
 		this.id = id;
@@ -38,16 +40,18 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.location = location;
 		this.datumActive = datumActive;
 		this.datumInactive = datumInactive;
 	}
 	
-	public User(String name, String email, String password, Role role) {
+	public User(String name, String email, String password, Role role, Location location) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.location = location;
 	}
 
 	public User(int id, String password) {
@@ -56,13 +60,14 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, LocalDateTime datumActive,
+	public User(String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
 			LocalDateTime datumInactive) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.location = location;
 		this.datumActive = datumActive;
 		this.datumInactive = datumInactive;
 	}
@@ -96,6 +101,12 @@ public class User {
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	public LocalDateTime getDatumActive() {
 		return datumActive;
