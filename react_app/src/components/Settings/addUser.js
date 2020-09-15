@@ -38,18 +38,17 @@ class AddUser extends React.Component {
     
     
     componentDidMount() {
-        if (this.state.isDocent) {
-            this.setState({
-                currentStep: 2,
-                role: {name: "Trainee"},
-                location: {name: sessionStorage.getItem("userLocation")}
-            });
-        }
-        else {
-            this.setState({pageLoading: true});
-            this.getLocationsAndRoles();
-        }
-        
+        this.setState({pageLoading: true});
+        this.getLocationsAndRoles()
+            // if (this.state.isDocent) {
+                // console.log("is docent");
+                // this.setState({
+                    // currentStep: 2,
+                    // role: this.state.roles.find(role => role.name === "Trainee"),
+                    // location: {id: sessionStorage.getItem("userLocationId"),
+                               // name: sessionStorage.getItem("userLocation")}
+                // });
+            // }
     }
    
     getLocationsAndRoles() {
@@ -64,11 +63,23 @@ class AddUser extends React.Component {
                 })
         .catch(() => {
             this.setState({
-                roles: null, // [{id: 1, name: "test"}]
-                locations: null,  // [{id: 1, name: "test"}]
+                roles: null, //[{id: 1, name: "Trainee"}],
+                locations: null, //[{id: 1, name: "Utrecht"}],
                 pageLoading: false
             });
-        });
+        })
+        .finally(() => {
+            if (this.state.isDocent) {
+                this.setState({
+                    currentStep: 2,
+                    role: this.state.roles.find(role => role.name === "Trainee"),
+                    location: {id: sessionStorage.getItem("userLocationId"),
+                               name: sessionStorage.getItem("userLocation")}
+                });
+            }
+        })
+        
+        
     }
     
     setErrors = (errors) => {

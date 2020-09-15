@@ -39,6 +39,7 @@ class Main extends React.Component {
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
         sessionStorage.setItem("userLocation", data.location.name);
+        sessionStorage.setItem("userLocationId", data.location.id);
         this.props.history.push('/settings');
     }
     
