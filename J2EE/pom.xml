@@ -7,7 +7,7 @@
   <groupId>nu.educom.rvt</groupId>
   <artifactId>J2EE</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>J2EE Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
@@ -55,6 +55,12 @@
         <artifactId>mysql-connector-java</artifactId>
         <version>5.1.40</version>
     </dependency>
+    
+    <dependency>
+	    <groupId>org.glassfish.jersey.containers</groupId>
+	    <artifactId>jersey-container-grizzly2-http</artifactId>
+	    <version>2.16</version>
+	</dependency>
 	
   </dependencies>
   
@@ -71,6 +77,29 @@
   				<target>11</target>
   			</configuration>
   		</plugin>
+  		
+  		<plugin>
+	    	<artifactId>maven-assembly-plugin</artifactId>
+		    <executions>
+		      <execution>
+		        <phase>package</phase>
+		        <goals>
+		          <goal>single</goal>
+		        </goals>
+		      </execution>
+		    </executions>
+		    <configuration>
+		      <archive>
+		        <manifest>
+		          <addClasspath>true</addClasspath>
+		          <mainClass>nu.educom.rvt.rest.Main</mainClass>
+		        </manifest>
+		      </archive>
+		      <descriptorRefs>
+		        <descriptorRef>jar-with-dependencies</descriptorRef>
+		      </descriptorRefs>
+		    </configuration>
+	  	</plugin> 
   	</plugins>
   </build>
   
