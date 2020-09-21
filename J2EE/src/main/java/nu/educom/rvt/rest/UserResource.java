@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
+import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
@@ -73,8 +74,7 @@ public class UserResource {
 		RoleLocationJson rlJson = new RoleLocationJson() ;
 		rlJson.setRoles(roles);
 		rlJson.setLocations(locations);
-				
-		
+					
 		return Response.status(200)
 					   .entity(rlJson).build();
 	}
@@ -92,6 +92,23 @@ public class UserResource {
 		
 		return Response.status(201).build();
 
+	}
+	
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsers(String criteria, Role role, Location location) {
+		if (Filler.isDatabaseEmpty()) {
+			Filler.fillDatabase();
+		}
+		
+		UserService userServ = new UserService();
+		List<User> searchResult = userServ.getFilteredUsers(criteria, role, location);
+		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
+		
+		return Response.status(200)
+					   .entity(USJ).build();
 	}
 	
 }
