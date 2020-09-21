@@ -53,7 +53,7 @@ class AddUser extends React.Component {
    
     getLocationsAndRoles() {
         
-        axios.get('http://localhost:8080/J2EE/webapi/user/roles')
+        axios.get('http://localhost:8081/webapi/user/roles')
             .then( response => {
                     this.setState({
                         roles: response.data.roles,
@@ -174,7 +174,7 @@ class AddUser extends React.Component {
         this.setState({loading: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post("http://localhost:8080/J2EE/webapi/user/create", this.createUserJson())
+            axios.post("http://localhost:8081/webapi/user/create", this.createUserJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     

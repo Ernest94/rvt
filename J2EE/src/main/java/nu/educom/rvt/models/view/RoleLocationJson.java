@@ -1,15 +1,24 @@
 package nu.educom.rvt.models.view;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 
-@Entity
-public class RoleLocationJson {
+@Entity @XmlRootElement
+public class RoleLocationJson implements Serializable {
 	
+	public RoleLocationJson () {
+		
+	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<Role> roles;
 	private List<Location> locations;
 	

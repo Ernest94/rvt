@@ -4,7 +4,11 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  
+  <param-name>jersey.config.server.provider.packages</param-name>
+	<param-value>
+	    com.jersey.jaxb,
+	    com.fasterxml.jackson.jaxrs.json
+	</param-value>
 <!--   <filter>
   <filter-name>CorsFilter</filter-name>
   <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>

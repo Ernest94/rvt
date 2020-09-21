@@ -17,7 +17,7 @@ import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.services.UserService;
 
-@Path("user")
+@Path("webapi/user")
 public class UserResource {
 
 	@POST
@@ -60,6 +60,13 @@ public class UserResource {
 	}
 	
 	@GET
+	@Path("/test")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response test() {
+		return Response.status(200).entity(new Role("test")).build();
+	}
+	
+	@GET
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
@@ -69,7 +76,6 @@ public class UserResource {
 		UserService userServ = new UserService();
 		List<Role> roles = userServ.getRoles();	
 		List<Location> locations = userServ.getLocations();
-		
 		RoleLocationJson rlJson = new RoleLocationJson() ;
 		rlJson.setRoles(roles);
 		rlJson.setLocations(locations);

@@ -27,7 +27,7 @@ class Login extends React.Component {
         this.setState({loading: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post("http://localhost:8080/J2EE/webapi/user/login", this.createLoginJson())
+            axios.post("http://localhost:8081/webapi/user/login", this.createLoginJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
