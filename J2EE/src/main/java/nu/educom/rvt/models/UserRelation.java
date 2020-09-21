@@ -20,6 +20,12 @@ public class UserRelation {
 	@JoinColumn(name="type")
 	private UserRelationType type;
 	
+	public UserRelation(User user, User linked)
+	{
+		super();
+		this.user = user;
+		this.linked = linked;
+	}
 	
 	public UserRelation() {
 		super();

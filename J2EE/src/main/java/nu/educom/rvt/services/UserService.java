@@ -138,4 +138,11 @@ public class UserService {
 		return returnedUsers;
 
 	}
+	
+	public void addConnection(User base, User link)
+	{
+		UserRelationRepository relaRepo = new UserRelationRepository();
+		UserRelation userRelation = new UserRelation(base, link);
+		relaRepo.create(userRelation);
+	}
 }
