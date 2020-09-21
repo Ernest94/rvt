@@ -1,8 +1,11 @@
 package nu.educom.rvt.repositories;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.UserRelation;
 
 public class UserRelationRepository {
@@ -23,6 +26,19 @@ public class UserRelationRepository {
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 			return session.get(UserRelation.class, id);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
+	public List<UserRelation> readAll() {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return HibernateSession.loadAllData(UserRelation.class, session);
 		}
 		finally {
 			if (session != null) {
