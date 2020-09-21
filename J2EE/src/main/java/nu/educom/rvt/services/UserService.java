@@ -93,37 +93,33 @@ public class UserService {
 		return locRepo.readAll();
 	}
 	
-	public List<User> filterUsers(List<User> users, String criteria, Role role, Location location)
+	public List<User> getfilteredUsers(String criteria, Role role, Location location)
 	{
-		List<User> filterdUsers = users;
-		return filterdUsers.stream().filter(u -> u.getRole() == role)
-									.filter(u -> u.getLocation() == location)
+		String[] words = criteria.split(" ");
+		List<User> foundUsers = new ArrayList<>();	
+		
+		for(String word : words)
+		{
+			if(word != "")
+            {
+                foundUsers.addAll(findUsersByCriteria(word, role, location));
+            } 
+		}
+		foundUsers.stream().distinct().collect(Collectors.toList());
+		return foundUsers;
+	}
+	
+	
+	private List<User> findUsersByCriteria(String criteria, Role role, Location location)
+	{
+		UserRepository userRepo = new UserRepository();
+		List<User> filterdUsers = userRepo.readAll();
+		return filterdUsers.stream().filter(u -> u.getRole() == role || role == null)
+									.filter(u -> u.getLocation() == location || location == null)
 									.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
 									.collect(Collectors.toList());
 	}
 	
-	public List<User> filterUsers(List<User> users, String criteria, Role role)
-	{
-		List<User> filterdUsers = users;
-		return filterdUsers.stream().filter(u -> u.getRole() == role)
-									.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-									.collect(Collectors.toList());
-	}
-	
-	public List<User> filterUsers(List<User> users, String criteria, Location location)
-	{
-		List<User> filterdUsers = users;
-		return filterdUsers.stream().filter(u -> u.getLocation() == location)
-									.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-									.collect(Collectors.toList());
-	}
-	
-	public List<User> filterUsers(List<User> users, String criteria)
-	{
-		List<User> filterdUsers = users;
-		return filterdUsers.stream().filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-									.collect(Collectors.toList());
-	}
 	
 	public List<User> getConnectedUsers(User user)
 	{
