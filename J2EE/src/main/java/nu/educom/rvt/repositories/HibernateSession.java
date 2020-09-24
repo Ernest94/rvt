@@ -34,7 +34,7 @@ public class HibernateSession {
 
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
 
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/db_voortgang?createDatabaseIfNotExist=true");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/db_voortgang?createDatabaseIfNotExist=true&serverTimezone=UTC");
 
                 settings.put(Environment.USER, "usr_voortgang");
                 

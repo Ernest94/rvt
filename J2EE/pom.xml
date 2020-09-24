@@ -40,7 +40,6 @@
   	
   	<dependency>
   		<groupId>org.glassfish.jersey.media</groupId>
-  		<!--  <artifactId>jersey-media-moxy</artifactId> -->
   		<artifactId>jersey-media-json-jackson</artifactId>
   		<scope>runtime</scope>
   		<version>2.16</version>
@@ -86,7 +85,7 @@
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.40</version>
+        <version>8.0.11</version>
     </dependency>
     
     <dependency>
@@ -94,6 +93,8 @@
 	    <artifactId>jersey-container-grizzly2-http</artifactId>
 	    <version>2.16</version>
 	</dependency>
+	
+	
 	
   </dependencies>
   
@@ -111,7 +112,7 @@
   			</configuration>
   		</plugin>
   		
-  		<plugin>
+  		<!--<plugin>
 	    	<artifactId>maven-assembly-plugin</artifactId>
 		    <executions>
 		      <execution>
@@ -132,7 +133,41 @@
 		        <descriptorRef>jar-with-dependencies</descriptorRef>
 		      </descriptorRefs>
 		    </configuration>
-	  	</plugin> 
+	  	</plugin> -->
+	  	<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-shade-plugin</artifactId>
+		    <version>2.3</version>
+		    <configuration>
+		        <createDependencyReducedPom>true</createDependencyReducedPom>
+		        <filters>
+		            <filter>
+		                <artifact>*:*</artifact>
+		                <excludes>
+		                    <exclude>META-INF/*.SF</exclude>
+		                    <exclude>META-INF/*.DSA</exclude>
+		                    <exclude>META-INF/*.RSA</exclude>
+		                </excludes>
+		            </filter>
+		        </filters>
+		    </configuration>
+		    <executions>
+		        <execution>
+		            <phase>package</phase>
+		            <goals>
+		                <goal>shade</goal>
+		            </goals>
+		            <configuration>
+		                <transformers>
+		                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+		                    <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+		                        <mainClass>nu.educom.rvt.rest.Main</mainClass>
+		                    </transformer>
+		                </transformers>
+		            </configuration>
+		        </execution>
+		    </executions>
+		</plugin> 
   	</plugins>
   </build>
   

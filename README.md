@@ -148,6 +148,62 @@ Om de code quality hoog te houden is het handig om commits te laten controleren 
 Nog beter is om te werken in branches en zodra een ontwikkelaar denkt klaar te zijn en de branch wil merchen met de master branch (de branch die uiteindelijk in ontwikkeling gaat) om een pull request aan te maken en anderen ontwikkelaars te vragen om deze pull request te bevesetigen. Op deze manier is iedereen op de hoogte van de veranderingen in de code.
 
 
+### Producition build ###
+Voor het draaien van de applicatie in productie moeten zowel de frontend React als de Java Enterprise backend gebuild worden.
+Dit wordt apart van elkaar gedaan op de production branch. Deze branch zal altijd de laatste werkende versie bevatten.
+Als de server eenmaal draait kan er ingelogd worden met de volgende gegevens:
+
+Email	admin@educom.nu
+Wachtwoord	password
+
+
+##### React
+1. Open command line en ga naar de react app folder (rvt/react_app)
+2. (Zorg dat node js is geïnstalleerd met npm -version)
+3. Voer het volgende commando uit: npm run build
+4. De react app wordt nu gebouwd en in de "build" folder gestopt
+5. Download een FTP client (zoals [FileZilla](https://filezilla-project.org/))
+6. Log in met de FTP gegevens hieronder
+7. Kopieer alle bestanden in de "build" folder in de www_root folder op de server
+8. De react app is nu beschikbaar op voortgang.educom.nu 
+
+##### Java Enterprise (JAX-rs)
+1. Ga naar de J2EE folder (rvt/J2EE) en run "mvn install"
+2. Een jar wordt gemaakt en in de "target" folder gezet
+3. Kopieer de "J2EE.jar" naar de server met FTP (zie stap 5 en 6 React)
+4. Let op: Kopieer de Jar niet in de "www_root folder"!!
+5. Download een SSH client (zoals [PuTTY](https://www.putty.org/))
+6. Login op de server met de SSH gegevens hieronder 
+7. Start de server met dit commando : "java -jar J2EE.jar"
+8. Controleer of de grizzly server is gestart (`INFO: [HttpServer] Started`)
+
+##### Stop Java server
+1. Login via SSH client zoals uitgeled in stap 5 en 6 van Java Enterprise (Jax-rs)
+2. Check welke service je moet killen met het commando "ps -aux | grep J2EE"
+3. Kijk naar de regel met aan het einde "java -jar J2EE.jar" en onthoud het nummer in de 2de kolom
+4. Kill de server met "kill {nummer}" 
+
+##### De gegevens
+
+URL: https://voortgang.educom.nu
+
+###### FTP
+server: voortgang.educom.nu
+user: edu-voortgang
+Ww: @j0v22nS
+
+
+###### SSH
+> ssh edu-voortgang@edu-deta.com
+Ww: @j0v22nS
+
+
+###### MySQL
+DB: db_voortgang
+User: usr_voortgang
+Ww: ?120qhZl
+Host: localhost
+
 ### Help! Wie moet ik contacten? ###
 
 * Neem contact op met een van de ontwikkelaars

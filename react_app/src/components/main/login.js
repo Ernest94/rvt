@@ -4,6 +4,8 @@ import { validate } from 'validate.js';
 
 import constraints from '../../constraints/constraints';
 
+import {config} from '../constants';
+
 class Login extends React.Component {
     
     constructor(props) {
@@ -27,7 +29,7 @@ class Login extends React.Component {
         this.setState({loading: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post("http://localhost:8081/webapi/user/login", this.createLoginJson())
+            axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
