@@ -16,10 +16,13 @@ public class UserRelation {
 	@ManyToOne
 	@JoinColumn(name="linked_to")
 	private User linked;
-	@ManyToOne
-	@JoinColumn(name="type")
-	private UserRelationType type;
 	
+	public UserRelation(User user, User linked)
+	{
+		super();
+		this.user = user;
+		this.linked = linked;
+	}
 	
 	public UserRelation() {
 		super();
@@ -54,16 +57,5 @@ public class UserRelation {
 	public void setLinked(User linked) {
 		this.linked = linked;
 	}
-
-
-	public UserRelationType getType() {
-		return type;
-	}
-
-
-	public void setType(UserRelationType type) {
-		this.type = type;
-	}
-	
 	
 }

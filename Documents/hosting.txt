@@ -1,0 +1,74 @@
+ __    __                        __      __                     
+/  |  /  |                      /  |    /  |                    
+$$ |  $$ |  ______    _______  _$$ |_   $$/  _______    ______  
+$$ |__$$ | /      \  /       |/ $$   |  /  |/       \  /      \ 
+$$    $$ |/$$$$$$  |/$$$$$$$/ $$$$$$/   $$ |$$$$$$$  |/$$$$$$  |
+$$$$$$$$ |$$ |  $$ |$$      \   $$ | __ $$ |$$ |  $$ |$$ |  $$ |
+$$ |  $$ |$$ \__$$ | $$$$$$  |  $$ |/  |$$ |$$ |  $$ |$$ \__$$ |
+$$ |  $$ |$$    $$/ /     $$/   $$  $$/ $$ |$$ |  $$ |$$    $$ |
+$$/   $$/  $$$$$$/  $$$$$$$/     $$$$/  $$/ $$/   $$/  $$$$$$$ |
+                                                      /  \__$$ |
+                                                      $$    $$/ 
+                                                       $$$$$$/  
+
+Auteur: Stanley Huang, 3 aug 2020
+
+
+Benodigdheden:
+- Microsoft Visual Studio (Community)
+- www.smarterasp.net account (Gratis trial, geen credit card nodig)
+
+In Smarterasp.net:
+1. Ga naar www.smarterasp.net en maak een gratis account aan.
+2. Log in.
+3. Activeer de 30 dagen trial door op "Try Now" te drukken.
+4. Vul je "First Website Root Folder Name" in. Gebruik hiervoor je projectnaam.
+5. Druk op "Next".
+6. Druk op "Submit" en wacht tot de website klaar is.
+7. Je ziet je "Hosting Accounts". Druk op het grid-icoontje om naar de "Control Panel" te gaan.
+8. Je website staat nu in de lijst. Rechts daarvan staan 4 icoontjes. Druk op het icoon voor "Show WebDeploy info"
+   en noteer de informatie. Deze hebben we zo nodig.
+9. Druk bovenaan op het tabblad "Files".
+10. Open de directory voor je website (met je projectnaam).
+11. Verwijder "default.asp" van de directory.
+12. Klik op tabblad "Databases" en kies "MSSQL" (indien je een local MSSQL-db gebruikt).
+13. Klik "Add database".
+14. Kijk in Visual Studio in de "SQL Server Object Explorer" naar je SQL Server. Er staat iets als
+    (LocalDB)\MSSQLLocalDB (SQL Server VERSIE.X.XXXX - etc...). Zoek de versie op en kies de juiste database versie
+    op Smarterasp.net. Voor versie 13.0.4001 is dat MSSQL 2016.
+15. Vul een databasenaam en wachtwoord in en druk "Submit". (Noteer database naam en wachtwoord. Is handig om te hebben.) 
+    Tip: Je kan bij de nieuw gemaakte database op "..."-icoon klikken en vervolgens op "Webconnect" om in te loggen.
+16. Druk op "<...>"-icoon voor Connection string examples. Zet de connection string voor ASP.NET in je code i.p.v. je
+    local database connection string voordat je doorgaat.
+17. Noteer de database URL. Deze ziet er uit als sqlXXXX.site4now.net. Noteer ook de Login ID.
+
+In Visual Studio:
+18. Ga naar Visual Studio en rechtsklik op je Solution -> Publish.
+19. Kies als Target: "Web Server (IIS)" en vervolgens "Web Deploy".
+20. Voor "Server", gebruik de "Service URL" van stap 8. "Site name" is "Site/Application SiteName",
+    "Destination URL" is je website temporary domein (eindigt op site1.dtempurl.com).
+    "User name" en "Password" zijn gelijk aan je Smarterasp.net account info. Sluit af met "Finish".
+21. Druk nu op "Edit" om de publishing profile te wijzigen.
+22. Druk op "Next"
+23. "Deployment Mode" moet "Self-Contained" zijn. "Target Runtime" moet "win-x86" zijn. Druk op "Save".
+24. Druk nu op de grote knop "Publish" en wacht tot het klaar is. Is meestal een halve minuut.
+
+Notitie: Helaas is het me niet gelukt om database migraties automatisch te laten verlopen, dus zullen we het handmatig moeten doen.
+
+25. In de "SQL Server Object Explorer", rechterklik op je database en "Schema Compare".
+26. Druk op "Select Target" en vervolgens op "Select Connection". Druk op "Show Connection Properties" als je geen input fields ziet.
+27. Vul hier de "Server Name" in van stap 17. "Authentication" is "SQL Server Authentication". "User Name" en "Password" uit stap 15 en 17.
+    "Database Name" van stap 15.
+28. Druk op "Connect" en "Ok".
+29. Linksboven, druk op "Compare" en wacht tot hij klaar is.
+30. Vink dbo.__EFMigrationHistory uit. Druk linksboven op "Update". Nadat deze klaar is, sluit het scherm.
+31. In de "SQL Server Object Explorer", rechterklik op je database en "Data Comparison".
+32. Bij "Target Database", druk op "Select Connection" en kies de connection die hij heeft onthouden uit stap 27.
+33. Druk op "Finish" en wacht tot hij klaar is.
+34. Vink alle "Tables" aan en klik linksboven op "Update Target".
+35. Nu staat je gecompileerde website en database online. Test het door naar je temporary URL te gaan. Als het goed is werkt alles.
+Tip: Als je met datums werkt, zal de server een ander dataformat aanhouden. Let goed op bugs hiermee.
+
+Tip: Je kan i.p.v. de lelijke temporary URL van je website een .tk domein gratis aanvragen. Deze kan je URL-forwarden naar
+     je lelijke domein. Gebruik hiervoor geen cloaking, maar een HTTP 301 redirect aan de kant van het .tk domein.
+     Anders doen sommige pagina's het niet.

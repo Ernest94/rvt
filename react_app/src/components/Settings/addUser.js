@@ -19,10 +19,14 @@ class AddUser extends React.Component {
             dateActive: "",
             role: null,
             location: null,
+            teacher: null,
             roleDisplayName: "",
             locationDisplayName: "",
+            teacherDisplayName: "",
+            isTrainee: null,
             roles : [],
             locations: [],
+            teachers: [{id:1 , name: "Pieter"}],
             errors: null,
             loading: false,
             pageLoading: false,
@@ -32,6 +36,7 @@ class AddUser extends React.Component {
         this.handleFormChange = this.handleFormChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangeLocation = this.onChangeLocation.bind(this);
+        this.onChangeTeacher = this.onChangeTeacher.bind(this);
         this._next = this._next.bind(this);
         this._prev = this._prev.bind(this);
     }
@@ -41,15 +46,6 @@ class AddUser extends React.Component {
     componentDidMount() {
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
-            // if (this.state.isDocent) {
-                // console.log("is docent");
-                // this.setState({
-                    // currentStep: 2,
-                    // role: this.state.roles.find(role => role.name === "Trainee"),
-                    // location: {id: sessionStorage.getItem("userLocationId"),
-                               // name: sessionStorage.getItem("userLocation")}
-                // });
-            // }
     }
    
     getLocationsAndRoles() {
@@ -64,8 +60,8 @@ class AddUser extends React.Component {
                 })
         .catch(() => {
             this.setState({
-                roles: null, //[{id: 1, name: "Trainee"}],
-                locations: null, //[{id: 1, name: "Utrecht"}],
+                roles: null, //[{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
+                locations: null, // [{id: 1, name: "Utrecht"}],
                 pageLoading: false
             });
         })
@@ -100,8 +96,12 @@ class AddUser extends React.Component {
     }
     
     onChangeRole= (e) => {
+        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
+        var isTrainee = selectedRole.name === "Trainee";
+        
         this.setState({
-           role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
+           isTrainee: isTrainee,
+           role: selectedRole,
            roleDisplayName: e.target.value
         });
     }
@@ -113,12 +113,23 @@ class AddUser extends React.Component {
         });
     }
     
+    onChangeTeacher= (e) => {
+        this.setState({
+           teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
+           teacherDisplayName: e.target.value
+        });
+    }
+    
     _next() {
-        if (this.state.role != null && this.state.location != null) {
+        if (!this.state.isTrainee) {
+            this.setState({teacher: null, teacherDisplayName: ""});
+        }
+        
+        if (this.state.location != null && this.state.role != null) {
             this.setState({currentStep: 2, errors: null});
         }
         else {
-            this.setErrors({roleAndLoc: ["Rol en locatie zijn verplicht."]})
+            this.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
     }
     
@@ -200,7 +211,7 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
-            datumActive: this.state.date
+            datumActive: this.state.dateActive
         }
     }
     
@@ -219,13 +230,16 @@ class AddUser extends React.Component {
                     
                     <RoleAndLocation
                         currentStep={this.state.currentStep}
-                        getLocationsAndRoles={this.getLocationsAndRoles}
                         roles={this.state.roles}
                         locations={this.state.locations}
+                        teachers={this.state.teachers}
+                        teacherDisplayName={this.state.teacherDisplayName}
                         roleDisplayName={this.state.roleDisplayName}
                         locationDisplayName={this.state.locationDisplayName}
                         onChangeRole={this.onChangeRole}
                         onChangeLocation={this.onChangeLocation}
+                        onChangeTeacher={this.onChangeTeacher}
+                        isTrainee={this.state.isTrainee}
                     />
                     
                     <UserInfo

@@ -26,15 +26,15 @@ public class User {
 	@JoinColumn(name="location_id")
 	private Location location;
 	@Column(name="datumActive")
-	private LocalDateTime datumActive;
+	private LocalDateTime dateActive;
 	
 	@Column(name="datumInactive")
-	private LocalDateTime datumInactive;
+	private LocalDateTime dateInactive;
 
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
-			LocalDateTime datumInactive) {
+	public User(int id, String name, String email, String password, Role role, Location location, LocalDateTime dateActive,
+			LocalDateTime dateInactive) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -42,8 +42,8 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.location = location;
-		this.datumActive = datumActive;
-		this.datumInactive = datumInactive;
+		this.dateActive = dateActive;
+		this.dateInactive = dateInactive;
 	}
 	
 	public User(String name, String email, String password, Role role, Location location) {
@@ -61,16 +61,16 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
-			LocalDateTime datumInactive) {
+	public User(String name, String email, String password, Role role, Location location, LocalDateTime dateActive,
+			LocalDateTime dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.location = location;
-		this.datumActive = datumActive;
-		this.datumInactive = datumInactive;
+		this.dateActive = dateActive;
+		this.dateInactive = dateInactive;
 	}
 
 	public int getId() {
@@ -110,16 +110,15 @@ public class User {
 		this.location = location;
 	}
 	public LocalDateTime getDatumActive() {
-		return datumActive;
+		return dateActive;
 	}
 	public void setDatumActive(LocalDateTime datumActive) {
-		this.datumActive = datumActive;
+		this.dateActive = datumActive;
 	}
 	public LocalDateTime getDatumInactive() {
-		return datumInactive;
+		return dateInactive;
 	}
 	public void setDatumInactive(LocalDateTime datumInactive) {
-		this.datumInactive = datumInactive;
-	}
-	
+		this.dateInactive = datumInactive;
+	}	
 }

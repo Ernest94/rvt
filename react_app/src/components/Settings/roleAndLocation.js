@@ -1,4 +1,6 @@
 import React from 'react';
+import LocationSelection from './locationSelection.js';
+import TeacherSelection from './teacherSelection.js';
 import './roleAndLocation.css';
 
 class RoleAndLocation extends React.Component {
@@ -16,11 +18,6 @@ class RoleAndLocation extends React.Component {
            ) 
         });
         
-        const locationsOptions = locations.map((loc) => {
-           return (
-                <option key={loc.id} value={loc.id}>{loc.name}</option>
-           ) 
-        });
         
         if (this.props.currentStep !== 1) {
             return null;
@@ -39,18 +36,21 @@ class RoleAndLocation extends React.Component {
                         {rolesOptions}
                     </select>
                 </div>
-                    
-                <div className="form-group selection_spacing">
-                    <label htmlFor="location">Locatie:</label>
-                    <select name="location" id="location" 
-                        value={this.props.locationDisplayName} 
-                        onChange={this.props.onChangeLocation}
-                        required>
-                        
-                        <option hidden value=''>Locatie</option>
-                        {locationsOptions}
-                    </select>
-                </div>
+                
+
+                <LocationSelection 
+                    locations={this.props.locations}
+                    isTrainee={this.props.isTrainee}
+                    locationDisplayName= {this.props.locationDisplayName}
+                    onChangeLocation={this.props.onChangeLocation}
+                /> 
+                <TeacherSelection
+                    isTrainee={this.props.isTrainee}
+                    teachers={this.props.teachers}
+                    onChangeTeacher={this.props.onChangeTeacher}
+                    teacherDisplayName={this.props.teacherDisplayName}
+                />
+                
             </div>
         )
     }
