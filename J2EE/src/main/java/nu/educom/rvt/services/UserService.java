@@ -75,17 +75,7 @@ public class UserService {
 	
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
-		List<Role> roles = roleRepo.readAll(); 
-		List<Role> rolesMinTra = new ArrayList<>();
-		for(Role role: roles)
-		{
-			
-			if(!role.getName().equals("Trainee"))
-			{
-				rolesMinTra.add(role);
-			}		
-		}	
-		return rolesMinTra;
+		return roleRepo.readAll(); 
 	}
 	
 	public List<Location> getLocations()

@@ -210,7 +210,7 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
-            datumActive: this.state.date
+            datumActive: this.state.dateActive
         }
     }
     
