@@ -33,8 +33,10 @@ Eclipse kan [hier](https://www.eclipse.org/downloads/packages/) gedownload worde
 Start na het downloaden Eclipse op en import de project folder via `file/open project from file system`
 Alle bestanden zullen nu worden ingeladen en kunnen worden geopend in de editor
 
-Om de code uiteindelijk te runnen wordt er gebruik gemaakt van een tomcat server. Deze kan [hier](https://tomcat.apache.org/download-90.cgi) gedownload worden.
-Om de code runnen op de tomcat server ga naar `run\ run configuration` en selecteer de tomcat server. Als dit is gebeurt wordt de code gerund op de tomcat server als je de run knop gebruikt.
+Om de code te runnen wordt een Grizzly Http server gebruikt die zichzelf opstart als de applicatie gedraaid wordt. 
+Om te starten klik met de rechtermuisknop op de `Main.java` en `run as -> java application`.
+De grizzly server wordt gestart en de backend is beschikbaar op `localhost:8081`.
+De api kan aangeroepen worden door een request te doen naar `localhost:8081/webapi/{source path}`.
 
 Een request kan vervolgens gedaan worden door in Postman/browser een request te doen naar `localhost:[tomcat port]/J2EE/webapi/{path}`
 
