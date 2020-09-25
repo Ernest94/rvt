@@ -101,21 +101,21 @@ public class UserResource {
 
 	}
 	
-	@POST
-	@Path("/search")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers(String criteria, Role role, Location location) {
-		if (Filler.isDatabaseEmpty()) {
-			Filler.fillDatabase();
-		}
-		
-		UserService userServ = new UserService();
-		List<User> searchResult = userServ.getFilteredUsers(criteria, role, location);
-		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
-		
-		return Response.status(200)
-					   .entity(USJ).build();
-	}
+//	@POST
+//	@Path("/search")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getUsers(String criteria, Role role, Location location) {
+//		if (Filler.isDatabaseEmpty()) {
+//			Filler.fillDatabase();
+//		}
+//		
+//		UserService userServ = new UserService();
+//		List<User> searchResult = userServ.getFilteredUsers(criteria, role, location);
+//		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
+//		
+//		return Response.status(200)
+//					   .entity(USJ).build();
+//	}
 	
 }
