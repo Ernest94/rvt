@@ -8,7 +8,7 @@ class Header extends React.Component {
         let button;
         let accountSettings;
         if (this.props.data.loggedIn) {
-               button = <button className="btn btn-warning" onClick={() => this.props.handleLogOut()}> Log uit </button>;
+               button = <button className="logOut" onClick={() => this.props.handleLogOut()}> Log uit </button>;
                accountSettings = <Link to="/settings" className="header-link">Instellingen</Link>;
         }
         return (
