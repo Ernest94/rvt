@@ -1,0 +1,29 @@
+button.button{
+	margin-left: 300px;
+	background-color: #d6d3c5; 
+	color: black; 
+	border: 2px solid #aeab9e;
+	width: 500px;
+    margin-bottom:  10px;
+    display: block;
+    border-radius: 4px;
+}
+
+.button:hover {
+	background-color: #aeab9e;
+	color: white;
+}
+
+input.form{
+	margin: auto;
+    width: 500px;
+    margin-bottom:  10px;
+    display:table-row;     
+    border: 2px solid #aeab9e;
+    border-radius: 4px;
+}
+
+label.label{
+	width: 100px;
+	margin-left: 200px;
+}

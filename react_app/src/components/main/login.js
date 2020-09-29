@@ -30,7 +30,6 @@ class Login extends React.Component {
         var errors = validate(this.state, constraints);
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
-
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
@@ -38,6 +37,7 @@ class Login extends React.Component {
                 })
                 .catch((error) => {
                     // this.props.handleSuccessfulAuth({id: 1, name: "Admin", role: {name: "Admin"}, location: {id: 1, name: "Utrecht"}}); // use this line to log in without use of database
+
                     console.log("an error occorured " + error);  
                     this.setErrors({login: ["Mislukt om in te loggen."]}); 
                     this.setState({loading: false});
