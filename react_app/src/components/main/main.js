@@ -5,6 +5,7 @@ import Footer from '../Footer/footer.js';
 import Login from './login.js';
 import Dossier from './dossier.js';
 import Home from './home.js';
+import Search from './search.js';
 import Settings from '../Settings/settings.js';
 import AddUser from '../Settings/addUser.js';
 import Password from '../Settings/password.js';
@@ -20,6 +21,7 @@ class Main extends React.Component {
         this.handleSuccesfullAuth = this.handleSuccesfullAuth.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleReturnToSettings = this.handleReturnToSettings.bind(this);
+        this.handleDossierRequest = this.handleDossierRequest.bind(this);
         this.state = {
             loggedIn : false,
             userName: "",
@@ -46,6 +48,10 @@ class Main extends React.Component {
         sessionStorage.setItem("userLocationId", data.location.id);
         this.props.history.push('/settings');
     }
+
+    handleDossierRequest(id) {
+        this.props.history.push('/dossier/' + id);
+    }
     
     handleReturnToSettings() {
         this.props.history.push('/settings');
@@ -60,7 +66,12 @@ class Main extends React.Component {
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
         return (isAdmin || isDocent);
     }
-    
+
+    canSearchUser() {
+        let isAdmin = sessionStorage.getItem("userRole") === "Admin";
+        return (isAdmin);
+    }
+
     goToAddUserSpecification(role, location) {
         this.props.history.push('/addUser');
     }
@@ -80,6 +91,8 @@ class Main extends React.Component {
                     <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
                     <PrivateRoute exact path="/linking" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
                     <PrivateRoute exact path="/linking/:userId" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
+                    <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleDossierRequest={this.handleDossierRequest} handleReturnToSettings={this.handleReturnToSettings} />
+
                 </Switch>
                 <Footer/>
             </div >
