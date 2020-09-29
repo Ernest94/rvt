@@ -62,7 +62,7 @@ getUserInfo() {
             <div className="container main-container">
                 <h2 className="text-center">Dossier</h2>
                 <ul className="errors">{this.state.errors}</ul>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.props.handleSubmit}>
                     <div className="input">
                         <label class="label" htmlFor="name">Naam:</label>
                         <input className="form" id="name" type="name" name="name" value={name} disabled={this.props.editDisabled}/>
@@ -87,15 +87,15 @@ getUserInfo() {
                         <label class="label" htmlFor="startDate">Startdatum:</label>
                         <input className="form" id="startDate" type="date" name="startDate" value={startDate} disabled={this.props.editDisabled}/>
                     </div>
-                    {(!this.props.editDisabled) ? <button className="button">Opslaan</button>: <span></span>}
+                    {(!this.props.editDisabled) ? <button type="submit" className="button">Opslaan</button>: <span></span>}
 
                 </form>
                 {(this.props.editDisabled) ?
                 <div>
-                    <Link className="buttonLink" to="/dossier/1"><button className="button">Pas gebruiker aan</button></Link>
+                    <Link className="buttonLink" to="/dossier/1/edit"><button className="button">Pas gebruiker aan</button></Link>
                     <Link className="buttonLink" to="/linking/1"><button className="button">Gelinkte gebruikers</button></Link>
                     
-                    <button className="button" type="submit">Voortgang</button> </div>: <span></span>
+                    <button hidden={true} className="button" type="submit">Voortgang</button> </div>: <span></span>
                 }
                 
                 

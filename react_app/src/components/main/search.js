@@ -65,12 +65,11 @@ class Search extends React.Component {
 
     fakeHandleSearchReponse() {
         this.setState({
-            users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+            users: [{ id: 1, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
         });
     }
 
     getLocationsAndRoles() {
-
         axios.get(config.url.API_URL + '/webapi/user/roles')
             .then(response => {
                 this.setState({
@@ -137,7 +136,7 @@ class Search extends React.Component {
         });
         var userDisplay = this.state.users.map((user) => {
             return (
-                <tr onClick={this.props.handleDossierRequest(user.id)} >
+                <tr onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
                     <td className="p-2 text-nowrap align-middle">
                         {user.name} 
                     </td>
@@ -161,7 +160,7 @@ class Search extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="w-100 mx-auto align-middle"> 
+                        <div className="w-100 mx-auto align-middle text-center"> 
                             <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
                             <select className="mr-5 p-2 align-middle" name="role" id="role"
                                 value={this.props.roleDisplayName}
@@ -180,17 +179,17 @@ class Search extends React.Component {
                                 <option hidden value=''>Locatie</option>
                                 {locationOptions}
                             </select>
-                            <label className="label mr-2 p-2 align-middle" htmlFor="criteria">Zoek Criteria:</label>
-                            <input className="form mr-5 p-2 align-middle" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                            <label className="mr-2 p-2 align-middle" htmlFor="criteria">Zoek Criteria:</label>
+                            <input className="mr-5 p-2 align-middle" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                         </div>
-                        <div>
+                        <div className="text-center"> 
                             {(this.state.loading) ? <button className="w-30 mx-auto btn btn-primary mt-3" type="submit" disabled> Laden...</button> :
                                 <button className="w-30 mx-auto btn btn-primary mt-3" type="submit">Zoek</button>}
                         </div>
                     </form>                  
                 </div >
 
-                <div>
+                <div className="text-center">
                     <table className="w-100 mx-auto">
                         <thead>
                             <tr>
@@ -208,7 +207,9 @@ class Search extends React.Component {
                                     </th>
                             </tr>
                         </thead>
+                        <tbody>
                         {userDisplay}
+                        </tbody>
                     </table>
                 </div >
             </div>

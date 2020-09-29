@@ -12,7 +12,7 @@ class Settings extends React.Component {
                 <h2>Instellingen</h2>
                 <ul>
                     <li><Link to="/password">Verander wachtwoord</Link></li>
-					<li><Link to="/dossier">Open Dossier</Link></li>
+					<li><Link to="/dossier/1">Open Dossier</Link></li>
                     {addUserLink}
                     <li><Link to="/linking">Bekijk relaties</Link></li>
                     {searchLink}
