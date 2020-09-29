@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 class Settings extends React.Component {
     
     render() {
-        const addUserLink = this.props.userIsAdmin() ? <li><Link to="/addUser">Voeg een gebruiker toe</Link></li>: <span></span>
+        const addUserLink = this.props.userIsAdmin() ? <li><Link to="/addUser">Voeg een gebruiker toe</Link></li> : <span></span>
+        const searchLink = this.props.userIsAdmin() ? <li><Link to="/Search">Gebruikers</Link></li> : <span></span>
         return (
             <div className="container main-container">
 
@@ -12,6 +13,7 @@ class Settings extends React.Component {
                 <ul>
                     <li><Link to="/password">Verander wachtwoord</Link></li>
                     {addUserLink}
+                    {searchLink}
                 </ul>
             </div>
         )

@@ -4,6 +4,7 @@ import Header from '../Header/header.js';
 import Footer from '../Footer/footer.js'; 
 import Login from './login.js';
 import Home from './home.js';
+import Search from './search.js';
 import Settings from '../Settings/settings.js';
 import AddUser from '../Settings/addUser.js';
 import Password from '../Settings/password.js';
@@ -56,7 +57,12 @@ class Main extends React.Component {
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
         return (isAdmin || isDocent);
     }
-    
+
+    canSearchUser() {
+        let isAdmin = sessionStorage.getItem("userRole") === "Admin";
+        return (isAdmin);
+    }
+
     goToAddUserSpecification(role, location) {
         this.props.history.push('/addUser');
     }
@@ -70,8 +76,9 @@ class Main extends React.Component {
                     <Route exact path="/login"> <Login handleSuccessfulAuth={this.handleSuccesfullAuth}/> </Route>
                     <PrivateRoute exact path="/" isLoggedIn={this.state.loggedIn} component={Home} />
                     <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
-                    <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings}/>
+                    <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
                     <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
+                    <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
                 </Switch>
                 <Footer/>
             </div >
