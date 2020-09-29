@@ -3,6 +3,8 @@ package nu.educom.rvt.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -111,6 +113,7 @@ public class UserService {
 									.collect(Collectors.toList());
 	}
 	
+
 	public UserSearchJson convertToUSJ(List<User> users)
 	{
 		List<UserSearch> userSearch = new ArrayList<>();	
@@ -142,4 +145,11 @@ public class UserService {
 		UserRelation userRelation = new UserRelation(base, link);
 		relaRepo.create(userRelation);
 	}
+
+    public User getUserById(int userId) {
+      UserRepository userRepo = new UserRepository();
+      User user = userRepo.readById(userId);
+    
+      return user;
+    }
 }

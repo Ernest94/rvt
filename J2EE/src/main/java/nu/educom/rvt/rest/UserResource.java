@@ -6,10 +6,15 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
@@ -21,6 +26,9 @@ import nu.educom.rvt.services.UserService;
 
 @Path("webapi/user")
 public class UserResource {
+
+  //Logger log = LoggerFactory.getLogger(UserResource.class);
+  
 
 	@POST
 	@Path("/login")
@@ -100,7 +108,23 @@ public class UserResource {
 		return Response.status(201).build();
 
 	}
-	
+
+	@GET
+	@Path("/{userId}/UserRelations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllRelations(@PathParam("userId") int userId){
+	  UserService userServ = new UserService();//load injectables
+	  User user = userServ.getUserById(userId);
+	  
+	  boolean valid = true;
+	  
+	  if(valid) {
+        List<User> connectedUsers = userServ.getConnectedUsers(user);
+        return Response.status(200).entity(user).build();
+	  } else {
+        return Response.status(404).build();	    
+	  }
+	}
 //	@POST
 //	@Path("/search")
 //	@Consumes(MediaType.APPLICATION_JSON)
@@ -118,4 +142,20 @@ public class UserResource {
 //					   .entity(USJ).build();
 //	}
 	
+
+	@GET
+    @Path("/UserRelations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllRelations(){
+      UserService userServ = new UserService();//load injectables
+      User user = userServ.getUserById(1);
+      
+      boolean valid = true;
+      
+      if(valid) {
+        return Response.status(200).entity(user).build();
+      } else {
+        return Response.status(400).build();        
+      }
+    }
 }
