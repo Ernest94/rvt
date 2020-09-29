@@ -12,6 +12,7 @@ class Settings extends React.Component {
                 <ul>
                     <li><Link to="/password">Verander wachtwoord</Link></li>
                     {addUserLink}
+                    <li><Link to="/linking">Bekijk relaties</Link></li>
                 </ul>
             </div>
         )

@@ -10,6 +10,7 @@ import Password from '../Settings/password.js';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AdminRoute from '../routes/AdminRoute.js';
+import LinkUsers from '../Settings/Linking/LinkUsers.js';
 
 class Main extends React.Component {
     constructor(props) {
@@ -72,6 +73,8 @@ class Main extends React.Component {
                     <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
                     <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings}/>
                     <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
+                    <PrivateRoute exact path="/linking" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
+                    <PrivateRoute exact path="/linking/:userId" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
                 </Switch>
                 <Footer/>
             </div >
