@@ -1,43 +1,41 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
+import { Link } from 'react-router-dom';
 import './form.css';
-
-import constraints from '../../constraints/constraints';
 
 class Dossier extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            name: "Leonie Schoorl",
-			email: "leonie.schoorl@hotmai.com",
-			rol: "Trainee",
+            name: "Jeroen Heemskerk",
+			email: "jeroen@educom.nu",
+			role: "Docent",
 			location:  "Utrecht",
-			startDate: "7 juli 2020",
+			startDate: "",
 			pageLoading: false
         };
-
     }
 
     componentDidMount() {
-    this.setState({pageLoading: true});
-    //    this.getUserInfo()
-	var name = this.state.name;
-	document.getElementById("name").value = name;
-	var email = this.state.email;
-	document.getElementById("email").value = email;
-	var rol = this.state.rol;
-	document.getElementById("rol").value = rol;
-	var location = this.state.location;
-	document.getElementById("location").value = location;
-	var startDate = this.state.startDate;
-	document.getElementById("startDate").value = startDate;
+        this.setState({pageLoading: true});
+        //    this.getUserInfo()
+        // var name = this.state.name;
+        // document.getElementById("name").value = name;
+        // var email = this.state.email;
+        // document.getElementById("email").value = email;
+        // var role = this.state.role;
+        // document.getElementById("rol").value = role;
+        // var location = this.state.location;
+        // document.getElementById("location").value = location;
+        // var startDate = this.state.startDate;
+        // document.getElementById("startDate").value = startDate;
     }
 
 /*    
 getUserInfo() {
-        axios.get('http://localhost:8080/J2EE/webapi/user/dossier')
+        axios.get(config.url.API_URL +'/webapi/user/dossier')
             .then( response => {
                     this.setState({
                         name: response.data.name,
@@ -59,45 +57,50 @@ getUserInfo() {
 }
   */  
     render() {
+        const {name, email, role, location, startDate} = this.state;
         return (
             <div className="container main-container">
+                <h2 className="text-center">Dossier</h2>
                 <ul className="errors">{this.state.errors}</ul>
                 <form onSubmit={this.handleSubmit}>
                     <div className="input">
                         <label class="label" htmlFor="name">Naam:</label>
-                        <input className="form" id="name" type="name" name="name" />
+                        <input className="form" id="name" type="name" name="name" value={name} disabled={this.props.editDisabled}/>
                     </div>
 
                     <div className="input">
                         <label class="label" htmlFor="email">Email:</label>
-                        <input className="form" id="email" type="email" name="email"/>
+                        <input className="form" id="email" type="email" name="email" value={email} disabled={this.props.editDisabled}/>
                     </div>
 
                     <div className="input">
-                        <label class="label" htmlFor="rol">rol:</label>
-                        <input className="form" id="rol" type="rol" name="rol"/>
+                        <label class="label" htmlFor="rol">Rol:</label>
+                        <input className="form" id="rol" type="rol" name="rol" value={role} disabled={this.props.editDisabled}/>
                     </div>
 
                     <div className="input">
                         <label class="label" htmlFor="location">Locatie:</label>
-                        <input class="form" id="location" type="location" name="location"/>
+                        <input class="form" id="location" type="location" name="location" value={location} disabled={this.props.editDisabled}/>
                     </div>
 
                     <div className="input" >
                         <label class="label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form " id="startDate" type="startDate" name="startDate"/>
+                        <input className="form" id="startDate" type="date" name="startDate" value={startDate} disabled={this.props.editDisabled}/>
                     </div>
+                    {(!this.props.editDisabled) ? <button className="button">Opslaan</button>: <span></span>}
 
-                    {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button>: 
-                    <button className="button" type="submit">Gelinkte gebruikers </button>}
-
-                    {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button>: 
-                    <button className="button" type="submit">Voortgang </button>}
-
-
-                    {(this.state.loading) ? <button className="button" type="submit" disabled> Laden...</button>: 
-                    <button className="button" type="submit">Pas gebruiker aan </button>}
                 </form>
+                {(this.props.editDisabled) ?
+                <div>
+                    <Link className="buttonLink" to="/dossier/1"><button className="button">Pas gebruiker aan</button></Link>
+                    <Link className="buttonLink" to="/linking/1"><button className="button">Gelinkte gebruikers</button></Link>
+                    
+                    <button className="button" type="submit">Voortgang</button> </div>: <span></span>
+                }
+                
+                
+
+                
             </div >
         )
     }

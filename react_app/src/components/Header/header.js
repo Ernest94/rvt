@@ -10,7 +10,7 @@ class Header extends React.Component {
 
         if (this.props.data.loggedIn) {
                button = <div>
-                            <span className="userName">Welkom "{sessionStorage.getItem("userName")}"</span>
+                            <span className="userName">Welkom "{this.props.data.userName}"</span>
                             <button className="logOut" onClick={() => this.props.handleLogOut()}> Log uit </button>
                         </div>;
                accountSettings = <Link to="/settings" className="header-link">Instellingen</Link>;
