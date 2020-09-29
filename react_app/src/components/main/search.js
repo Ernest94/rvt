@@ -1,8 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { validate } from 'validate.js';
-
-import constraints from '../../constraints/constraints';
 
 import {config} from '../constants';
 
@@ -11,10 +8,19 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: "",
-            password: "",
+            locations: [],
+            location: "",
+            roles: [],
+            role: "",
+            criteria: "",
+            users: [],
             loading: false
         };
+    }
+
+    componentDidMount() {
+        this.setState({ pageLoading: true });
+        this.getLocationsAndRoles()
     }
     
     handleFormChange = (e) => {
@@ -27,19 +33,20 @@ class Search extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
-        var errors = validate(this.state, constraints);
+        var errors = null
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
+            axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
-                    this.props.handleSuccessfulAuth(response.data);
+                    this.handleSearchReponse(response.data);
+                    this.render();
                 })
                 .catch((error) => {
-                    // this.props.handleSuccessfulAuth({id: 1, name: "test", role: {name: "Admin"}, location: {id: 1, name: "Utrecht"}}); // use this line to log in without use of database
-                    console.log("an error occorured " + error);  
-                    this.setErrors({login: ["Mislukt om in te loggen."]}); 
+                    console.log("an error occorured " + error);
+                    this.fakeHandleSearchReponse();
+                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -48,11 +55,44 @@ class Search extends React.Component {
             this.setState({loading: false});
         }
     }
+
+    handleSearchReponse(data)
+    {
+        this.setState({
+            users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+        });
+    }
+
+    fakeHandleSearchReponse() {
+        this.setState({
+            users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+        });
+    }
+
+    getLocationsAndRoles() {
+
+        axios.get(config.url.API_URL + '/webapi/user/roles')
+            .then(response => {
+                this.setState({
+                    roles: response.data.roles,
+                    locations: response.data.locations,
+                    pageLoading: false
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    roles: null, //[{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
+                    locations: null, // [{id: 1, name: "Utrecht"}],
+                    pageLoading: false
+                });
+            })
+    }
     
-    createLoginJson() {
+    createSearchJson() {
         return {
-            email: this.state.email,
-            password: this.state.password
+            Location: this.state.role,
+            Role: this.state.location,
+            Criteria: this.state.criteria
         }
     }
     
@@ -64,70 +104,114 @@ class Search extends React.Component {
            errors: foundErrors 
         });
     }
-    
+
+    onChangeRole = (e) => {
+        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
+        var isTrainee = selectedRole.name === "Trainee";
+
+        this.setState({
+            isTrainee: isTrainee,
+            role: selectedRole,
+            roleDisplayName: e.target.value
+        });
+    }
+
+    onChangeLocation = (e) => {
+        this.setState({
+            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
+            locationDisplayName: e.target.value
+        });
+    }
+
     render() {
+
+        const rolesOptions = this.state.roles.map((role) => {
+            return (
+                <option key={role.id} value={role.id}>{role.name}</option>
+            )
+        });
+        const locationOptions = this.state.locations.map((location) => {
+            return (
+                <option key={location.id} value={location.id}>{location.name}</option>
+            )
+        });
+        var userDisplay = this.state.users.map((user) => {
+            return (
+                <tr onClick={this.props.handleDossierRequest(user.id)} >
+                    <td className="p-2 text-nowrap align-middle">
+                        {user.name} 
+                    </td>
+                    <td className="p-2 text-nowrap align-middle">
+                        {user.email}
+                    </td>
+                    <td className="p-2 text-nowrap align-middle">
+                        {user.role}
+                    </td>
+                    <td className="p-2 text-nowrap align-middle">
+                        {user.location}
+                    </td>
+                </tr >
+            )
+        });
+
+
         return (
-            <div>
-                <div className="container main-container">
+
+            <div className="container">
+                <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="email">Email:</label>
-                            <input className="form-control" id="email" type="email" name="email" onChange={this.handleFormChange}/>
-                        </div>
+                        <div className="w-100 mx-auto align-middle"> 
+                            <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
+                            <select className="mr-5 p-2 align-middle" name="role" id="role"
+                                value={this.props.roleDisplayName}
+                                onChange={this.props.onChangeRole}
+                                required>
 
-                        <div className="form-group">
-                            <label htmlFor="password">Wachtwoord:</label>
-                            <input className="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
+                                <option hidden value=''>Rol</option>
+                                {rolesOptions}
+                            </select>
+                            <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
+                            <select className="mr-5 p-2 align-middle" name="location" id="location"
+                                value={this.props.locationDisplayName}
+                                onChange={this.props.onChangeLocation}
+                                required>
+
+                                <option hidden value=''>Locatie</option>
+                                {locationOptions}
+                            </select>
+                            <label className="label mr-2 p-2 align-middle" htmlFor="criteria">Zoek Criteria:</label>
+                            <input className="form mr-5 p-2 align-middle" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                         </div>
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                        <button className="btn btn-primary float-right" type="submit">Log in </button>}
-                    </form>                
+                        <div>
+                            {(this.state.loading) ? <button className="w-30 mx-auto btn btn-primary mt-3" type="submit" disabled> Laden...</button> :
+                                <button className="w-30 mx-auto btn btn-primary mt-3" type="submit">Zoek</button>}
+                        </div>
+                    </form>                  
                 </div >
 
-                <div className="container">
-
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="input">
-                            <label class="label" htmlFor="name">Naam:</label>
-                            <input className="form" id="name" type="name" name="name" />
-                        </div>
-
-                        <div className="input">
-                            <label class="label" htmlFor="email">Email:</label>
-                            <input className="form" id="email" type="email" name="email" />
-                        </div>
-
-                        <div className="input">
-                            <label class="label" htmlFor="rol">rol:</label>
-                            <input className="form" id="rol" type="rol" name="rol" />
-                        </div>
-
-                        <div className="input">
-                            <label class="label" htmlFor="location">Locatie:</label>
-                            <input class="form" id="location" type="location" name="location" />
-                        </div>
-
-                        <div className="input" >
-                            <label class="label" htmlFor="startDate">Startdatum:</label>
-                            <input className="form " id="startDate" type="startDate" name="startDate" />
-                        </div>
-
-                        {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button> :
-                            <button className="button" type="submit">Gelinkte gebruikers </button>}
-
-                        {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button> :
-                            <button className="button" type="submit">Voortgang </button>}
-
-
-                        {(this.state.loading) ? <button className="button" type="submit" disabled> Laden...</button> :
-                            <button className="button" type="submit">Pas gebruiker aan </button>}
-                    </form>
-
+                <div>
+                    <table className="w-100 mx-auto">
+                        <thead>
+                            <tr>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Naam
+                                    </th>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Email
+                                    </th>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Rol
+                                    </th>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Locatie
+                                    </th>
+                            </tr>
+                        </thead>
+                        {userDisplay}
+                    </table>
                 </div >
-            </div >
-
-            
+            </div>
         )
     }
 }

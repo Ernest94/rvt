@@ -19,6 +19,7 @@ class Main extends React.Component {
         this.handleSuccesfullAuth = this.handleSuccesfullAuth.bind(this);
         this.handleLogOut = this.handleLogOut.bind(this);
         this.handleReturnToSettings = this.handleReturnToSettings.bind(this);
+        this.handleDossierRequest = this.handleDossierRequest.bind(this);
         this.state = {
             loggedIn : false
         }
@@ -42,6 +43,10 @@ class Main extends React.Component {
         sessionStorage.setItem("userLocation", data.location.name);
         sessionStorage.setItem("userLocationId", data.location.id);
         this.props.history.push('/settings');
+    }
+
+    handleDossierRequest(id) {
+        this.props.history.push('/dossier/' + id);
     }
     
     handleReturnToSettings() {
@@ -78,7 +83,7 @@ class Main extends React.Component {
                     <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
                     <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
                     <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
-                    <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
+                    <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleDossierRequest={this.handleDossierRequest} handleReturnToSettings={this.handleReturnToSettings} />
                 </Switch>
                 <Footer/>
             </div >
