@@ -87,13 +87,41 @@ class Search extends React.Component {
 
                 <div className="container">
 
-                    <form>
-                        <h3>Format used to look like this in Bootstrap 2</h3>
-                        <div classNme="row ">
-                            <label for="return1"><strong>Return:</strong></label>
-                            <input id="return1" className=" input input-sm" style="width: 150px;" name="return1" type="text" value="8/28/2013" />
-                            <span id="return1" style="color: blue;"> +/- 14 Days</span>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="input">
+                            <label class="label" htmlFor="name">Naam:</label>
+                            <input className="form" id="name" type="name" name="name" />
                         </div>
+
+                        <div className="input">
+                            <label class="label" htmlFor="email">Email:</label>
+                            <input className="form" id="email" type="email" name="email" />
+                        </div>
+
+                        <div className="input">
+                            <label class="label" htmlFor="rol">rol:</label>
+                            <input className="form" id="rol" type="rol" name="rol" />
+                        </div>
+
+                        <div className="input">
+                            <label class="label" htmlFor="location">Locatie:</label>
+                            <input class="form" id="location" type="location" name="location" />
+                        </div>
+
+                        <div className="input" >
+                            <label class="label" htmlFor="startDate">Startdatum:</label>
+                            <input className="form " id="startDate" type="startDate" name="startDate" />
+                        </div>
+
+                        {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button> :
+                            <button className="button" type="submit">Gelinkte gebruikers </button>}
+
+                        {(this.state.loading) ? <button className="button" type="button" disabled> Laden...</button> :
+                            <button className="button" type="submit">Voortgang </button>}
+
+
+                        {(this.state.loading) ? <button className="button" type="submit" disabled> Laden...</button> :
+                            <button className="button" type="submit">Pas gebruiker aan </button>}
                     </form>
 
                 </div >
