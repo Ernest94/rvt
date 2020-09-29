@@ -3,6 +3,7 @@ package nu.educom.rvt.services;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.UserRelation;
+import nu.educom.rvt.models.view.UserSearch;
+import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserRelationRepository;
@@ -74,17 +77,7 @@ public class UserService {
 	
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
-		List<Role> roles = roleRepo.readAll(); 
-		List<Role> rolesMinTra = new ArrayList<>();
-		for(Role role: roles)
-		{
-			
-			if(!role.getName().equals("Trainee"))
-			{
-				rolesMinTra.add(role);
-			}		
-		}	
-		return rolesMinTra;
+		return roleRepo.readAll(); 
 	}
 	
 	public List<Location> getLocations()
@@ -93,7 +86,7 @@ public class UserService {
 		return locRepo.readAll();
 	}
 	
-	public List<User> getfilteredUsers(String criteria, Role role, Location location)
+	public List<User> getFilteredUsers(String criteria, Role role, Location location)
 	{
 		String[] words = criteria.split(" ");
 		List<User> foundUsers = new ArrayList<>();	
@@ -120,6 +113,17 @@ public class UserService {
 									.collect(Collectors.toList());
 	}
 	
+
+	public UserSearchJson convertToUSJ(List<User> users)
+	{
+		List<UserSearch> userSearch = new ArrayList<>();	
+		for(User user : users)
+		{
+			userSearch.add(new UserSearch(user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDatumActive()));
+		}		
+		return new UserSearchJson(userSearch);
+	}
+	
 	
 	public List<User> getConnectedUsers(User user)
 	{
@@ -141,4 +145,11 @@ public class UserService {
 		UserRelation userRelation = new UserRelation(base, link);
 		relaRepo.create(userRelation);
 	}
+
+    public User getUserById(int userId) {
+      UserRepository userRepo = new UserRepository();
+      User user = userRepo.readById(userId);
+    
+      return user;
+    }
 }

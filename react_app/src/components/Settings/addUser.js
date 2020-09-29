@@ -5,6 +5,7 @@ import RoleAndLocation from './roleAndLocation.js';
 import UserInfo from './userInfo.js';
 
 import constraints from '../../constraints/addUserConstraints';
+import {config} from '../constants';
 
 class AddUser extends React.Component {
     
@@ -49,7 +50,7 @@ class AddUser extends React.Component {
    
     getLocationsAndRoles() {
         
-        axios.get('http://localhost:8080/J2EE/webapi/user/roles')
+        axios.get(config.url.API_URL + '/webapi/user/roles')
             .then( response => {
                     this.setState({
                         roles: response.data.roles,
@@ -185,7 +186,7 @@ class AddUser extends React.Component {
         this.setState({loading: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post("http://localhost:8080/J2EE/webapi/user/create", this.createUserJson())
+            axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
@@ -210,7 +211,7 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
-            datumActive: this.state.date
+            datumActive: this.state.dateActive
         }
     }
     

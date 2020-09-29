@@ -1,8 +1,9 @@
 package nu.educom.rvt.models;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
+@Entity @XmlRootElement
 @Table(name="roles")
 public class Role {
 

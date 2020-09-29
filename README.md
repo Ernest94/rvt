@@ -33,8 +33,10 @@ Eclipse kan [hier](https://www.eclipse.org/downloads/packages/) gedownload worde
 Start na het downloaden Eclipse op en import de project folder via `file/open project from file system`
 Alle bestanden zullen nu worden ingeladen en kunnen worden geopend in de editor
 
-Om de code uiteindelijk te runnen wordt er gebruik gemaakt van een tomcat server. Deze kan [hier](https://tomcat.apache.org/download-90.cgi) gedownload worden.
-Om de code runnen op de tomcat server ga naar `run\ run configuration` en selecteer de tomcat server. Als dit is gebeurt wordt de code gerund op de tomcat server als je de run knop gebruikt.
+Om de code te runnen wordt een Grizzly Http server gebruikt die zichzelf opstart als de applicatie gedraaid wordt. 
+Om te starten klik met de rechtermuisknop op de `Main.java` en `run as -> java application`.
+De grizzly server wordt gestart en de backend is beschikbaar op `localhost:8081`.
+De api kan aangeroepen worden door een request te doen naar `localhost:8081/webapi/{source path}`.
 
 Een request kan vervolgens gedaan worden door in Postman/browser een request te doen naar `localhost:[tomcat port]/J2EE/webapi/{path}`
 
@@ -147,6 +149,62 @@ Als je code hebt geschreven kan dit gepusht worden naar deze repository (`git pu
 Om de code quality hoog te houden is het handig om commits te laten controleren door mede ontwikkelaars. 
 Nog beter is om te werken in branches en zodra een ontwikkelaar denkt klaar te zijn en de branch wil merchen met de master branch (de branch die uiteindelijk in ontwikkeling gaat) om een pull request aan te maken en anderen ontwikkelaars te vragen om deze pull request te bevesetigen. Op deze manier is iedereen op de hoogte van de veranderingen in de code.
 
+
+### Producition build ###
+Voor het draaien van de applicatie in productie moeten zowel de frontend React als de Java Enterprise backend gebuild worden.
+Dit wordt apart van elkaar gedaan op de production branch. Deze branch zal altijd de laatste werkende versie bevatten.
+Als de server eenmaal draait kan er ingelogd worden met de volgende gegevens:
+
+Email	admin@educom.nu
+Wachtwoord	password
+
+
+##### React
+1. Open command line en ga naar de react app folder (rvt/react_app)
+2. (Zorg dat node js is geïnstalleerd met npm -version)
+3. Voer het volgende commando uit: npm run build
+4. De react app wordt nu gebouwd en in de "build" folder gestopt
+5. Download een FTP client (zoals [FileZilla](https://filezilla-project.org/))
+6. Log in met de FTP gegevens hieronder
+7. Kopieer alle bestanden in de "build" folder in de www_root folder op de server
+8. De react app is nu beschikbaar op voortgang.educom.nu 
+
+##### Java Enterprise (JAX-rs)
+1. Ga naar de J2EE folder (rvt/J2EE) en run "mvn install"
+2. Een jar wordt gemaakt en in de "target" folder gezet
+3. Kopieer de "J2EE.jar" naar de server met FTP (zie stap 5 en 6 React)
+4. Let op: Kopieer de Jar niet in de "www_root folder"!!
+5. Download een SSH client (zoals [PuTTY](https://www.putty.org/))
+6. Login op de server met de SSH gegevens hieronder 
+7. Start de server met dit commando : "java -jar J2EE.jar"
+8. Controleer of de grizzly server is gestart (`INFO: [HttpServer] Started`)
+
+##### Stop Java server
+1. Login via SSH client zoals uitgeled in stap 5 en 6 van Java Enterprise (Jax-rs)
+2. Check welke service je moet killen met het commando "ps -aux | grep J2EE"
+3. Kijk naar de regel met aan het einde "java -jar J2EE.jar" en onthoud het nummer in de 2de kolom
+4. Kill de server met "kill {nummer}" 
+
+##### De gegevens
+
+URL: https://voortgang.educom.nu
+
+###### FTP
+server: voortgang.educom.nu
+user: edu-voortgang
+Ww: @j0v22nS
+
+
+###### SSH
+> ssh edu-voortgang@edu-deta.com
+Ww: @j0v22nS
+
+
+###### MySQL
+DB: db_voortgang
+User: usr_voortgang
+Ww: ?120qhZl
+Host: localhost
 
 ### Help! Wie moet ik contacten? ###
 

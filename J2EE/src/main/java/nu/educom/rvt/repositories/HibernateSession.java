@@ -34,9 +34,11 @@ public class HibernateSession {
 
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
 
-                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt_2?createDatabaseIfNotExist=true");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/db_voortgang?createDatabaseIfNotExist=true&serverTimezone=UTC");
 
-                settings.put(Environment.USER, "root");
+                settings.put(Environment.USER, "usr_voortgang");
+                
+                settings.put(Environment.PASS, "?120qhZl");
 
                 settings.put(Environment.SHOW_SQL, "true");
 
