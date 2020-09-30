@@ -82,19 +82,21 @@ class Main extends React.Component {
             
             <div>
                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
-                <Switch>
-                    <Route exact path="/login"> <Login handleSuccessfulAuth={this.handleSuccesfullAuth}/> </Route>
-                    <PrivateRoute exact path="/" isLoggedIn={this.state.loggedIn} component={Home} />
-                    <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
-                    <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings}/>
- 					<PrivateRoute exact path="/dossier/:userId" component={Dossier} editDisabled={true} isLoggedIn={this.state.loggedIn}/>
-                    <PrivateRoute exact path="/dossier/:userId/edit" component={Dossier} handleSubmit={this.handleReturnToSettings} editDisabled={!sessionStorage.getItem("userRole")=== "Admin"} isLoggedIn={this.state.loggedIn}/>
-                    <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
-                    <PrivateRoute exact path="/linking" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
-                    <PrivateRoute exact path="/linking/:userId" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
-                    <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleDossierRequest={this.handleDossierRequest} handleReturnToSettings={this.handleReturnToSettings} />
+                <div className="container main-container">
+                    <Switch>
+                        <Route exact path="/login"> <Login handleSuccessfulAuth={this.handleSuccesfullAuth}/> </Route>
+                        <PrivateRoute exact path="/" isLoggedIn={this.state.loggedIn} component={Home} />
+                        <PrivateRoute exact path="/settings" component={Settings} isLoggedIn={this.state.loggedIn} userIsAdmin={this.canAddUser}/>
+                        <PrivateRoute exact path="/password" component={Password} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings}/>
+                        <PrivateRoute exact path="/dossier/:userId" component={Dossier} editDisabled={true} isLoggedIn={this.state.loggedIn}/>
+                        <PrivateRoute exact path="/dossier/:userId/edit" component={Dossier} handleSubmit={this.handleReturnToSettings} editDisabled={!sessionStorage.getItem("userRole")=== "Admin"} isLoggedIn={this.state.loggedIn}/>
+                        <AdminRoute exact path="/addUser" userIsAdmin={this.canAddUser} component={AddUser} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
+                        <PrivateRoute exact path="/linking" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
+                        <PrivateRoute exact path="/linking/:userId" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
+                        <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleDossierRequest={this.handleDossierRequest} handleReturnToSettings={this.handleReturnToSettings} />
 
-                </Switch>
+                    </Switch>
+                </div>
                 <Footer/>
             </div >
 

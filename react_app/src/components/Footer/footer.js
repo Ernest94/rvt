@@ -8,7 +8,8 @@ class Footer extends React.Component {
                 <div className="wrapper">
                     <div className="container">
                         <div className="row">
-                            <div>RVT &copy; 2020 </div>
+                            <div ><img className="edudeta" alt="educom/detacom logo" src={process.env.PUBLIC_URL + "/pictures/edudetacom.png"}/></div>
+                            <div className="col">RVT &copy; 2020 </div>
                         </div>
                     </div>
                 </div>
