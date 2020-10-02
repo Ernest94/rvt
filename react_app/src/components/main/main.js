@@ -14,9 +14,11 @@ import Password from '../Settings/password.js';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AdminRoute from '../routes/AdminRoute.js';
+import AccessRoute from '../routes/AccessRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
 
 class Main extends React.Component {
+    
     constructor(props) {
         super(props);
         
@@ -29,6 +31,7 @@ class Main extends React.Component {
         this.state = {
             loggedIn : false,
             userName: "",
+            isTrainee: false,
         }
     }
     
@@ -66,6 +69,7 @@ class Main extends React.Component {
         this.setState({
           loggedIn: true,
           userName: data.name,
+          isTrainee: data.role.name === "Trainee",
         });
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
@@ -98,12 +102,13 @@ class Main extends React.Component {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         return (isAdmin);
     }
-
+    
     goToAddUserSpecification(role, location) {
         this.props.history.push('/addUser');
     }
     
     render() {
+        const {isTrainee, loggedIn} = this.state;
         return (
             
             <div>
@@ -116,57 +121,61 @@ class Main extends React.Component {
                         /> 
                     </Route>
                     <PrivateRoute exact path="/" 
-                        isLoggedIn={this.state.loggedIn} 
+                        isLoggedIn={loggedIn} 
                         component={Home} 
                     />
                     <PrivateRoute exact path="/settings" 
                         component={Settings} 
-                        isLoggedIn={this.state.loggedIn} 
-                        userIsAdmin={this.canAddUser}
+                        isLoggedIn={loggedIn} 
+                        userHasAccess={!isTrainee}
                     />
                     <PrivateRoute exact path="/password" 
                         component={Password} 
-                        isLoggedIn={this.state.loggedIn} 
+                        isLoggedIn={loggedIn} 
                         handleReturnToSettings={this.handleReturnToSettings}
                         setErrors={this.setErrors}
                     />
- 					<PrivateRoute exact path="/dossier/:userId" 
+ 					<AccessRoute exact path="/dossier/:userId" 
                         component={Dossier}
                         setErrors={this.setErrors}
-                        editDisabled={true} 
+                        editDisabled={true}
+                        userHasAccess={true}
+                        isTrainee={isTrainee}
                         dateValidation={this.dateValidation}
-                        isLoggedIn={this.state.loggedIn}
+                        isLoggedIn={loggedIn}
                     />
-                    <PrivateRoute exact path="/dossier/:userId/edit" 
+                    <AccessRoute exact path="/dossier/:userId/edit" 
                         component={Dossier}
                         setErrors={this.setErrors}
                         dateValidation={this.dateValidation}
                         handleReturnToSettings={this.handleReturnToSettings} 
-                        editDisabled={!sessionStorage.getItem("userRole") === "Admin"} 
-                        isLoggedIn={this.state.loggedIn}
+                        editDisabled={false} 
+                        userHasAccess={!isTrainee}
+                        isLoggedIn={loggedIn}
                     />
-                    <AdminRoute exact path="/addUser" 
-                        userIsAdmin={this.canAddUser} 
+                    <AccessRoute exact path="/addUser" 
+                        userHasAccess={!isTrainee} 
                         component={AddUser}
                         dateValidation={this.dateValidation}
-                        isLoggedIn={this.state.loggedIn} 
+                        isLoggedIn={loggedIn} 
                         handleReturnToSettings={this.handleReturnToSettings} 
                         setErrors={this.setErrors}
                     />
-                    <PrivateRoute exact path="/linking" 
-                        isLoggedIn={this.state.loggedIn} 
+                    <AccessRoute exact path="/linking" 
+                        isLoggedIn={loggedIn}
+                        userHasAccess={!isTrainee}
                         handleReturnToSettings={this.handleReturnToSettings} 
                         component={LinkUsers} 
                     />
                     <PrivateRoute exact path="/linking/:userId" 
-                        isLoggedIn={this.state.loggedIn} 
+                        isLoggedIn={loggedIn} 
                         handleReturnToSettings={this.handleReturnToSettings} 
                         component={LinkUsers} 
                     />
-                    <AdminRoute exact path="/search" 
-                        userIsAdmin={this.canSearchUser} 
+                    <AccessRoute exact path="/search" 
+                        userHasAccess={!isTrainee} 
                         component={Search} 
-                        isLoggedIn={this.state.loggedIn} 
+                        isLoggedIn={loggedIn} 
                         handleDossierRequest={this.handleDossierRequest} 
                         handleReturnToSettings={this.handleReturnToSettings} 
                         setErrors={this.setErrors}

@@ -14,28 +14,56 @@ class Dossier extends React.Component {
         this.state = {
             name: "Jeroen Heemskerk",
 			email: "jeroen@educom.nu",
-			role: "Docent",
+			role: {id: 1, name: "Admin"},
 			location:  "Utrecht",
 			startDate: "2020-07-09",
 			pageLoading: false,
-            userId: null,
+            userId: 1,
             buttonDisabled: false,
             roles: [{id: 1, name:"test"}],
             locations: [],
             roleDisplayName: "",
             locationDisplayName: "",
+            blocked: false,
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { computedMatch: { params } } = this.props;
         this.props.dateValidation();
-        this.setState({pageLoading: true, userId: params.userId});
-        this.getAllInfo(params.userId);
+        await this.setState({pageLoading: true, userId: params.userId});
+        this.getAllInfo();
+        this.canViewUserDossier();
     }
     
-    getAllInfo(id) {
-        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier/' + id);
+    canViewUserDossier() {
+        const userRole = sessionStorage.getItem("userRole");
+        const roleDossierUser = this.state.role.name;
+        const ownUserId = sessionStorage.getItem("userId");
+        var isBlocked;
+        switch (userRole) {
+            case "Trainee":
+                isBlocked = ownUserId != this.state.userId
+                break;
+            case "Docent":
+                isBlocked = (roleDossierUser != "Trainee" && ownUserId != this.state.userId);
+                break;
+            case "Sales":
+                isBlocked = roleDossierUser === "Admin";
+                break;
+            case "Office":
+                isBlocked = (roleDossierUser === "Admin" || roleDossierUser === "Sales");
+                break;
+            default:
+                isBlocked = false;
+                break;
+        }
+        this.setState({blocked: isBlocked});
+    }
+    
+    getAllInfo() {
+        const {userId} = this.state;
+        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier',  {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         
         axios.all([userRequest, roleLocRequest]).then(axios.spread((...responses) => {
@@ -59,7 +87,6 @@ class Dossier extends React.Component {
             this.setState({pageLoading:false});
         });
     }
-    
     
     handleSubmit = (event) => {
         event.preventDefault();
@@ -126,10 +153,11 @@ class Dossier extends React.Component {
     }
   
     render() {
-        const {name, email, startDate, userId, pageLoading, errors,
+        const {name, email, startDate, userId, pageLoading, errors, blocked,
             locations, roles, roleDisplayName, locationDisplayName} = this.state;
-        const {editDisabled} = this.props;
+        const {editDisabled, isTrainee} = this.props;
         if (pageLoading) return <span className="center"> Laden... </span> 
+        if (blocked) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
         
         const rolesOptions = roles.map((role) => {
             return (
@@ -198,10 +226,25 @@ class Dossier extends React.Component {
                 </form>
                 {(editDisabled) ?
                 <div>
-                    <Link className="buttonLink" to={"/dossier/" + userId + "/edit"}><button className="button">Pas gebruiker aan</button></Link>
-                    <Link className="buttonLink" to={"/linking/" + userId}><button className="button">Gelinkte gebruikers</button></Link>
+                    <Link 
+                        className="buttonLink" 
+                        to={"/dossier/" + userId + "/edit"}
+                        >                        
+                        <button className="button" hidden={isTrainee}>Pas gebruiker aan</button>
+                    </Link>
+                    <Link 
+                        className="buttonLink" 
+                        to={"/linking/" + userId}>
+                        <button className="button" hidden={isTrainee}>Gelinkte gebruikers</button>
+                    </Link>
                     
-                    <button hidden={true} className="button" type="submit">Voortgang</button> </div>: <span></span>
+                    <button 
+                        hidden={true} 
+                        className="button" 
+                        type="submit">
+                        Voortgang
+                    </button> 
+                </div>: <span></span>
                 }
             </div>
         )

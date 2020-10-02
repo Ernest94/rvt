@@ -63,7 +63,7 @@ class Search extends React.Component {
 
     fakeHandleSearchReponse() {
         this.setState({
-            users: [{ id: 1, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
+            users: [{ id: 7, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
         });
     }
 
