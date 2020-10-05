@@ -43,10 +43,10 @@ class Dossier extends React.Component {
         var isBlocked;
         switch (userRole) {
             case "Trainee":
-                isBlocked = ownUserId != this.state.userId
+                isBlocked = ownUserId !== this.state.userId
                 break;
             case "Docent":
-                isBlocked = (roleDossierUser != "Trainee" && ownUserId != this.state.userId);
+                isBlocked = (roleDossierUser !== "Trainee" && ownUserId !== this.state.userId);
                 break;
             case "Sales":
                 isBlocked = roleDossierUser === "Admin";
@@ -171,7 +171,7 @@ class Dossier extends React.Component {
         });
         
         return (
-            <div className="container main-container">
+            <div>
                 <h2 className="text-center">Dossier</h2>
                 <ul className="errors">{errors}</ul>
                 <form onSubmit={this.handleSubmit}>
@@ -226,24 +226,29 @@ class Dossier extends React.Component {
                 </form>
                 {(editDisabled) ?
                 <div>
-                    <Link 
-                        className="buttonLink" 
-                        to={"/dossier/" + userId + "/edit"}
-                        >                        
-                        <button className="button" hidden={isTrainee}>Pas gebruiker aan</button>
-                    </Link>
-                    <Link 
-                        className="buttonLink" 
-                        to={"/linking/" + userId}>
-                        <button className="button" hidden={isTrainee}>Gelinkte gebruikers</button>
-                    </Link>
-                    
-                    <button 
-                        hidden={true} 
-                        className="button" 
-                        type="submit">
-                        Voortgang
-                    </button> 
+                    <div className="text-center">
+                        <Link 
+                            className="buttonLink" 
+                            to={"/dossier/" + userId + "/edit"}
+                            >                        
+                            <button className="rvtbutton" hidden={isTrainee}>Pas gebruiker aan</button>
+                        </Link>
+                    </div>
+                    <div className="text-center">
+                        <Link 
+                            className="buttonLink" 
+                            to={"/linking/" + userId}>
+                            <button className="rvtbutton" hidden={isTrainee}>Gelinkte gebruikers</button>
+                        </Link>
+                    </div>
+                    <div className="text-center">
+                        <button 
+                            hidden={true} 
+                            className="rvtbutton" 
+                            type="submit">
+                            Voortgang
+                        </button>
+                    </div>
                 </div>: <span></span>
                 }
             </div>

@@ -13,7 +13,7 @@ class Login extends React.Component {
         this.state = {
             email: "",
             password: "",
-            loading: false
+            buttonDisabled: false,
         };
     }
     
@@ -26,12 +26,12 @@ class Login extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
+        this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
                 .then(response => {
-                    this.setState({loading: false, errors: null});
+                    this.setState({buttonDisabled: false, errors: null});
                     
                     this.props.handleSuccessfulAuth(response.data);
                 })
@@ -40,14 +40,14 @@ class Login extends React.Component {
                     console.log("an error occorured " + error); 
                     const custErr = {login: ["Mislukt om in te loggen."]};
                     this.setState({
-                        loading: false,
+                        buttonDisabled: false,
                         errors: this.props.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
-                loading: false,
+                buttonDisabled: false,
                 errors: this.props.setErrors(errors)
             });
         }
@@ -61,8 +61,9 @@ class Login extends React.Component {
     }
     
     render() {
+        const {buttonDisabled} = this.state;
         return (
-            <div className="container main-container">
+            <div >
                 <ul className="errors">{this.state.errors}</ul>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -74,8 +75,11 @@ class Login extends React.Component {
                         <label htmlFor="password">Wachtwoord:</label>
                         <input className="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
                     </div>
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                    <button className="btn btn-primary float-right" type="submit">Log in </button>}
+                    <button className="btn rvtbutton float-right" 
+                        disabled={buttonDisabled} 
+                        type="submit">
+                        {(buttonDisabled)? "Laden..." : "Log in"}
+                    </button>
                 </form>
             </div >
         )

@@ -9,15 +9,20 @@
 	text-decoration: none;
 }
 
-button.logOut{
-	background-color: #605c49;	
-	color: white;
-	border-radius: 6px;
-	padding: 6px 15px;
-    border:none;
+
+.align-bottom1Content {
+    width: 100%;
+    vertical-align: bottom;
+    height: 15px;
+    background-color: #a32332;
+    position: absolute;
+    z-index: 180;
 }
 
-.logOut:hover {
-	background-color: #837f6b;
-	border: 2px solid #605c49;
+.logo {
+    width: 50px;
+}
+
+.logoutbutton {
+    width: inherit;
 }

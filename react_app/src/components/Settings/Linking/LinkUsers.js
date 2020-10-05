@@ -50,8 +50,8 @@ class LinkUsers extends React.Component {
                 })
         .catch(() => {
             this.setState({
-                user: {id: 1, name:"Jeroen", role: {name: "Docent"}, location: {name: "Utrecht"}},
-                users: [{id:2, name: "Pieter", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}, {id:3, name: "Klaas", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}],
+                user: null, //{id: 1, name:"Jeroen", role: {name: "Docent"}, location: {name: "Utrecht"}},
+                users: null, //[{id:2, name: "Pieter", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}, {id:3, name: "Klaas", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}],
                 pageLoading: false,
                 notFound: false
             });
@@ -127,7 +127,7 @@ class LinkUsers extends React.Component {
                    ) 
         });
         return (
-            <div className="container main-container">
+            <div>
                 <h2>Gelinkte gebruikers</h2>
                 <p>{user.role.name} : {user.name}</p>
                 <br/>
@@ -147,7 +147,11 @@ class LinkUsers extends React.Component {
                     </tbody>
                 </table>
                 
-                <button className="btn btn-primary float-right" disabled={buttonDisabled} onClick={this.handleSaveClick}>{buttonText}</button>
+                <button className="btn rvtbutton float-right" 
+                        disabled={buttonDisabled} 
+                        onClick={this.handleSaveClick}>
+                        {buttonText}
+                </button>
             </div >
         )
     }

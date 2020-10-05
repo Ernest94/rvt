@@ -13,7 +13,6 @@ import AddUser from '../Settings/addUser.js';
 import Password from '../Settings/password.js';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
-import AdminRoute from '../routes/AdminRoute.js';
 import AccessRoute from '../routes/AccessRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
 
@@ -113,74 +112,76 @@ class Main extends React.Component {
             
             <div>
                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
-                <Switch>
-                    <Route exact path="/login"> 
-                        <Login 
-                            handleSuccessfulAuth={this.handleSuccesfullAuth}
+                <div className="container main-container">
+                    <Switch>
+                        <Route exact path="/login"> 
+                            <Login 
+                                handleSuccessfulAuth={this.handleSuccesfullAuth}
+                                setErrors={this.setErrors}
+                            /> 
+                        </Route>
+                        <PrivateRoute exact path="/" 
+                            isLoggedIn={loggedIn} 
+                            component={Home} 
+                        />
+                        <PrivateRoute exact path="/settings" 
+                            component={Settings} 
+                            isLoggedIn={loggedIn} 
+                            userHasAccess={!isTrainee}
+                        />
+                        <PrivateRoute exact path="/password" 
+                            component={Password} 
+                            isLoggedIn={loggedIn} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
-                        /> 
-                    </Route>
-                    <PrivateRoute exact path="/" 
-                        isLoggedIn={loggedIn} 
-                        component={Home} 
-                    />
-                    <PrivateRoute exact path="/settings" 
-                        component={Settings} 
-                        isLoggedIn={loggedIn} 
-                        userHasAccess={!isTrainee}
-                    />
-                    <PrivateRoute exact path="/password" 
-                        component={Password} 
-                        isLoggedIn={loggedIn} 
-                        handleReturnToSettings={this.handleReturnToSettings}
-                        setErrors={this.setErrors}
-                    />
- 					<AccessRoute exact path="/dossier/:userId" 
-                        component={Dossier}
-                        setErrors={this.setErrors}
-                        editDisabled={true}
-                        userHasAccess={true}
-                        isTrainee={isTrainee}
-                        dateValidation={this.dateValidation}
-                        isLoggedIn={loggedIn}
-                    />
-                    <AccessRoute exact path="/dossier/:userId/edit" 
-                        component={Dossier}
-                        setErrors={this.setErrors}
-                        dateValidation={this.dateValidation}
-                        handleReturnToSettings={this.handleReturnToSettings} 
-                        editDisabled={false} 
-                        userHasAccess={!isTrainee}
-                        isLoggedIn={loggedIn}
-                    />
-                    <AccessRoute exact path="/addUser" 
-                        userHasAccess={!isTrainee} 
-                        component={AddUser}
-                        dateValidation={this.dateValidation}
-                        isLoggedIn={loggedIn} 
-                        handleReturnToSettings={this.handleReturnToSettings} 
-                        setErrors={this.setErrors}
-                    />
-                    <AccessRoute exact path="/linking" 
-                        isLoggedIn={loggedIn}
-                        userHasAccess={!isTrainee}
-                        handleReturnToSettings={this.handleReturnToSettings} 
-                        component={LinkUsers} 
-                    />
-                    <PrivateRoute exact path="/linking/:userId" 
-                        isLoggedIn={loggedIn} 
-                        handleReturnToSettings={this.handleReturnToSettings} 
-                        component={LinkUsers} 
-                    />
-                    <AccessRoute exact path="/search" 
-                        userHasAccess={!isTrainee} 
-                        component={Search} 
-                        isLoggedIn={loggedIn} 
-                        handleDossierRequest={this.handleDossierRequest} 
-                        handleReturnToSettings={this.handleReturnToSettings} 
-                        setErrors={this.setErrors}
-                    />
-                </Switch>
+                        />
+                        <AccessRoute exact path="/dossier/:userId" 
+                            component={Dossier}
+                            setErrors={this.setErrors}
+                            editDisabled={true}
+                            userHasAccess={true}
+                            isTrainee={isTrainee}
+                            dateValidation={this.dateValidation}
+                            isLoggedIn={loggedIn}
+                        />
+                        <AccessRoute exact path="/dossier/:userId/edit" 
+                            component={Dossier}
+                            setErrors={this.setErrors}
+                            dateValidation={this.dateValidation}
+                            handleReturnToSettings={this.handleReturnToSettings} 
+                            editDisabled={false} 
+                            userHasAccess={!isTrainee}
+                            isLoggedIn={loggedIn}
+                        />
+                        <AccessRoute exact path="/addUser" 
+                            userHasAccess={!isTrainee} 
+                            component={AddUser}
+                            dateValidation={this.dateValidation}
+                            isLoggedIn={loggedIn} 
+                            handleReturnToSettings={this.handleReturnToSettings} 
+                            setErrors={this.setErrors}
+                        />
+                        <AccessRoute exact path="/linking" 
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToSettings} 
+                            component={LinkUsers} 
+                        />
+                        <PrivateRoute exact path="/linking/:userId" 
+                            isLoggedIn={loggedIn} 
+                            handleReturnToSettings={this.handleReturnToSettings} 
+                            component={LinkUsers} 
+                        />
+                        <AccessRoute exact path="/search" 
+                            userHasAccess={!isTrainee} 
+                            component={Search} 
+                            isLoggedIn={loggedIn} 
+                            handleDossierRequest={this.handleDossierRequest} 
+                            handleReturnToSettings={this.handleReturnToSettings} 
+                            setErrors={this.setErrors}
+                        />
+                    </Switch>
+                </div>
                 <Footer/>
             </div >
 
