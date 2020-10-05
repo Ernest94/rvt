@@ -15,7 +15,10 @@ class Search extends React.Component {
             role: "",
             criteria: "",
             users: [],
-            buttonDisabled: false
+            loading: false,
+            roleDisplayName: "",
+            locationDisplayName: "",
+            buttonDisabled: false,
         };
     }
 
@@ -34,27 +37,23 @@ class Search extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
-        var errors = null
-        if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
+        axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
-                .then(response => {
-                    this.setState({buttonDisabled: false, errors: null});
-                    
-                    this.handleSearchReponse(response.data);
-                    this.render();
-                })
-                .catch((error) => {
-                    console.log("an error occorured " + error);
-                    this.fakeHandleSearchReponse();
-                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
-                    this.setState({buttonDisabled: false});
-                });
-        }
-        else {
-            this.setErrors(errors);
-            this.setState({buttonDisabled: false});
-        }
+            .then(response => {
+                this.setState({buttonDisabled: false, errors: null});
+                
+                this.handleSearchReponse(response.data);
+                this.render();
+            })
+            .catch((error) => {
+                console.log("an error occorured " + error);
+                this.fakeHandleSearchReponse();
+                const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
+                this.setState({
+                    buttonDisabled: false,
+                    errors: this.props.setErrors(custErr)
+                    });
+            });
     }
 
     handleSearchReponse(data)
@@ -66,7 +65,7 @@ class Search extends React.Component {
 
     fakeHandleSearchReponse() {
         this.setState({
-            users: [{ id: 1, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }, { id: 2, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
+            users: [{ id: 7, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -95,22 +94,12 @@ class Search extends React.Component {
             Criteria: this.state.criteria
         }
     }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
 
     onChangeRole = (e) => {
+        console.log("check");
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-        var isTrainee = selectedRole.name === "Trainee";
-
+        
         this.setState({
-            isTrainee: isTrainee,
             role: selectedRole,
             roleDisplayName: e.target.value
         });
@@ -170,8 +159,8 @@ class Search extends React.Component {
                         <div className="w-100 mx-auto align-middle text-center"> 
                             <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
                             <select className="mr-5 p-2 align-middle" name="role" id="role"
-                                value={this.props.roleDisplayName}
-                                onChange={this.props.onChangeRole}
+                                value={this.state.roleDisplayName}
+                                onChange={this.onChangeRole}
                                 required>
 
                                 <option hidden value=''>Rol</option>
@@ -179,8 +168,8 @@ class Search extends React.Component {
                             </select>
                             <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
                             <select className="mr-5 p-2 align-middle" name="location" id="location"
-                                value={this.props.locationDisplayName}
-                                onChange={this.props.onChangeLocation}
+                                value={this.state.locationDisplayName}
+                                onChange={this.onChangeLocation}
                                 required>
 
                                 <option hidden value=''>Locatie</option>

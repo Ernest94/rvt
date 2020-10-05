@@ -37,14 +37,19 @@ class Password extends React.Component {
                     this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);  
-                    this.setErrors({password: ["Mislukt om het wachtwoord te veranderen."]}); 
-                    this.setState({buttonDisabled: false});
+                    console.log("an error occorured " + error);
+                    const custErr = {password: ["Mislukt om het wachtwoord te veranderen."]}
+                    this.setState({
+                        buttonDisabled: false,
+                        errors: this.props.setErrors(custErr)
+                    });
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({buttonDisabled: false});
+            this.setState({
+                buttonDisabled: false,
+                errors: this.props.setErrors(errors)
+            });
         }
     }
     
@@ -54,15 +59,6 @@ class Password extends React.Component {
             newPassword: this.state.newPassword,
             userId: sessionStorage.getItem("userId")
         }
-    }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
     }
     
     render() {

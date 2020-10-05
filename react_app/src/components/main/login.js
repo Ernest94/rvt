@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 
-import constraints from '../../constraints/constraints';
+import constraints from '../../constraints/loginConstraints';
 
 import {config} from '../constants';
 
@@ -37,14 +37,19 @@ class Login extends React.Component {
                 })
                 .catch((error) => {
                     // this.props.handleSuccessfulAuth({id: 1, name: "Admin", role: {name: "Admin"}, location: {id: 1, name: "Utrecht"}}); // use this line to log in without use of database
-                    console.log("an error occorured " + error);  
-                    this.setErrors({login: ["Mislukt om in te loggen."]}); 
-                    this.setState({buttonDisabled: false});
+                    console.log("an error occorured " + error); 
+                    const custErr = {login: ["Mislukt om in te loggen."]};
+                    this.setState({
+                        buttonDisabled: false,
+                        errors: this.props.setErrors(custErr)
+                    });
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({buttonDisabled: false});
+            this.setState({
+                buttonDisabled: false,
+                errors: this.props.setErrors(errors)
+            });
         }
     }
     
@@ -53,15 +58,6 @@ class Login extends React.Component {
             email: this.state.email,
             password: this.state.password
         }
-    }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
     }
     
     render() {

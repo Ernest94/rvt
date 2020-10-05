@@ -41,8 +41,6 @@ class AddUser extends React.Component {
         this._prev = this._prev.bind(this);
     }
     
-    
-    
     componentDidMount() {
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
@@ -75,17 +73,6 @@ class AddUser extends React.Component {
                 });
             }
         })
-        
-        
-    }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
     }
     
     handleFormChange = (e) => {
@@ -182,7 +169,6 @@ class AddUser extends React.Component {
         return null;
     }
     
-    
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({submitButtonDisabled: true});
@@ -196,13 +182,18 @@ class AddUser extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
-                    this.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen."]}); 
-                    this.setState({submitButtonDisabled: false});
+                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]}; 
+                    this.setState({
+                        submitButtonDisabled: false,
+                        errors: this.props.setErrors(custErr)
+                    });
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({submitButtonDisabled: false});
+            this.setState({
+                submitButtonDisabled: false,
+                errors: this.props.setErrors(errors)
+            });
         }
     }
     
@@ -251,6 +242,7 @@ class AddUser extends React.Component {
                         role={this.state.role}
                         location={this.state.location}
                         password={this.state.password}
+                        dateValidation={this.props.dateValidation}
                         handleFormChange={this.handleFormChange}
                     />
                     

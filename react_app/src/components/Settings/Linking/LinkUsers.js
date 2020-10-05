@@ -22,17 +22,17 @@ class LinkUsers extends React.Component {
         };
     }
     
-    componentDidMount() {
+    async componentDidMount() {
        this.setState({
            pageLoading: true,
        });
        const { computedMatch: { params } } = this.props;
        if (params.userId !== undefined ) {
            console.log(params.userId);
-           this.setState({userId: params.userId});
+           await this.setState({userId: params.userId});
        }
        else {
-           this.setState({userId: sessionStorage.getItem("userId")});
+           await this.setState({userId: sessionStorage.getItem("userId")});
        }
        
        this.getUsers();
@@ -40,7 +40,7 @@ class LinkUsers extends React.Component {
     
     getUsers(){
         let userId = this.state.userId;
-        axios.get(config.url.API_URL + '/webapi/user/' + userId + "/UserRelations")
+        axios.get(config.url.API_URL + '/webapi/user/linking', {headers: {"userId": userId}})
             .then( response => {
                     this.setState({
                         user: response.data.user,
