@@ -10,7 +10,7 @@
 }
 
 .App-header {
-  background-color: #aeab9e;
+  background-color: #CC2C3E;
   color: white;
 }
 
@@ -45,4 +45,26 @@ h2 {
     transform: translate(-50%, -50%);
 }
 
+.link {
+    color: black;
+}
+.link:hover {
+    color: black;
+    text-decoration: none;
+    border-bottom: 4px solid #CC2C3E;
+}
+
+.rvtbutton {
+    background-color: #605c49;	
+	color: white;
+	border-radius: 6px;
+	padding: 6px 15px;
+    width: 200px;
+}
+
+.rvtbutton:hover {
+    background-color: #837f6b;
+	border: 2px solid #605c49;
+    color: white;
+}
 

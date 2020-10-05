@@ -1,0 +1,4 @@
+.searchResult:hover {
+    border-bottom: 4px solid #CC2C3E;
+    cursor: pointer;
+}

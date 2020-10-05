@@ -28,9 +28,9 @@ class AddUser extends React.Component {
             locations: [],
             teachers: [{id:1 , name: "Pieter"}],
             errors: null,
-            loading: false,
             pageLoading: false,
-            isDocent: sessionStorage.getItem("userRole") === "Docent"
+            submitButtonDisabled: false,
+            isDocent: sessionStorage.getItem("userRole") === "Docent",
         };
         
         this.handleFormChange = this.handleFormChange.bind(this);
@@ -40,8 +40,6 @@ class AddUser extends React.Component {
         this._next = this._next.bind(this);
         this._prev = this._prev.bind(this);
     }
-    
-    
     
     componentDidMount() {
         this.setState({pageLoading: true});
@@ -75,17 +73,6 @@ class AddUser extends React.Component {
                 });
             }
         })
-        
-        
-    }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
     }
     
     handleFormChange = (e) => {
@@ -168,39 +155,45 @@ class AddUser extends React.Component {
     }
     
     get submitButton() {
-        let currentStep = this.state.currentStep;
+        const {currentStep, submitButtonDisabled} = this.state;
         
         if (currentStep === 2) {
             return (
-                (this.state.loading) ? 
-                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button> : 
-                <button className="btn btn-primary float-right" type="submit">Opslaan </button>
+                    <button className="btn rvtbutton float-right" 
+                        disabled={submitButtonDisabled} 
+                        type="submit">
+                        {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
+                    </button>
             )
         }
         return null;
     }
     
-    
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
+        this.setState({submitButtonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
-                    this.setState({loading: false, errors: null});
+                    this.setState({submitButtonDisabled: false, errors: null});
                     
                     this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
-                    this.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen."]}); 
-                    this.setState({loading: false});
+                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]}; 
+                    this.setState({
+                        submitButtonDisabled: false,
+                        errors: this.props.setErrors(custErr)
+                    });
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({
+                submitButtonDisabled: false,
+                errors: this.props.setErrors(errors)
+            });
         }
     }
     
@@ -221,8 +214,7 @@ class AddUser extends React.Component {
         if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
         
         return (
-            <div className="container main-container">
-
+            <div>
                 <h2>Voeg een gebruiker toe</h2>
                 
                 {errorsList}
@@ -250,6 +242,7 @@ class AddUser extends React.Component {
                         role={this.state.role}
                         location={this.state.location}
                         password={this.state.password}
+                        dateValidation={this.props.dateValidation}
                         handleFormChange={this.handleFormChange}
                     />
                     

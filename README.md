@@ -22,7 +22,7 @@ De backend bevat code die de database aanmaakt als deze niet bestaat.
 In deze sectie staat beschreven hoe een ontwikkelaar het project werkend krijgt. 
 
 #### Verkrijgen van de repository
-Kloon deze repository met deze line in opdrachtprompt in een folder waar je de bestanden wil hebben staan:
+Kloon deze repository met deze line met behulp van git in een folder waar je de bestanden wil hebben staan:
 
 `git clone https://educomq@bitbucket.org/educom_utrecht/rvt.git`
 
@@ -34,11 +34,11 @@ Start na het downloaden Eclipse op en import de project folder via `file/open pr
 Alle bestanden zullen nu worden ingeladen en kunnen worden geopend in de editor
 
 Om de code te runnen wordt een Grizzly Http server gebruikt die zichzelf opstart als de applicatie gedraaid wordt. 
-Om te starten klik met de rechtermuisknop op de `Main.java` en `run as -> java application`.
+Om te starten klik met de rechtermuisknop op de `Main.java` (te vinden in src/main/java/nu/educom/rvt/rest) en `run as -> java application`.
 De grizzly server wordt gestart en de backend is beschikbaar op `localhost:8081`.
 De api kan aangeroepen worden door een request te doen naar `localhost:8081/webapi/{source path}`.
 
-Een request kan vervolgens gedaan worden door in Postman/browser een request te doen naar `localhost:[tomcat port]/J2EE/webapi/{path}`
+Een request kan vervolgens gedaan worden door in Postman (download [hier](https://www.postman.com/downloads/) )/browser een request te doen naar `localhost:8081/webapi/{path}`
 
 #### Database
 De java code bevat files die de database aanmaken met behulp van hibernate. Om de database inderdaad correct te laten aanmaken wordt er gebruik gemaakt van de xampp sql server (phpmyadmin).
@@ -46,7 +46,7 @@ Zorg ervoor dat de mysql en apache is gestart in Xampp. Als ook de backend serve
 
 #### Frontend React
 Voor de frontend is Nodejs nodig. Dit kan [hier](https://nodejs.org/en/download/) gedownload worden.
-Met node js kan frontend gedraait worden door met opdrachtpromp naar de react_app folder en `npm start` te runnen.
+Met node js kan de frontend gedraait worden door met opdrachtprompt naar de react_app folder en `npm install` en vervolgens`npm start` te runnen.
 Vervolgens wordt de development server gestart en zal na enkele minuten de standaard browser de start pagina openen (`localhost:3000/login`).
 
 ### Hoe zit de repository in elkaar? 
@@ -62,7 +62,7 @@ Bij vragen zie [deze sectie](#markdown-header-Help! Wie moet ik contacten?).
 
 #### Documents
 
-Deze folder bevat alle belangrijke documenten over het project. Ook de ERD die de database structuur aangeven staan hier opgeslagen.
+Deze folder bevat alle belangrijke documenten over het project. Hier valt onder andere de ERD en de wireframes. De ERD is een weergave van de database structuur zoals van te voren besproken. Deze ERD moet aangepast worden als de database structuur afwijkt van de huidige versie. De wireframes zijn voorbeeld pagina's zoals die geïmplementeerd gaan worden in de appicatie.
 
 
 #### J2EE
@@ -73,9 +73,9 @@ Naast dit bestand is er de `pom.xml`. Dit bestand bevat alle dependencies die no
 De rest van de files staan in de `src/main/java/nu/educom/rvt` folder. In deze folder zijn de bestanden in 4 folders opgedeeld:
 
 1. [models](#markdown-header-models)
-2. [repositories] (#markdown-header-repositories)
-3. [rest] (#markdown-header-rest)
-4. [services] (#markdown-header-services)
+2. [repositories](#markdown-header-repositories)
+3. [rest](#markdown-header-rest)
+4. [services](#markdown-header-services)
 
 Deze folders zijn zo opgesteld dat er een MVC structuur is in de backed. Hieronder is uitgelegd wat voor bestanden er in elke folder zit.
 
@@ -86,19 +86,20 @@ Ook staan hier classes die een object structuur hebben die handig is voor commun
 
 ###### repositories
 
-Deze folder bevat classes die met behulp van de models het mogelijk maken om de nodige informatie van de database kan aanvullen, veranderen of ophalen. 
-Voor elk model in de models folder die een tabel voorstelt in de database heeft zijn eigen repository.
+Deze folder bevat classes die met behulp van de models het mogelijk maken om de nodige informatie van de database aan te vullen, veranderen of op te halen. 
+Voor elk model in de models folder die een tabel voorstelt in de database is er een repository aangemaakt.
 
 Ook bevat deze folder een bestand dat heet `HibernateSession.java`. Dit bestand bevat de details voor het connecten met de database. Hier moet ook gedefineerd worden van welke models een tabel moet komen in de database.
 
 ###### rest
 
+Het bestand `Main.java` bevat de code om de HTTP server waarop de api gaat draaien te starten.
 Het bestand `MyApp.java` is het startpunt van de api applicatie. Hier staat ook de api path gedefineerd.
 Vervolgens kijkt de applicatie naar de resources die in deze folder staan. De resources bevatten de specifieke paden waarop een request gedaan kan worden. Dit zijn in termen van MVC de controllers.
 
 Ook is er een `Filler.java` bestand. Dit bestand checkt of de database leeg is, en als dat zo is dat de database gevuld wordt met data.
 
-Als laatste is er het `CORSFilter.java` bestand. Dit bestand zorgt ervoor dat de communicatie tussen back en frontend goed verloopt. Zonder bestand worden de requests vanuit de frontend niet correct beantwoord, omdat beide servers op dezelfde host draaien (in development localhost)
+Als laatste is er het `CORSFilter.java` bestand. Dit bestand zorgt ervoor dat de communicatie tussen back en frontend goed verloopt. Zonder dit bestand worden de requests vanuit de frontend niet correct beantwoord, omdat beide servers op dezelfde host draaien (in development localhost)
 
 ###### services
 
@@ -107,7 +108,7 @@ In deze folder zijn de services die de business logica bevatten van de backend. 
 #### react_app
 
 Ook deze folder heeft een eigen `.gitignore` bestand. De andere losse bestande zijn `package.json` en `package-lock.json`.
-`package.json` bevat de depencies en andere React applicatie specificaties. In `package-lock.json` bevat details over elke dependencie van de applicatie.
+`package.json` bevat de depencies en andere React applicatie specificaties. In `package-lock.json` bevat details over elke dependency van de applicatie.
 
 Naast de losse bestanden zijn er twee folder: 
 
@@ -115,12 +116,13 @@ Naast de losse bestanden zijn er twee folder:
 2. src
 
 In de `public ` folder staat de `index.html` die de standaard structuur van de html pagina bevat. Alle specifieke elementen gemaakt met react worden hieraan toegevoegd.
+Ook ataan hier de afbeeldingen die worden toegevoegd
 
 ##### src folder
-De src folder bevat de componenten waaruit een pagina is opgebouwd. De applicatie begint bij het bestand `index.js`. Dit bestand start met het renderen van de App component. Dit component staat in `App.js`. Dit bestand bevat een function die html code return met die andere componeten opvraagt.
+De src folder bevat de componenten waaruit een pagina is opgebouwd. De applicatie begint bij het bestand `index.js`. Dit bestand start met het renderen van de App component. Dit component staat in `App.js`. Dit bestand bevat een function die html code returned die andere componeten opvraagt.
 Ook bevat de folder styling bestanden voor index en app (`index.css, app.css`). Naast deze losse bestanden zijn er twee folders: 
 
-1. [components] (#markdown-header-components)
+1. [components](#markdown-header-components)
 2. [constraints](#markdown-header-constraints)
 
 ###### components
@@ -147,7 +149,10 @@ Deze folder bevatten de validaties op de verschillende formulieren in de applica
 
 Als je code hebt geschreven kan dit gepusht worden naar deze repository (`git push`). 
 Om de code quality hoog te houden is het handig om commits te laten controleren door mede ontwikkelaars. 
-Nog beter is om te werken in branches en zodra een ontwikkelaar denkt klaar te zijn en de branch wil merchen met de master branch (de branch die uiteindelijk in ontwikkeling gaat) om een pull request aan te maken en anderen ontwikkelaars te vragen om deze pull request te bevesetigen. Op deze manier is iedereen op de hoogte van de veranderingen in de code.
+De repository heeft twee main branches : master en development.
+`master` bevat de laatste versie van de afgelopen sprint. Deze versie wordt dan ook in productie gebracht door deze op de host te zetten.
+De `development` branch bevat gaat verder op de versie van de master branch. Hier worden alle aanpassingen naar toe gepusht. Om ook deze branch netjes te houden is het verstandig om op deze branches nieuwe branches aan te maken als er wordt gewerkt aan een bepaalde opdracht. Zodra de opdracht af is en de code is gecontroleerd kan de branch gemerged worden met development.
+Voordat er gemerged wordt is het wellicht verstandig op te kijken of jouw veranderingen ook blijven werken met de laatste versie van de development branch. Dit kan gedaan worden door de development branch te merge in je eigen branch (`git merge`)
 
 
 ### Producition build ###

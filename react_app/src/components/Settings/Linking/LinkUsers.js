@@ -22,17 +22,17 @@ class LinkUsers extends React.Component {
         };
     }
     
-    componentDidMount() {
+    async componentDidMount() {
        this.setState({
            pageLoading: true,
        });
        const { computedMatch: { params } } = this.props;
        if (params.userId !== undefined ) {
            console.log(params.userId);
-           this.setState({userId: params.userId});
+           await this.setState({userId: params.userId});
        }
        else {
-           this.setState({userId: sessionStorage.getItem("userId")});
+           await this.setState({userId: sessionStorage.getItem("userId")});
        }
        
        this.getUsers();
@@ -40,7 +40,7 @@ class LinkUsers extends React.Component {
     
     getUsers(){
         let userId = this.state.userId;
-        axios.get(config.url.API_URL + '/webapi/user/' + userId + "/UserRelations")
+        axios.get(config.url.API_URL + '/webapi/user/linking', {headers: {"userId": userId}})
             .then( response => {
                     this.setState({
                         user: response.data.user,
@@ -50,8 +50,8 @@ class LinkUsers extends React.Component {
                 })
         .catch(() => {
             this.setState({
-                user: {id: 1, name:"Jeroen", role: {name: "Docent"}, location: {name: "Utrecht"}},
-                users: [{id:2, name: "Pieter", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}, {id:3, name: "Klaas", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}],
+                user: null, //{id: 1, name:"Jeroen", role: {name: "Docent"}, location: {name: "Utrecht"}},
+                users: null, //[{id:2, name: "Pieter", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}, {id:3, name: "Klaas", role: {name: "Trainee"}, location: {name: "Utrecht"}, hasRelation: true}],
                 pageLoading: false,
                 notFound: false
             });
@@ -127,7 +127,7 @@ class LinkUsers extends React.Component {
                    ) 
         });
         return (
-            <div className="container main-container">
+            <div>
                 <h2>Gelinkte gebruikers</h2>
                 <p>{user.role.name} : {user.name}</p>
                 <br/>
@@ -147,7 +147,11 @@ class LinkUsers extends React.Component {
                     </tbody>
                 </table>
                 
-                <button className="btn btn-primary float-right" disabled={buttonDisabled} onClick={this.handleSaveClick}>{buttonText}</button>
+                <button className="btn rvtbutton float-right" 
+                        disabled={buttonDisabled} 
+                        onClick={this.handleSaveClick}>
+                        {buttonText}
+                </button>
             </div >
         )
     }

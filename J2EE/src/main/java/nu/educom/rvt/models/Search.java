@@ -18,7 +18,6 @@ public class Search {
 	}
 	public void setRole(Role role) {
 		this.role = role;
-		System.out.println(role);
 	}
 	
 	public Location getLocation() {
@@ -26,6 +25,5 @@ public class Search {
 	}
 	public void setLocation(Location location) {
 		this.location = location;
-		System.out.println(location);
 	}
 }
