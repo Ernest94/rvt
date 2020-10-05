@@ -47,7 +47,7 @@ class Search extends React.Component {
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                this.fakeHandleSearchReponse();
+                // this.fakeHandleSearchReponse();
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
@@ -59,7 +59,8 @@ class Search extends React.Component {
     handleSearchReponse(data)
     {
         this.setState({
-            users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+            users: data.userSearch
+            //users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -89,14 +90,13 @@ class Search extends React.Component {
     
     createSearchJson() {
         return {
-            Location: this.state.role,
-            Role: this.state.location,
-            Criteria: this.state.criteria
+            location: this.state.location,
+            role: this.state.role,
+            criteria: this.state.criteria
         }
     }
 
     onChangeRole = (e) => {
-        console.log("check");
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
         
         this.setState({
@@ -108,7 +108,7 @@ class Search extends React.Component {
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value
+            locationDisplayName: e.target.value,
         });
     }
 
@@ -139,10 +139,10 @@ class Search extends React.Component {
                         {user.email}
                     </td>
                     <td className="p-2 text-nowrap align-middle">
-                        {user.role}
+                        {user.role.name}
                     </td>
                     <td className="p-2 text-nowrap align-middle">
-                        {user.location}
+                        {user.location.name}
                     </td>
                 </tr >
             )

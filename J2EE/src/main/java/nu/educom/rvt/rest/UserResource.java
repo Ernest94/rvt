@@ -1,9 +1,11 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
+import java.util.logging.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -21,13 +23,14 @@ import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Search;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.services.UserService;
 
 @Path("webapi/user")
 public class UserResource {
 
-  //Logger log = LoggerFactory.getLogger(UserResource.class);
+//  Logger log = LoggerFactory.getLogger(UserResource.class);
   
 
 	@POST
@@ -103,9 +106,9 @@ public class UserResource {
 	}
 
 	@GET
-	@Path("/{userId}/UserRelations")
+	@Path("/linking")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRelations(@PathParam("userId") int userId){
+	public Response getAllRelations(@HeaderParam("userId") int userId){
 	  UserService userServ = new UserService();//load injectables
 	  User user = userServ.getUserById(userId);
 	  
@@ -113,29 +116,24 @@ public class UserResource {
 	  
 	  if(valid) {
         List<User> connectedUsers = userServ.getConnectedUsers(user);
-        return Response.status(200).entity(user).build();
+        return Response.status(200).entity(connectedUsers).build();
 	  } else {
         return Response.status(404).build();	    
 	  }
 	}
-//	@POST
-//	@Path("/search")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response getUsers(String criteria, Role role, Location location) {
-//		if (Filler.isDatabaseEmpty()) {
-//			Filler.fillDatabase();
-//		}
-//		
-//		UserService userServ = new UserService();
-//		List<User> searchResult = userServ.getFilteredUsers(criteria, role, location);
-//		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
-//		
-//		return Response.status(200)
-//					   .entity(USJ).build();
-//	}
 	
-
+	@POST
+	@Path("/search")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsers(Search search ) {
+		UserService userServ = new UserService();
+		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocation());
+		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
+		
+		return Response.status(200).entity(USJ).build();
+	}
+	
 	@GET
     @Path("/UserRelations")
     @Produces(MediaType.APPLICATION_JSON)
@@ -151,4 +149,22 @@ public class UserResource {
         return Response.status(400).build();        
       }
     }
+		
+	@GET
+    @Path("/dossier")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserDossier(@HeaderParam("UserId") int userId ){
+      UserService userServ = new UserService();//load injectables
+      User user = userServ.getUserById(userId);
+      
+      boolean valid = true;
+      
+      if(valid) {
+        return Response.status(200).entity(user).build();
+      } else {
+        return Response.status(400).build();        
+      }
+    }	
+	
 }
+
