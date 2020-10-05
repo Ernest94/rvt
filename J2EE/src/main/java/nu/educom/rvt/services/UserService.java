@@ -121,7 +121,7 @@ public class UserService {
 		List<UserSearch> userSearch = new ArrayList<>();	
 		for(User user : users)
 		{
-			userSearch.add(new UserSearch(user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDatumActive()));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDatumActive()));
 		}		
 		return new UserSearchJson(userSearch);
 	}

@@ -7,21 +7,29 @@ import nu.educom.rvt.models.Role;
 
 public class UserSearch {
 
+    private int id;
 	private String name;
 	private String email;
 	private Role role;
 	private Location location;
 	private LocalDateTime dateActive;
 	
-	public UserSearch(String name, String email, Role role, Location location, LocalDateTime dateActive)
+	public UserSearch(int id, String name, String email, Role role, Location location, LocalDateTime dateActive)
 	{
+        this.id = id;
 		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.location = location;
 		this.dateActive = dateActive;
 	}
-	
+    
+    public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}

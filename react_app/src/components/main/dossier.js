@@ -12,19 +12,20 @@ class Dossier extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: "Jeroen Heemskerk",
-			email: "jeroen@educom.nu",
-			role: {id: 1, name: "Admin"},
-			location:  "Utrecht",
-			startDate: "2020-07-09",
+            name: "",
+			email: "",
+			role: null,
+			location: null,
+			startDate: "",
 			pageLoading: false,
-            userId: 1,
+            userId: null,
             buttonDisabled: false,
-            roles: [{id: 1, name:"test"}],
+            roles: [],
             locations: [],
             roleDisplayName: "",
             locationDisplayName: "",
             blocked: false,
+            serverFail: false,
         };
     }
 
@@ -33,11 +34,12 @@ class Dossier extends React.Component {
         this.props.dateValidation();
         await this.setState({pageLoading: true, userId: params.userId});
         this.getAllInfo();
-        this.canViewUserDossier();
+        
     }
     
     canViewUserDossier() {
         const userRole = sessionStorage.getItem("userRole");
+        console.log(this.state.role);
         const roleDossierUser = this.state.role.name;
         const ownUserId = sessionStorage.getItem("userId");
         var isBlocked;
@@ -81,10 +83,11 @@ class Dossier extends React.Component {
                 locations: roleLocResponse.data.locations,
                 pageLoading: false,
             });
+            this.canViewUserDossier();
            
         })).catch(errors => {
             console.log("errors occured " + errors); 
-            this.setState({pageLoading:false});
+            this.setState({pageLoading:false, error: true});
         });
     }
     
@@ -154,9 +157,10 @@ class Dossier extends React.Component {
   
     render() {
         const {name, email, startDate, userId, pageLoading, errors, blocked,
-            locations, roles, roleDisplayName, locationDisplayName} = this.state;
+            serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
         const {editDisabled, isTrainee} = this.props;
-        if (pageLoading) return <span className="center"> Laden... </span> 
+        if (pageLoading) return <span className="center"> Laden... </span>
+        if (serverFail) return <span className="center"> Mislukt om de gegevens op te halen. </span> 
         if (blocked) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
         
         const rolesOptions = roles.map((role) => {

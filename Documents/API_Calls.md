@@ -52,7 +52,7 @@ POST| `user/password`| Json -> { |-
 ### Dossier
 Type | URI | Geeft | Ontvangt
 -----|-----|-------|---------
-GET| `user/dossier/:userId`| Pathvariable -> userId | Json -> {
+GET| `user/dossier/` (header userId)| Pathvariable -> userId | Json -> {
 ||| _name_ : string,
 ||| _email_ : string,
 ||| _role_: {id : int, name : string},
@@ -69,7 +69,7 @@ POST| `user/change`| Json -> { | -
 ### LinkedUsers
 Type | URI | Geeft | Ontvangt
 -----|-----|-------|---------
-GET| `user/:userId/UserRelations`| PathVariable -> userId | Json ->{
+GET| `user/linking`(header userId)| PathVariable -> userId | Json ->{
 ||| _user_ : {_id_: int, _name_: string, _role_ : {id: int, name: string}, _location_: {id: int, name: string}},
 ||| _users_: [ {_id_: int, _name_:string, role_ : {id: int, name: string}, _location_: {id: int, name: string}, _hasRelation_: boolean} ] }
 POST| `user/changeRelation`| Json -> {|-
