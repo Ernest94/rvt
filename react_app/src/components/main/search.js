@@ -35,6 +35,7 @@ class Search extends React.Component {
         this.setState({loading: true});
         var errors = null
         if (!errors) {
+	console.log(this.createSearchJson());
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
                 .then(response => {
@@ -45,7 +46,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    this.fakeHandleSearchReponse();
+     //               this.fakeHandleSearchReponse();
                     this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
                     this.setState({loading: false});
                 });
@@ -59,7 +60,8 @@ class Search extends React.Component {
     handleSearchReponse(data)
     {
         this.setState({
-            users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+            users: data.userSearch
+//users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -88,12 +90,12 @@ class Search extends React.Component {
     }
     
     createSearchJson() {
-        return {
-            Location: this.state.role,
-            Role: this.state.location,
-            Criteria: this.state.criteria
+return {
+            location: this.state.location,
+            role: this.state.role,
+            criteria: this.state.criteria
         }
-    }
+}
     
     setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
@@ -104,23 +106,23 @@ class Search extends React.Component {
         });
     }
 
-    onChangeRole = (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-        var isTrainee = selectedRole.name === "Trainee";
 
+onChangeRole = (e) => {
         this.setState({
-            isTrainee: isTrainee,
-            role: selectedRole,
-            roleDisplayName: e.target.value
-        });
+            role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
+        });    
     }
+
+ 
 
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value
         });
     }
+
+
+
 
     render() {
 
@@ -144,10 +146,10 @@ class Search extends React.Component {
                         {user.email}
                     </td>
                     <td className="p-2 text-nowrap align-middle">
-                        {user.role}
+                        {user.role.name}
                     </td>
                     <td className="p-2 text-nowrap align-middle">
-                        {user.location}
+                        {user.location.name}
                     </td>
                 </tr >
             )
@@ -164,7 +166,7 @@ class Search extends React.Component {
                             <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
                             <select className="mr-5 p-2 align-middle" name="role" id="role"
                                 value={this.props.roleDisplayName}
-                                onChange={this.props.onChangeRole}
+                                onChange={this.onChangeRole}
                                 required>
 
                                 <option hidden value=''>Rol</option>
@@ -173,7 +175,7 @@ class Search extends React.Component {
                             <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
                             <select className="mr-5 p-2 align-middle" name="location" id="location"
                                 value={this.props.locationDisplayName}
-                                onChange={this.props.onChangeLocation}
+                                onChange={this.onChangeLocation}
                                 required>
 
                                 <option hidden value=''>Locatie</option>

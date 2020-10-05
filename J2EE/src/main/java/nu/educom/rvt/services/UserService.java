@@ -107,10 +107,12 @@ public class UserService {
 	{
 		UserRepository userRepo = new UserRepository();
 		List<User> filterdUsers = userRepo.readAll();
-		return filterdUsers.stream().filter(u -> u.getRole() == role || role == null)
-									.filter(u -> u.getLocation() == location || location == null)
-									.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-									.collect(Collectors.toList());
+		filterdUsers.stream().filter(u -> u.getRole().equals(role) || role == null)
+							 .filter(u -> u.getLocation().equals(location) || location == null)
+							 .filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
+							 .collect(Collectors.toList());
+		
+		return filterdUsers;
 	}
 	
 
