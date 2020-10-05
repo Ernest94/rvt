@@ -73,13 +73,6 @@ public class UserResource {
 	}
 	
 	@GET
-	@Path("/test")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response test() {
-		return Response.status(200).entity(new Role("test")).build();
-	}
-	
-	@GET
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
