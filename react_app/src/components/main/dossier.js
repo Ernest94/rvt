@@ -59,7 +59,7 @@ getUserInfo() {
     render() {
         const {name, email, role, location, startDate} = this.state;
         return (
-            <div className="container main-container">
+            <div>
                 <h2 className="text-center">Dossier</h2>
                 <ul className="errors">{this.state.errors}</ul>
                 <form onSubmit={this.props.handleSubmit}>
@@ -92,15 +92,10 @@ getUserInfo() {
                 </form>
                 {(this.props.editDisabled) ?
                 <div>
-                    <Link className="buttonLink" to="/dossier/1/edit"><button className="button">Pas gebruiker aan</button></Link>
-                    <Link className="buttonLink" to="/linking/1"><button className="button">Gelinkte gebruikers</button></Link>
-                    
-                    <button hidden={true} className="button" type="submit">Voortgang</button> </div>: <span></span>
+                    <div className="text-center"><Link className="buttonLink" to="/dossier/1/edit"><button className="rvtbutton">Pas gebruiker aan</button></Link></div>
+                    <div className="text-center"><Link className="buttonLink" to="/linking/1"><button className="rvtbutton">Gelinkte gebruikers</button></Link></div>
+                    <div className="text-center"><button hidden={false} className="rvtbutton" type="submit">Voortgang</button> </div></div>: <span></span>
                 }
-                
-                
-
-                
             </div >
         )
     }

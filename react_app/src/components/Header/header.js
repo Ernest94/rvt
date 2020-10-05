@@ -11,7 +11,7 @@ class Header extends React.Component {
         if (this.props.data.loggedIn) {
                button = <div>
                             <span className="userName">Welkom "{this.props.data.userName}"</span>
-                            <button className="logOut" onClick={() => this.props.handleLogOut()}> Log uit </button>
+                            <button className="btn rvtbutton logoutbutton" onClick={() => this.props.handleLogOut()}> Log uit </button>
                         </div>;
                accountSettings = <Link to="/settings" className="header-link">Instellingen</Link>;
         }
@@ -19,11 +19,12 @@ class Header extends React.Component {
             <header className="App-header">
                 <nav className="navigation navbar mr-auto">
                     <Link className="navbar-brand header-link" to="/">
-                        RVT
+                        <img className="logo" alt="educom logo" src={process.env.PUBLIC_URL + "/pictures/educom.jpg"} /> RVT
                     </Link>
                     {accountSettings}
                     {button}
                 </nav>
+                <div className="align-bottom1Content"></div>
             </header>
             )
     }

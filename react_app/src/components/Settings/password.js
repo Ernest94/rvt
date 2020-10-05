@@ -3,6 +3,7 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 
 import constraints from '../../constraints/passwordChangeConstraints';
+import {config} from '../constants';
 
 class Password extends React.Component {
     
@@ -13,7 +14,7 @@ class Password extends React.Component {
             newPassword: "",
             repeatPassword: "",
             errors: null,
-            loading: false
+            buttonDisabled: false,
         };
     }
     
@@ -26,24 +27,24 @@ class Password extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
+        this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post("http://localhost:8080/J2EE/webapi/user/password", this.createPasswordJson())
+            axios.post(config.url.API_URL + "/webapi/user/password", this.createPasswordJson())
                 .then(response => {
-                    this.setState({loading: false, errors: null});
+                    this.setState({buttonDisabled: false, errors: null});
                     
                     this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
                     this.setErrors({password: ["Mislukt om het wachtwoord te veranderen."]}); 
-                    this.setState({loading: false});
+                    this.setState({buttonDisabled: false});
                 });
         }
         else {
             this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({buttonDisabled: false});
         }
     }
     
@@ -65,10 +66,10 @@ class Password extends React.Component {
     }
     
     render() {
+        const {buttonDisabled} = this.state;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         return (
-            <div className="container main-container">
-
+            <div>
                 <h2>Verander uw wachtwoord</h2>
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>
@@ -87,8 +88,12 @@ class Password extends React.Component {
                         <input className="form-control " id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
                     </div>
                     
-                    {(this.state.loading) ? <button type="submit" disabled> Laden...</button>: 
-                    <button type="submit">Verander wachtwoord</button>}
+                    <button className="btn rvtbutton float-right" 
+                        disabled={buttonDisabled} 
+                        type="submit">
+                        {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
+                    </button>
+                    
                 </form> 
             </div>
         )

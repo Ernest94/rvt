@@ -4,7 +4,7 @@ class Home extends React.Component {
     
     render() {
         return (
-            <div className="container center">
+            <div className="center">
                 <p>Welkom op de home pagina!</p>
             </div >
 
