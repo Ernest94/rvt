@@ -36,6 +36,30 @@ class Search extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({loading: true});
+        var errors = null
+        if (!errors) {
+	console.log(this.createSearchJson());
+            axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
+
+                .then(response => {
+                    this.setState({loading: false, errors: null});
+                    
+                    this.handleSearchReponse(response.data);
+                    this.render();
+                })
+                .catch((error) => {
+                    console.log("an error occorured " + error);
+     //               this.fakeHandleSearchReponse();
+                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
+                    this.setState({loading: false});
+                });
+        }
+        else {
+            this.setErrors(errors);
+            this.setState({loading: false});
+        }
+
         this.setState({buttonDisabled: true});
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
@@ -94,6 +118,22 @@ class Search extends React.Component {
             role: this.state.role,
             criteria: this.state.criteria
         }
+}
+    
+    setErrors = (errors) => {
+        const foundErrors = Object.keys(errors).map((key) =>
+            <li key={key}>{errors[key][0]}</li>
+        );
+        this.setState({
+           errors: foundErrors 
+        });
+    }
+
+
+onChangeRole = (e) => {
+        this.setState({
+            role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
+        });    
     }
 
     onChangeRole = (e) => {
@@ -159,6 +199,7 @@ class Search extends React.Component {
                         <div className="w-100 mx-auto align-middle text-center"> 
                             <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
                             <select className="mr-5 p-2 align-middle" name="role" id="role"
+
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
                                 required>
@@ -168,6 +209,7 @@ class Search extends React.Component {
                             </select>
                             <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
                             <select className="mr-5 p-2 align-middle" name="location" id="location"
+
                                 value={this.state.locationDisplayName}
                                 onChange={this.onChangeLocation}
                                 required>
@@ -181,7 +223,7 @@ class Search extends React.Component {
                         
                         
                         <div className="text-center"> 
-                            <button className="w-30 mx-auto btn rvtbutton mt-3" 
+                            <button className="w-30 mx-auto btn btn-danger mt-3" 
                                 disabled={buttonDisabled} 
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Zoek"}

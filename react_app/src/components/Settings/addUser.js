@@ -130,7 +130,7 @@ class AddUser extends React.Component {
         if (currentStep > 1 &&  !this.state.isDocent) {
             return (
                 <button
-                    className="btn btn-secondary"
+                    className="btn btn-danger"
                     type="button" onClick={this._prev}>
                     Vorige
                 </button>
@@ -145,7 +145,7 @@ class AddUser extends React.Component {
         if (currentStep <= 1 ) {
             return (
                 <button
-                    className="btn btn-primary float-right"
+                    className="btn btn-danger float-right"
                     type="button" onClick={this._next}>
                     Volgende
                 </button>
@@ -159,7 +159,7 @@ class AddUser extends React.Component {
         
         if (currentStep === 2) {
             return (
-                    <button className="btn rvtbutton float-right" 
+                    <button className="btn btn-danger float-right" 
                         disabled={submitButtonDisabled} 
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}

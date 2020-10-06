@@ -25,4 +25,13 @@
 
 .logoutbutton {
     width: inherit;
+    background-color: #a32332;
+    color: white;
+}
+
+.logoutbutton:hover {
+    width: inherit;
+    background-color: white;
+    color: #a32332;
+    border: none;
 }

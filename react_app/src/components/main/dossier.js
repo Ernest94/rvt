@@ -235,14 +235,14 @@ class Dossier extends React.Component {
                             className="buttonLink" 
                             to={"/dossier/" + userId + "/edit"}
                             >                        
-                            <button className="rvtbutton" hidden={isTrainee}>Pas gebruiker aan</button>
+                            <button className="button" hidden={isTrainee}>Pas gebruiker aan</button>
                         </Link>
                     </div>
                     <div className="text-center">
                         <Link 
                             className="buttonLink" 
                             to={"/linking/" + userId}>
-                            <button className="rvtbutton" hidden={isTrainee}>Gelinkte gebruikers</button>
+                            <button className="button" hidden={isTrainee}>Gelinkte gebruikers</button>
                         </Link>
                     </div>
                     <div className="text-center">
