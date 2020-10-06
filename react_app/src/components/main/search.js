@@ -36,7 +36,6 @@ class Search extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-<<<<<<< HEAD
         this.setState({loading: true});
         var errors = null
         if (!errors) {
@@ -60,7 +59,7 @@ class Search extends React.Component {
             this.setErrors(errors);
             this.setState({loading: false});
         }
-=======
+
         this.setState({buttonDisabled: true});
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
@@ -72,21 +71,20 @@ class Search extends React.Component {
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                this.fakeHandleSearchReponse();
+                // this.fakeHandleSearchReponse();
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
                     errors: this.props.setErrors(custErr)
                     });
             });
->>>>>>> 05e579392a19b08889711b93a04113431c1e38ca
     }
 
     handleSearchReponse(data)
     {
         this.setState({
             users: data.userSearch
-//users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+            //users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -115,12 +113,11 @@ class Search extends React.Component {
     }
     
     createSearchJson() {
-return {
+        return {
             location: this.state.location,
             role: this.state.role,
             criteria: this.state.criteria
         }
-<<<<<<< HEAD
 }
     
     setErrors = (errors) => {
@@ -137,30 +134,23 @@ onChangeRole = (e) => {
         this.setState({
             role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
         });    
-=======
     }
 
     onChangeRole = (e) => {
-        console.log("check");
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
         
         this.setState({
             role: selectedRole,
             roleDisplayName: e.target.value
         });
->>>>>>> 05e579392a19b08889711b93a04113431c1e38ca
     }
-
- 
 
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
+            locationDisplayName: e.target.value,
         });
     }
-
-
-
 
     render() {
         const {roles, locations, users, pageLoading, buttonDisabled} = this.state;
@@ -209,11 +199,8 @@ onChangeRole = (e) => {
                         <div className="w-100 mx-auto align-middle text-center"> 
                             <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
                             <select className="mr-5 p-2 align-middle" name="role" id="role"
-<<<<<<< HEAD
-                                value={this.props.roleDisplayName}
-=======
+
                                 value={this.state.roleDisplayName}
->>>>>>> 05e579392a19b08889711b93a04113431c1e38ca
                                 onChange={this.onChangeRole}
                                 required>
 
@@ -222,11 +209,8 @@ onChangeRole = (e) => {
                             </select>
                             <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
                             <select className="mr-5 p-2 align-middle" name="location" id="location"
-<<<<<<< HEAD
-                                value={this.props.locationDisplayName}
-=======
+
                                 value={this.state.locationDisplayName}
->>>>>>> 05e579392a19b08889711b93a04113431c1e38ca
                                 onChange={this.onChangeLocation}
                                 required>
 
@@ -239,7 +223,7 @@ onChangeRole = (e) => {
                         
                         
                         <div className="text-center"> 
-                            <button className="w-30 mx-auto btn rvtbutton mt-3" 
+                            <button className="w-30 mx-auto btn btn-danger mt-3" 
                                 disabled={buttonDisabled} 
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Zoek"}
