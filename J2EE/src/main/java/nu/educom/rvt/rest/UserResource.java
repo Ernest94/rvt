@@ -19,11 +19,13 @@ import javax.ws.rs.core.Response;
 //import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.LinkJson;
 import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Search;
+import nu.educom.rvt.models.LinkedUsers;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.services.UserService;
 
@@ -111,12 +113,15 @@ public class UserResource {
 	public Response getAllRelations(@HeaderParam("userId") int userId){
 	  UserService userServ = new UserService();//load injectables
 	  User user = userServ.getUserById(userId);
+	  List<User> connectedUsers = userServ.getConnectedUsers(user);
+	  List<User> possibleRelatedUsers = userServ.getPossibleRelations(user);
+	  List<LinkedUsers> linkedUsers = userServ.combineUsers(user, connectedUsers, possibleRelatedUsers);
+	  LinkJson linkJson = new LinkJson(user, linkedUsers);
 	  
 	  boolean valid = true;
 	  
 	  if(valid) {
-        List<User> connectedUsers = userServ.getConnectedUsers(user);
-        return Response.status(200).entity(connectedUsers).build();
+        return Response.status(200).entity(linkJson).build();
 	  } else {
         return Response.status(404).build();	    
 	  }

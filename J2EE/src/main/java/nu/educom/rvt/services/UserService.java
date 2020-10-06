@@ -1,6 +1,6 @@
 package nu.educom.rvt.services;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.*;
@@ -13,6 +13,7 @@ import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.UserRelation;
+import nu.educom.rvt.models.LinkedUsers;
 import nu.educom.rvt.models.view.UserSearch;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.repositories.LocationRepository;
@@ -61,7 +62,7 @@ public class UserService {
 		else return false;
 	}
 	
-	public User makeUser(String name, String email, String password, Role role, Location location, LocalDateTime datumActive)
+	public User makeUser(String name, String email, String password, Role role, Location location, Date datumActive)
 	{
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 		User user = new User(name, email, hashedPassword, role, location, datumActive, null);
@@ -91,13 +92,19 @@ public class UserService {
 		String[] words = criteria.split(" ");
 		List<User> foundUsers = new ArrayList<>();	
 		
-		for(String word : words)
-		{
-			if(word != "")
-            {
-                foundUsers.addAll(findUsersByCriteria(word, role, location));
-            } 
+		if (!criteria.isEmpty()) {
+			for(String word : words)
+			{
+				if(word != "")
+	            {
+	                foundUsers.addAll(findUsersByCriteria(word, role, location));
+	            } 
+			}
+		} 
+		else {
+			foundUsers.addAll(findUsersByCriteria(null, role, location));
 		}
+		
 		foundUsers.stream().distinct().collect(Collectors.toList());
 		return foundUsers;
 	}
@@ -106,11 +113,28 @@ public class UserService {
 	private List<User> findUsersByCriteria(String criteria, Role role, Location location)
 	{
 		UserRepository userRepo = new UserRepository();
-		List<User> filterdUsers = userRepo.readAll();
-		filterdUsers.stream().filter(u -> u.getRole().equals(role) || role == null)
-							 .filter(u -> u.getLocation().equals(location) || location == null)
-							 .filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-							 .collect(Collectors.toList());
+		List<User> allUsers = userRepo.readAll();
+		List<User> filterdUsers = new ArrayList<User>();
+		
+		filterdUsers.addAll(allUsers.stream()
+				.filter(u -> u.getRole().getId() == role.getId() || role == null)
+				.collect(Collectors.toList()));
+		
+		filterdUsers = filterdUsers.stream()
+				.filter(u -> u.getLocation().getId() == location.getId() || location == null)
+				.collect(Collectors.toList());
+		if (criteria != null) {
+			filterdUsers = filterdUsers.stream()
+					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
+					.collect(Collectors.toList());
+		}
+		
+		
+		
+//		filterdUsers.stream().filter(u -> u.getRole().equals(role) || role == null)
+//							 .filter(u -> u.getLocation().equals(location) || location == null)
+//							 .filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
+//							 .collect(Collectors.toList());
 		
 		return filterdUsers;
 	}
@@ -138,7 +162,70 @@ public class UserService {
 		returnedUsers.addAll(userRelation.stream().filter(r -> r.getLinked().getId() == user.getId())
 				  								  .map(r -> r.getUser()).collect(Collectors.toList()));
 		return returnedUsers;
-
+	}
+	
+	public List<User> getPossibleRelations(User user) 
+	{
+		UserRepository userRepo = new UserRepository();
+		List<User> allUsers = userRepo.readAll();
+		List<User> filteredUsers = new ArrayList<User>();
+		String userRole = user.getRole().getName();
+		
+		switch (userRole) {
+			case "Admin":
+				filteredUsers.addAll(allUsers);
+				break;
+			case "Docent":
+				filteredUsers.addAll(allUsers.stream()
+						.filter(u -> u.getRole().getName().equals("Trainee"))
+						.collect(Collectors.toList()));
+				filteredUsers.addAll(allUsers.stream()
+						.filter(u -> u.getRole().getName().equals("Docent"))
+						.collect(Collectors.toList()));
+				break;
+			case "Sales":
+				filteredUsers.addAll(allUsers.stream()
+						.filter(u -> !(u.getRole().getName().equals("Admin")))
+						.collect(Collectors.toList()));
+				break;
+			case "Office":
+				filteredUsers.addAll(allUsers.stream()
+						.filter(u -> !(u.getRole().getName().equals("Admin")))
+						.collect(Collectors.toList()));
+				break;
+			case "Trainee":
+				break;
+		}
+		
+		return filteredUsers;
+	}
+	
+	public List<LinkedUsers> combineUsers(User currentUser, List<User> connectedUsers, List<User> possibleRelatedUsers)
+	{
+		List<LinkedUsers> linkedUsers = new ArrayList<LinkedUsers>();
+		
+		connectedUsers.forEach((user) -> {
+			linkedUsers.add(new LinkedUsers(
+					user.getId(),
+					user.getName(),
+					user.getRole(),
+					user.getLocation(),
+					true));
+		});
+		
+		possibleRelatedUsers.forEach(user -> {
+			boolean hasAlreadyRelation = connectedUsers.stream().anyMatch(u -> u.getId() == (user.getId()));
+			if (user.getId() != currentUser.getId() && !hasAlreadyRelation) {
+				linkedUsers.add(new LinkedUsers(
+						user.getId(),
+						user.getName(),
+						user.getRole(),
+						user.getLocation(),
+						false));
+			}
+		});
+		
+		return linkedUsers;
 	}
 	
 	public void addConnection(User base, User link)
