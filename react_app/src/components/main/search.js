@@ -171,7 +171,7 @@ onChangeRole = (e) => {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="searchResult" onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
+                <tr className="searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
                     <td className="p-2 text-nowrap align-middle">
                         {user.name} 
                     </td>
@@ -235,7 +235,7 @@ onChangeRole = (e) => {
                 <div className="text-center">
                     <table className="w-100 mx-auto">
                         <thead>
-                            <tr>
+                            <tr key={0}>
                                 <th className="p-2 text-nowrap align-middle">
                                     Naam
                                     </th>

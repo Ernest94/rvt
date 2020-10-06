@@ -1,6 +1,6 @@
 package nu.educom.rvt.models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -26,15 +26,15 @@ public class User {
 	@JoinColumn(name="location_id")
 	private Location location;
 	@Column(name="datumActive")
-	private LocalDateTime dateActive;
+	private Date dateActive;
 	
 	@Column(name="datumInactive")
-	private LocalDateTime dateInactive;
+	private Date dateInactive;
 
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, Location location, LocalDateTime dateActive,
-			LocalDateTime dateInactive) {
+	public User(int id, String name, String email, String password, Role role, Location location, Date dateActive,
+			Date dateInactive) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -61,8 +61,8 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, Location location, LocalDateTime dateActive,
-			LocalDateTime dateInactive) {
+	public User(String name, String email, String password, Role role, Location location, Date dateActive,
+			Date dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -109,16 +109,16 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public LocalDateTime getDatumActive() {
+	public Date getDatumActive() {
 		return dateActive;
 	}
-	public void setDatumActive(LocalDateTime datumActive) {
+	public void setDatumActive(Date datumActive) {
 		this.dateActive = datumActive;
 	}
-	public LocalDateTime getDatumInactive() {
+	public Date getDatumInactive() {
 		return dateInactive;
 	}
-	public void setDatumInactive(LocalDateTime datumInactive) {
+	public void setDatumInactive(Date datumInactive) {
 		this.dateInactive = datumInactive;
 	}	
 }

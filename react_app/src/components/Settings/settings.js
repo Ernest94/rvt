@@ -14,7 +14,6 @@ class Settings extends React.Component {
                     <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
 					<li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Open Dossier</Link></li>
                     {addUserLink}
-                    {relationLink}
                     {searchLink}
                 </ul>
             </div>
