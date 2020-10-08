@@ -8,7 +8,7 @@ import constraints from '../../constraints/addUserConstraints';
 import {config} from '../constants';
 
 class AddUser extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -32,7 +32,7 @@ class AddUser extends React.Component {
             submitButtonDisabled: false,
             isDocent: sessionStorage.getItem("userRole") === "Docent",
         };
-        
+
         this.handleFormChange = this.handleFormChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangeLocation = this.onChangeLocation.bind(this);
@@ -40,14 +40,14 @@ class AddUser extends React.Component {
         this._next = this._next.bind(this);
         this._prev = this._prev.bind(this);
     }
-    
+
     componentDidMount() {
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
     }
-   
+
     getLocationsAndRoles() {
-        
+
         axios.get(config.url.API_URL + '/webapi/user/roles')
             .then( response => {
                     this.setState({
@@ -74,59 +74,59 @@ class AddUser extends React.Component {
             }
         })
     }
-    
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-           [name]: value 
+           [name]: value
         });
     }
-    
+
     onChangeRole= (e) => {
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
         var isTrainee = selectedRole.name === "Trainee";
-        
+
         this.setState({
            isTrainee: isTrainee,
            role: selectedRole,
            roleDisplayName: e.target.value
         });
     }
-    
+
     onChangeLocation= (e) => {
         this.setState({
            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
            locationDisplayName: e.target.value
         });
     }
-    
+
     onChangeTeacher= (e) => {
         this.setState({
            teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
            teacherDisplayName: e.target.value
         });
     }
-    
+
     _next() {
         if (!this.state.isTrainee) {
             this.setState({teacher: null, teacherDisplayName: ""});
         }
-        
+
         if (this.state.location != null && this.state.role != null) {
             this.setState({currentStep: 2, errors: null});
         }
         else {
-            this.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
+            this.props.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
     }
-    
+
     _prev() {
         this.setState({currentStep: 1, errors: null});
     }
-    
+
     get previousButton() {
         let currentStep = this.state.currentStep;
-        
+
         if (currentStep > 1 &&  !this.state.isDocent) {
             return (
                 <button
@@ -138,10 +138,10 @@ class AddUser extends React.Component {
         }
         return null;
     }
-    
+
     get nextButton() {
         let currentStep = this.state.currentStep;
-        
+
         if (currentStep <= 1 ) {
             return (
                 <button
@@ -153,14 +153,14 @@ class AddUser extends React.Component {
         }
         return null;
     }
-    
+
     get submitButton() {
         const {currentStep, submitButtonDisabled} = this.state;
-        
+
         if (currentStep === 2) {
             return (
-                    <button className="btn btn-danger float-right" 
-                        disabled={submitButtonDisabled} 
+                    <button className="btn btn-danger float-right"
+                        disabled={submitButtonDisabled}
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
                     </button>
@@ -168,7 +168,7 @@ class AddUser extends React.Component {
         }
         return null;
     }
-    
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({submitButtonDisabled: true});
@@ -177,12 +177,12 @@ class AddUser extends React.Component {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
                     this.setState({submitButtonDisabled: false, errors: null});
-                    
+
                     this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);  
-                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]}; 
+                    console.log("an error occorured " + error);
+                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
                     this.setState({
                         submitButtonDisabled: false,
                         errors: this.props.setErrors(custErr)
@@ -196,7 +196,7 @@ class AddUser extends React.Component {
             });
         }
     }
-    
+
     createUserJson() {
         return {
             name: this.state.name,
@@ -207,19 +207,19 @@ class AddUser extends React.Component {
             datumActive: this.state.dateActive
         }
     }
-    
+
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
-        
+
         return (
             <div>
                 <h2>Voeg een gebruiker toe</h2>
-                
+
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>
-                    
+
                     <RoleAndLocation
                         currentStep={this.state.currentStep}
                         roles={this.state.roles}
@@ -233,7 +233,7 @@ class AddUser extends React.Component {
                         onChangeTeacher={this.onChangeTeacher}
                         isTrainee={this.state.isTrainee}
                     />
-                    
+
                     <UserInfo
                         currentStep={this.state.currentStep}
                         name={this.state.name}
@@ -245,13 +245,13 @@ class AddUser extends React.Component {
                         dateValidation={this.props.dateValidation}
                         handleFormChange={this.handleFormChange}
                     />
-                    
+
                     {this.nextButton}
                     {this.previousButton}
                     {this.submitButton}
-                    
+
                 </form>
-                
+
             </div>
         )
     }
