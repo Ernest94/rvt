@@ -7,11 +7,11 @@
   <groupId>nu.educom.rvt</groupId>
   <artifactId>J2EE</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>J2EE Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://voortgang.educom.nu</url>
 
   <dependencies>
   	<dependency>
@@ -105,6 +105,13 @@
 	    <artifactId>log4j-core</artifactId>
 	    <version>2.6.1</version>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs -->
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jaxrs</artifactId>
+    <version>3.13.2.Final</version>
+</dependency>
 	
 	
 	

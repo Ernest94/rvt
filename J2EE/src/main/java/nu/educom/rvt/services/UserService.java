@@ -241,4 +241,10 @@ public class UserService {
     
       return user;
     }
+
+    public List<User> getAllUsers() {
+      UserRepository userRepo= new UserRepository();
+      List<User> users = userRepo.readAll();
+      return users;
+    }
 }

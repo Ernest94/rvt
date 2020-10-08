@@ -131,12 +131,22 @@ public class UserResource {
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUsers(Search search ) {
+	public Response getUsers(Search search) {
 		UserService userServ = new UserService();
 		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocation());
 		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
 		
 		return Response.status(200).entity(USJ).build();
+	}
+	
+	@GET
+	@Path("/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsers() {
+	  UserService userServ = new UserService();
+	  List<User> users = userServ.getAllUsers();
+	  
+	  return Response.status(200).entity(users).build();
 	}
 	
 	@GET
