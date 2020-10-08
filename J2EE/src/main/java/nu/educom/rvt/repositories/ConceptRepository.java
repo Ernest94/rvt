@@ -16,7 +16,12 @@ protected SessionFactory sessionFactory;
 	 
 	    session.save(concept); 
 	 
+	    
 	    session.getTransaction().commit();
+	    
+	    
+	    
+	    
 	    session.close();
 	}
 	

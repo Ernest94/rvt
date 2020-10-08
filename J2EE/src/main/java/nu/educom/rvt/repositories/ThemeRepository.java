@@ -14,8 +14,10 @@ protected SessionFactory sessionFactory;
 	 
 	    session.save(theme); 
 	 
+	    
 	    session.getTransaction().commit();
 	    session.close();
+	    
 	}
 	
 	public Theme readById(int id) {

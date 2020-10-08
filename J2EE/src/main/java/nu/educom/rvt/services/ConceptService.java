@@ -1,5 +1,6 @@
 package nu.educom.rvt.services;
 
+import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
@@ -16,5 +17,10 @@ public class ConceptService {
   public void addTheme(Theme theme) {
     this.themeRepo.create(theme);
   }
+  
+  public void addConcept(Concept concept) {
+	    this.conceptRepo.create(concept);
+	  }  
+  
   
 }
