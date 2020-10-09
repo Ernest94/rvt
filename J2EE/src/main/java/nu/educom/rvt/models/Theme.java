@@ -3,17 +3,15 @@ package nu.educom.rvt.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="themas")
+@Table(name="themes")
 public class Theme {
 
 	@Id
 	@GeneratedValue
 	@Column(name="id")
 	private int id;
-	
 	@Column(name="name")
 	private String name;
-	
 	public Theme() {
 		super();
 	}
@@ -21,7 +19,7 @@ public class Theme {
 	private String abbreviation;
 	@Column(name="description", length=150)
 	private String description;
-
+	
   public int getId() {
     return id;
   }

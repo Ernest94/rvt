@@ -10,14 +10,23 @@ public class ConceptRepository {
 
 protected SessionFactory sessionFactory;
 	
-	public void create(Concept concept) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.save(concept); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	public Concept create(Concept concept) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+		    session.beginTransaction();
+		    int conceptId = (int)session.save(concept);
+		    session.getTransaction().commit();
+		    concept.setId(conceptId);
+			return concept;
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			return null;
+		} finally {		   
+			if (session != null) {
+				session.close();
+			}
+		}
+		    
 	}
 	
 	public Concept readById(int id) {
@@ -34,10 +43,8 @@ protected SessionFactory sessionFactory;
 	}
 	
 	protected void update() {
-		
 	}
 	
 	protected void delete() {
-		
 	}
 }

@@ -8,14 +8,23 @@ import nu.educom.rvt.models.Theme;
 public class ThemeRepository {
 protected SessionFactory sessionFactory;
 	
-	public void create(Theme theme) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.save(theme); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	public Theme create(Theme theme) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+		    session.beginTransaction();
+		    int themeId = (int)session.save(theme);
+		    session.getTransaction().commit();
+		    theme.setId(themeId);
+			return theme;
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			return null;
+		} finally {		   
+			if (session != null) {
+				session.close();
+			}
+		}
+		    
 	}
 	
 	public Theme readById(int id) {
@@ -32,10 +41,8 @@ protected SessionFactory sessionFactory;
 	}
 	
 	protected void update() {
-		
 	}
 	
 	protected void delete() {
-		
 	}
 }

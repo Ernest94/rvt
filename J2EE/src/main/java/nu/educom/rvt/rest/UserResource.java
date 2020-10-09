@@ -32,7 +32,6 @@ public class UserResource {
 
 //  Logger log = LoggerFactory.getLogger(UserResource.class);
   
-
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -52,7 +51,6 @@ public class UserResource {
 			return Response.status(401)
 					.build();
 		}
-		
 	}
 	
 	@POST
@@ -89,7 +87,7 @@ public class UserResource {
 		return Response.status(200)
 					   .entity(rlJson).build();
 	}
-	
+		
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)

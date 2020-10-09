@@ -10,7 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.UserRelation;
 
 public class UserRepository {
 	protected SessionFactory sessionFactory;
@@ -42,11 +41,9 @@ public class UserRepository {
 	}
 	
 	protected void update() {
-		
 	}
 	
-	protected void delete() {
-		
+	protected void delete() {	
 	}
 	
 	public List<User> readAll() {
@@ -70,11 +67,9 @@ public class UserRepository {
 					.createQuery("from User where email =:email", User.class)
 					.setParameter("email", email)
 					.getSingleResult();
-		}
-		catch (NoResultException ex) {
+		} catch (NoResultException ex) {
 			return null;
-		}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
@@ -90,12 +85,10 @@ public class UserRepository {
 			user.setPassword(password);
 			tx.commit();
 			return user;
-					}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
 		}
 	}
-	
 }
