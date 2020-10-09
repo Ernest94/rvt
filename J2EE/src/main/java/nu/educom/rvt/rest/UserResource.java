@@ -1,8 +1,6 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
-import java.util.logging.*;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
