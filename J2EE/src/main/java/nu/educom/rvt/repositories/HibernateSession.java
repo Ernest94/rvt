@@ -53,7 +53,9 @@ public class HibernateSession {
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Location.class);
                 configuration.addAnnotatedClass(UserRelation.class);
-
+                configuration.addAnnotatedClass(Theme.class);
+                configuration.addAnnotatedClass(Concept.class);
+                
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 
                     .applySettings(configuration.getProperties()).build();

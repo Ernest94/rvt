@@ -5,11 +5,11 @@ import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 
-public class ConceptService {
+public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
 	private ThemeRepository themeRepo;
 
-	public ConceptService() {
+	public ThemeConceptService() {
 		this.conceptRepo = new ConceptRepository();
 		this.themeRepo = new ThemeRepository();
 	}

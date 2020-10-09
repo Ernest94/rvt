@@ -41,10 +41,8 @@ protected SessionFactory sessionFactory;
 	}
 	
 	protected void update() {
-		
 	}
 	
 	protected void delete() {
-		
 	}
 }

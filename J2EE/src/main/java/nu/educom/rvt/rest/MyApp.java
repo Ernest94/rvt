@@ -12,7 +12,7 @@ public class MyApp extends Application {
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> set = new HashSet<>();
 		set.add(UserResource.class);
-		set.add(ConceptResource.class);
+		set.add(ThemeConceptResource.class);
 		set.add(CORSFilter.class);
 		return set;
 	}

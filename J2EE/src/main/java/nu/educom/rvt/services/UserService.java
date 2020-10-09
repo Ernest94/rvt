@@ -58,7 +58,7 @@ public class UserService {
 	public boolean validateUser(User user) {
 		UserRepository userRepo = new UserRepository();
 		User foundUser = userRepo.readByEmail(user.getEmail());
-		if (foundUser == null) return true;
+		if (foundUser == null) return true; 
 		else return false;
 	}
 	

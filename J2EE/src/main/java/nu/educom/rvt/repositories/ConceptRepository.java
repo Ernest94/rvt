@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.Theme;
 
 public class ConceptRepository {
 
@@ -44,10 +43,8 @@ protected SessionFactory sessionFactory;
 	}
 	
 	protected void update() {
-		
 	}
 	
 	protected void delete() {
-		
 	}
 }
