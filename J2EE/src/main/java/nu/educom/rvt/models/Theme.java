@@ -19,7 +19,7 @@ public class Theme {
 	private String abbreviation;
 	@Column(name="description", length=150)
 	private String description;
-
+	
   public int getId() {
     return id;
   }
