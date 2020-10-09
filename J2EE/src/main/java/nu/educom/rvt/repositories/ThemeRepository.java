@@ -1,7 +1,5 @@
 package nu.educom.rvt.repositories;
 
-import java.io.Serializable;
-import javax.persistence.RollbackException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -10,14 +8,23 @@ import nu.educom.rvt.models.Theme;
 public class ThemeRepository {
 protected SessionFactory sessionFactory;
 	
-	public int create(Theme theme) throws RollbackException {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	    int themeId = (int)session.save(theme); 
-	    session.getTransaction().commit();
-	    session.close();
-	    
-		return themeId;
+	public Theme create(Theme theme) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+		    session.beginTransaction();
+		    int themeId = (int)session.save(theme);
+		    session.getTransaction().commit();
+		    theme.setId(themeId);
+			return theme;
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			return null;
+		} finally {		   
+			if (session != null) {
+				session.close();
+			}
+		}
+		    
 	}
 	
 	public Theme readById(int id) {

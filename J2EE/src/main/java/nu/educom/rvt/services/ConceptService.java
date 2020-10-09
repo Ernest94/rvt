@@ -1,7 +1,5 @@
 package nu.educom.rvt.services;
 
-import javax.persistence.RollbackException;
-
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.repositories.ConceptRepository;
@@ -16,14 +14,14 @@ public class ConceptService {
 		this.themeRepo = new ThemeRepository();
 	}
   
-	public int addTheme(Theme theme) throws RollbackException {
-		int themeId = this.themeRepo.create(theme);
-		return themeId;
+	public Theme addTheme(Theme theme) {
+		Theme createdTheme = this.themeRepo.create(theme);
+		return createdTheme;
 	}
   
-	public boolean addConcept(Concept concept) {
-	    this.conceptRepo.create(concept);
-		return false;
+	public Concept addConcept(Concept concept) {
+		Concept createdConcept = this.conceptRepo.create(concept);
+		return createdConcept;
 	}  
   
   
