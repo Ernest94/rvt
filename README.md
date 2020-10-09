@@ -24,7 +24,8 @@ In deze sectie staat beschreven hoe een ontwikkelaar het project werkend krijgt.
 #### Verkrijgen van de repository
 Kloon deze repository met deze line met behulp van git in een folder waar je de bestanden wil hebben staan:
 
-`git clone https://educomq@bitbucket.org/educom_utrecht/rvt.git`
+`git clone https://"eigenGebruikersNaam"@bitbucket.org/educom_utrecht/rvt.git`
+Het preciese git clone comando dat je nodig hebt kan je vinden op de volgende pagina https://bitbucket.org/educom_utrecht/rvt/src/master/
 
 #### Backend Java
 Om de backend te runnen wordt er gebruik gemaakt van Eclipse voor Java Enterprise. 
@@ -43,6 +44,12 @@ Een request kan vervolgens gedaan worden door in Postman (download [hier](https:
 #### Database
 De java code bevat files die de database aanmaken met behulp van hibernate. Om de database inderdaad correct te laten aanmaken wordt er gebruik gemaakt van de xampp sql server (phpmyadmin).
 Zorg ervoor dat de mysql en apache is gestart in Xampp. Als ook de backend server draait (zie vorige sectie) en er wordt een request gedaan, hibernate zal dan checken of de database bestaat en hem aanmaken als dat niet zo is. Ook wordt de database gelijk gevuld met de nodige tabelen.
+Om de database aan te maken moet je in je MySQL een nieuwe user aanmaken 
+Gebruikersnaam: usr_voortgang
+Password: zie HibernateSession.java
+Servernaam: 127.0.0.1
+globale rechten: Data en Structuur
+
 
 #### Frontend React
 Voor de frontend is Nodejs nodig. Dit kan [hier](https://nodejs.org/en/download/) gedownload worden.
