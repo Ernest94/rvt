@@ -15,6 +15,9 @@ import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AccessRoute from '../routes/AccessRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
+import addTheme from './addTheme.js';
+import addConcept from './addConcept.js';
+import conceptOverview from './conceptOverview.js';
 
 class Main extends React.Component {
     
@@ -85,6 +88,10 @@ class Main extends React.Component {
     
     handleReturnToSettings() {
         this.props.history.push('/settings');
+    }
+
+    handleReturnToConcepts() {
+        this.props.history.push('/conceptOverview');
     }
 
     isUserAdmin() {
@@ -179,6 +186,24 @@ class Main extends React.Component {
                             handleDossierRequest={this.handleDossierRequest} 
                             handleReturnToSettings={this.handleReturnToSettings} 
                             setErrors={this.setErrors}
+                        />
+                        <AccessRoute exact path="/addTheme"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToConcepts}
+                            component={addTheme}
+                        />
+                        <AccessRoute exact path="/addConcept"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToConcepts}
+                            component={addConcept}
+                        />
+                        <AccessRoute exact path="/conceptOverview"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToSettings}
+                            component={conceptOverview}
                         />
                     </Switch>
                 </div>
