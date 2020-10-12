@@ -61,17 +61,11 @@ public class HibernateSession {
                     .applySettings(configuration.getProperties()).build();
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
         }
-
         return sessionFactory;
-
     }
 	
 	public static void shutDown() {
