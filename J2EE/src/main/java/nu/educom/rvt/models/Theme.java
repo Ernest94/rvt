@@ -20,6 +20,13 @@ public class Theme {
 	@Column(name="description", length=150)
 	private String description;
 	
+	public Theme(String name,String abbreviation, String description) {
+		super();
+		this.name = name;
+		this.abbreviation = abbreviation;
+		this.description = description;
+	}
+	
   public int getId() {
     return id;
   }
