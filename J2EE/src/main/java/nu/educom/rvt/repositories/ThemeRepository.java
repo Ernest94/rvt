@@ -1,5 +1,7 @@
 package nu.educom.rvt.repositories;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -24,8 +26,23 @@ protected SessionFactory sessionFactory;
 				session.close();
 			}
 		}
-		    
 	}
+	
+	public List<Theme> readAll() {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return HibernateSession.loadAllData(Theme.class, session);
+		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
+			return null;
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
 	
 	public Theme readById(int id) {
 		Session session = null;

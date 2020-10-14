@@ -1,10 +1,8 @@
 package nu.educom.rvt.services;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -62,7 +60,7 @@ public class UserService {
 		else return false;
 	}
 	
-	public User makeUser(String name, String email, String password, Role role, Location location, Date datumActive)
+	public User makeUser(String name, String email, String password, Role role, Location location, LocalDate datumActive)
 	{
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 		User user = new User(name, email, hashedPassword, role, location, datumActive, null);
