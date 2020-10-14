@@ -1,7 +1,6 @@
 package nu.educom.rvt.models;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +8,7 @@ import javax.persistence.*;
 public class User {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name= "id")
 	private int id;
 	@Column(name= "name")
@@ -18,7 +17,6 @@ public class User {
 	private String email;
 	@Column(name="password")
 	private String password;
-	
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
@@ -26,15 +24,14 @@ public class User {
 	@JoinColumn(name="location_id")
 	private Location location;
 	@Column(name="datumActive")
-	private Date dateActive;
-	
+	private LocalDate dateActive;
 	@Column(name="datumInactive")
-	private Date dateInactive;
+	private LocalDate dateInactive;
 
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, Location location, Date dateActive,
-			Date dateInactive) {
+	public User(int id, String name, String email, String password, Role role, Location location, LocalDate dateActive,
+			LocalDate dateInactive) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -61,8 +58,8 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, Location location, Date dateActive,
-			Date dateInactive) {
+	public User(String name, String email, String password, Role role, Location location, LocalDate dateActive,
+			LocalDate dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -109,16 +106,16 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public Date getDatumActive() {
+	public LocalDate getDatumActive() {
 		return dateActive;
 	}
-	public void setDatumActive(Date datumActive) {
+	public void setDatumActive(LocalDate datumActive) {
 		this.dateActive = datumActive;
 	}
-	public Date getDatumInactive() {
+	public LocalDate getDatumInactive() {
 		return dateInactive;
 	}
-	public void setDatumInactive(Date datumInactive) {
+	public void setDatumInactive(LocalDate datumInactive) {
 		this.dateInactive = datumInactive;
 	}	
 }

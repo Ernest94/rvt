@@ -25,9 +25,14 @@ public class Main {
     return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc, locator);
   }
 
+  
+  
   public static void main(String[] args) throws IOException {
     System.out.println("Starting grizzly...");
     HttpServer httpServer = startServer();
+	if (Filler.isDatabaseEmpty()) {
+		Filler.fillDatabase();
+	}
     System.in.read();
     httpServer.shutdownNow();
   }

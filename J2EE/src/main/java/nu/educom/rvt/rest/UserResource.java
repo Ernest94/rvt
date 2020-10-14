@@ -1,16 +1,13 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
-import java.util.logging.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -39,9 +36,9 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
-		if (Filler.isDatabaseEmpty()) {
-			Filler.fillDatabase();
-		}
+//		if (Filler.isDatabaseEmpty()) {
+//			Filler.fillDatabase();
+//		}
 		
 		UserService userServ = new UserService();
 		User foundUser = userServ.checkUser(user);
