@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -29,7 +30,7 @@ import nu.educom.rvt.services.UserService;
 public class UserResource {
 
 //  Logger log = LoggerFactory.getLogger(UserResource.class);
-
+  
 	@POST
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -38,7 +39,7 @@ public class UserResource {
 //		if (Filler.isDatabaseEmpty()) {
 //			Filler.fillDatabase();
 //		}
-
+		
 		UserService userServ = new UserService();
 		User foundUser = userServ.checkUser(user);
 		if (foundUser != null) {
@@ -50,7 +51,7 @@ public class UserResource {
 					.build();
 		}
 	}
-
+	
 	@POST
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -67,7 +68,7 @@ public class UserResource {
 		}
 		return Response.status(401).build();
 	}
-
+	
 	@GET
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,27 +77,26 @@ public class UserResource {
 			Filler.fillDatabase();
 		}
 		UserService userServ = new UserService();
-		List<Role> roles = userServ.getRoles();
+		List<Role> roles = userServ.getRoles();	
 		List<Location> locations = userServ.getLocations();
 		RoleLocationJson rlJson = new RoleLocationJson() ;
 		rlJson.setRoles(roles);
 		rlJson.setLocations(locations);
-
-		return Response.status(200)
-					   .entity(rlJson).build();
+					
+		return Response.status(200).entity(rlJson).build();
 	}
-
+		
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser (User user) {
 		UserService userServ = new UserService();
-
+		
 		boolean valid = userServ.validateUser(user);
-
+		
 		if(valid) userServ.addUser(user);
 		else return Response.status(412).build();
-
+		
 		return Response.status(201).build();
 
 	}
@@ -111,16 +111,16 @@ public class UserResource {
 	  List<User> possibleRelatedUsers = userServ.getPossibleRelations(user);
 	  List<LinkedUsers> linkedUsers = userServ.combineUsers(user, connectedUsers, possibleRelatedUsers);
 	  LinkJson linkJson = new LinkJson(user, linkedUsers);
-
+	  
 	  boolean valid = true;
-
+	  
 	  if(valid) {
         return Response.status(200).entity(linkJson).build();
 	  } else {
-        return Response.status(404).build();
+        return Response.status(404).build();	    
 	  }
 	}
-
+	
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -128,51 +128,52 @@ public class UserResource {
 	public Response getUsers(Search search) {
 		UserService userServ = new UserService();
 		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocation());
-		UserSearchJson USJ = userServ.convertToUSJ(searchResult);
-
+		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
+		
 		return Response.status(200).entity(USJ).build();
 	}
-
+	
 	@GET
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
 	  UserService userServ = new UserService();
 	  List<User> users = userServ.getAllUsers();
-
+	  
 	  return Response.status(200).entity(users).build();
 	}
-
+	
 	@GET
     @Path("/UserRelations")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllRelations(){
       UserService userServ = new UserService();//load injectables
       User user = userServ.getUserById(1);
-
+      
       boolean valid = true;
-
+      
       if(valid) {
         return Response.status(200).entity(user).build();
       } else {
-        return Response.status(400).build();
+        return Response.status(400).build();        
       }
     }
-
+		
 	@GET
     @Path("/dossier")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserDossier(@HeaderParam("UserId") int userId ){
       UserService userServ = new UserService();//load injectables
       User user = userServ.getUserById(userId);
-
+      
       boolean valid = true;
-
+      
       if(valid) {
         return Response.status(200).entity(user).build();
       } else {
-        return Response.status(400).build();
+        return Response.status(400).build();        
       }
-    }
-
+    }	
+	
 }
+
