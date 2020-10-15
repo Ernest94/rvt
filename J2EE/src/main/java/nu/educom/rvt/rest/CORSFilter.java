@@ -1,8 +1,6 @@
 package nu.educom.rvt.rest;
 
 import java.io.IOException;
-
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;

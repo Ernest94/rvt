@@ -1,9 +1,5 @@
 package nu.educom.rvt.models;
 
-import java.util.Date;
-
-import javax.persistence.*;
-
 public class LinkedUsers {
 
 	private int id;
