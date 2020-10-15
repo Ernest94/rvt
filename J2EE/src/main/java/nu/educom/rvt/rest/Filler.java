@@ -18,7 +18,7 @@ public class Filler {
 	public static void fillDatabase() {
 		
 	    LocalDate localDate = LocalDate.now();
-		LocalDate endDate=null;
+		LocalDate endDate = null;
 
 		//add roles to db
 		List<Role> roles = new ArrayList<Role>();
@@ -118,5 +118,25 @@ public class Filler {
 		for (Concept concept : concepts) {
 			conceptRepo.create(concept);
 		}	
+		
+		//fill database with mock review data {Review, ConceptRating}
+		
+		//REVIEW	
+		ReviewRepository reviewRepo = new ReviewRepository();
+		Review review = new Review(localDate, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED);
+		reviewRepo.create(review);
+		
+		//CONCEPTRATING
+		List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
+		conceptsRatings.add(new ConceptRating(review,concepts.get(0),2));
+		conceptsRatings.add(new ConceptRating(review,concepts.get(1),2));
+		conceptsRatings.add(new ConceptRating(review,concepts.get(2),2));
+		conceptsRatings.add(new ConceptRating(review,concepts.get(3),4));
+		conceptsRatings.add(new ConceptRating(review,concepts.get(4),4));
+		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+		for (ConceptRating conceptRating : conceptsRatings) {
+			conceptRatingRepo.create(conceptRating);
+		}	
+		
 	}
 }

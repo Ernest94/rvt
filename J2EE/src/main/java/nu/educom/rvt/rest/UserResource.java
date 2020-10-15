@@ -83,8 +83,7 @@ public class UserResource {
 		rlJson.setRoles(roles);
 		rlJson.setLocations(locations);
 					
-		return Response.status(200)
-					   .entity(rlJson).build();
+		return Response.status(200).entity(rlJson).build();
 	}
 		
 	@POST
