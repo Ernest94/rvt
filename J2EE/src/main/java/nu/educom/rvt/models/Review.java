@@ -1,19 +1,29 @@
 package nu.educom.rvt.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
-@Table(name="review")
+@Table(name="reviews")
 public class Review {
 
+	public enum Status {
+		NOT_STARTED,
+		PENDING,
+		COMPLETED
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
 	
 	@Column(name="date")
-	private LocalDateTime date;
+	private LocalDate date;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	@Column(name="comment_student")
 	private String commentStudent;
@@ -21,22 +31,23 @@ public class Review {
 	@Column(name="comment_office")
 	private String commentOffice;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;
+	@Column(name="status")
+	private Status reviewStatus;
 	
-	@ManyToOne
-	@JoinColumn(name="review_status_id")
-	private ReviewStatus reviewStatus;
-	
-	@ManyToOne
-	@JoinColumn(name="curriculum_id")
-	private Curriculum curriculum;
 
 	public Review() {
 		super();
 	}
 
+	public Review(LocalDate date, String commentStudent, String commentOffice, Status reviewStatus) {
+		super();
+		this.date = date;
+		this.commentStudent = commentStudent;
+		this.commentOffice = commentOffice;
+		this.reviewStatus = reviewStatus;
+	}
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -45,11 +56,11 @@ public class Review {
 		this.id = id;
 	}
 
-	public LocalDateTime getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -77,19 +88,13 @@ public class Review {
 		this.user = user;
 	}
 
-	public ReviewStatus getReviewStatus() {
+	public Status getReviewStatus() {
 		return reviewStatus;
 	}
 
-	public void setReviewStatus(ReviewStatus reviewStatus) {
+	public void setReviewStatus(Status reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
 
-	public Curriculum getCurriculum() {
-		return curriculum;
-	}
 
-	public void setCurriculum(Curriculum curriculum) {
-		this.curriculum = curriculum;
-	}
 }

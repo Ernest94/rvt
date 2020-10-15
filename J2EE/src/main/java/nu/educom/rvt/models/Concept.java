@@ -1,7 +1,6 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +11,7 @@ public class Concept {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="theme_id")
 	private Theme theme;
 	@Column(name="name")

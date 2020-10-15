@@ -13,6 +13,7 @@ public class MyApp extends Application {
 		Set<Class<?>> set = new HashSet<>();
 		set.add(UserResource.class);
 		set.add(ThemeConceptResource.class);
+		set.add(ReviewResource.class);
 		set.add(CORSFilter.class);
 		return set;
 	}
