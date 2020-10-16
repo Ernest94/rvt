@@ -55,6 +55,7 @@ class AddUser extends React.Component {
                         locations: response.data.locations,
                         pageLoading: false
                     });
+                console.log("api_call succesfull");
                 })
         .catch(() => {
             this.setState({
@@ -108,16 +109,18 @@ class AddUser extends React.Component {
     }
 
     _next() {
+        console.log(this.state.currentStep);
         if (!this.state.isTrainee) {
             this.setState({teacher: null, teacherDisplayName: ""});
         }
 
-        if (this.state.location != null && this.state.role != null) {
+        if ((this.state.location != null || this.state.teacher) && this.state.role != null) {
             this.setState({currentStep: 2, errors: null});
         }
         else {
             this.props.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
+        console.log(this.state.currentStep);
     }
 
     _prev() {

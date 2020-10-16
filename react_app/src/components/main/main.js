@@ -18,6 +18,7 @@ import LinkUsers from '../Settings/Linking/LinkUsers.js';
 import addTheme from './addTheme.js';
 import addConcept from './addConcept.js';
 import conceptOverview from './conceptOverview.js';
+import traineeSpecificOverview from './traineeSpecificOverview.js';
 
 class Main extends React.Component {
     
@@ -85,6 +86,11 @@ class Main extends React.Component {
         event.preventDefault();
         this.props.history.push('/dossier/' + id);
     }
+
+    handleCurriculumRequest(event, id) {
+        event.preventDefault();
+        this.props.history.push('/curriculum/' + id);
+    }
     
     handleReturnToSettings() {
         this.props.history.push('/settings');
@@ -97,7 +103,11 @@ class Main extends React.Component {
     isUserAdmin() {
         return sessionStorage.getItem("userRole") === "Admin";
     }
-    
+
+    getUserId() {
+        return sessionStorage.getItem("userId");
+    }
+
     canAddUser() {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
@@ -114,7 +124,10 @@ class Main extends React.Component {
     }
     
     render() {
-        const {isTrainee, loggedIn} = this.state;
+        const { isTrainee, loggedIn } = this.state;
+
+        console.log("isTrainee: " + isTrainee);
+        console.log("loggedIn: " + loggedIn);
         return (
             
             <div>
@@ -131,10 +144,10 @@ class Main extends React.Component {
                             isLoggedIn={loggedIn} 
                             component={Home} 
                         />
-                        <PrivateRoute exact path="/settings" 
-                            component={Settings} 
-                            isLoggedIn={loggedIn} 
-                            userHasAccess={!isTrainee}
+                        <PrivateRoute exact path="/settings"
+                            component={Settings}
+                            isLoggedIn={loggedIn}
+                            userHasAccess={true}
                         />
                         <PrivateRoute exact path="/password" 
                             component={Password} 
@@ -155,28 +168,28 @@ class Main extends React.Component {
                             component={Dossier}
                             setErrors={this.setErrors}
                             dateValidation={this.dateValidation}
-                            handleReturnToSettings={this.handleReturnToSettings} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             editDisabled={false} 
                             userHasAccess={!isTrainee}
                             isLoggedIn={loggedIn}
                         />
-                        <AccessRoute exact path="/addUser" 
-                            userHasAccess={!isTrainee} 
+                        <AccessRoute exact path="/addUser"
+                            userHasAccess={!isTrainee}
                             component={AddUser}
                             dateValidation={this.dateValidation}
                             isLoggedIn={loggedIn} 
-                            handleReturnToSettings={this.handleReturnToSettings} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
                         <AccessRoute exact path="/linking" 
                             isLoggedIn={loggedIn}
                             userHasAccess={!isTrainee}
-                            handleReturnToSettings={this.handleReturnToSettings} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             component={LinkUsers} 
                         />
                         <PrivateRoute exact path="/linking/:userId" 
                             isLoggedIn={loggedIn} 
-                            handleReturnToSettings={this.handleReturnToSettings} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             component={LinkUsers} 
                         />
                         <AccessRoute exact path="/search" 
@@ -184,7 +197,7 @@ class Main extends React.Component {
                             component={Search} 
                             isLoggedIn={loggedIn} 
                             handleDossierRequest={this.handleDossierRequest} 
-                            handleReturnToSettings={this.handleReturnToSettings} 
+                            handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
                         <AccessRoute exact path="/addTheme"
@@ -204,6 +217,20 @@ class Main extends React.Component {
                             userHasAccess={!isTrainee}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={conceptOverview}
+                        />
+                        <AccessRoute exact path="/curriculum/:userId"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={true}
+                            isTrainee={isTrainee}
+                            component={traineeSpecificOverview}
+                            getUserId={this.getUserId}
+                        />
+                        <AccessRoute exact path="/curriculum"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={isTrainee}
+                            isTrainee={isTrainee}
+                            component={traineeSpecificOverview}
+                            getUserId={this.getUserId}
                         />
                     </Switch>
                 </div>

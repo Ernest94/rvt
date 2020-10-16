@@ -9,14 +9,14 @@ class LocationSelection extends React.Component {
         const locations = this.props.locations;
 
         
-        
+            
         const locationsOptions = locations.map((loc) => {
            return (
                 <option key={loc.id} value={loc.id}>{loc.name}</option>
            ) 
         });
         
-        if (this.props.isTrainee === null || this.props.isTrainee) {
+        if (this.props.isTrainee === null) { //|| this.props.isTrainee
             return null;
         }
         
