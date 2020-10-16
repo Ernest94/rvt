@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
 import './search.css';
@@ -14,7 +16,7 @@ class traineeSpecificOverview extends React.Component {
             userLocation: "",
             concepts: [],
             pageLoading: false,
-
+            weeksPerBlock: 2,
         };
     }
 
@@ -34,9 +36,9 @@ class traineeSpecificOverview extends React.Component {
     
 
     getConcepts() {
-        axios.post(config.url.Api_URL + "/webapi/concepts/getCurriculum", this.createUserIdJson())
+        axios.post(config.url.Api_URL + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {
-
+                console.log("succes");
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -47,7 +49,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            userId: this.state.userId,
+            id: 1, //this.state.userId,
         };
     }
 
@@ -58,13 +60,14 @@ class traineeSpecificOverview extends React.Component {
             userLocation: data.location.name,
             concepts: data.concepts,
         });
+        console.log(this.state);
     }
 
     fakeCurriculumResponse() {
         this.setState({
             userName: "Niels",
             userLocation: "Utrecht",
-            concepts: [{ theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", blok: "week 5/6", rating: 4 }],
+            concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
         })
         console.log(this.state);
     }
@@ -74,6 +77,23 @@ class traineeSpecificOverview extends React.Component {
         else return "nee";
     }
 
+    getRating(rating) {
+        switch (rating) {
+            case 1: return ("Matig");
+            case 2: return ("Redelijk");
+            case 3: return ("Voldoende");
+            case 4: return ("Goed");
+            case 5: return ("Uitstekend");
+        }
+    }
+
+    getWeekBlock(week) {
+        var devidedweek = week / this.state.weeksPerBlock;
+        //switch (devidedweek) {
+        //    case
+        //}
+    }
+
     render() {
         const {pageLoading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
@@ -81,17 +101,21 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-3 text-nowrap align-middle">
                         {concept.theme.abbriviation} 
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-3 text-nowrap align-middle">
                         {concept.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
-                        {concept.blok}
+                    <td className="p-3 text-nowrap align-middle">
+                        {concept.week}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
-                        {concept.rating}
+                    <td className="p-3 text-nowrap align-middle">                 
+                        <Rating
+                            value={concept.rating}
+                            name="rating"
+                            readOnly="true"
+                        />
                     </td>
                 </tr >
             )
@@ -131,6 +155,8 @@ class traineeSpecificOverview extends React.Component {
                     </table>
                 </div >
             </div>
+
+           
         )
     }
 }
