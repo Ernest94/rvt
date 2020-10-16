@@ -130,7 +130,7 @@ class Search extends React.Component {
     }
 
 
-onChangeRole = (e) => {
+    onChangeRole = (e) => {
         this.setState({
             role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
         });    

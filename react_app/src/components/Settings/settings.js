@@ -6,10 +6,13 @@ class Settings extends React.Component {
     render() {
         const addUserLink = this.props.userHasAccess ? <li><Link className="link" to="/addUser">Voeg een gebruiker toe</Link></li> : <span></span>
         const searchLink = this.props.userHasAccess ? <li><Link className="link" to="/Search">Zoeken naar gebruikers</Link></li> : <span></span>
-        const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
+        //const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
         const addThemeLink = this.props.userHasAccess ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
         const addConceptLink = this.props.userHasAccess ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
         const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Curriculum</Link></li> : <span></span>
+        const traineeSpecificOverview = this.props.userHasAccess ? < li > <Link className="link" to="/curriculum">Hallo</Link></li> : <span></span>
+
+        console.log(this.props.userHasAccess);
         return (
             <div >
                 <h2>Instellingen</h2>
@@ -21,6 +24,7 @@ class Settings extends React.Component {
                     {addThemeLink}
                     {addConceptLink}
                     {conceptOverviewLink}
+                    {traineeSpecificOverview}
                 </ul>
             </div>
         )

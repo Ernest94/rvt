@@ -10,8 +10,10 @@ class addConcept extends React.Component {
         this.state = {
             name: "",
             description: "",
-            theme: "",
+            theme: null,
             themes: [],
+            date: null,
+            week: 1,
             loading: false
         };
     }
@@ -37,7 +39,7 @@ class addConcept extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/addConcept", this.createConceptJson())
+            axios.post(config.url.API_URL + "/webapi/theme_concept/createConcept", this.createConceptJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
@@ -45,7 +47,7 @@ class addConcept extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    console.log(this.createThemeJson());
+                    console.log(this.createConceptJson());
 
                     this.setErrors({login: ["Mislukt om thema toe te voegen."]}); 
                     this.setState({loading: false});
@@ -61,15 +63,17 @@ class addConcept extends React.Component {
         return {
             name: this.state.name,
             description: this.state.description,
-            abbreviation: this.state.abbreviation
+            themeId: this.state.theme,
+            week: this.state.week,
+            startDate: this.date
         }
     }
 
     getThemes() {
-        axios.get(config.url.API_URL + '/webapi/user/themes')
+        axios.get(config.url.API_URL + '/webapi/theme_concept/getThemes')
             .then(response => {
                 this.setState({
-                    themes: response.data.themes,
+                    themes: response.data.themes, 
                     pageLoading: false
                 });
             })

@@ -9,6 +9,7 @@ class UserInfo extends React.Component {
     render() {
         
         if (this.props.currentStep !== 2) {
+            console.log("return because not step 2");
             return null;
         }
         
