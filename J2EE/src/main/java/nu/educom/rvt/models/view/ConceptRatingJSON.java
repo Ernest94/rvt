@@ -16,7 +16,10 @@ public class ConceptRatingJSON implements Serializable{
 		private static final long serialVersionUID = 1L;
 		private List<Concept> activeConcepts;
 		private List<ConceptRating> conceptRatings;
+		private String userName;
+		private String location;
 		
+
 		public List<Concept> getActiveConcepts() {
 			return activeConcepts;
 		}
@@ -32,5 +35,16 @@ public class ConceptRatingJSON implements Serializable{
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-	
+		public void setUserName(String userName) {
+			this.userName = userName;
+		}
+		public String getUserName() {
+			return userName;
+		}
+		public void setUserLocation(String location) {
+			this.location = location;
+		}
+		public String getUserLocation() {
+			return location;
+		}
 }
