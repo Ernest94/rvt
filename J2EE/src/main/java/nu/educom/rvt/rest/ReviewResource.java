@@ -13,6 +13,7 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
+import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.services.ReviewService;
 
 @Path("/webapi/review")
@@ -36,18 +37,19 @@ public class ReviewResource {
 	public Response getActiveConceptsAndRating(User user) {
 		
 //		int reviewId = this.reviewServ.getLatestReviewForUser(user);
-		int reviewId = 1;
-		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings(user,reviewId);
-		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts(user);
-
+//		int reviewId = 1;
+		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
+		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
+		List<ConceptsPlusRatings> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
+		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
-		conceptsRatingsJSON.setActiveConcepts(activeConcepts);
-		conceptsRatingsJSON.setConceptRatings(conceptRatings);
+		String traineeName = "Trainee1";
+		String traineeLocation = "Utrecht";
+		conceptsRatingsJSON.setTraineeName(traineeName);
+		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
+		conceptsRatingsJSON.setConceptsPlusRatings(conceptsPlusRatings);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
   	}
-	
-	
-	
 	
 }
