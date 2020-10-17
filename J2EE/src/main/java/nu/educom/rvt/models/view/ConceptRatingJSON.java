@@ -3,9 +3,6 @@ package nu.educom.rvt.models.view;
 import java.io.Serializable;
 import java.util.List;
 
-import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.ConceptRating;
-
 public class ConceptRatingJSON implements Serializable{
 
 	public ConceptRatingJSON() {
@@ -14,37 +11,30 @@ public class ConceptRatingJSON implements Serializable{
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private List<Concept> activeConcepts;
-		private List<ConceptRating> conceptRatings;
-		private String userName;
-		private String location;
+		private List<ConceptsPlusRatings> conceptsPlusRatings;
+		private String traineeName;
+		private String traineeLocation;
 		
-
-		public List<Concept> getActiveConcepts() {
-			return activeConcepts;
+		public List<ConceptsPlusRatings> getConceptsPlusRatings() {
+			return conceptsPlusRatings;
 		}
-		public void setActiveConcepts(List<Concept> activeConcepts) {
-			this.activeConcepts = activeConcepts;
+		public void setConceptsPlusRatings(List<ConceptsPlusRatings> conceptsPlusRatings) {
+			this.conceptsPlusRatings = conceptsPlusRatings;
 		}
-		public List<ConceptRating> getConceptRatings() {
-			return conceptRatings;
+		public String getTraineeName() {
+			return traineeName;
 		}
-		public void setConceptRatings(List<ConceptRating> ratings) {
-			this.conceptRatings = ratings;
+		public void setTraineeName(String traineeName) {
+			this.traineeName = traineeName;
+		}
+		public String getTraineeLocation() {
+			return traineeLocation;
+		}
+		public void setTraineeLocation(String traineeLocation) {
+			this.traineeLocation = traineeLocation;
 		}
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-		public void setUserName(String userName) {
-			this.userName = userName;
-		}
-		public String getUserName() {
-			return userName;
-		}
-		public void setUserLocation(String location) {
-			this.location = location;
-		}
-		public String getUserLocation() {
-			return location;
-		}
+
 }

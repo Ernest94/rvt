@@ -13,6 +13,7 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
+import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.UserService;
 
@@ -36,21 +37,23 @@ public class ReviewResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActiveConceptsAndRating(User user) {
 		
-		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
-
-		UserService userServ = new UserService();//load injectables
-	    User userOutput = userServ.getUserById(user.getId());
-		
+//		UserService userServ = new UserService();//load injectables
+//	    User userOutput = userServ.getUserById(user.getId());
+//		
 //		int reviewId = this.reviewServ.getLatestReviewForUser(user);
-		int reviewId = 1;
-		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings(user,reviewId);
-		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts(user);
-
-		conceptsRatingsJSON.setActiveConcepts(activeConcepts);
-		conceptsRatingsJSON.setConceptRatings(conceptRatings);
-		conceptsRatingsJSON.setUserName(userOutput.getName());
-		conceptsRatingsJSON.setUserLocation(userOutput.getLocation().getName());
+//		int reviewId = 1;
+		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
+		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
+		List<ConceptsPlusRatings> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
+		
+		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
+		String traineeName = "Trainee1";
+		String traineeLocation = "Utrecht";
+		conceptsRatingsJSON.setTraineeName(traineeName);
+		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
+		conceptsRatingsJSON.setConceptsPlusRatings(conceptsPlusRatings);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
   	}
+	
 }
