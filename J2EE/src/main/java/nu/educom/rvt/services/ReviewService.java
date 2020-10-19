@@ -57,9 +57,9 @@ public class ReviewService {
 				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
 					rating = conceptRating.getRating();
 				}
-				conceptsPlusRatings.add(new ConceptsPlusRatings(activeConcept,rating,activeConcept.getTheme()));
-				rating = 0;
 			}
+			conceptsPlusRatings.add(new ConceptsPlusRatings(activeConcept,rating));
+			rating = 0;
 		}
 		return conceptsPlusRatings;
 	}

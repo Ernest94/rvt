@@ -95,6 +95,4 @@ public class Review {
 	public void setReviewStatus(Status reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
-
-
 }

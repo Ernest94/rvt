@@ -57,17 +57,17 @@ public class Filler {
 		
 		//add themes to db
 		List<Theme> themes = new ArrayList<Theme>();
-		themes.add(new Theme("webserver","ws","Een webserver is een programma dat via een netwerk HTTP-verzoeken ontvangt en documenten naar de client stuurt."));
-		themes.add(new Theme("IDE","IDE","Een integrated development environment of IDE is computersoftware die een softwareontwikkelaar ondersteunt bij het ontwikkelen van computersoftware."));
-		themes.add(new Theme("front end","fe","Front end is de voorkant van de website en alles wat de gebruiker ziet."));
-		themes.add(new Theme("coding","cod","Coding is het schrijven van een computerprogramma, een concrete reeks instructies die een computer kan uitvoeren."));
-		themes.add(new Theme("Database (relationeel)","db","Een database is een grote hoeveelheid informatie welke met behulp van computertechniek gestructureerd is opgeslagen."));
+		themes.add(new Theme("webserver","WS","Werking en configuratie van een HTTP server opzetten, Request - response principe, HTTP en HTTPS en limitaties op ongeoorloofde toegang"));
+		themes.add(new Theme("IDE","IDE","Werken met een geavanceerde editor of geïntegreerde ontwikkelomgeving, bouwen vanuit deze omgeving, gebruik shortcuts en debuggen"));
+		themes.add(new Theme("front end","FE","Maken van een forntend deel van een applicatie met HTML, CSS en Javascript"));
+		themes.add(new Theme("coding","CD","Coding is het schrijven van een computerprogramma, een concrete reeks instructies die een computer kan uitvoeren."));
+		themes.add(new Theme("Database (relationeel)","DB","Een database is een grote hoeveelheid informatie welke met behulp van computertechniek gestructureerd is opgeslagen."));
 		themes.add(new Theme("connecties (API)","API","Een API (Application Programming Interface) is een software-interface die het mogelijk maakt dat twee applicaties met elkaar kunnen communiceren."));
-		themes.add(new Theme("programming paradigms","pp","In de informatica zijn programmeerparadigma's denkpatronen of uitgesproken concepten van programmeren, die voornamelijk verschillen in de wijze van aanpak om het gewenste resultaat te kunnen behalen."));
-		themes.add(new Theme("ontwerp methodieken","om","Een ontwerppatroon of patroon (Engels: design pattern) in de informatica is een generiek opgezette softwarestructuur, die een bepaald veelvoorkomend type software-ontwerpprobleem oplost."));
-		themes.add(new Theme("problem solving","ps","Probleem oplossing."));
-		themes.add(new Theme("werken in/ aan projecten","proj.",""));
-		themes.add(new Theme("beeldvorming","bv",""));
+		themes.add(new Theme("programming paradigms","PP","In de informatica zijn programmeerparadigma's denkpatronen of uitgesproken concepten van programmeren, die voornamelijk verschillen in de wijze van aanpak om het gewenste resultaat te kunnen behalen."));
+		themes.add(new Theme("ontwerp methodieken","OM","Een ontwerppatroon of patroon (Engels: design pattern) in de informatica is een generiek opgezette softwarestructuur, die een bepaald veelvoorkomend type software-ontwerpprobleem oplost."));
+		themes.add(new Theme("problem solving","PS","Maken van een ontwerp, code goed gescheiden houden, oplossen van bug en de voorspelbaarheid van de code."));
+		themes.add(new Theme("werken in/ aan projecten","PRJ.","Technieken die belangrijk zijn voor het werken aan grote projecten zoals het overzichtelijk structureren van je bestanden werken met Agile/Scrum methodiek, versiebeheer etc."));
+		themes.add(new Theme("beeldvorming","BV","Hoever kan je geleerde technieken meenemen naar nieuwe talen, wat zijn de overeenkomsten en de verschillen."));
 		ThemeRepository themeRepo = new ThemeRepository();
 		for (Theme theme : themes) {
 			themeRepo.create(theme);
