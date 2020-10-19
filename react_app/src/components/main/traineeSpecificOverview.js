@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
-import Box from '@material-ui/core/Box';
+//import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
 import './search.css';
@@ -36,9 +36,10 @@ class traineeSpecificOverview extends React.Component {
     
 
     getConcepts() {
+        console.log(this.createUserIdJson());
         axios.post(config.url.Api_URL + "/webapi/review/curriculum", this.createUserIdJson())
-            .then(response => {
-                console.log("succes");
+            .then(response => {            
+
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -78,20 +79,25 @@ class traineeSpecificOverview extends React.Component {
     }
 
     getRating(rating) {
-        switch (rating) {
+        switch (rating) {           
             case 1: return ("Matig");
             case 2: return ("Redelijk");
             case 3: return ("Voldoende");
             case 4: return ("Goed");
             case 5: return ("Uitstekend");
+            default: return ("Geen Rating");
         }
     }
 
     getWeekBlock(week) {
-        var devidedweek = week / this.state.weeksPerBlock;
-        //switch (devidedweek) {
-        //    case
-        //}
+        const wpb = this.state.weeksPerBlock
+        var devidedweek = Math.ceil(week / wpb);
+        switch (devidedweek) {
+            case 1: return ("week " + 1 + " t/m " + wpb);
+            case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
+            case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
+            default: return ("geen tijd aangegeven");
+        }
     }
 
     render() {
@@ -102,14 +108,14 @@ class traineeSpecificOverview extends React.Component {
             return (
                 <tr>
                     <td className="p-3 text-nowrap align-middle">
+                        {this.getWeekBlock(concept.week)}
+                    </td>
+                    <td className="p-3 text-nowrap align-middle">
                         {concept.theme.abbriviation} 
                     </td>
                     <td className="p-3 text-nowrap align-middle">
                         {concept.name}
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.week}
-                    </td>
+                    </td>                  
                     <td className="p-3 text-nowrap align-middle">                 
                         <Rating
                             value={concept.rating}
@@ -136,14 +142,14 @@ class traineeSpecificOverview extends React.Component {
                         <thead>
                             <tr>
                                 <th className="p-2 text-nowrap align-middle">
+                                    Blok
+                                    </th>
+                                <th className="p-2 text-nowrap align-middle">
                                     Thema
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
                                     Concept
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Blok
-                                    </th>
+                                    </th>                               
                                 <th className="p-2 text-nowrap align-middle">
                                     Waardering
                                     </th>

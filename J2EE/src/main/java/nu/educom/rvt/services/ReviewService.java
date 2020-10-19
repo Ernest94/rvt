@@ -5,13 +5,13 @@ import java.util.List;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
-import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
 
 public class ReviewService {
 	
-	public List<Concept> getActiveConcepts(User user) {
+	public List<Concept> getActiveConcepts() {
 		List<Concept> activeConcepts = new ArrayList<Concept>();
 		
 		ConceptRepository conceptRepo = new ConceptRepository();
@@ -34,7 +34,7 @@ public class ReviewService {
 		return activeConcepts;
 	}
 	
-	public List<ConceptRating> getLatestConceptRatings(User user, int reviewId) {
+	public List<ConceptRating> getLatestConceptRatings() {
 		List<ConceptRating> conceptsRatings = null;
 
 		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
@@ -48,4 +48,19 @@ public class ReviewService {
 		return conceptsRatings;
 	}
 	
+	
+	public List<ConceptsPlusRatings> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
+		List<ConceptsPlusRatings> conceptsPlusRatings = new ArrayList<ConceptsPlusRatings>();
+		int rating = 0;
+		for (Concept activeConcept : activeConcepts) {
+			for (ConceptRating conceptRating : conceptRatings) {
+				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
+					rating = conceptRating.getRating();
+				}
+				conceptsPlusRatings.add(new ConceptsPlusRatings(activeConcept,rating,activeConcept.getTheme()));
+				rating = 0;
+			}
+		}
+		return conceptsPlusRatings;
+	}
 }
