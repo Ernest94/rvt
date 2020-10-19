@@ -15,7 +15,6 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
 import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.services.ReviewService;
-import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/review")
 public class ReviewResource {

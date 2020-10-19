@@ -68,3 +68,6 @@ h2 {
     color: white;
 }
 
+span:hover + abbreviation {
+    display: block;
+}

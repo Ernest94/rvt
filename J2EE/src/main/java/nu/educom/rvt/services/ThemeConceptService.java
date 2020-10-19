@@ -33,7 +33,4 @@ public class ThemeConceptService {
 		List<Concept> concepts = this.conceptRepo.readAll();
 		return concepts;
 	}
-	
-	
-  
 }

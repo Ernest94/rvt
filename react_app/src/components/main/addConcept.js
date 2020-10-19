@@ -39,7 +39,8 @@ class addConcept extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/theme_concept/createConcept", this.createConceptJson())
+            console.log(this.createConceptJson());
+            axios.post(config.url.API_URL + "/webapi/theme_concept/saveConcept", this.createConceptJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
@@ -49,7 +50,7 @@ class addConcept extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createConceptJson());
 
-                    this.setErrors({login: ["Mislukt om thema toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om concept toe te voegen."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -63,17 +64,25 @@ class addConcept extends React.Component {
         return {
             name: this.state.name,
             description: this.state.description,
-            themeId: this.state.theme,
+            theme: {id: this.state.theme.id},
             week: this.state.week,
             startDate: this.date
         }
     }
 
+    onChangeTheme = (e) => {
+        var selectedTheme = this.state.themes.find(theme=> theme.id === parseInt(e.target.value));
+        this.setState({
+            theme: selectedTheme,
+            themeDisplayName: e.target.value
+        });
+    }
+
     getThemes() {
-        axios.get(config.url.API_URL + '/webapi/theme_concept/getThemes')
+        axios.get(config.url.API_URL + '/webapi/theme_concept/themes')
             .then(response => {
                 this.setState({
-                    themes: response.data.themes, 
+                    themes: response.data, 
                     pageLoading: false
                 });
             })
@@ -120,7 +129,7 @@ class addConcept extends React.Component {
                         <label htmlFor="theme">Thema:</label>
                         <select className="mr-5 p-2 align-middle" name="theme" id="theme"
                             value={this.props.themeDisplayName}
-                            onChange={this.props.onChangeTheme}
+                            onChange={this.onChangeTheme}
                             required>
 
                             <option hidden value=''>Thema</option>
@@ -139,7 +148,7 @@ class addConcept extends React.Component {
                     </div>
 
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                    <button className="btn btn-primary float-right" type="submit">Thema toevoegen</button>}
+                    <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
                 </form>
             </div >
         )
