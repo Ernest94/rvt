@@ -37,7 +37,7 @@ class traineeSpecificOverview extends React.Component {
 
     getConcepts() {
         console.log(this.createUserIdJson());
-        axios.post(config.url.Api_URL + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {            
 
                 this.handleCurriculumReponse(response.data);
@@ -57,9 +57,9 @@ class traineeSpecificOverview extends React.Component {
     handleCurriculumReponse(data)
     {
         this.setState({
-            userName: data.name,
-            userLocation: data.location.name,
-            concepts: data.concepts,
+            userName: data.traineeName,
+            userLocation: data.traineeLocation.name,
+            concepts: data.conceptsPlusRatings ,
         });
         console.log(this.state);
     }
@@ -108,13 +108,13 @@ class traineeSpecificOverview extends React.Component {
             return (
                 <tr>
                     <td className="p-3 text-nowrap align-middle">
-                        {this.getWeekBlock(concept.week)}
+                        {this.getWeekBlock(concept.concept.week)}
+                    </td>
+                    <td className="abbreviationClass p-3 text-nowrap align-middle">
+                        {concept.concept.theme.abbreviation} 
                     </td>
                     <td className="p-3 text-nowrap align-middle">
-                        {concept.theme.abbriviation} 
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.name}
+                        {concept.concept.name}
                     </td>                  
                     <td className="p-3 text-nowrap align-middle">                 
                         <Rating
