@@ -125,7 +125,7 @@ class traineeSpecificOverview extends React.Component {
         return (
 
             <div>
-                <h2 className="text-center">Curriculum {this.state.userName}</h2>
+                <h2 className="text-center">Review {this.state.userName}</h2>
                 <h2 className="text-center">{this.state.userLocation}</h2>
                 <div >
                     <ul className="errors">{this.state.errors}</ul>                 
