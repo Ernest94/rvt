@@ -203,13 +203,13 @@ class Main extends React.Component {
                         <AccessRoute exact path="/addTheme"
                             isLoggedIn={loggedIn}
                             userHasAccess={!isTrainee}
-                            handleReturnToSettings={this.handleReturnToConcepts}
+                            handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addTheme}
                         />
                         <AccessRoute exact path="/addConcept"
                             isLoggedIn={loggedIn}
                             userHasAccess={!isTrainee}
-                            handleReturnToSettings={this.handleReturnToConcepts}
+                            handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addConcept}
                         />
                         <AccessRoute exact path="/conceptOverview"
@@ -227,7 +227,7 @@ class Main extends React.Component {
                         />
                         <AccessRoute exact path="/curriculum"
                             isLoggedIn={loggedIn}
-                            userHasAccess={isTrainee}
+                            userHasAccess={true}
                             isTrainee={isTrainee}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}

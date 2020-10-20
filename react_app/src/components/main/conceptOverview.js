@@ -153,7 +153,7 @@ class conceptOverview extends React.Component {
         return (
 
             <div>
-                <h2 className="text-center">Curriculum</h2>
+                <h2 className="text-center">concepten overzicht</h2>
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
@@ -193,7 +193,7 @@ class conceptOverview extends React.Component {
                                     Thema
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
-                                    Naam
+                                    Concept
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
                                     Actief

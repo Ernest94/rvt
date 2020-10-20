@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import {config} from '../constants';
 
@@ -89,9 +90,14 @@ class addTheme extends React.Component {
                         <input className="form-control " id="abbreviation" type="text" name="abbreviation" onChange={this.handleFormChange} />
                     </div>
 
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                    <button className="btn btn-primary float-right" type="submit">Thema toevoegen</button>}
-                </form>
+                    {(this.state.loading) ? 
+                        <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                        <Link
+                            className="buttonLink"
+                            to={"/conceptOverview"}>
+                            <button className="btn btn-primary float-right" type="submit">Thema toevoegen</button>
+                        </Link>
+                    }</form>
             </div >
         )
     }

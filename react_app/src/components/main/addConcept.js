@@ -25,7 +25,7 @@ class addConcept extends React.Component {
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-            [name]: value  
+            [name]: value,
         });
         console.log(name + " " + value);
     }
@@ -76,6 +76,13 @@ class addConcept extends React.Component {
             theme: selectedTheme,
             themeDisplayName: e.target.value
         });
+    }
+
+    handleChangeDate = (e) => {
+        var selectDate = (e.target.value).toString();
+            this.setState({
+                date: selectDate,
+            }); console.log(selectDate);
     }
 
     getThemes() {
@@ -144,7 +151,7 @@ class addConcept extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="date">Startdatum:</label>
-                        <input className="form-control " id="date" type="date" name="date" onChange={this.handleFormChange} />
+                        <input className="form-control " id="date" type="date" name="date" onChange={this.handleChangeDate} />
                     </div>
 
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
