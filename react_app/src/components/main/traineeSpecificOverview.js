@@ -96,7 +96,8 @@ class traineeSpecificOverview extends React.Component {
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
-            default: return ("geen tijd aangegeven");
+            case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
+            default: return ("week 9 of later");
         }
     }
 

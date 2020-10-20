@@ -113,7 +113,6 @@ class addConcept extends React.Component {
 
         return (
             <div className="container main-container">
-                <ul className="errors">{this.state.errors}</ul>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Naam:</label>

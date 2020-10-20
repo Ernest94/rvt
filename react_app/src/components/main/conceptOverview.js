@@ -27,8 +27,9 @@ class conceptOverview extends React.Component {
 
     componentDidMount() {
         this.setState({ pageLoading: true });
-        this.getThemes()
-        this.fakeHandleSearchReponse();
+        this.getThemes();
+        this.getConcepts();
+        //this.fakeHandleSearchReponse();
     }
     
     handleFormChange = (e) => {
@@ -44,23 +45,33 @@ class conceptOverview extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
+        
+    }
+
+    getConcepts() {
         axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
 
             .then(response => {
-                this.setState({buttonDisabled: false, errors: null});
-                
+                this.setState({ buttonDisabled: false, errors: null });
+
                 this.handleCurriculumReponse(response.data);
                 this.render();
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                this.fakeCurriculumResponse();
+                //this.fakeCurriculumResponse();
                 //const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
                     //errors: this.props.setErrors(custErr)
-                    });
+                });
             });
+    }
+
+    createUserIdJson() {
+        return {
+            id: 1, //this.state.userId,
+        };
     }
 
     handleCurriculumReponse(data) {
