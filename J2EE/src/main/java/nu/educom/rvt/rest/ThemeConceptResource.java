@@ -23,8 +23,9 @@ public class ThemeConceptResource {
 	@Path("/saveTheme")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveTheme(Theme theme) {
+        /* JH TIP: Mis hier of in de service de controle op alle velden van het thema */ 
 		Theme createdTheme = this.themeConceptServ.addTheme(theme);
-		return (createdTheme == null ? Response.status(409).build() : Response.status(201).entity(createdTheme).build());  
+		return (createdTheme == null ? Response.status(409/* JH: Had hier 400 verwacht */).build() : Response.status(201).entity(createdTheme).build());  
   	}
 	
 	@GET
@@ -32,7 +33,7 @@ public class ThemeConceptResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllThemes() {
 		List<Theme> themes = this.themeConceptServ.getAllThemes();
-		return (themes == null ? Response.status(409).build() : Response.status(200).entity(themes).build());
+		return (themes == null ? Response.status(409/* JH: Had hier 404 verwacht */).build() : Response.status(200).entity(themes).build());
 	}
 	
 	
@@ -40,8 +41,9 @@ public class ThemeConceptResource {
 	@Path("/saveConcept")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveConcept(Concept concept) {
+        /* JH TIP: Mis hier of in de service de controle op alle velden van het concept */ 
 		Concept createdConcept = this.themeConceptServ.addConcept(concept);
-		return (createdConcept == null ? Response.status(409).build() : Response.status(201).build());  
+		return (createdConcept == null ? Response.status(409/* JH: Had hier 400 verwacht */).build() : Response.status(201).build());  
 	}
 	
 	@GET
@@ -49,6 +51,6 @@ public class ThemeConceptResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllConcepts() {
 		List<Concept> concepts = this.themeConceptServ.getAllConcepts();
-		return (concepts == null ? Response.status(409).build() : Response.status(200).entity(concepts).build());
+		return (concepts == null ? Response.status(409 /* JH: Had hier 404 verwacht */).build() : Response.status(200).entity(concepts).build());
 	}
 }

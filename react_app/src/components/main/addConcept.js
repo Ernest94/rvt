@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import {config} from '../constants';
 
@@ -14,7 +15,9 @@ class addConcept extends React.Component {
             themes: [],
             date: null,
             week: 1,
-            loading: false
+            loading: false,
+            message:"",
+            themeDisplayName:""
         };
     }
 
@@ -25,7 +28,7 @@ class addConcept extends React.Component {
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-            [name]: value  
+            [name]: value,
         });
         console.log(name + " " + value);
     }
@@ -44,7 +47,8 @@ class addConcept extends React.Component {
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
-                    this.props.handleReturnToConcepts();
+                    //this.props.handleReturnToConcepts();
+                    this.succesfullAdd();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
@@ -70,12 +74,28 @@ class addConcept extends React.Component {
         }
     }
 
+    succesfullAdd(){
+        this.setState({ name:"",
+                        description: "",
+                        message:"concept toegevoegd",
+                        startDate:"",
+                        week:"",
+                        themeDisplayName: ""});
+    }
+
     onChangeTheme = (e) => {
         var selectedTheme = this.state.themes.find(theme=> theme.id === parseInt(e.target.value));
         this.setState({
             theme: selectedTheme,
             themeDisplayName: e.target.value
         });
+    }
+
+    handleChangeDate = (e) => {
+        var selectDate = (e.target.value).toString();
+            this.setState({
+                date: selectDate,
+            }); console.log(selectDate);
     }
 
     getThemes() {
@@ -116,18 +136,18 @@ class addConcept extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Naam:</label>
-                        <input className="form-control" id="name" type="text" name="name" onChange={this.handleFormChange}/>
+                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="description">Beschrijving:</label>
-                        <input className="form-control " id="description" type="text" name="description" onChange={this.handleFormChange}/>
+                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="theme">Thema:</label>
                         <select className="mr-5 p-2 align-middle" name="theme" id="theme"
-                            value={this.props.themeDisplayName}
+                            value={this.themeDisplayName}
                             onChange={this.onChangeTheme}
                             required>
 
@@ -138,17 +158,18 @@ class addConcept extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="week">Week:</label>
-                        <input className="form-control " id="week" type="number" name="week" min="1" onChange={this.handleFormChange} />
+                        <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="date">Startdatum:</label>
-                        <input className="form-control " id="date" type="date" name="date" onChange={this.handleFormChange} />
+                        <input className="form-control " id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
                     </div>
 
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                    <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
+                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                        <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
                 </form>
+                <h4 className="text-center">{this.state.message}</h4>
             </div >
         )
     }

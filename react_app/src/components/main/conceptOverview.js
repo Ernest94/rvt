@@ -29,7 +29,6 @@ class conceptOverview extends React.Component {
         this.setState({ pageLoading: true });
         this.getThemes();
         this.getConcepts();
-        //this.fakeHandleSearchReponse();
     }
     
     handleFormChange = (e) => {
@@ -38,19 +37,20 @@ class conceptOverview extends React.Component {
            [name]: value 
         });
     }
-
-    toggleActive() {   
-    }
-    
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         
     }
 
+    createUserIdJson() {
+        return {
+            id: 1, //this.state.userId,
+        };
+    }
+
     getConcepts() {
         axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
-
             .then(response => {
                 this.setState({ buttonDisabled: false, errors: null });
 
@@ -66,13 +66,7 @@ class conceptOverview extends React.Component {
                     //errors: this.props.setErrors(custErr)
                 });
             });
-    }
 
-    createUserIdJson() {
-        return {
-            id: 1, //this.state.userId,
-        };
-    }
 
     handleCurriculumReponse(data) {
         this.setState({
@@ -173,7 +167,7 @@ class conceptOverview extends React.Component {
         return (
 
             <div>
-                <h2 className="text-center">Curriculum</h2>
+                <h2 className="text-center">Concepten overzicht</h2>
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
@@ -216,7 +210,7 @@ class conceptOverview extends React.Component {
                                     Thema
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
-                                    Naam
+                                    Concept
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
                                     Actief

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Rating from '@material-ui/lab/Rating';
+import './traineeSpecificOverview.css'
 //import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';

@@ -6,9 +6,10 @@ import java.util.List;
 
 import nu.educom.rvt.models.*;
 import nu.educom.rvt.repositories.*;
+import nu.educom.rvt.services.UserService;
 
 public class Filler {
-	
+	/* JH: Gebruik geen <tab> karakters in de database */
 	public static Boolean isDatabaseEmpty() {
 		RoleRepository rolesRepo = new RoleRepository();
 		List<Role> roles = rolesRepo.readAll();
@@ -50,9 +51,9 @@ public class Filler {
 		users.add(new User("Trainee", "trainee@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),localDate,endDate));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),localDate,endDate));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),localDate,endDate));
-		UserRepository userRepo = new UserRepository();
+		UserService userService = new UserService();
 		for (User user : users) {
-			userRepo.create(user);
+			userService.addUser(user);
 		}		
 		
 		//add themes to db

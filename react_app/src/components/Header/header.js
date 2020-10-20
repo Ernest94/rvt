@@ -13,7 +13,7 @@ class Header extends React.Component {
                             <span className="userName">Welkom "{this.props.data.userName}"</span>
                             <button className="btn rvtbutton logoutbutton" onClick={() => this.props.handleLogOut()}> Log uit </button>
                         </div>;
-               accountSettings = <Link to="/settings" className="header-link">Instellingen</Link> ;
+               accountSettings = <Link to="/settings" className="header-link">Menu</Link> ;
         }
         return (
             <header className="App-header">
