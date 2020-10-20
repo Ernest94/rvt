@@ -9,8 +9,8 @@ class Settings extends React.Component {
         //const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
         const addThemeLink = this.props.userHasAccess ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
         const addConceptLink = this.props.userHasAccess ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
-        const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Curriculum</Link></li> : <span></span>
-        const traineeSpecificOverview = this.props.userHasAccess ? < li > <Link className="link" to="/curriculum">Hallo</Link></li> : <span></span>
+        const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Concept Overzicht</Link></li> : <span></span>
+        const traineeSpecificOverview = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Curriculum</Link></li> : <span></span>
 
         console.log(this.props.userHasAccess);
         return (
