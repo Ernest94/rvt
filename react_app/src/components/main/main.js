@@ -99,7 +99,7 @@ class Main extends React.Component {
     handleReturnToConcepts() {
         this.props.history.push('/conceptOverview');
     }
-
+    /* JH TIP: Zet dit soort access functies in een eigen js class permissions.js zodat je ze ook buiten main kan gebruiken */
     isUserAdmin() {
         return sessionStorage.getItem("userRole") === "Admin";
     }
@@ -111,6 +111,7 @@ class Main extends React.Component {
     canAddUser() {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
+        /* JH: Mis hier isOffice zij kunnen ook trainees toevoegen */
         return (isAdmin || isDocent);
     }
 
@@ -171,11 +172,11 @@ class Main extends React.Component {
                             dateValidation={this.dateValidation}
                             handleReturnToSettings={this.handleReturnToSettings}
                             editDisabled={false} 
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of {canAddUser()} */
                             isLoggedIn={loggedIn}
                         />
                         <AccessRoute exact path="/addUser"
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of {canAddUser()}*/
                             component={AddUser}
                             dateValidation={this.dateValidation}
                             isLoggedIn={loggedIn} 
@@ -184,7 +185,7 @@ class Main extends React.Component {
                         />
                         <AccessRoute exact path="/linking" 
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of of {canAddUser()} */
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={LinkUsers} 
                         />
@@ -192,6 +193,7 @@ class Main extends React.Component {
                             isLoggedIn={loggedIn} 
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={LinkUsers} 
+                            /* JH: Mis hier de useHasAccess */
                         />
                         <AccessRoute exact path="/search" 
                             userHasAccess={!isTrainee} 
@@ -203,19 +205,19 @@ class Main extends React.Component {
                         />
                         <AccessRoute exact path="/addTheme"
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit isAdmin zijn en ik zou er een functie canAddTheme voor maken (in permissions.js?) */
                             handleReturnToSettings={this.handleReturnToConcepts}
                             component={addTheme}
                         />
                         <AccessRoute exact path="/addConcept"
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit isAdmin || isDocent zijn en ik zou er een functie canAddConcept voor maken (in permissions.js?) */
                             handleReturnToSettings={this.handleReturnToConcepts}
                             component={addConcept}
                         />
                         <AccessRoute exact path="/conceptOverview"
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={!isTrainee} /* JH: Volgens mij moet dit isAdmin || isDocent zijn */
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={conceptOverview}
                         />
@@ -227,7 +229,8 @@ class Main extends React.Component {
                         />
                         <AccessRoute exact path="/curriculum"
                             isLoggedIn={loggedIn}
-                            userHasAccess={isTrainee}
+                            userHasAccess={isTrainee} /* JH TIP: Maak hier een functie canViewCurriculum voor (in permissions.js) */
+                            isTrainee={isTrainee}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
                         />
