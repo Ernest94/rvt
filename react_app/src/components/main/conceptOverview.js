@@ -9,6 +9,8 @@ class conceptOverview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            userName: "",
+            userLocation: null,
             themes: [],
             theme: "",
             active: false,
@@ -42,17 +44,17 @@ class conceptOverview extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
-        axios.post(config.url.API_URL + "/webapi/user/conceptFilter", this.createFilterJson())
+        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
 
             .then(response => {
                 this.setState({buttonDisabled: false, errors: null});
                 
-                this.handleSearchReponse(response.data);
+                this.handleCurriculumReponse(response.data);
                 this.render();
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                this.fakeHandleSearchReponse();
+                this.fakeCurriculumResponse();
                 //const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
@@ -61,18 +63,22 @@ class conceptOverview extends React.Component {
             });
     }
 
-    handleSearchReponse(data)
-    {
+    handleCurriculumReponse(data) {
         this.setState({
-            users: data.conceptsearch,
-            //users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
+            userName: data.traineeName,
+            userLocation: data.traineeLocation.name,
+            currentConcepts: data.conceptsPlusRatings,
         });
+        console.log(this.state);
     }
 
-    fakeHandleSearchReponse() {
+    fakeCurriculumResponse() {
         this.setState({
-            currentConcepts: [{ id: 7, week: 1, theme: "MySQL", name: "phpMyAdmin", active: true }, { id: 5, theme: "agile/scrum", name: "uses & goals", active: true } ]
-        });
+            userName: "Niels",
+            userLocation: "Utrecht",
+            currentConcepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
+        })
+        console.log(this.state);
     }
 
     getThemes() {
@@ -135,15 +141,18 @@ class conceptOverview extends React.Component {
 
         var conceptDisplay = this.state.currentConcepts.map((concept) => {
             return (
-                <tr className="searchResult" onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} >
-                    <td className="p-2 text-nowrap align-middle">
-                        {concept.theme} 
+                <tr className="searchResult" /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
+                    <td className="p-3 text-nowrap align-middle">
+                        {concept.concept.week}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
-                        {concept.name}
+                    <td className="abbreviationClass p-3 text-nowrap align-middle">
+                        {concept.concept.theme.abbreviation}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
-                        Ja
+                    <td className="p-3 text-nowrap align-middle">
+                        {concept.concept.name}
+                    </td>
+                    <td className="p-3 text-nowrap align-middle">
+                        Actief
                     </td>
                 </tr >
             )
@@ -189,6 +198,9 @@ class conceptOverview extends React.Component {
                     <table className="w-100 mx-auto">
                         <thead>
                             <tr>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Week
+                                    </th>
                                 <th className="p-2 text-nowrap align-middle">
                                     Thema
                                     </th>
