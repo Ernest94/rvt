@@ -249,7 +249,7 @@ class Dossier extends React.Component {
                         <Link
                             className="buttonLink"
                             to={"/curriculum/" + userId /*+ "/" + name */}>
-                            <button className="button">Curriculum</button>
+                            <button className="button">Review</button>
                         </Link>
                     </div>
                     <div className="text-center">

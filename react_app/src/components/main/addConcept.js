@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import {config} from '../constants';
 
@@ -154,8 +155,13 @@ class addConcept extends React.Component {
                         <input className="form-control " id="date" type="date" name="date" onChange={this.handleChangeDate} />
                     </div>
 
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                    <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
+                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                    <Link
+                        className="buttonLink"
+                        to={"/conceptOverview"}>
+                        <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>
+                    </Link> 
+                    }
                 </form>
             </div >
         )

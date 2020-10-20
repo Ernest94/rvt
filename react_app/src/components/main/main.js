@@ -147,7 +147,8 @@ class Main extends React.Component {
                         <PrivateRoute exact path="/settings"
                             component={Settings}
                             isLoggedIn={loggedIn}
-                            userHasAccess={true}
+                            userHasAccess={!isTrainee}
+                            isTrainee={isTrainee}
                         />
                         <PrivateRoute exact path="/password" 
                             component={Password} 
@@ -221,7 +222,6 @@ class Main extends React.Component {
                         <AccessRoute exact path="/curriculum/:userId"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
-                            isTrainee={isTrainee}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
                         />
