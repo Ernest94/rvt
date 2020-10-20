@@ -12,7 +12,7 @@ public class Theme {
 	private int id;
 	@Column(name="name")
 	private String name;
-	@Column(name="description", length=150)
+	@Column(name="description", length=450)
 	private String description;
 	@Column(name="abbreviation")
 	private String abbreviation;

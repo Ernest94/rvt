@@ -15,7 +15,9 @@ class addConcept extends React.Component {
             themes: [],
             date: null,
             week: 1,
-            loading: false
+            loading: false,
+            message:"",
+            themeDisplayName:""
         };
     }
 
@@ -45,7 +47,8 @@ class addConcept extends React.Component {
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     
-                    this.props.handleReturnToConcepts();
+                    //this.props.handleReturnToConcepts();
+                    this.succesfullAdd();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
@@ -69,6 +72,15 @@ class addConcept extends React.Component {
             week: this.state.week,
             startDate: this.date
         }
+    }
+
+    succesfullAdd(){
+        this.setState({ name:"",
+                        description: "",
+                        message:"concept toegevoegd",
+                        startDate:"",
+                        week:"",
+                        themeDisplayName: ""});
     }
 
     onChangeTheme = (e) => {
@@ -125,18 +137,18 @@ class addConcept extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Naam:</label>
-                        <input className="form-control" id="name" type="text" name="name" onChange={this.handleFormChange}/>
+                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="description">Beschrijving:</label>
-                        <input className="form-control " id="description" type="text" name="description" onChange={this.handleFormChange}/>
+                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="theme">Thema:</label>
                         <select className="mr-5 p-2 align-middle" name="theme" id="theme"
-                            value={this.props.themeDisplayName}
+                            value={this.themeDisplayName}
                             onChange={this.onChangeTheme}
                             required>
 
@@ -147,22 +159,18 @@ class addConcept extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="week">Week:</label>
-                        <input className="form-control " id="week" type="number" name="week" min="1" onChange={this.handleFormChange} />
+                        <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="date">Startdatum:</label>
-                        <input className="form-control " id="date" type="date" name="date" onChange={this.handleChangeDate} />
+                        <input className="form-control " id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
                     </div>
 
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                    <Link
-                        className="buttonLink"
-                        to={"/conceptOverview"}>
-                        <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>
-                    </Link> 
-                    }
+                        <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
                 </form>
+                <h4 className="text-center">{this.state.message}</h4>
             </div >
         )
     }

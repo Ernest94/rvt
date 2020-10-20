@@ -45,7 +45,7 @@ class conceptOverview extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
     }
-    
+
     createUserIdJson() {
         return {
             id: 1, //this.state.userId,
@@ -171,7 +171,7 @@ class conceptOverview extends React.Component {
         return (
 
             <div>
-                <h2 className="text-center">concepten overzicht</h2>
+                <h2 className="text-center">Concepten overzicht</h2>
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>

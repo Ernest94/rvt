@@ -13,7 +13,7 @@ class Dossier extends React.Component {
         super(props);
         this.state = {
             name: "",
-			email: "",
+			email: "", /* JH: Let op dan je geen <tab> charakters gebruikt */
 			role: null,
 			location: null,
 			startDate: "",
@@ -38,11 +38,30 @@ class Dossier extends React.Component {
     }
     
     canViewUserDossier() {
+        /* JH TIP: Zie remark op main.js regel 102 om hier een eigen permissions.js van te maken, en daarnaast ook isUserAdmin etc hier te gebruiken */
         const userRole = sessionStorage.getItem("userRole");
         console.log(this.state.role);
         const roleDossierUser = this.state.role.name;
         const ownUserId = sessionStorage.getItem("userId");
-        var isBlocked;
+        var isBlocked; /* JH TIP: Ik zou in plaats van isBlocked een isAllowedToView maken, dat maakt de logica hieronder leesbaarder 
+        switch (userRole) {
+            case "Trainee":
+                isAllowedToView = isOwnUserId(this.state.userId);
+                break;
+            case "Docent":
+            case "Sales":
+            case "Office":
+                isAllowedToView = isTraineeDossier(this.state.role) || isOwnUserId(this.state.userId);
+                break;
+            case "Admin":
+                isAllowedToView = true;
+                break;
+            default:
+                isAllowedToView = false;
+                break;
+        }
+        this.setState({blocked: !isAllowedToView});
+        */
         switch (userRole) {
             case "Trainee":
                 isBlocked = ownUserId !== this.state.userId
@@ -51,13 +70,13 @@ class Dossier extends React.Component {
                 isBlocked = (roleDossierUser !== "Trainee" && ownUserId !== this.state.userId);
                 break;
             case "Sales":
-                isBlocked = roleDossierUser === "Admin";
+                isBlocked = roleDossierUser === "Admin"; /* JH: Vreemd ik had hier verwacht dat sales ook alleen trainees en zichzelf mocht zien */
                 break;
             case "Office":
-                isBlocked = (roleDossierUser === "Admin" || roleDossierUser === "Sales");
+                isBlocked = (roleDossierUser === "Admin" || roleDossierUser === "Sales"); /* JH: Vreemd ik had hier verwacht dat office ook alleen trainees en zichzelf mocht zien */
                 break;
             default:
-                isBlocked = false;
+                isBlocked = false; /* JH: Dit is gevaarlijk, het is beter om case admin: isBlocked = false te hebben en de default case op isBlocked = true te zetten */
                 break;
         }
         this.setState({blocked: isBlocked});
