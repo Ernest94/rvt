@@ -13,8 +13,6 @@ import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AdminRoute from '../routes/AdminRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
-import addTheme from './addTheme';
-import addConcept from './addConcept';
 
 class Main extends React.Component {
     constructor(props) {
@@ -95,8 +93,6 @@ class Main extends React.Component {
                     <PrivateRoute exact path="/linking" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
                     <PrivateRoute exact path="/linking/:userId" isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} component={LinkUsers} />
                     <AdminRoute exact path="/search" userIsAdmin={this.canSearchUser} component={Search} isLoggedIn={this.state.loggedIn} handleDossierRequest={this.handleDossierRequest} handleReturnToSettings={this.handleReturnToSettings} />
-                    <AdminRoute exact path="/addTheme" component={addTheme} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
-                    <AdminRoute exact path="/addConcept" component={addConcept} isLoggedIn={this.state.loggedIn} handleReturnToSettings={this.handleReturnToSettings} />
 
                 </Switch>
                 <Footer/>

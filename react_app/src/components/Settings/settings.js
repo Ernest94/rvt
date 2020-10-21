@@ -5,9 +5,7 @@ class Settings extends React.Component {
     
     render() {
         const addUserLink = this.props.userIsAdmin() ? <li><Link to="/addUser">Voeg een gebruiker toe</Link></li> : <span></span>
-        const addThemeLink = this.props.userIsAdmin() ? <li><Link to="/addTheme">Voeg een thema toe</Link></li> : <span></span>
         const searchLink = this.props.userIsAdmin() ? <li><Link to="/Search">Gebruikers</Link></li> : <span></span>
-        
         return (
             <div className="container main-container">
 
@@ -18,7 +16,6 @@ class Settings extends React.Component {
                     {addUserLink}
                     <li><Link to="/linking">Bekijk relaties</Link></li>
                     {searchLink}
-                    {addThemeLink}
 
                 </ul>
             </div>
