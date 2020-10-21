@@ -66,7 +66,7 @@ class conceptOverview extends React.Component {
                     //errors: this.props.setErrors(custErr)
                 });
             });
-
+    }
 
     handleCurriculumReponse(data) {
         this.setState({
