@@ -18,7 +18,9 @@ public class Filler {
 	
 	public static void fillDatabase() {
 		
-	    LocalDate localDate = LocalDate.now();
+		LocalDate weekAgo = LocalDate.now().minus(7,);
+		LocalDate dayAgo = LocalDate.now();
+	    LocalDate now = LocalDate.now();
 		LocalDate endDate = null;
 
 		//add roles to db
@@ -44,13 +46,19 @@ public class Filler {
 			locationRepo.create(location);
 		}
 		
+		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		
 		//add users to db
 		List<User> users = new ArrayList<User>();
-		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),localDate,endDate));
-		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),localDate,endDate));
-		users.add(new User("Trainee", "trainee@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),localDate,endDate));
-		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),localDate,endDate));
-		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),localDate,endDate));
+		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),now,endDate));
+		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),now,endDate));
+		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),now,endDate));
+		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),now,endDate));
+		users.add(trainee1);
+		users.add(trainee2);
+		users.add(trainee3);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
@@ -76,44 +84,44 @@ public class Filler {
 		
 		//add concepts to db
 		List<Concept> concepts = new ArrayList<Concept>();
-		concepts.add(new Concept(themes.get(0),"webserver opzetten",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(0),"document root, local host",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(0),"request/response flow",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(0),"webserver opzetten",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(0),"document root, local host",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(0),"request/response flow",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(1),"code omgeving basis",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(1),"code omgeving basis",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(2),"documentopbouw",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(2),"pagina indeling (divisions, paragraphs, lists)",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(2),"interaction- anchors, forms/inputfields",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(2),"uiterlijk (colors, fonts, borders)",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(2),"weergave( inline, block, margin/padding)",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(2),"documentopbouw",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(2),"pagina indeling (divisions, paragraphs, lists)",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(2),"interaction- anchors, forms/inputfields",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(2),"uiterlijk (colors, fonts, borders)",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(2),"weergave( inline, block, margin/padding)",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(3),"variabelen,data types",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"iteraties (loops), Selecties (if/else, switch)",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"Functies en Scope",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"sequenties",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"Post-afhandeling",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"URL parameters",null,1,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"File Handling(read/write)",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"bron code organisatie",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"herbruikbare code",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"debuggen",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"clean code",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(3),"dry code",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(3),"variabelen,data types",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"iteraties (loops), Selecties (if/else, switch)",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"Functies en Scope",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"sequenties",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"Post-afhandeling",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"URL parameters",null,1,now,endDate));
+		concepts.add(new Concept(themes.get(3),"File Handling(read/write)",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"bron code organisatie",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"herbruikbare code",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"debuggen",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"clean code",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(3),"dry code",null,2,now,endDate));
 	
-		concepts.add(new Concept(themes.get(4),"normalisatie en databasebouw",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(4),"queries (Select, where, group by)",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(4),"normalisatie en databasebouw",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(4),"queries (Select, where, group by)",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(5),"OOP (objecten, methods, properties)",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(5),"OOP (objecten, methods, properties)",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(7),"algorithme ontwerp",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(7),"clean code",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(7),"algorithme ontwerp",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(7),"clean code",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(8),"coding styles ",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(8),"file structuur",null,2,localDate,endDate));
-		concepts.add(new Concept(themes.get(8),"programma structuur",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(8),"coding styles ",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(8),"file structuur",null,2,now,endDate));
+		concepts.add(new Concept(themes.get(8),"programma structuur",null,2,now,endDate));
 		
-		concepts.add(new Concept(themes.get(9),"verschilllen en overeenkomsten talen",null,2,localDate,endDate));
+		concepts.add(new Concept(themes.get(9),"verschilllen en overeenkomsten talen",null,2,now,endDate));
 		
 		ConceptRepository conceptRepo = new ConceptRepository();
 		for (Concept concept : concepts) {
@@ -124,16 +132,46 @@ public class Filler {
 		
 		//REVIEW	
 		ReviewRepository reviewRepo = new ReviewRepository();
-		Review review = new Review(localDate, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED);
-		reviewRepo.create(review);
+		Review review1 = new Review(weekAgo, "Matig bezig trainee1", "Deze trainee is meh bezig", Review.Status.COMPLETED, trainee1);
+		Review review2 = new Review(dayAgo, "Redelijk bezig trainee1", "Deze trainee is voldoende bezig", Review.Status.COMPLETED, trainee1);
+		Review review3 = new Review(now, "Goed bezig trainee1", "Deze trainee is prima bezig", Review.Status.PENDING, trainee1);
+		Review review4 = new Review(dayAgo, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED, trainee2);
+		reviewRepo.create(review1);
+		reviewRepo.create(review2);
+		reviewRepo.create(review3);
+		reviewRepo.create(review4);
+		
 		
 		//CONCEPTRATING
 		List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
-		conceptsRatings.add(new ConceptRating(review,concepts.get(0),2));
-		conceptsRatings.add(new ConceptRating(review,concepts.get(1),2));
-		conceptsRatings.add(new ConceptRating(review,concepts.get(2),2));
-		conceptsRatings.add(new ConceptRating(review,concepts.get(3),4));
-		conceptsRatings.add(new ConceptRating(review,concepts.get(4),4));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(1),2));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2));
+		
+		
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3));
+		
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(1),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(2),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(3),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(4),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(5),4));
+		
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(0),4));
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(1),4));
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(2),4));
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(3),4));
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(4),4));
+		conceptsRatings.add(new ConceptRating(review4,concepts.get(5),4));
+		
+		
 		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
 		for (ConceptRating conceptRating : conceptsRatings) {
 			conceptRatingRepo.create(conceptRating);
