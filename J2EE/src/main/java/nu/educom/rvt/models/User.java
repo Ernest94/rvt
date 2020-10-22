@@ -26,9 +26,9 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="location_id")
 	private Location location;
-	@Column(name="datumActive")
+	@Column(name="dateActive")
 	private LocalDate dateActive;
-	@Column(name="datumInactive")
+	@Column(name="dateInactive")
 	private LocalDate dateInactive;
 
 	public User() {}
@@ -110,17 +110,17 @@ public class User {
 		this.location = location;
 	}
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-	public LocalDate getDatumActive() {
+	public LocalDate getDateActive() {
 		return dateActive;
 	}
-	public void setDatumActive(LocalDate datumActive) {
-		this.dateActive = datumActive;
+	public void setDateActive(LocalDate dateActive) {
+		this.dateActive = dateActive;
 	}
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-	public LocalDate getDatumInactive() {
+	public LocalDate getDateInactive() {
 		return dateInactive;
 	}
-	public void setDatumInactive(LocalDate datumInactive) {
-		this.dateInactive = datumInactive;
+	public void setDateInactive(LocalDate dateInactive) {
+		this.dateInactive = dateInactive;
 	}	
 }
