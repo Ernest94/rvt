@@ -142,7 +142,6 @@ public class Filler {
 		reviewRepo.create(review3);
 		reviewRepo.create(review4);
 		
-		
 		//CONCEPTRATING
 		List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
 		conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2));
@@ -150,8 +149,7 @@ public class Filler {
 		conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2));
 		conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2));
 		conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2));
-		
-		
+				
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3));
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3));
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3));

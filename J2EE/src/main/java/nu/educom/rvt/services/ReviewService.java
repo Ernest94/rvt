@@ -5,6 +5,7 @@ import java.util.List;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
@@ -62,5 +63,11 @@ public class ReviewService {
 			rating = 0;
 		}
 		return conceptsPlusRatings;
+	}
+	
+	public List<Review> getAllCompletedReviewForUser(User user){
+		
+		ReviewRepository 
+		
 	}
 }
