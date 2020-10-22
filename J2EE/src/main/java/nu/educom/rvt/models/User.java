@@ -2,6 +2,9 @@ package nu.educom.rvt.models;
 
 import java.time.LocalDate;
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="users")
@@ -106,12 +109,14 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDatumActive() {
 		return dateActive;
 	}
 	public void setDatumActive(LocalDate datumActive) {
 		this.dateActive = datumActive;
 	}
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDatumInactive() {
 		return dateInactive;
 	}
