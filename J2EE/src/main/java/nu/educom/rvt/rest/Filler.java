@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class Filler {
 	
 	public static void fillDatabase() {
 		
-		LocalDate weekAgo = LocalDate.now().minus(7,);
-		LocalDate dayAgo = LocalDate.now();
+		LocalDate weekAgo = LocalDate.now().minus(7, ChronoUnit.DAYS);
+		LocalDate dayAgo = LocalDate.now().minus(1, ChronoUnit.DAYS);
 	    LocalDate now = LocalDate.now();
 		LocalDate endDate = null;
 
