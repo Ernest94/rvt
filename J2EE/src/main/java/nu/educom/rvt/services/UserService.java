@@ -143,11 +143,7 @@ public class UserService {
 		List<UserSearch> userSearch = new ArrayList<>();	
 		for(User user : users)
 		{
-<<<<<<< Updated upstream
 			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive()));
-=======
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getdateActive()));
->>>>>>> Stashed changes
 		}		
 		return new UserSearchJson(userSearch);
 	}

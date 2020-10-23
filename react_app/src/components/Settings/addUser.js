@@ -209,14 +209,7 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
-<<<<<<< Updated upstream
             dateActive: this.state.dateActive
-=======
-            dateActive: {"year": 2020, "month": "OCTOBER", "chronology":
-                        {"id": "ISO", "calendarType": "iso8601"}, "monthValue": 10,
-                        "dayOfMonth":30, "dayOfWeek": "FRIDAY", "leapYear": true, "dayOfYear": 304,
-                        "era": "CE"}
->>>>>>> Stashed changes
         }
     }
 

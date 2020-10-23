@@ -109,7 +109,6 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-<<<<<<< Updated upstream
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDateActive() {
 		return dateActive;
@@ -122,18 +121,6 @@ public class User {
 		return dateInactive;
 	}
 	public void setDateInactive(LocalDate dateInactive) {
-=======
-	public LocalDate getdateActive() {
-		return dateActive;
-	}
-	public void setdateActive(LocalDate dateActive) {
-		this.dateActive = dateActive;
-	}
-	public LocalDate getdateInactive() {
-		return dateInactive;
-	}
-	public void setdateInactive(LocalDate dateInactive) {
->>>>>>> Stashed changes
 		this.dateInactive = dateInactive;
 	}	
 }
