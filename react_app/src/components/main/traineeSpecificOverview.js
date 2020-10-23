@@ -144,16 +144,16 @@ class traineeSpecificOverview extends React.Component {
                         <table >
                             <thead>
                                 <tr>
-                                    <th className="p-2 text-nowrap align-middle">
+                                    <th className="p-5 text-nowrap align-middle">
                                         Blok
                                         </th>
-                                    <th className="p-2 text-nowrap align-middle">
+                                    <th className="p-5 text-nowrap align-middle">
                                         Thema
                                         </th>
-                                    <th className="p-2 text-nowrap align-middle">
+                                    <th className="p-5 text-nowrap align-middle">
                                         Concept
                                         </th>                               
-                                    <th className="p-2 text-nowrap align-middle">
+                                    <th className="p-5 text-nowrap align-middle">
                                         Waardering
                                         </th>
                                 </tr>
