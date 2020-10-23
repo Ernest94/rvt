@@ -9,6 +9,7 @@ class Settings extends React.Component {
         //const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
         const addThemeLink = this.props.userHasAccess ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
         const addConceptLink = this.props.userHasAccess ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
+        const addLocationLink = this.props.userHasAccess ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
         const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
         const traineeSpecificOverview = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review trainee</Link></li> : <span></span>
 
@@ -23,6 +24,7 @@ class Settings extends React.Component {
                     {searchLink}
                     {addThemeLink}
                     {addConceptLink}
+                    {addLocationLink}
                     {conceptOverviewLink}
                     {traineeSpecificOverview}
                 </ul>

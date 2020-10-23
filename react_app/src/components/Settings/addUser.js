@@ -12,6 +12,7 @@ class AddUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+
             currentStep: 1,
             name: "",
             email: "",
@@ -19,24 +20,24 @@ class AddUser extends React.Component {
             dateActive: "",
             role: null,
             location: null,
-            teacher: null,
+            // teacher: null,
             roleDisplayName: "",
             locationDisplayName: "",
-            teacherDisplayName: "",
+            // teacherDisplayName: "",
             isTrainee: null,
             roles : [],
             locations: [],
-            teachers: [{id:1 , name: "Pieter"}],
+            // teachers: [{id:1 , name: "Pieter"}],
             errors: null,
             pageLoading: false,
             submitButtonDisabled: false,
-            isDocent: sessionStorage.getItem("userRole") === "Docent",
+            isDocent: sessionStorage.getItem("userRole") === "docent",
         };
 
         this.handleFormChange = this.handleFormChange.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangeLocation = this.onChangeLocation.bind(this);
-        this.onChangeTeacher = this.onChangeTeacher.bind(this);
+        // this.onChangeTeacher = this.onChangeTeacher.bind(this);
         this._next = this._next.bind(this);
         this._prev = this._prev.bind(this);
     }
@@ -65,7 +66,7 @@ class AddUser extends React.Component {
             });
         })
         .finally(() => {
-            if (this.state.isDocent) {
+            if (this.state.isLocation) {
                 this.setState({
                     currentStep: 2,
                     role: this.state.roles.find(role => role.name === "Trainee"),
@@ -101,20 +102,20 @@ class AddUser extends React.Component {
         });
     }
 
-    onChangeTeacher= (e) => {
-        this.setState({
-           teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
-           teacherDisplayName: e.target.value
-        });
-    }
+    // onChangeTeacher= (e) => {
+    //     this.setState({
+    //        teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
+    //        teacherDisplayName: e.target.value
+    //     });
+    // }
 
     _next() {
-        console.log(this.state.currentStep);
-        if (!this.state.isTrainee) {
-            this.setState({teacher: null, teacherDisplayName: ""});
-        }
+    //     console.log(this.state.currentStep);
+    //     if (!this.state.isTrainee) {
+    //         this.setState({teacher: null, teacherDisplayName: ""});
+    // }
 
-        if ((this.state.location != null || this.state.teacher) && this.state.role != null) {
+        if ((this.state.location != null /*|| this.state.teacher*/) && this.state.role != null) {
             this.setState({currentStep: 2, errors: null});
         }
         else {
@@ -130,7 +131,7 @@ class AddUser extends React.Component {
     get previousButton() {
         let currentStep = this.state.currentStep;
 
-        if (currentStep > 1 &&  !this.state.isDocent) {
+        if (currentStep > 1 /*&&  !this.state.isDocent*/) {
             return (
                 <button
                     className="btn btn-danger"
@@ -176,6 +177,7 @@ class AddUser extends React.Component {
         event.preventDefault();
         this.setState({submitButtonDisabled: true});
         var errors = validate(this.state, constraints);
+        console.log(this.createUserJson());
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
@@ -207,7 +209,14 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
+<<<<<<< Updated upstream
             dateActive: this.state.dateActive
+=======
+            dateActive: {"year": 2020, "month": "OCTOBER", "chronology":
+                        {"id": "ISO", "calendarType": "iso8601"}, "monthValue": 10,
+                        "dayOfMonth":30, "dayOfWeek": "FRIDAY", "leapYear": true, "dayOfYear": 304,
+                        "era": "CE"}
+>>>>>>> Stashed changes
         }
     }
 
@@ -227,13 +236,13 @@ class AddUser extends React.Component {
                         currentStep={this.state.currentStep}
                         roles={this.state.roles}
                         locations={this.state.locations}
-                        teachers={this.state.teachers}
-                        teacherDisplayName={this.state.teacherDisplayName}
+                        // teachers={this.state.teachers}
+                        // teacherDisplayName={this.state.teacherDisplayName}
                         roleDisplayName={this.state.roleDisplayName}
                         locationDisplayName={this.state.locationDisplayName}
                         onChangeRole={this.onChangeRole}
                         onChangeLocation={this.onChangeLocation}
-                        onChangeTeacher={this.onChangeTeacher}
+                        // onChangeTeacher={this.onChangeTeacher}
                         isTrainee={this.state.isTrainee}
                     />
 
