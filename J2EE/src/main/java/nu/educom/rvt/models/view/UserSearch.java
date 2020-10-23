@@ -56,7 +56,7 @@ public class UserSearch {
 	public LocalDate getDateActive() {
 		return dateActive;
 	}
-	public void setDateActive(LocalDate datumActive) {
-		this.dateActive = datumActive;
+	public void setDateActive(LocalDate dateActive) {
+		this.dateActive = dateActive;
 	}
 }

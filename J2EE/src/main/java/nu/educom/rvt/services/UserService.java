@@ -60,10 +60,10 @@ public class UserService {
 		else return false;
 	}
 	
-	public User makeUser(String name, String email, String password, Role role, Location location, LocalDate datumActive)
+	public User makeUser(String name, String email, String password, Role role, Location location, LocalDate dateActive)
 	{
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-		User user = new User(name, email, hashedPassword, role, location, datumActive, null);
+		User user = new User(name, email, hashedPassword, role, location, dateActive, null);
 		return user;
 	}
 	
@@ -143,7 +143,11 @@ public class UserService {
 		List<UserSearch> userSearch = new ArrayList<>();	
 		for(User user : users)
 		{
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDatumActive()));
+<<<<<<< Updated upstream
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive()));
+=======
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getdateActive()));
+>>>>>>> Stashed changes
 		}		
 		return new UserSearchJson(userSearch);
 	}

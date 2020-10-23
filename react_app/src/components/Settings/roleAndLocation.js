@@ -44,12 +44,12 @@ class RoleAndLocation extends React.Component {
                     locationDisplayName= {this.props.locationDisplayName}
                     onChangeLocation={this.props.onChangeLocation}
                 /> 
-                <TeacherSelection
+                {/* <TeacherSelection
                     isTrainee={this.props.isTrainee}
                     teachers={this.props.teachers}
                     onChangeTeacher={this.props.onChangeTeacher}
                     teacherDisplayName={this.props.teacherDisplayName}
-                />
+                /> */}
                 
             </div>
         )

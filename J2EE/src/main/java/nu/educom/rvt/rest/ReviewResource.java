@@ -46,7 +46,7 @@ public class ReviewResource {
 		List<ConceptsPlusRatings> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
-		String traineeName = "Trainee1";
+		String traineeName = "Trainee";
 		String traineeLocation = "Utrecht";
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);

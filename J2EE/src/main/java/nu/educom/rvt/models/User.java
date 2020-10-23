@@ -2,6 +2,9 @@ package nu.educom.rvt.models;
 
 import java.time.LocalDate;
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="users")
@@ -23,9 +26,9 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="location_id")
 	private Location location;
-	@Column(name="datumActive")
+	@Column(name="dateActive")
 	private LocalDate dateActive;
-	@Column(name="datumInactive")
+	@Column(name="dateInactive")
 	private LocalDate dateInactive;
 
 	public User() {}
@@ -106,16 +109,31 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public LocalDate getDatumActive() {
+<<<<<<< Updated upstream
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public LocalDate getDateActive() {
 		return dateActive;
 	}
-	public void setDatumActive(LocalDate datumActive) {
-		this.dateActive = datumActive;
+	public void setDateActive(LocalDate dateActive) {
+		this.dateActive = dateActive;
 	}
-	public LocalDate getDatumInactive() {
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public LocalDate getDateInactive() {
 		return dateInactive;
 	}
-	public void setDatumInactive(LocalDate datumInactive) {
-		this.dateInactive = datumInactive;
+	public void setDateInactive(LocalDate dateInactive) {
+=======
+	public LocalDate getdateActive() {
+		return dateActive;
+	}
+	public void setdateActive(LocalDate dateActive) {
+		this.dateActive = dateActive;
+	}
+	public LocalDate getdateInactive() {
+		return dateInactive;
+	}
+	public void setdateInactive(LocalDate dateInactive) {
+>>>>>>> Stashed changes
+		this.dateInactive = dateInactive;
 	}	
 }
