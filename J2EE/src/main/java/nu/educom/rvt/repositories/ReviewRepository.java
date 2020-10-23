@@ -1,9 +1,12 @@
 package nu.educom.rvt.repositories;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.User;
 
 public class ReviewRepository {
 
@@ -24,6 +27,19 @@ public class ReviewRepository {
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 			return session.get(Review.class, id);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
+	public List<Review> readAll() {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return HibernateSession.loadAllData(Review.class, session);
 		}
 		finally {
 			if (session != null) {

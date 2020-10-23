@@ -1,14 +1,20 @@
 package nu.educom.rvt.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.Review.Status;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.ReviewRepository;
 
 public class ReviewService {
 	
@@ -50,8 +56,8 @@ public class ReviewService {
 	}
 	
 	
-	public List<ConceptsPlusRatings> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
-		List<ConceptsPlusRatings> conceptsPlusRatings = new ArrayList<ConceptsPlusRatings>();
+	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
+		List<ConceptPlusRating> conceptsPlusRatings = new ArrayList<ConceptPlusRating>();
 		int rating = 0;
 		for (Concept activeConcept : activeConcepts) {
 			for (ConceptRating conceptRating : conceptRatings) {
@@ -59,7 +65,7 @@ public class ReviewService {
 					rating = conceptRating.getRating();
 				}
 			}
-			conceptsPlusRatings.add(new ConceptsPlusRatings(activeConcept,rating));
+			conceptsPlusRatings.add(new ConceptPlusRating(activeConcept,rating));
 			rating = 0;
 		}
 		return conceptsPlusRatings;
@@ -67,7 +73,17 @@ public class ReviewService {
 	
 	public List<Review> getAllCompletedReviewForUser(User user){
 		
-		ReviewRepository 
+		ReviewRepository reviewRepo = new ReviewRepository();
+		return reviewRepo.readAll().stream().filter(r -> r.getUser().getId() == user.getId())
+											.filter(r -> r.getReviewStatus() == Status.COMPLETED)
+											.collect(Collectors.toList());
 		
 	}
+	
+//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, LocalDate date){
+//		
+//			
+//		return null;
+//	}
+//	
 }
