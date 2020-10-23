@@ -20,8 +20,8 @@ public class Filler {
 		
 	    LocalDate localDate = LocalDate.now();
 		LocalDate endDate = null;
-
-		//add roles to db
+		
+		//FILL THE USER TABLE
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(new Role("Admin"));
 		roles.add(new Role("Docent"));
@@ -33,7 +33,7 @@ public class Filler {
 			roleRepo.create(role);
 		}
 		
-		//add locations to db
+		//FILL THE LOCATION TABLE
 		List<Location> locations = new ArrayList<Location>();
 		locations.add(new Location("Utrecht"));
 		locations.add(new Location("Arnhem"));
@@ -44,7 +44,7 @@ public class Filler {
 			locationRepo.create(location);
 		}
 		
-		//add users to db
+		//FILL THE USER TABLE
 		List<User> users = new ArrayList<User>();
 		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),localDate,endDate));
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),localDate,endDate));
@@ -56,7 +56,7 @@ public class Filler {
 			userService.addUser(user);
 		}		
 		
-		//add themes to db
+		//FILL THE THEME TABLE
 		List<Theme> themes = new ArrayList<Theme>();
 		themes.add(new Theme("webserver","WS","Werking en configuratie van een HTTP server opzetten, Request - response principe, HTTP en HTTPS en limitaties op ongeoorloofde toegang"));
 		themes.add(new Theme("IDE","IDE","Werken met een geavanceerde editor of geïntegreerde ontwikkelomgeving, bouwen vanuit deze omgeving, gebruik shortcuts en debuggen"));
@@ -73,20 +73,17 @@ public class Filler {
 		for (Theme theme : themes) {
 			themeRepo.create(theme);
 		}
-		
-		//add concepts to db
+
+		//FILL THE CONCEPT TABLE
 		List<Concept> concepts = new ArrayList<Concept>();
-		
 		//thema webserver
 		//week 1&2
 		concepts.add(new Concept(themes.get(0),"webserver opzetten",null,1,localDate,endDate));
 		concepts.add(new Concept(themes.get(0),"document root, local host",null,1,localDate,endDate));
 		concepts.add(new Concept(themes.get(0),"request/response flow",null,1,localDate,endDate));
-		
 		//thema IDE
 		//week 1&2
 		concepts.add(new Concept(themes.get(1),"code omgeving basis",null,2,localDate,endDate));
-		
 		//thema front end
 		//week 1&2
 		concepts.add(new Concept(themes.get(2),"documentopbouw",null,1,localDate,endDate));
@@ -105,7 +102,6 @@ public class Filler {
 		concepts.add(new Concept(themes.get(2),"Advanced UI",null,8,localDate,endDate));
 		//week 10 t/m 12
 		concepts.add(new Concept(themes.get(2),"Front-end Frameworks",null,11,localDate,endDate));
-
 		//thema coding
 		//week 1&2
 		concepts.add(new Concept(themes.get(3),"variabelen,data types",null,1,localDate,endDate));
@@ -134,7 +130,6 @@ public class Filler {
 		concepts.add(new Concept(themes.get(3),"2e taal al het voorgaande & OOP",null,7,localDate,endDate));
 		//week 10 t/m 12
 		concepts.add(new Concept(themes.get(3),"2e taal verdieping",null,10,localDate,endDate));		
-		
 		//thema Database (relationeel)
 		//week 1&2
 		concepts.add(new Concept(themes.get(4),"normalisatie en databasebouw",null,2,localDate,endDate));
@@ -146,7 +141,6 @@ public class Filler {
 		concepts.add(new Concept(themes.get(4),"transactions (ROLLBACK en COMMIT)",null,9,localDate,endDate));
 		//week 10 t/m 12
 		concepts.add(new Concept(themes.get(4),"kennis van no-sql",null,11,localDate,endDate));
-		
 		//thema connecties (API)
 		//week 3&4
 		concepts.add(new Concept(themes.get(5),"API's gebruiken",null,4,localDate,endDate));		
@@ -154,7 +148,6 @@ public class Filler {
 		concepts.add(new Concept(themes.get(5),"API's bouwen",null,5,localDate,endDate));		
 		//week 7 t/m 9
 		concepts.add(new Concept(themes.get(5),"API's bouwen",null,9,localDate,endDate));
-		
 		//thema programming paradigms
 		//week 1&2
 		concepts.add(new Concept(themes.get(6),"OOP (objecten, methods, properties)",null,2,localDate,endDate));
@@ -166,13 +159,11 @@ public class Filler {
 		concepts.add(new Concept(themes.get(6),"Design Patterns (PHP)",null,6,localDate,endDate));
 		//week 7 t/m 9
 		concepts.add(new Concept(themes.get(6),"Design Patterns (JS)",null,7,localDate,endDate));
-
 		//thema ontwerp methodieken
 		//week 7 t/m 9
 		concepts.add(new Concept(themes.get(7),"MVC",null,7,localDate,endDate));
 		concepts.add(new Concept(themes.get(7),"MVVM",null,9,localDate,endDate));
 		concepts.add(new Concept(themes.get(7),"MPC",null,9,localDate,endDate));
-		
 		//thema problem solving
 		//week 1&2
 		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,2,localDate,endDate));
@@ -180,7 +171,6 @@ public class Filler {
 		//week 3&4
 		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,localDate,endDate));
 		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,localDate,endDate));
-
 		//thema werken in/ aan projecten
 		//week 1&2
 		concepts.add(new Concept(themes.get(9),"coding styles ",null,1,localDate,endDate));
@@ -191,24 +181,22 @@ public class Filler {
 		concepts.add(new Concept(themes.get(9),"versiebeheer",null,4,localDate,endDate));
 		//week 7 t/m 9
 		concepts.add(new Concept(themes.get(9),"deployment",null,8,localDate,endDate));
-		
 		//thema beeldvorming
 		//week 1&2
 		concepts.add(new Concept(themes.get(10),"verschilllen en overeenkomsten talen",null,2,localDate,endDate));
-		
 		ConceptRepository conceptRepo = new ConceptRepository();
 		for (Concept concept : concepts) {
 			conceptRepo.create(concept);
 		}	
+
+		//MOCK DATA	
 		
-		//fill database with mock review data {Review, ConceptRating}
-		
-		//REVIEW	
+		//FILL THE REVIEW TABLE
 		ReviewRepository reviewRepo = new ReviewRepository();
 		Review review = new Review(localDate, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED);
 		reviewRepo.create(review);
 		
-		//CONCEPTRATING
+		//FILL THE CONCEPT-RATING TABLE
 		List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
 		conceptsRatings.add(new ConceptRating(review,concepts.get(0),2));
 		conceptsRatings.add(new ConceptRating(review,concepts.get(1),2));
