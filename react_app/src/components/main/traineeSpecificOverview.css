@@ -1,3 +1,32 @@
- /* .abbreviationClass:span:hover {
+ .abbreviationClass:hover {
     display: block;
-} */
+    float: left;
+}
+
+.reviewTable{
+    height: 500px;
+    width: 500px;
+    overflow-y: scroll;
+
+}
+
+.reviewText{
+    height: 100%;
+    text-align: center;
+}
+
+.tableBody{
+}
+
+#reviewBody{
+    height: 100%;
+}
+
+#test1{
+    height: 80%;
+}
+
+#test2{
+    height: 20%;
+}
+

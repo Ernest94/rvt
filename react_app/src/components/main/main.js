@@ -19,6 +19,7 @@ import addTheme from './addTheme.js';
 import addConcept from './addConcept.js';
 import conceptOverview from './conceptOverview.js';
 import traineeSpecificOverview from './traineeSpecificOverview.js';
+import addLocation from './addLocation.js';
 
 class Main extends React.Component {
     
@@ -214,6 +215,12 @@ class Main extends React.Component {
                             userHasAccess={!isTrainee}
                             handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addConcept}
+                        />
+                        <AccessRoute exact path="/addLocation"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToSettings}
+                            component={addLocation}
                         />
                         <AccessRoute exact path="/conceptOverview"
                             isLoggedIn={loggedIn}

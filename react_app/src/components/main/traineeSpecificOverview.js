@@ -109,16 +109,16 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="p-3 text-nowrap align-middle">
+                    <td className="p-1 text-nowrap align-middle">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="abbreviationClass p-3 text-nowrap align-middle">
+                    <td className="abbreviationClass p-1 text-nowrap align-middle">
                         {concept.concept.theme.abbreviation} 
                     </td>
-                    <td className="p-3 text-nowrap align-middle">
+                    <td className="p-1 text-nowrap align-middle">
                         {concept.concept.name}
                     </td>                  
-                    <td className="p-3 text-nowrap align-middle">                 
+                    <td className="p-1 text-nowrap align-middle">                 
                         <Rating
                             value={concept.rating}
                             name="rating"
@@ -129,39 +129,44 @@ class traineeSpecificOverview extends React.Component {
             )
         });
 
-
+        
         return (
 
-            <div>
-                <h2 className="text-center">Review {this.state.userName}</h2>
-                <h2 className="text-center">{this.state.userLocation}</h2>
-                <div >
-                    <ul className="errors">{this.state.errors}</ul>                 
-                </div >
+            <div className="reviewBody">
+                <div className="test1">
+                    <h2 className="reviewText">Review {this.state.userName}</h2>
+                    <h2 className="reviewText">{this.state.userLocation}</h2>
+                    <div >
+                        <ul className="errors">{this.state.errors}</ul>                 
+                    </div >
 
-                <div className="text-center">
-                    <table className="w-100 mx-auto">
-                        <thead>
-                            <tr>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Blok
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Thema
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Concept
-                                    </th>                               
-                                <th className="p-2 text-nowrap align-middle">
-                                    Waardering
-                                    </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {conceptDisplay}
-                        </tbody>
-                    </table>
-                </div >
+                    <div className="reviewTable">
+                        <table >
+                            <thead>
+                                <tr>
+                                    <th className="p-2 text-nowrap align-middle">
+                                        Blok
+                                        </th>
+                                    <th className="p-2 text-nowrap align-middle">
+                                        Thema
+                                        </th>
+                                    <th className="p-2 text-nowrap align-middle">
+                                        Concept
+                                        </th>                               
+                                    <th className="p-2 text-nowrap align-middle">
+                                        Waardering
+                                        </th>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBody">
+                                {conceptDisplay}
+                            </tbody>
+                        </table>
+                    </div >
+                </div>
+                <div className="test2">
+
+                </div>
             </div>
 
            
