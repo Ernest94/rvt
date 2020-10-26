@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import TextareaAutosize from 'react-textarea-autosize';
+
 import Rating from '@material-ui/lab/Rating';
 import './traineeSpecificOverview.css'
 //import Box from '@material-ui/core/Box';
@@ -125,6 +127,10 @@ class traineeSpecificOverview extends React.Component {
                             readOnly="true"
                         />
                     </td>
+                    <td className="p-3 text-nowrap align-middle">
+                        <TextareaAutosize readOnly aria-label="minimum height"> 
+                        </TextareaAutosize> 
+                    </td> 
                 </tr >
             )
         });
@@ -154,8 +160,11 @@ class traineeSpecificOverview extends React.Component {
                                         Concept
                                         </th>                               
                                     <th className="p-5 text-nowrap align-middle">
-                                        Waardering
+                                        Vaardigheid
                                         </th>
+                                    <th className="p-2 text-nowrap align-middle">
+                                        Commentaar
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="tableBody">
@@ -167,6 +176,7 @@ class traineeSpecificOverview extends React.Component {
                 <div className="test2">
 
                 </div>
+
             </div>
 
            
