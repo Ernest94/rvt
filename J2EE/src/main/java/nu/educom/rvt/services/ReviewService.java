@@ -3,6 +3,7 @@ package nu.educom.rvt.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Concept;
@@ -56,20 +57,20 @@ public class ReviewService {
 	}
 	
 	
-	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
-		List<ConceptPlusRating> conceptsPlusRatings = new ArrayList<ConceptPlusRating>();
-		int rating = 0;
-		for (Concept activeConcept : activeConcepts) {
-			for (ConceptRating conceptRating : conceptRatings) {
-				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
-					rating = conceptRating.getRating();
-				}
-			}
-			conceptsPlusRatings.add(new ConceptPlusRating(activeConcept,rating));
-			rating = 0;
-		}
-		return conceptsPlusRatings;
-	}
+//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
+//		List<ConceptPlusRating> conceptsPlusRatings = new ArrayList<ConceptPlusRating>();
+//		int rating = 0;
+//		for (Concept activeConcept : activeConcepts) {
+//			for (ConceptRating conceptRating : conceptRatings) {
+//				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
+//					rating = conceptRating.getRating();
+//				}
+//			}
+//			conceptsPlusRatings.add(new ConceptPlusRating(activeConcept,rating));
+//			rating = 0;
+//		}
+//		return conceptsPlusRatings;
+//	}
 	
 	public List<Review> getAllCompletedReviewForUser(User user){
 		
@@ -80,10 +81,22 @@ public class ReviewService {
 		
 	}
 	
-//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, LocalDate date){
-//		
-//			
-//		return null;
-//	}
-//	
+	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
+		
+		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
+		if(reviews == null) {
+			for(Concept concept: concepts) {
+				conceptPlusRating.add(new ConceptPlusRating(concept, 0));
+			}
+			return conceptPlusRating;
+		}
+		
+		LocalDate mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		Optional<Review> mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findAny();
+		
+		
+		
+		return null;
+	}
+	
 }

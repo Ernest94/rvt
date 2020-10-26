@@ -39,7 +39,7 @@ public class ReviewResource {
 	@Path("/curriculum")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getActiveConceptsAndRating(User user, LocalDate date) {
+	public Response getActiveConceptsAndRating(User user) {
 		
 		UserService userServ = new UserService(); //load injectables
 		ThemeConceptService conceptServ = new ThemeConceptService();
@@ -47,13 +47,13 @@ public class ReviewResource {
 		
 		List<Review> allReviews = this.reviewServ.getAllCompletedReviewForUser(userOutput);
 		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput); // moet nog geschreven worden
-		//List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews,date); //moet herschreven worden
+		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews); //moet herschreven worden
 		
 		
 		
-		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
-		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
-		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
+		//List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
+		//List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
+		//List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
