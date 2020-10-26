@@ -16,11 +16,14 @@ thead, tbody, tr {
     width: 100%;
     table-layout: fixed;
   }
-  
+
+table tr {
+    height:20px;
+}
 tbody {
     display: block;
     overflow: auto;
     table-layout: fixed;
-    max-height: 250px;
+    max-height: 300px;
   }
 

@@ -111,24 +111,24 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="p-5 text-nowrap align-middle">
+                    <td className="col-3">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="abbreviationClass p-5 text-nowrap align-middle">
+                    <td className="col-3" >
                         {concept.concept.theme.name} 
                     </td>
-                    <td className="p-5 text-nowrap align-middle">
+                    <td className="col-3" >
                         {concept.concept.name}
                     </td>                  
-                    <td className="p-5 text-nowrap align-middle">                 
+                    <td className="col-3" >
                         <Rating
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
                     </td>
-                    <td className="p-5 text-nowrap align-middle">
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="10"> 
+                    <td className="col-3" >
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
                         </TextareaAutosize> 
                     </td> 
                 </tr >
@@ -145,24 +145,22 @@ class traineeSpecificOverview extends React.Component {
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
-
-                    {/* <div className="reviewTable"> */}
                         <table >
                             <thead>
                                 <tr>
-                                    <th className="p-5 text-nowrap align-middle">
+                                    <th scope="col" className="col-3">
                                         Blok
                                         </th>
-                                    <th className="p-5 text-nowrap align-middle">
+                                    <th scope="col" className="col-3">
                                         Thema
                                         </th>
-                                    <th className="p-5 text-nowrap align-middle">
+                                    <th scope="col" className="col-3">
                                         Concept
-                                        </th>                               
-                                    <th className="p-5 text-nowrap align-middle">
+                                        </th> 
+                                    <th scope="col" className="col-3">
                                         Vaardigheid
                                         </th>
-                                    <th className="p-5 text-nowrap align-middle">
+                                    <th scope="col" className="col-3">
                                         Commentaar
                                     </th>
                                 </tr>
@@ -171,12 +169,7 @@ class traineeSpecificOverview extends React.Component {
                                 {conceptDisplay}
                             </tbody>
                         </table>
-                    {/* </div > */}
                 </div>
-                <div className="test2">
-
-                </div>
-
             </div>
 
            
