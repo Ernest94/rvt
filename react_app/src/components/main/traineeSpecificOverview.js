@@ -4,7 +4,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
 import './traineeSpecificOverview.css'
-//import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
 import './search.css';
@@ -111,69 +110,69 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="p-3 text-nowrap align-middle">
+                    <td className="col-3">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="abbreviationClass p-3 text-nowrap align-middle">
-                        {concept.concept.theme.abbreviation} 
+                    <td className="col-3" >
+                        {concept.concept.theme.name} 
                     </td>
-                    <td className="p-3 text-nowrap align-middle">
+                    <td className="col-3" >
                         {concept.concept.name}
                     </td>                  
-                    <td className="p-3 text-nowrap align-middle">                 
+                    <td className="col-3" >
                         <Rating
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
                     </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        <TextareaAutosize readOnly aria-label="minimum height"> 
-                        </TextareaAutosize> 
+                    <td className="col-3" >
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
+                            </TextareaAutosize> 
                     </td> 
                 </tr >
             )
         });
 
-
+        
         return (
+                <div>
+                    <h2 className="trainee-name">Review {this.state.userName}</h2>
+                    <h2 className="trainee-location">{this.state.userLocation}</h2>
+                    <h2 className="review-date">{""}</h2>
 
-            <div>
-                <h2 className="text-center">Review {this.state.userName}</h2>
-                <h2 className="text-center">{this.state.userLocation}</h2>
-                <div >
-                    <ul className="errors">{this.state.errors}</ul>                 
-                </div >
-
-                <div className="text-center">
-                    <table className="w-100 mx-auto">
+                    <div >
+                        <ul className="errors">{this.state.errors}</ul>                 
+                    </div >
+                    <table >
                         <thead>
                             <tr>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th scope="col" className="col-3">
                                     Blok
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th scope="col" className="col-3">
                                     Thema
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th scope="col" className="col-3">
                                     Concept
-                                    </th>                               
-                                <th className="p-2 text-nowrap align-middle">
-                                    Waardering
+                                    </th> 
+                                <th scope="col" className="col-3">
+                                    Vaardigheid
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th scope="col" className="col-3">
                                     Commentaar
-                                    </th>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody>
-                        {conceptDisplay}
+                        <tbody className="tableBody">
+                            {conceptDisplay}
                         </tbody>
                     </table>
-                </div >
-            </div>
-
-           
+                    <div className="trainee-feedback-box">
+                        <h4 >{"Feedback voor Trainee"}</h4>
+                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                    </div>
+                </div>
         )
     }
 }

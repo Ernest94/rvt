@@ -11,7 +11,9 @@ class addLocation extends React.Component {
         super(props);
         this.state = {
             location: "",
-            locationDisplayName
+            locationDisplayName: "",
+            message: "",
+            loading: false,
         };
     }
 
@@ -33,7 +35,7 @@ class addLocation extends React.Component {
         var errors = this.validate();
         if (!errors) {
             console.log(this.createConceptJson());
-            axios.post(config.url.API_URL + "/webapi/theme_concept/saveConcept", this.createConceptJson())  
+            axios.post(config.url.API_URL + "/webapi/add_location/saveConcept", this.createConceptJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
@@ -83,18 +85,18 @@ class addLocation extends React.Component {
 
     render() {
 
-        const locationOptions = this.state.location.map((location) => {
-            return (
-                <option key={location.id} value={location.id}>{location.name}</option>
-            )
-        });
+        // const locationOptions = this.state.location.map((location) => {
+        //     return (
+        //         <option key={location.id} value={location.id}>{location.name}</option>
+        //     )
+        // });
 
         return (
             <div className="container main-container">
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Naam van locatie:</label>
-                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                        <input className="form-control" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
                     </div>
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                         <button className="btn btn-primary float-right" type="submit">locatie toevoegen</button>}

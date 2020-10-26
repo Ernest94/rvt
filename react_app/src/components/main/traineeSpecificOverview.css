@@ -1,3 +1,32 @@
- /* .abbreviationClass:span:hover {
+.trainee-name{
+    text-align: center;
+}
+.trainee-location{
+    text-align: right;
+}
+
+.abbreviationClass:hover {
     display: block;
-} */
+    float: left;
+}
+
+table {
+    width: 100%;
+  }
+  
+thead, tbody, tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+tbody {
+    display: block;
+    overflow: auto;
+    table-layout: fixed;
+    max-height: 350px;
+  }
+
+  .trainee-feedback-box {
+      padding: 20px;
+  }
