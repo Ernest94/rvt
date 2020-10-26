@@ -111,24 +111,24 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="p-1 text-nowrap align-middle">
+                    <td className="p-5 text-nowrap align-middle">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="abbreviationClass p-1 text-nowrap align-middle">
-                        {concept.concept.theme.abbreviation} 
+                    <td className="abbreviationClass p-5 text-nowrap align-middle">
+                        {concept.concept.theme.name} 
                     </td>
-                    <td className="p-1 text-nowrap align-middle">
+                    <td className="p-5 text-nowrap align-middle">
                         {concept.concept.name}
                     </td>                  
-                    <td className="p-1 text-nowrap align-middle">                 
+                    <td className="p-5 text-nowrap align-middle">                 
                         <Rating
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
                     </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        <TextareaAutosize readOnly aria-label="minimum height"> 
+                    <td className="p-5 text-nowrap align-middle">
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="10"> 
                         </TextareaAutosize> 
                     </td> 
                 </tr >
@@ -146,7 +146,7 @@ class traineeSpecificOverview extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
 
-                    <div className="reviewTable">
+                    {/* <div className="reviewTable"> */}
                         <table >
                             <thead>
                                 <tr>
@@ -162,7 +162,7 @@ class traineeSpecificOverview extends React.Component {
                                     <th className="p-5 text-nowrap align-middle">
                                         Vaardigheid
                                         </th>
-                                    <th className="p-2 text-nowrap align-middle">
+                                    <th className="p-5 text-nowrap align-middle">
                                         Commentaar
                                     </th>
                                 </tr>
@@ -171,7 +171,7 @@ class traineeSpecificOverview extends React.Component {
                                 {conceptDisplay}
                             </tbody>
                         </table>
-                    </div >
+                    {/* </div > */}
                 </div>
                 <div className="test2">
 
