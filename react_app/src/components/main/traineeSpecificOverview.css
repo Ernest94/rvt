@@ -5,9 +5,9 @@
     text-align: right;
 }
 
-.abbreviationClass:hover {
-    display: block;
-    float: left;
+.theme:hover {
+    /* display: block; */
+    /* float: left; */
 }
 
 table {
@@ -27,6 +27,6 @@ tbody {
     max-height: 350px;
   }
 
-  .trainee-feedback-box {
+.trainee-feedback-box {
       padding: 20px;
   }

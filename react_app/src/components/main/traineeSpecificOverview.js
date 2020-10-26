@@ -113,7 +113,7 @@ class traineeSpecificOverview extends React.Component {
                     <td className="col-3">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-3" >
+                    <td className="col-3 theme">
                         {concept.concept.theme.name} 
                     </td>
                     <td className="col-3" >
