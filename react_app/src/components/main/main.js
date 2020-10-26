@@ -183,18 +183,6 @@ class Main extends React.Component {
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
-                        //<AccessRoute exact path="/linking" 
-                        //    isLoggedIn={loggedIn}
-                        //    userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of of {canAddUser()} */
-                        //    handleReturnToSettings={this.handleReturnToSettings}
-                        //    component={LinkUsers} 
-                        ///>
-                        //<PrivateRoute exact path="/linking/:userId" 
-                        //    isLoggedIn={loggedIn} 
-                        //    handleReturnToSettings={this.handleReturnToSettings}
-                        //    component={LinkUsers} 
-                        //    /* JH: Mis hier de useHasAccess */
-                        ///>
                         <AccessRoute exact path="/search" 
                             userHasAccess={!isTrainee} 
                             component={Search} 
@@ -244,3 +232,17 @@ class Main extends React.Component {
 }
 
 export default Main;
+
+
+                        // <AccessRoute exact path="/linking" 
+                        //    isLoggedIn={loggedIn}
+                        //    userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of of {canAddUser()} */
+                        //    handleReturnToSettings={this.handleReturnToSettings}
+                        //    component={LinkUsers} 
+                        ///>
+                        //<PrivateRoute exact path="/linking/:userId" 
+                        //    isLoggedIn={loggedIn} 
+                        //    handleReturnToSettings={this.handleReturnToSettings}
+                        //    component={LinkUsers} 
+                        //    /* JH: Mis hier de useHasAccess */
+                        ///>
