@@ -4,7 +4,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
 import './traineeSpecificOverview.css'
-//import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
 import './search.css';
@@ -137,42 +136,43 @@ class traineeSpecificOverview extends React.Component {
 
         
         return (
+                <div>
+                    <h2 className="trainee-name">Review {this.state.userName}</h2>
+                    <h2 className="trainee-location">{this.state.userLocation}</h2>
+                    <h2 className="review-date">{""}</h2>
 
-            <div className="reviewBody">
-                <div className="test1">
-                    <h2 className="reviewText">Review {this.state.userName}</h2>
-                    <h2 className="reviewText">{this.state.userLocation}</h2>
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
-                        <table >
-                            <thead>
-                                <tr>
-                                    <th scope="col" className="col-3">
-                                        Blok
-                                        </th>
-                                    <th scope="col" className="col-3">
-                                        Thema
-                                        </th>
-                                    <th scope="col" className="col-3">
-                                        Concept
-                                        </th> 
-                                    <th scope="col" className="col-3">
-                                        Vaardigheid
-                                        </th>
-                                    <th scope="col" className="col-3">
-                                        Commentaar
+                    <table >
+                        <thead>
+                            <tr>
+                                <th scope="col" className="col-3">
+                                    Blok
                                     </th>
-                                </tr>
-                            </thead>
-                            <tbody className="tableBody">
-                                {conceptDisplay}
-                            </tbody>
-                        </table>
+                                <th scope="col" className="col-3">
+                                    Thema
+                                    </th>
+                                <th scope="col" className="col-3">
+                                    Concept
+                                    </th> 
+                                <th scope="col" className="col-3">
+                                    Vaardigheid
+                                    </th>
+                                <th scope="col" className="col-3">
+                                    Commentaar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="tableBody">
+                            {conceptDisplay}
+                        </tbody>
+                    </table>
+                    <div className="trainee-feedback-box">
+                        <h4 >{"Feedback voor Trainee"}</h4>
+                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                    </div>
                 </div>
-            </div>
-
-           
         )
     }
 }

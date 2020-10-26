@@ -1,5 +1,8 @@
-.reviewText{
+.trainee-name{
     text-align: center;
+}
+.trainee-location{
+    text-align: right;
 }
 
 .abbreviationClass:hover {
@@ -17,13 +20,13 @@ thead, tbody, tr {
     table-layout: fixed;
   }
 
-table tr {
-    height:20px;
-}
 tbody {
     display: block;
     overflow: auto;
     table-layout: fixed;
-    max-height: 300px;
+    max-height: 350px;
   }
 
+  .trainee-feedback-box {
+      padding: 20px;
+  }
