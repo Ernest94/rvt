@@ -116,6 +116,7 @@ class traineeSpecificOverview extends React.Component {
                     <td className="col-3 theme">
                         {concept.concept.theme.name} 
                     </td>
+                    <span className="displayMessage"> {concept.concept.theme.description} </span>
                     <td className="col-3" >
                         {concept.concept.name}
                     </td>                  

@@ -1,13 +1,30 @@
 .trainee-name{
     text-align: center;
 }
+
 .trainee-location{
     text-align: right;
+}    
+
+.displayMessage{
+    display: none;
 }
 
-.theme:hover {
-    /* display: block; */
-    /* float: left; */
+.theme:hover + .displayMessage{
+    display: block;
+    position: absolute;
+    top: auto;
+    left: 30%;
+    right: auto;
+    border: outset 1px;
+    border-color:#a32332;
+    border-radius: 3px;
+    max-width: 20%; 
+    font-size: 12px;
+    background-color: white;
+    color: black;
+    scroll-behavior: smooth;
+    z-index: 1;
 }
 
 table {
@@ -22,11 +39,11 @@ thead, tbody, tr {
 
 tbody {
     display: block;
-    overflow: auto;
-    table-layout: fixed;
+    overflow-y: scroll;
+    table-layout: auto;
     max-height: 350px;
   }
 
-.trainee-feedback-box {
+  .trainee-feedback-box {
       padding: 20px;
   }
