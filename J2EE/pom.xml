@@ -13,6 +13,7 @@
   <!-- FIXME change it to the project's website -->
   <url>http://voortgang.educom.nu</url>
 
+
   <dependencies>
   	<dependency>
   		<groupId>org.glassfish.jersey.bundles</groupId>
@@ -26,6 +27,13 @@
 	    <version>0.4</version>
 	</dependency>
   	
+  	
+  	<dependency>
+  		<groupId>one.util</groupId>
+  		<artifactId>streamex</artifactId>
+  		<version>0.7.3</version>
+	</dependency>
+
   	<dependency>
 	    <groupId>javax.activation</groupId>
 	    <artifactId>activation</artifactId>

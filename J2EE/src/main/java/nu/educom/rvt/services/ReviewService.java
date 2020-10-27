@@ -15,6 +15,7 @@ import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ReviewRepository;
+import one.util.streamex.StreamEx;
 
 public class ReviewService {
 	
@@ -74,9 +75,11 @@ public class ReviewService {
 	public List<Review> getAllCompletedReviewForUser(User user){
 		
 		ReviewRepository reviewRepo = new ReviewRepository();
-		return reviewRepo.readAll().stream().filter(r -> r.getUser().getId() == user.getId())
-											.filter(r -> r.getReviewStatus() == Status.COMPLETED)
-											.collect(Collectors.toList());
+		Status status = Review.Status.COMPLETED;
+		List<Review> reviews = reviewRepo.readAll();
+		return	reviews.stream().filter(review -> review.getUser().getId() == user.getId())
+								.filter(r -> r.getReviewStatus() == Review.Status.COMPLETED)
+								.collect(Collectors.toList());
 		
 	}
 	
@@ -91,10 +94,12 @@ public class ReviewService {
 		}
 		
 		LocalDate mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
-		Optional<Review> mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findAny();
+		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().getDayOfYear() < mostRecentDate.getDayOfYear()).collect(Collectors.toList());
 		
-		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview.get());
+		
+		
+		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview);
 		
 		List<ConceptPlusRating> CPRother = new ArrayList<>();
 		
@@ -110,6 +115,7 @@ public class ReviewService {
 		
 		conceptPlusRating.addAll(CPRMostRecent);
 		conceptPlusRating.addAll(CPRother);
+		conceptPlusRating = StreamEx.of(conceptPlusRating).distinct(foo -> foo.getConcept().getId()).toList();
 		
 		return conceptPlusRating;
 	}
@@ -119,7 +125,7 @@ public class ReviewService {
 		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
 		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
 		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream()
-															   .filter(c -> c.getReview() == review)
+															   .filter(c -> c.getReview().getId() == review.getId())
 															   .sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek()))
 															   .collect(Collectors.toList());
 		

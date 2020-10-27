@@ -40,7 +40,7 @@ public class Concept {
 		this.endDate = endDate;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(int id) {
