@@ -1,6 +1,5 @@
 package nu.educom.rvt.rest;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,12 +10,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
-import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.ThemeConceptService;
 import nu.educom.rvt.services.UserService;
@@ -46,14 +43,8 @@ public class ReviewResource {
 	    User userOutput = userServ.getUserById(user.getId());
 		
 		List<Review> allReviews = this.reviewServ.getAllCompletedReviewForUser(userOutput);
-		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput); // moet nog geschreven worden
+		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews); //moet herschreven worden
-		
-		
-		
-		//List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
-		//List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
-		//List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();

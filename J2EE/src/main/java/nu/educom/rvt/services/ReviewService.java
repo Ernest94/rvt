@@ -12,7 +12,6 @@ import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.models.view.ConceptPlusRating;
-import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ReviewRepository;
@@ -93,10 +92,53 @@ public class ReviewService {
 		
 		LocalDate mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
 		Optional<Review> mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findAny();
+		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().getDayOfYear() < mostRecentDate.getDayOfYear()).collect(Collectors.toList());
 		
+		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview.get());
 		
+		List<ConceptPlusRating> CPRother = new ArrayList<>();
 		
-		return null;
+		for(Review review : otherReviews) {
+			CPRother.addAll(this.getCPRFromReview(review));
+		}
+		List<Concept> removedDuplicates = removeAllDuplicates(concepts, CPRother);
+		
+		for(Concept concept: removedDuplicates) {
+			CPRother.add(new ConceptPlusRating(concept, 0));
+		}
+		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek())).collect(Collectors.toList());		
+		
+		conceptPlusRating.addAll(CPRMostRecent);
+		conceptPlusRating.addAll(CPRother);
+		
+		return conceptPlusRating;
+	}
+	
+	private List<ConceptPlusRating> getCPRFromReview(Review review)
+	{
+		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
+		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream().filter(c -> c.getReview() == review).collect(Collectors.toList());
+		
+		for(ConceptRating conceptRating : conceptRatings)
+		{
+			conceptPlusRatings.add(
+					new ConceptPlusRating(
+					conceptRating.getConcept(), 
+					conceptRating.getRating())
+					);
+		}
+		
+		return conceptPlusRatings;
+	}
+	
+	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
+	{
+		List<Concept> removedDuplicates = new ArrayList<>();
+		List<Concept> conceptsWithRatings = CPRs.stream().map(c ->c.getConcept()).collect(Collectors.toList());
+		removedDuplicates.addAll(concepts);
+		removedDuplicates.removeAll(conceptsWithRatings);
+		return removedDuplicates;
 	}
 	
 }

@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Review;
-import nu.educom.rvt.models.User;
 
 public class ReviewRepository {
 
