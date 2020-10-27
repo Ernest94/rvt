@@ -66,7 +66,7 @@ class Password extends React.Component {
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         return (
             <div>
-                <h2>Verander uw wachtwoord</h2>
+                <h2>Wachtwoord veranderen</h2>
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">

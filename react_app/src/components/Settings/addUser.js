@@ -220,7 +220,7 @@ class AddUser extends React.Component {
 
         return (
             <div>
-                <h2>Voeg een gebruiker toe</h2>
+                <h2>Gebruiker toevoegen</h2>
 
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>

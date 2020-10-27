@@ -132,45 +132,48 @@ class addConcept extends React.Component {
         });
 
         return (
-            <div className="container main-container">
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Naam:</label>
-                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                    </div>
+            <div> 
+                <h2>Concept toevoegen</h2>
+                <div className="container main-container">
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="name">Naam:</label>
+                            <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="description">Beschrijving:</label>
-                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="description">Beschrijving:</label>
+                            <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="theme">Thema:</label>
-                        <select className="mr-5 p-2 align-middle" name="theme" id="theme"
-                            value={this.themeDisplayName}
-                            onChange={this.onChangeTheme}
-                            required>
+                        <div className="form-group">
+                            <label htmlFor="theme">Thema:</label>
+                            <select className="mr-5 p-2 align-middle" name="theme" id="theme"
+                                value={this.themeDisplayName}
+                                onChange={this.onChangeTheme}
+                                required>
 
-                            <option hidden value=''>Thema</option>
-                            {themeOptions}
-                        </select>
-                    </div>
+                                <option hidden value=''>Thema</option>
+                                {themeOptions}
+                            </select>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="week">Week:</label>
-                        <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="week">Week:</label>
+                            <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="date">Startdatum:</label>
-                        <input className="form-control " id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="date">Startdatum:</label>
+                            <input className="form-control " id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
+                        </div>
 
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
-                </form>
-                <h4 className="text-center">{this.state.message}</h4>
-            </div >
+                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                            <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
+                    </form>
+                    <h4 className="text-center">{this.state.message}</h4>
+                </div >
+            </div>
         )
     }
 }

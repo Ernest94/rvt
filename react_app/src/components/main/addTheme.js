@@ -81,30 +81,35 @@ class addTheme extends React.Component {
     
     render() {
         return (
-            <div className="container main-container">
-                <form onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Naam:</label>
-                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                    </div>
+            <div>
+                <h2>Thema toevoegen</h2>
 
-                    <div className="form-group">
-                        <label htmlFor="description">Beschrijving:</label>
-                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                    </div>
+                <div className="container main-container">
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="name">Naam:</label>
+                            <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="abbreviation">Afkorting:</label>
-                        <input className="form-control " id="abbreviation" type="text" name="abbreviation" value={this.state.abbreviation} onChange={this.handleFormChange} />
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="description">Beschrijving:</label>
+                            <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                        </div>
 
-                    {(this.state.loading) ? 
-                        <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                        <button className="btn btn-primary float-right" type="submit">Thema toevoegen</button>}
-                </form>
-                <h4 className="text-center">{this.state.message}</h4>
+                        <div className="form-group">
+                            <label htmlFor="abbreviation">Afkorting:</label>
+                            <input className="form-control " id="abbreviation" type="text" name="abbreviation" value={this.state.abbreviation} onChange={this.handleFormChange} />
+                        </div>
 
-            </div >
+                        {(this.state.loading) ? 
+                            <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                            <button className="btn btn-primary float-right" type="submit">Thema toevoegen</button>}
+                    </form>
+                    <h4 className="text-center">{this.state.message}</h4>
+
+                </div >
+            </div>
+
         )
     }
 }
