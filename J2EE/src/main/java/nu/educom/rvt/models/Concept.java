@@ -19,7 +19,7 @@ public class Concept {
 	@Column(name="description")
 	private String description;
 	@Column(name="week")
-	private int week;
+	private Integer week;
 	@Column(name="startdate")
 	private LocalDate startDate;
 	@Column(name="enddate")
@@ -40,7 +40,7 @@ public class Concept {
 		this.endDate = endDate;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -68,7 +68,7 @@ public class Concept {
 		this.description = description;
 	}
 
-	public int getWeek() {
+	public Integer getWeek() {
 		return week;
 	}
 	public void setWeek(int week) {

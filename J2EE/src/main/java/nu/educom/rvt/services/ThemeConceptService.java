@@ -4,6 +4,7 @@ import java.util.List;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.User;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 
@@ -33,4 +34,9 @@ public class ThemeConceptService {
 		List<Concept> concepts = this.conceptRepo.readAll();
 		return concepts;
 	}
+	
+	public List<Concept> getAllÁctiveConceptsfromUser(User user){
+		return this.conceptRepo.readAll();
+	}
 }
+	

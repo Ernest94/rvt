@@ -52,7 +52,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: 1, //this.state.userId,
+            id: 5, //this.state.userId,
         };
     }
 

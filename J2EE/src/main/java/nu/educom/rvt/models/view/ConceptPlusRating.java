@@ -2,12 +2,12 @@ package nu.educom.rvt.models.view;
 
 import nu.educom.rvt.models.Concept;
 
-public class ConceptsPlusRatings {
+public class ConceptPlusRating {
 
 	private Concept concept;
 	private int rating;
 
-	public ConceptsPlusRatings(Concept concept,int rating) {
+	public ConceptPlusRating(Concept concept,int rating) {
 		this.concept = concept;
 		this.rating = rating;
 	}

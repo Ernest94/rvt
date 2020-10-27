@@ -47,6 +47,15 @@ public class Review {
 		this.reviewStatus = reviewStatus;
 	}
 	
+	public Review(LocalDate date, String commentStudent, String commentOffice, Status reviewStatus, User user) {
+		super();
+		this.date = date;
+		this.commentStudent = commentStudent;
+		this.commentOffice = commentOffice;
+		this.reviewStatus = reviewStatus;
+		this.user = user;
+	}
+	
 	
 	public int getId() {
 		return id;
