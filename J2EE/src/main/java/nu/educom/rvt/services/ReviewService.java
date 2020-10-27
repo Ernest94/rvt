@@ -118,7 +118,10 @@ public class ReviewService {
 	{
 		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
 		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
-		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream().filter(c -> c.getReview() == review).collect(Collectors.toList());
+		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream()
+															   .filter(c -> c.getReview() == review)
+															   .sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek()))
+															   .collect(Collectors.toList());
 		
 		for(ConceptRating conceptRating : conceptRatings)
 		{
