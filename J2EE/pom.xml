@@ -7,7 +7,7 @@
   <groupId>nu.educom.rvt</groupId>
   <artifactId>J2EE</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>J2EE Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
