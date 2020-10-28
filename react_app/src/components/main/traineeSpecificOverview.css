@@ -27,6 +27,27 @@
     z-index: 1;
 }
 
+.concept:hover + .displayMessage{
+    display: block;
+    position: absolute;
+    top: auto;
+    left: 50%;
+    right: auto;
+    border: outset 1px;
+    border-color:#a32332;
+    border-radius: 3px;
+    max-width: 20%; 
+    font-size: 12px;
+    background-color: white;
+    color: black;
+    scroll-behavior: smooth;
+    z-index: 1;
+}
+
+.rating{
+    font-size: small;
+}
+
 table {
     width: 100%;
   }

@@ -110,24 +110,26 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="col-3">   
+                    <td className="col-5">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-3 theme">
+                    <td className="col-5 theme">
                         {concept.concept.theme.name} 
                     </td>
-                    <span className="displayMessage"> {concept.concept.theme.description} </span>
-                    <td className="col-3" >
+                        <span className="displayMessage"> {concept.concept.theme.description} </span>
+                    <td className="col-5 concept">
                         {concept.concept.name}
                     </td>                  
-                    <td className="col-3" >
+                        <span className="displayMessage"> {concept.concept.name} </span>
+                    <td className="col-5" >
                         <Rating
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
+                        <div className="rating">{this.getRating.rating}</div>
                     </td>
-                    <td className="col-3" >
+                    <td className="col-5" >
                         <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
                             </TextareaAutosize> 
                     </td> 
