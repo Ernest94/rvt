@@ -110,26 +110,27 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="col-5">   
+                    <td className="col-2">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-5 theme">
+                    <td className="col-2 theme">
                         {concept.concept.theme.name} 
                     </td>
                         <span className="displayMessage"> {concept.concept.theme.description} </span>
-                    <td className="col-5 concept">
+                    <td className="col-3 concept">
                         {concept.concept.name}
                     </td>                  
                         <span className="displayMessage"> {concept.concept.name} </span>
-                    <td className="col-5" >
+                    <td className="col-3" >
+                    <div className=" rating">
                         <Rating
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
-                        <div className="rating">{this.getRating.rating}</div>
+                        {this.getRating(concept.rating)}</div>
                     </td>
-                    <td className="col-5" >
+                    <td className="col-2" >
                         <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
                             </TextareaAutosize> 
                     </td> 
@@ -150,10 +151,10 @@ class traineeSpecificOverview extends React.Component {
                     <table >
                         <thead>
                             <tr>
-                                <th scope="col" className="col-3">
+                                <th scope="col" className="col-2">
                                     Blok
                                     </th>
-                                <th scope="col" className="col-3">
+                                <th scope="col" className="col-2">
                                     Thema
                                     </th>
                                 <th scope="col" className="col-3">
@@ -162,7 +163,7 @@ class traineeSpecificOverview extends React.Component {
                                 <th scope="col" className="col-3">
                                     Vaardigheid
                                     </th>
-                                <th scope="col" className="col-3">
+                                <th scope="col" className="col-2">
                                     Commentaar
                                 </th>
                             </tr>
