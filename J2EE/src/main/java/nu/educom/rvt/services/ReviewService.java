@@ -88,7 +88,7 @@ public class ReviewService {
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
 		if(reviews == null) {
 			for(Concept concept: concepts) {
-				conceptPlusRating.add(new ConceptPlusRating(concept, 0));
+				conceptPlusRating.add(new ConceptPlusRating(concept, 0, ""));
 			}
 			return conceptPlusRating;
 		}
@@ -109,7 +109,7 @@ public class ReviewService {
 		List<Concept> removedDuplicates = removeAllDuplicates(concepts, CPRother);
 		
 		for(Concept concept: removedDuplicates) {
-			CPRother.add(new ConceptPlusRating(concept, 0));
+			CPRother.add(new ConceptPlusRating(concept, 0, ""));
 		}
 		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek())).collect(Collectors.toList());		
 		
@@ -134,7 +134,8 @@ public class ReviewService {
 			conceptPlusRatings.add(
 					new ConceptPlusRating(
 					conceptRating.getConcept(), 
-					conceptRating.getRating())
+					conceptRating.getRating(),
+					conceptRating.getComment())
 					);
 		}
 		

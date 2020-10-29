@@ -214,16 +214,16 @@ public class Filler {
 		
 		//FILL THE CONCEPT-RATING TABLE
 		List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
-		conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2));
-		conceptsRatings.add(new ConceptRating(review1,concepts.get(1),2));
-		conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2));
-		conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2));
-		conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2, "Kan beter"));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(1),2, "Kan beter"));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2, "Kan beter"));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2, "Kan beter"));
+		conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2, "Kan beter"));
 				
-		conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3));
-		conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3));
-		conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3));
-		conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3, "Goed, maar komop"));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3, "Je komt er wel"));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3, "Je moet iets meer letten op je stijl"));
+		conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3, "no comment"));
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3));
 		
 		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),4));

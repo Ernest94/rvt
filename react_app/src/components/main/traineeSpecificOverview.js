@@ -52,7 +52,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: 5, //this.state.userId,
+            id: this.state.userId, //5
         };
     }
 
@@ -95,11 +95,12 @@ class traineeSpecificOverview extends React.Component {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
+            case 0: return ("geen blok gegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
             case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
-            default: return ("week 9 of later");
+            default: return ("week "+ (4*wpb+1) + " of later");
         }
     }
 
@@ -128,7 +129,8 @@ class traineeSpecificOverview extends React.Component {
                     </td>
                     <td className="col-3" >
                         <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
-                            </TextareaAutosize> 
+                            {concept.comment}
+                        </TextareaAutosize> 
                     </td> 
                 </tr >
             )

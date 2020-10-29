@@ -6,10 +6,17 @@ public class ConceptPlusRating {
 
 	private Concept concept;
 	private int rating;
+	private String comment;
 
 	public ConceptPlusRating(Concept concept,int rating) {
 		this.concept = concept;
 		this.rating = rating;
+	}
+	
+	public ConceptPlusRating(Concept concept,int rating, String comment) {
+		this.concept = concept;
+		this.rating = rating;
+		this.comment = comment;
 	}
 	
 	public Concept getConcept() {
@@ -23,6 +30,12 @@ public class ConceptPlusRating {
 	}
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 }
