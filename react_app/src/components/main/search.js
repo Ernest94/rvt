@@ -5,7 +5,7 @@ import {config} from '../constants';
 import './search.css';
 
 class Search extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -26,14 +26,14 @@ class Search extends React.Component {
         this.setState({ pageLoading: true });
         this.getLocationsAndRoles()
     }
-    
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-           [name]: value 
+           [name]: value
         });
     }
-    
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
@@ -44,14 +44,14 @@ class Search extends React.Component {
 
                 .then(response => {
                     this.setState({loading: false, errors: null});
-                    
+
                     this.handleSearchReponse(response.data);
                     this.render();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
      //               this.fakeHandleSearchReponse();
-                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
+                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]});
                     this.setState({loading: false});
                 });
         }
@@ -65,7 +65,7 @@ class Search extends React.Component {
 
             .then(response => {
                 this.setState({buttonDisabled: false, errors: null});
-                
+
                 this.handleSearchReponse(response.data);
                 this.render();
             })
@@ -111,7 +111,7 @@ class Search extends React.Component {
                 });
             })
     }
-    
+
     createSearchJson() {
         return {
             location: this.state.location,
@@ -119,13 +119,13 @@ class Search extends React.Component {
             criteria: this.state.criteria
         }
 }
-    
+
     setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
             <li key={key}>{errors[key][0]}</li>
         );
         this.setState({
-           errors: foundErrors 
+           errors: foundErrors
         });
     }
 
@@ -133,12 +133,12 @@ class Search extends React.Component {
     onChangeRole = (e) => {
         this.setState({
             role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
-        });    
+        });
     }
 
     onChangeRole = (e) => {
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-        
+
         this.setState({
             role: selectedRole,
             roleDisplayName: e.target.value
@@ -155,7 +155,7 @@ class Search extends React.Component {
     render() {
         const {roles, locations, users, pageLoading, buttonDisabled} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
-        
+
         if (roles === null || locations === null) {
             return (<span className="center">Mislukt om pagina te laden.</span>)
         }
@@ -173,7 +173,7 @@ class Search extends React.Component {
             return (
                 <tr className="searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
                     <td className="p-2 text-nowrap align-middle">
-                        {user.name} 
+                        {user.name}
                     </td>
                     <td className="p-2 text-nowrap align-middle">
                         {user.email}
@@ -196,9 +196,10 @@ class Search extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="w-100 mx-auto align-middle text-center"> 
-                            <label className="mr-2 p-2 align-middle" htmlFor="role">Rol:</label>
-                            <select className="mr-5 p-2 align-middle" name="role" id="role"
+                        <div className="row w-100 mx-auto align-middle text-center">
+                          <div class="col-lg-3 col-sm-6">
+                            <label className="mr-1 p-1 align-left" htmlFor="role">Rol:</label>
+                            <select className="mr-auto p-1 align-left" name="role" id="role"
 
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
@@ -207,8 +208,10 @@ class Search extends React.Component {
                                 <option hidden value=''>Rol</option>
                                 {rolesOptions}
                             </select>
-                            <label className="mr-2 p-2 align-middle" htmlFor="location">Locatie:</label>
-                            <select className="mr-5 p-2 align-middle" name="location" id="location"
+                          </div>
+                          <div class="col-lg-3 col-sm-6">
+                            <label className="mr-1 p-1 align-left" htmlFor="location">Locatie:</label>
+                            <select className="mr-auto p-1 align-left" name="location" id="location"
 
                                 value={this.state.locationDisplayName}
                                 onChange={this.onChangeLocation}
@@ -217,19 +220,22 @@ class Search extends React.Component {
                                 <option hidden value=''>Locatie</option>
                                 {locationOptions}
                             </select>
-                            <label className="mr-2 p-2 align-middle" htmlFor="criteria">Zoek Criteria:</label>
-                            <input className="mr-5 p-2 align-middle" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                          </div>
+                          <div class="col-lg-6">
+                            <label className="mr-1 p-1 align-left" htmlFor="criteria">Zoek Criteria:</label>
+                            <input className="mr-auto p-1 align-left" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                          </div>
                         </div>
-                        
-                        
-                        <div className="text-center"> 
-                            <button className="w-30 mx-auto btn btn-danger mt-3" 
-                                disabled={buttonDisabled} 
+
+
+                        <div className="text-center">
+                            <button className="w-30 mx-auto btn btn-danger mt-3"
+                                disabled={buttonDisabled}
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Zoek"}
                             </button>
                         </div>
-                    </form>                  
+                    </form>
                 </div >
 
                 <div className="text-center">
