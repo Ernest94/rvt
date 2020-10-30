@@ -56,8 +56,7 @@ class traineeSpecificOverview extends React.Component {
         };
     }
 
-    handleCurriculumReponse(data)
-    {
+    handleCurriculumReponse(data) {
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation.name,
@@ -111,7 +110,7 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="week">   
+                    <td className="week">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
                     <td className="theme">
@@ -177,7 +176,7 @@ class traineeSpecificOverview extends React.Component {
                     </table>
                     <div className="trainee-feedback-box">
                         <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea rows="4" cols="50"> </textarea> 
+                        <textarea readOnly rows="4" cols="50"> </textarea> 
                     </div>
                 </div>
         )

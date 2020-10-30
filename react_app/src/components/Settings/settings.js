@@ -13,6 +13,8 @@ class Settings extends React.Component {
         const addLocationLink = this.props.userHasAccess ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
         const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
         const traineeSpecificOverview = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review trainee</Link></li> : <span></span>
+        const docentAddReviewLink = this.props.userHasAccess ? < li > <Link className="link" to="/docentAddReview">Review toevoegen</Link></li> : <span></span>
+
 
         console.log(this.props.userHasAccess);
         return (
@@ -23,12 +25,12 @@ class Settings extends React.Component {
                     {searchLink}
                     {conceptOverviewLink}
                     {traineeSpecificOverview}
+                    {docentAddReviewLink}
                     {addUserLink}
                     {addConceptLink}
                     {addThemeLink}
                     {addLocationLink}
                     <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
-
                 </ul>
             </div>
         )

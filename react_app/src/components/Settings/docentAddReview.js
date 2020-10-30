@@ -3,12 +3,11 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
-import './traineeSpecificOverview.css'
+import './docentAddReview.css'
 
 import {config} from '../constants';
-import './search.css';
 
-class traineeSpecificOverview extends React.Component {
+class docentAddReview extends React.Component {
     
     constructor(props) {
         super(props);
@@ -41,7 +40,6 @@ class traineeSpecificOverview extends React.Component {
         console.log(this.createUserIdJson());
         axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {            
-
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -56,8 +54,7 @@ class traineeSpecificOverview extends React.Component {
         };
     }
 
-    handleCurriculumReponse(data)
-    {
+    handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation.name,
@@ -110,16 +107,16 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="col-2">   
+                    <td className="col-2">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
                     <td className="col-2 theme">
-                        {concept.concept.theme.name} 
+                        {concept.concept.theme.name}
                     </td>
                         <span className="displayMessage"> {concept.concept.theme.description} </span>
                     <td className="col-3 concept">
                         {concept.concept.name}
-                    </td>                  
+                    </td>
                         <span className="displayMessage"> {concept.concept.name} </span>
                     <td className="col-3" >
                     <div className=" rating">
@@ -131,10 +128,10 @@ class traineeSpecificOverview extends React.Component {
                         {this.getRating(concept.rating)}</div>
                     </td>
                     <td className="col-2" >
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
-                            </TextareaAutosize> 
-                    </td> 
-                </tr >
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="12">
+                            </TextareaAutosize>
+                    </td>
+                </tr>
             )
         });
 
@@ -180,10 +177,13 @@ class traineeSpecificOverview extends React.Component {
                         <h4 >{"Feedback voor kantoor"}</h4>
                         <textarea rows="4" cols="50"> </textarea> 
                     </div>
+                    {(this.state.loading) ? 
+                            <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                            <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
 
                 </div>
         )
     }
 }
 
-export default traineeSpecificOverview;
+export default docentAddReview;

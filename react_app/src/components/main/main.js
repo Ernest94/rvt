@@ -20,6 +20,7 @@ import addConcept from '../Settings/addConcept.js';
 import conceptOverview from './conceptOverview.js';
 import traineeSpecificOverview from './traineeSpecificOverview.js';
 import addLocation from '../Settings/addLocation.js';
+import docentAddReview from '../Settings/docentAddReview.js';
 
 class Main extends React.Component {
     
@@ -228,6 +229,12 @@ class Main extends React.Component {
                             isTrainee={isTrainee}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
+                        />
+                        <AccessRoute exact path="/docentAddReview"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToSettings}
+                            component={docentAddReview}
                         />
                     </Switch>
                 </div>
