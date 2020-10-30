@@ -15,11 +15,11 @@ import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AccessRoute from '../routes/AccessRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
-import addTheme from './addTheme.js';
-import addConcept from './addConcept.js';
+import addTheme from '../Settings/addTheme.js';
+import addConcept from '../Settings/addConcept.js';
 import conceptOverview from './conceptOverview.js';
 import traineeSpecificOverview from './traineeSpecificOverview.js';
-import addLocation from './addLocation.js';
+import addLocation from '../Settings/addLocation.js';
 
 class Main extends React.Component {
     

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './addings.css';
 
 import {config} from '../constants';
 
@@ -169,7 +170,7 @@ class addConcept extends React.Component {
                         </div>
 
                         {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float-right" type="submit">Concept toevoegen</button>}
+                            <button className="btn btn-primary float" type="submit">Concept toevoegen</button>}
                     </form>
                     <h4 className="text-center">{this.state.message}</h4>
                 </div >

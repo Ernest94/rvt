@@ -52,7 +52,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: 1, //this.state.userId,
+            id: this.state.userId, //5
         };
     }
 
@@ -87,7 +87,7 @@ class traineeSpecificOverview extends React.Component {
             case 3: return ("Voldoende");
             case 4: return ("Goed");
             case 5: return ("Uitstekend");
-            default: return ("Geen Rating");
+            default: return ("");
         }
     }
 
@@ -95,11 +95,12 @@ class traineeSpecificOverview extends React.Component {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
+            case 0: return ("geen blok gegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
             case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
-            default: return ("week 9 of later");
+            default: return ("week "+ (4*wpb+1) + " of later");
         }
     }
 
@@ -110,28 +111,30 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="col-2">   
+                    <td className="week">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-2 theme">
-                        {concept.concept.theme.name} 
+                    <td className="theme">
+                        {concept.concept.theme.abbreviation} 
+                        <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
                     </td>
-                        <span className="displayMessage"> {concept.concept.theme.description} </span>
-                    <td className="col-3 concept">
+                    <td className="concept">
                         {concept.concept.name}
-                    </td>                  
                         <span className="displayMessage"> {concept.concept.name} </span>
-                    <td className="col-3" >
-                    <div className=" rating">
-                        <Rating
+                    </td>                  
+                    <td className="rating">
+                    <div>
+                        <Rating className="rating-star"
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
-                        {this.getRating(concept.rating)}</div>
+                        <span className="rating-text"> {this.getRating(concept.rating)} </span>
+                        </div>
                     </td>
-                    <td className="col-2" >
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
+                    <td className="comment">
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="14"> 
+                            {concept.comment}
                             </TextareaAutosize> 
                     </td> 
                 </tr >
@@ -151,19 +154,19 @@ class traineeSpecificOverview extends React.Component {
                     <table >
                         <thead>
                             <tr>
-                                <th scope="col" className="col-2">
+                                <th className="week">
                                     Blok
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="theme">
                                     Thema
                                     </th>
-                                <th scope="col" className="col-3">
+                                <th className="concept">
                                     Concept
                                     </th> 
-                                <th scope="col" className="col-3">
+                                <th className="rating">
                                     Vaardigheid
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="comment">
                                     Commentaar
                                 </th>
                             </tr>
