@@ -87,7 +87,7 @@ class traineeSpecificOverview extends React.Component {
             case 3: return ("Voldoende");
             case 4: return ("Goed");
             case 5: return ("Uitstekend");
-            default: return ("Geen Rating");
+            default: return ("");
         }
     }
 
@@ -110,28 +110,29 @@ class traineeSpecificOverview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept) => {
             return (
                 <tr>
-                    <td className="col-2">   
+                    <td className="week">   
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-2 theme">
-                        {concept.concept.theme.name} 
+                    <td className="theme">
+                        {concept.concept.theme.abbreviation} 
+                        <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
                     </td>
-                        <span className="displayMessage"> {concept.concept.theme.description} </span>
-                    <td className="col-3 concept">
+                    <td className="concept">
                         {concept.concept.name}
-                    </td>                  
                         <span className="displayMessage"> {concept.concept.name} </span>
-                    <td className="col-3" >
-                    <div className=" rating">
-                        <Rating
+                    </td>                  
+                    <td className="rating">
+                    <div>
+                        <Rating className="rating-star"
                             value={concept.rating}
                             name="rating"
                             readOnly="true"
                         />
-                        {this.getRating(concept.rating)}</div>
+                        <span className="rating-text"> {this.getRating(concept.rating)} </span>
+                        </div>
                     </td>
-                    <td className="col-2" >
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="12"> 
+                    <td className="comment">
+                        <TextareaAutosize readOnly aria-label="minimum height" cols="14"> 
                             </TextareaAutosize> 
                     </td> 
                 </tr >
@@ -151,19 +152,19 @@ class traineeSpecificOverview extends React.Component {
                     <table >
                         <thead>
                             <tr>
-                                <th scope="col" className="col-2">
+                                <th className="week">
                                     Blok
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="theme">
                                     Thema
                                     </th>
-                                <th scope="col" className="col-3">
+                                <th className="concept">
                                     Concept
                                     </th> 
-                                <th scope="col" className="col-3">
+                                <th className="rating">
                                     Vaardigheid
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="comment">
                                     Commentaar
                                 </th>
                             </tr>

@@ -58,17 +58,17 @@ public class Filler {
 		
 		//FILL THE THEME TABLE
 		List<Theme> themes = new ArrayList<Theme>();
-		themes.add(new Theme("webserver","WS","Werking en configuratie van een HTTP server opzetten, Request - response principe, HTTP en HTTPS en limitaties op ongeoorloofde toegang"));
-		themes.add(new Theme("IDE","IDE","Werken met een geavanceerde editor of geïntegreerde ontwikkelomgeving, bouwen vanuit deze omgeving, gebruik shortcuts en debuggen"));
-		themes.add(new Theme("front end","FE","Maken van een forntend deel van een applicatie met HTML, CSS en Javascript"));
-		themes.add(new Theme("coding","CD","Coding is het schrijven van een computerprogramma, een concrete reeks instructies die een computer kan uitvoeren."));
-		themes.add(new Theme("Database (relationeel)","DB","Een database is een grote hoeveelheid informatie welke met behulp van computertechniek gestructureerd is opgeslagen."));
-		themes.add(new Theme("connecties (API)","API","Een API (Application Programming Interface) is een software-interface die het mogelijk maakt dat twee applicaties met elkaar kunnen communiceren."));
-		themes.add(new Theme("programming paradigms","PP","In de informatica zijn programmeerparadigma's denkpatronen of uitgesproken concepten van programmeren, die voornamelijk verschillen in de wijze van aanpak om het gewenste resultaat te kunnen behalen."));
-		themes.add(new Theme("ontwerp methodieken","OM","Een ontwerppatroon of patroon (Engels: design pattern) in de informatica is een generiek opgezette softwarestructuur, die een bepaald veelvoorkomend type software-ontwerpprobleem oplost."));
-		themes.add(new Theme("problem solving","PS","Maken van een ontwerp, code goed gescheiden houden, oplossen van bug en de voorspelbaarheid van de code."));
-		themes.add(new Theme("werken in/ aan projecten","PRJ.","Technieken die belangrijk zijn voor het werken aan grote projecten zoals het overzichtelijk structureren van je bestanden werken met Agile/Scrum methodiek, versiebeheer etc."));
-		themes.add(new Theme("beeldvorming","BV","Hoever kan je geleerde technieken meenemen naar nieuwe talen, wat zijn de overeenkomsten en de verschillen."));
+		themes.add(new Theme("Webserver","WS","werking en configuratie van een HTTP server opzetten, Request - response principe, HTTP en HTTPS en limitaties op ongeoorloofde toegang."));
+		themes.add(new Theme("IDE","IDE","werken met een geavanceerde editor of geïntegreerde ontwikkelomgeving, bouwen vanuit deze omgeving, gebruik shortcuts en debuggen."));
+		themes.add(new Theme("Front end","FE","maken van een frontend deel van een applicatie met HTML, CSS, en Javascript. Met aandacht voor hoe het er voor de gebruiker netjes en overzichtelijk uitziet."));
+		themes.add(new Theme("Coding","CD","principes van een de programmeertaal de syntax, gebruik van datatypen, D.R.Y. & clean code, decompositie van functies, afhandelen van URL verzoeken, werken met bestanden."));
+		themes.add(new Theme("Database (relationeel)","DB","gebruik van SQL om zaken in de database gedaan te krijgen, database normalisatie en opbouwen van database diagrammen."));
+		themes.add(new Theme("Connecties (API)","API","gebruik van een RESTfull API of er zelf een aanbieden."));
+		themes.add(new Theme("Programming paradigms","PP","bekend zijn met zaken die in meerdere object georiënteerde talen terugkomen zoals design patronen als Factory en Singelton, encapulatie, static en abstract."));
+		themes.add(new Theme("Ontwerp methodieken","OM","ontwerptechnieken die taal overschrijdend zijn zoals MVC, MVP, MVVM."));
+		themes.add(new Theme("Problem solving","PS","maken van een ontwerp, code goed gescheiden houden, oplossen van bug en de voorspelbaarheid van de code."));
+		themes.add(new Theme("Werken in/ aan projecten","PRJ.","technieken die belangrijk zijn voor het werken aan grote projecten zoals het overzichtelijk structureren van je bestanden werken met Agile/Scrum methodiek, versiebeheer etc."));
+		themes.add(new Theme("Beeldvorming","BV","hoever kan je geleerde technieken meenemen naar nieuwe talen, wat zijn de overeenkomsten en de verschillen."));
 		ThemeRepository themeRepo = new ThemeRepository();
 		for (Theme theme : themes) {
 			themeRepo.create(theme);
