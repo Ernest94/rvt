@@ -127,7 +127,7 @@ class traineeSpecificOverview extends React.Component {
                         <Rating className="rating-star"
                             value={concept.rating}
                             name="rating"
-                            readOnly="true"
+                            readOnly="false"
                         />
                         <span className="rating-text"> {this.getRating(concept.rating)} </span>
                         </div>
@@ -177,7 +177,11 @@ class traineeSpecificOverview extends React.Component {
                     </table>
                     <div className="trainee-feedback-box">
                         <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                        <textarea rows="4" cols="50"> </textarea> 
+                    </div>
+                    <div className="kantoor-feedback-box">
+                        <h4 >{"Feedback voor kantoor"}</h4>
+                        <textarea rows="4" cols="50"> </textarea> 
                     </div>
                 </div>
         )
