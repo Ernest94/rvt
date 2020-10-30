@@ -133,7 +133,7 @@ class traineeSpecificOverview extends React.Component {
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="14"> 
+                        <TextareaAutosize className="comment-text" readOnly aria-label="minimum height" cols="16"> 
                             {concept.comment}
                             </TextareaAutosize> 
                     </td> 

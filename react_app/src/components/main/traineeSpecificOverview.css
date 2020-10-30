@@ -89,10 +89,14 @@
     width:20%;
 }
 
+.comment-text {
+    font-size:10px;
+}
 
 
 table {
     width: 100%;
+    position: relative;
   }
   
 thead, tbody, tr {
