@@ -19,6 +19,7 @@ class traineeSpecificOverview extends React.Component {
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
+            errors: ""
         };
     }
 
@@ -45,7 +46,9 @@ class traineeSpecificOverview extends React.Component {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.fakeCurriculumResponse();
+                this.setState({
+                    errors: error
+                });
                 console.log("an error occorured " + error);
             });
     }
@@ -66,14 +69,14 @@ class traineeSpecificOverview extends React.Component {
         console.log(this.state);
     }
 
-    fakeCurriculumResponse() {
-        this.setState({
-            userName: "Niels",
-            userLocation: "Utrecht",
-            concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-        })
-        console.log(this.state);
-    }
+    //fakeCurriculumResponse() {
+    //    this.setState({
+    //        userName: "Niels",
+    //        userLocation: "Utrecht",
+    //        concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
+    //    })
+    //    console.log(this.state);
+    //}
     
     getActiveDisplayName(bool) {
         if (bool) return "ja";
