@@ -115,12 +115,15 @@ class traineeSpecificOverview extends React.Component {
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
                     <td className="theme">
-                        {concept.concept.theme.abbreviation} 
+                        <span className="theme-text"> {concept.concept.theme.abbreviation}
                         <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
+                        </span>
                     </td>
                     <td className="concept">
+                        <span className="concept-text">
                         {concept.concept.name}
                         <span className="displayMessage"> {concept.concept.name} </span>
+                        </span>
                     </td>                  
                     <td className="rating">
                     <div>
@@ -129,11 +132,11 @@ class traineeSpecificOverview extends React.Component {
                             name="rating"
                             readOnly="true"
                         />
-                        <span className="rating-text"> {this.getRating(concept.rating)} </span>
+                        <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize className="comment-text" readOnly aria-label="minimum height" cols="16"> 
+                        <TextareaAutosize className="comment-text" readOnly aria-label="minimum height"> 
                             {concept.comment}
                             </TextareaAutosize> 
                     </td> 
@@ -143,7 +146,7 @@ class traineeSpecificOverview extends React.Component {
 
         
         return (
-                <div>
+                <container>
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
                     <h2 className="trainee-location">{this.state.userLocation}</h2>
                     <h2 className="review-date">{""}</h2>
@@ -179,7 +182,7 @@ class traineeSpecificOverview extends React.Component {
                         <h4 >{"Feedback voor Trainee"}</h4>
                         <textarea readOnly rows="4" cols="50"> </textarea> 
                     </div>
-                </div>
+                </container>
         )
     }
 }
