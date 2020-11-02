@@ -278,6 +278,13 @@ class Dossier extends React.Component {
                         </Link>
                     </div>
                     <div className="text-center">
+                        <Link
+                            className="buttonLink"
+                            to={"/docentAddReview/"}>
+                                <button className="button" hidden={!traineeDossier}>Review aanmaken/aanpassen</button>
+                        </Link>
+                    </div>
+                    <div className="text-center">
                         <button 
                             hidden={true} 
                             className="rvtbutton" 
