@@ -158,6 +158,11 @@ class Main extends React.Component {
                         <PrivateRoute exact path="/settings"
                             component={Settings}
                             isLoggedIn={loggedIn}
+                            isTrainee={isTrainee}
+                            isDocent={isDocent}
+                            isOffice={isOffice}
+                            isAdmin={isAdmin}
+                            isSales={isSales}
                         />
                         <PrivateRoute exact path="/password" 
                             component={Password} 
@@ -172,12 +177,6 @@ class Main extends React.Component {
                             userHasAccess={true}
                             dateValidation={this.dateValidation}
                             isLoggedIn={loggedIn}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/dossier/:userId/edit" 
                             component={Dossier}
@@ -187,12 +186,6 @@ class Main extends React.Component {
                             editDisabled={false} 
                             userHasAccess={isAdmin || isOffice || isDocent}
                             isLoggedIn={loggedIn}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/addUser"
                             userHasAccess={isAdmin || isOffice || isDocent}
@@ -201,12 +194,6 @@ class Main extends React.Component {
                             isLoggedIn={loggedIn} 
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/search" 
                             userHasAccess={!isTrainee} 
@@ -215,84 +202,42 @@ class Main extends React.Component {
                             handleDossierRequest={this.handleDossierRequest} 
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/addTheme"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin}
                             handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addTheme}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/addConcept"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin || isDocent}
                             handleReturnToConcepts={this.handleReturnToConcepts}
-                            component={addConcept}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
+                            component={addConcept}              
                         />
                         <AccessRoute exact path="/addLocation"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={addLocation}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/conceptOverview"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin || isDocent} /* JH: Volgens mij moet dit isAdmin || isDocent zijn */
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={conceptOverview}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/curriculum/:userId"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <AccessRoute exact path="/curriculum"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
-
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                     </Switch>
                 </div>
