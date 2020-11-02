@@ -50,7 +50,7 @@ class docentAddReview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: 1, //this.state.userId,
+            id: 5, //this.state.userId,
         };
     }
 
@@ -128,8 +128,9 @@ class docentAddReview extends React.Component {
                         {this.getRating(concept.rating)}</div>
                     </td>
                     <td className="col-2" >
-                        <TextareaAutosize readOnly aria-label="minimum height" cols="12">
-                            </TextareaAutosize>
+                        <TextareaAutosize aria-label="minimum height" cols="12">
+                            {concept.comment}
+                        </TextareaAutosize>
                     </td>
                 </tr>
             )
