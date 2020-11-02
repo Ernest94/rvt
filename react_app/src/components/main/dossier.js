@@ -13,12 +13,12 @@ class Dossier extends React.Component {
         super(props);
         this.state = {
             name: "",
-			email: "", /* JH: Let op dan je geen <tab> charakters gebruikt */
+            email: "",
             role: null,
             roleName: "",
-			location: null,
-			startDate: "",
-			pageLoading: false,
+            location: null,
+            startDate: "",
+            pageLoading: false,
             userId: null,
             buttonDisabled: false,
             roles: [],
@@ -203,24 +203,24 @@ class Dossier extends React.Component {
             <div>
                 <h2 className="text-center">Dossier</h2>
                 <ul className="errors">{errors}</ul>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="input">
-                        <label className="label" htmlFor="name">Naam:</label>
-                        <input className="form" id="name" type="name" name="name" value={name} 
+                <form onSubmit={this.handleSubmit} className="container col-lg-8">
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                        <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="email">Email:</label>
-                        <input className="form" id="email" type="email" name="email" value={email} 
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
+                        <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="rol">Rol:</label>
-                        <select className="form" name="role" id="role"
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
+                        <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
                             required
@@ -231,9 +231,9 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="location">Locatie:</label>
-                        <select className="form" name="location" id="location"
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        <select className="form-control col-sm-9" name="location" id="location"
                             value={locationDisplayName}
                             onChange={this.onChangeLocation}
                             required
@@ -244,9 +244,9 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input" >
-                        <label className="label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form" id="startDate" type="date" name="startDate" value={startDate} 
+                    <div className="input row" >
+                        <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
