@@ -4,6 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
 import './docentAddReview.css'
+import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
 
@@ -18,6 +19,9 @@ class docentAddReview extends React.Component {
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
+            value: "",
+            setValue: ""
+
         };
     }
 
@@ -88,6 +92,12 @@ class docentAddReview extends React.Component {
         }
     }
 
+    setValue(event, concept, index) {
+        const value = event.target.value; 
+        console.log(value);
+        console.log(index);
+    }
+
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
@@ -104,41 +114,48 @@ class docentAddReview extends React.Component {
         const {pageLoading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
-        var conceptDisplay = this.state.concepts.map((concept) => {
+        var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
                 <tr>
-                    <td className="col-2">
+                    <td className="week">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="col-2 theme">
-                        {concept.concept.theme.name}
+                    <td className="theme">
+                        <span className="theme-text"> {concept.concept.theme.abbreviation}
+                        <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
+                        </span>
                     </td>
-                        <span className="displayMessage"> {concept.concept.theme.description} </span>
-                    <td className="col-3 concept">
+                    <td className="concept">
+                        <span className="concept-text">
                         {concept.concept.name}
-                    </td>
                         <span className="displayMessage"> {concept.concept.name} </span>
-                    <td className="col-3" >
-                    <div className=" rating">
-                        <Rating
+                        </span>
+                    </td>                  
+                    <td className="rating">
+                    <div>
+                        <Rating className="rating-star"
                             value={concept.rating}
                             name="rating"
-                            readOnly="false"
+                            onChange={(event) => {
+                                this.setValue(event, concept, index);
+                            }}
+                            onClick={this.handleInputChange}
                         />
-                        {this.getRating(concept.rating)}</div>
+                        <div className="rating-text"> {this.getRating(concept.rating)} </div>
+                        </div>
                     </td>
-                    <td className="col-2" >
-                        <TextareaAutosize aria-label="minimum height" cols="12">
+                    <td className="comment">
+                        <TextareaAutosize className="comment-text" aria-label="minimum height"> 
                             {concept.comment}
-                        </TextareaAutosize>
-                    </td>
+                        </TextareaAutosize> 
+                    </td> 
                 </tr>
             )
         });
 
         
         return (
-                <div>
+                <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
                     <h2 className="trainee-location">{this.state.userLocation}</h2>
                     <h2 className="review-date">{""}</h2>
@@ -149,19 +166,19 @@ class docentAddReview extends React.Component {
                     <table >
                         <thead>
                             <tr>
-                                <th scope="col" className="col-2">
+                                <th className="week">
                                     Blok
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="theme">
                                     Thema
                                     </th>
-                                <th scope="col" className="col-3">
+                                <th className="concept">
                                     Concept
                                     </th> 
-                                <th scope="col" className="col-3">
+                                <th className="rating">
                                     Vaardigheid
                                     </th>
-                                <th scope="col" className="col-2">
+                                <th className="comment">
                                     Commentaar
                                 </th>
                             </tr>
@@ -172,19 +189,17 @@ class docentAddReview extends React.Component {
                     </table>
                     <div className="trainee-feedback-box">
                         <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea rows="4" cols="50"> </textarea> 
+                        <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
                     </div>
                     <div className="kantoor-feedback-box">
-                        <h4 >{"Feedback voor kantoor"}</h4>
-                        <textarea rows="4" cols="50"> </textarea> 
+                        <h4 >{"Feedback voor Trainee"}</h4>
+                        <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
                     </div>
-                    {(this.state.loading) ? 
-                            <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                            <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
 
                 </div>
         )
     }
+
 }
 
 export default docentAddReview;

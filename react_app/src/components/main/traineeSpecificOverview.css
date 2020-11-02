@@ -105,21 +105,21 @@
 table {
     width: 100%;
     display: inline-block;
-  }
+}
   
 thead, tbody, tr {
     display: table;
     width: 100%;
     table-layout: auto;
-  }
+}
 
 tbody {
     display: block;
     overflow-y: scroll;
     table-layout: auto;
     max-height: 200px;
-  }
+}
 
 .trainee-feedback-box {
       padding: 10px;
-  }
+}
