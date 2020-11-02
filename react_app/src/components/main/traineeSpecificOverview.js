@@ -146,7 +146,7 @@ class traineeSpecificOverview extends React.Component {
 
         
         return (
-                <container>
+                <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
                     <h2 className="trainee-location">{this.state.userLocation}</h2>
                     <h2 className="review-date">{""}</h2>
@@ -182,7 +182,7 @@ class traineeSpecificOverview extends React.Component {
                         <h4 >{"Feedback voor Trainee"}</h4>
                         <textarea readOnly rows="4" cols="50"> </textarea> 
                     </div>
-                </container>
+                </div>
         )
     }
 }
