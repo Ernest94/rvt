@@ -202,7 +202,7 @@ class Dossier extends React.Component {
         return (
             <div>
                 <h2 className="text-center">Dossier</h2>
-                <ul className="errors">{errors}</ul>
+                <ul className="errors text-center">{errors}</ul>
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
@@ -250,34 +250,40 @@ class Dossier extends React.Component {
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-                    {(!editDisabled) ? <button type="submit" className="button">Opslaan</button>: <span></span>}
+                    {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
                 </form>
                 {(editDisabled) ?
-                <div>
-                    <div className="text-center">
+                <div className="buttons">
+                    <div>
                         <Link 
-                            className="buttonLink" 
+                            className="btn btn-danger btn-block" 
                             to={"/dossier/" + userId + "/edit"}
+                            hidden={isTrainee}
+                            role="button"
                             >                        
-                            <button className="button" hidden={isTrainee}>Pas gebruiker aan</button>
+                            Pas gebruiker aan
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <Link 
-                            className="buttonLink" 
-                            to={"/linking/" + userId}>
-                            <button className="button" hidden={isTrainee}>Gelinkte gebruikers</button>
+                            className="btn btn-danger btn-block" 
+                            to={"/linking/" + userId}
+                            hidden={isTrainee}
+                            >
+                            Gelinkte gebruikers
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <Link
-                            className="buttonLink"
-                            to={"/curriculum/" + userId /*+ "/" + name */}>
-                                <button className="button" hidden={!traineeDossier}>Review</button>
+                            className="btn btn-danger btn-block"
+                            to={"/curriculum/" + userId /*+ "/" + name */}
+                            hidden={!traineeDossier}
+                            >
+                                Review
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <button 
                             hidden={true} 
                             className="rvtbutton" 
