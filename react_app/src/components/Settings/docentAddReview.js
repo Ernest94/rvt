@@ -21,7 +21,6 @@ class docentAddReview extends React.Component {
             weeksPerBlock: 2,
             value: "",
             setValue: ""
-
         };
     }
 
@@ -93,7 +92,7 @@ class docentAddReview extends React.Component {
     }
 
     setValue(event, concept, index) {
-        const value = event.target.value; 
+        const {value} = event.target.value; 
         console.log(value);
         console.log(index);
     }
@@ -187,15 +186,16 @@ class docentAddReview extends React.Component {
                             {conceptDisplay}
                         </tbody>
                     </table>
-                    <div className="trainee-feedback-box">
+                    <div className="feedback-box">
                         <h4 >{"Feedback voor Trainee"}</h4>
                         <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
                     </div>
-                    <div className="kantoor-feedback-box">
-                        <h4 >{"Feedback voor Trainee"}</h4>
+                    <div className="feedback-box">
+                        <h4 >{"Feedback voor kantoor"}</h4>
                         <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
                     </div>
-
+                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                    <button className="btn btn-primary float" type="submit">Review toevoegen</button>}
                 </div>
         )
     }

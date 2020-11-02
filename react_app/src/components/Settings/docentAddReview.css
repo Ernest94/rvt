@@ -120,6 +120,10 @@ tbody {
     max-height: 200px;
 }
 
-.trainee-feedback-box {
-      padding: 10px;
+.feedback-box {
+    padding: 10px;
+    display:inline-block;
 }
+
+
+
