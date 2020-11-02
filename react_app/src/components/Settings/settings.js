@@ -5,13 +5,13 @@ import './settings.css';
 class Settings extends React.Component {
     
     render() {
-        const addUserLink = this.props.userHasAccess ? <li><Link className="link" to="/addUser">Gebruiker toevoegen</Link></li> : <span></span>
-        const searchLink = this.props.userHasAccess ? <li><Link className="link" to="/Search">Zoeken naar gebruikers</Link></li> : <span></span>
+        const addUserLink = this.props.isAdmin || this.props.isOffice || this.props.isDocent ? <li><Link className="link" to="/addUser">Gebruiker toevoegen</Link></li> : <span></span>
+        const searchLink = !this.props.isTrainee ? <li><Link className="link" to="/Search">Zoeken naar gebruikers</Link></li> : <span></span>
         //const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
-        const addThemeLink = this.props.userHasAccess ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
-        const addConceptLink = this.props.userHasAccess ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
-        const addLocationLink = this.props.userHasAccess ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
-        const conceptOverviewLink = this.props.userHasAccess ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
+        const addThemeLink = this.props.isAdmin ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
+        const addConceptLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
+        const addLocationLink = this.props.isAdmin ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
+        const conceptOverviewLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
         const traineeSpecificOverview = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review trainee</Link></li> : <span></span>
         const docentAddReviewLink = this.props.userHasAccess ? < li > <Link className="link" to="/docentAddReview">Review toevoegen</Link></li> : <span></span>
 
