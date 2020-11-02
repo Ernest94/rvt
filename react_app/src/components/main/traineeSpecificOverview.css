@@ -37,6 +37,8 @@
 
 .theme-text:hover .displayMessage {
     visibility: visible;
+    position: absolute;
+    opacity: 1;
   }
 
 .concept-text {
@@ -102,7 +104,6 @@
 
 table {
     width: 100%;
-    position: relative;
     display: inline-block;
   }
   
@@ -110,8 +111,6 @@ thead, tbody, tr {
     display: table;
     width: 100%;
     table-layout: auto;
-    position: relative;
-
   }
 
 tbody {
@@ -119,8 +118,6 @@ tbody {
     overflow-y: scroll;
     table-layout: auto;
     max-height: 200px;
-    position: relative;
-
   }
 
 .trainee-feedback-box {
