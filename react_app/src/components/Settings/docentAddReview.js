@@ -91,11 +91,19 @@ class docentAddReview extends React.Component {
         }
     }
 
-    setValue(event, concept, index) {
-        const {value} = event.target.value; 
-        console.log(value);
-        console.log(index);
+    setValue(event) {
+        const value = event.target.value;
+        const index = event.target.id;
+        
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        // concept.rating = value;
+        concepts[index] = concept;
+        this.setState({
+            concepts: concepts
+        });
     }
+
 
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
@@ -136,7 +144,7 @@ class docentAddReview extends React.Component {
                             value={concept.rating}
                             name="rating"
                             onChange={(event) => {
-                                this.setValue(event, concept, index);
+                                this.setValue(event);
                             }}
                             onClick={this.handleInputChange}
                         />
