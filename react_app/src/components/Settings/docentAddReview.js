@@ -193,17 +193,21 @@ class docentAddReview extends React.Component {
                         <tbody className="tableBody">
                             {conceptDisplay}
                         </tbody>
-                    </table>
-                    <div className="feedback-box">
-                        <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
+                </table>
+                    <div>
+                        <div className="feedback-box">
+                            <h4 >{"Feedback voor Trainee"}</h4>
+                            <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        </div>
+                        <div className="feedback-box">
+                            <h4 >{"Feedback voor kantoor"}</h4>
+                            <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        </div>
                     </div>
-                    <div className="feedback-box">
-                        <h4 >{"Feedback voor kantoor"}</h4>
-                        <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
-                    </div>
+                    <div>
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                    <button className="btn btn-primary float" type="submit">Review toevoegen</button>}
+                        <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
+                    </div>
                 </div>
         )
     }
