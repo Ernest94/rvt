@@ -3,12 +3,12 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
-import './traineeSpecificOverview.css'
+import './docentAddReview.css'
+import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
-import './search.css';
 
-class traineeSpecificOverview extends React.Component {
+class docentAddReview extends React.Component {
     
     constructor(props) {
         super(props);
@@ -19,7 +19,8 @@ class traineeSpecificOverview extends React.Component {
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
-            errors: ""
+            value: "",
+            setValue: ""
         };
     }
 
@@ -42,24 +43,21 @@ class traineeSpecificOverview extends React.Component {
         console.log(this.createUserIdJson());
         axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {            
-
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.setState({
-                    errors: error
-                });
+                this.fakeCurriculumResponse();
                 console.log("an error occorured " + error);
             });
     }
 
     createUserIdJson() {
         return {
-            id: this.state.userId, //5
+            id: 5, //this.state.userId,
         };
     }
 
-    handleCurriculumReponse(data) {
+    handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation.name,
@@ -68,14 +66,14 @@ class traineeSpecificOverview extends React.Component {
         console.log(this.state);
     }
 
-    //fakeCurriculumResponse() {
-    //    this.setState({
-    //        userName: "Niels",
-    //        userLocation: "Utrecht",
-    //        concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-    //    })
-    //    console.log(this.state);
-    //}
+    fakeCurriculumResponse() {
+        this.setState({
+            userName: "Niels",
+            userLocation: "Utrecht",
+            concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
+        })
+        console.log(this.state);
+    }
     
     getActiveDisplayName(bool) {
         if (bool) return "ja";
@@ -89,20 +87,33 @@ class traineeSpecificOverview extends React.Component {
             case 3: return ("Voldoende");
             case 4: return ("Goed");
             case 5: return ("Uitstekend");
-            default: return ("");
+            default: return ("Geen Rating");
         }
     }
+
+    setValue(event) {
+        const value = event.target.value;
+        const index = event.target.id;
+        
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        // concept.rating = value;
+        concepts[index] = concept;
+        this.setState({
+            concepts: concepts
+        });
+    }
+
 
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
-            case 0: return ("geen blok gegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
             case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
-            default: return ("week "+ (4*wpb+1) + " of later");
+            default: return ("week 9 of later");
         }
     }
 
@@ -110,7 +121,7 @@ class traineeSpecificOverview extends React.Component {
         const {pageLoading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
-        var conceptDisplay = this.state.concepts.map((concept) => {
+        var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
                 <tr>
                     <td className="week">
@@ -132,17 +143,20 @@ class traineeSpecificOverview extends React.Component {
                         <Rating className="rating-star"
                             value={concept.rating}
                             name="rating"
-                            readOnly="true"
+                            onChange={(event) => {
+                                this.setValue(event);
+                            }}
+                            onClick={this.handleInputChange}
                         />
                         <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize className="comment-text" readOnly aria-label="minimum height"> 
+                        <TextareaAutosize className="comment-text" aria-label="minimum height"> 
                             {concept.comment}
-                            </TextareaAutosize> 
+                        </TextareaAutosize> 
                     </td> 
-                </tr >
+                </tr>
             )
         });
 
@@ -179,14 +193,25 @@ class traineeSpecificOverview extends React.Component {
                         <tbody className="tableBody">
                             {conceptDisplay}
                         </tbody>
-                    </table>
-                    <div className="trainee-feedback-box">
-                        <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                </table>
+                    <div>
+                        <div className="feedback-box">
+                            <h4 >{"Feedback voor Trainee"}</h4>
+                            <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        </div>
+                        <div className="feedback-box">
+                            <h4 >{"Feedback voor kantoor"}</h4>
+                            <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        </div>
+                    </div>
+                    <div>
+                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                        <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
                     </div>
                 </div>
         )
     }
+
 }
 
-export default traineeSpecificOverview;
+export default docentAddReview;

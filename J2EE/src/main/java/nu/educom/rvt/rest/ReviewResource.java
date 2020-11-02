@@ -10,11 +10,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
-import nu.educom.rvt.models.view.ConceptsPlusRatings;
 import nu.educom.rvt.services.ReviewService;
+import nu.educom.rvt.services.ThemeConceptService;
+import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/review")
 public class ReviewResource {
@@ -36,21 +38,20 @@ public class ReviewResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActiveConceptsAndRating(User user) {
 		
-//		UserService userServ = new UserService();//load injectables
-//	    User userOutput = userServ.getUserById(user.getId());
-//		
-//		int reviewId = this.reviewServ.getLatestReviewForUser(user);
-//		int reviewId = 1;
-		List<ConceptRating> conceptRatings = this.reviewServ.getLatestConceptRatings();
-		List<Concept> activeConcepts = this.reviewServ.getActiveConcepts();
-		List<ConceptsPlusRatings> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(activeConcepts,conceptRatings);
+		UserService userServ = new UserService(); //load injectables
+		ThemeConceptService conceptServ = new ThemeConceptService();
+	    User userOutput = userServ.getUserById(user.getId());
+		
+		List<Review> allReviews = this.reviewServ.getAllCompletedReviewForUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
+		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews); //moet herschreven worden
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
-		String traineeName = "Trainee";
-		String traineeLocation = "Utrecht";
+		String traineeName = userOutput.getName();
+		String traineeLocation = userOutput.getLocation().getName();
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
-		conceptsRatingsJSON.setConceptsPlusRatings(conceptsPlusRatings);
+		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
   	}

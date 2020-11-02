@@ -28,6 +28,9 @@ public class ConceptRating {
 		
 		@Column(name="rating") //0-10, where 10 is the best rating
 		private int rating;
+		
+		@Column(name="comment") //0-10, where 10 is the best rating
+		private String comment;
 
 		public ConceptRating() {
 			super();
@@ -38,6 +41,14 @@ public class ConceptRating {
 			this.review = review;
 			this.concept = concept;
 			this.rating = rating;
+		}
+		
+		public ConceptRating(Review review, Concept concept, int rating, String comment) {
+			super();
+			this.review = review;
+			this.concept = concept;
+			this.rating = rating;
+			this.comment = comment;
 		}
 		
 		public int getId() {
@@ -70,6 +81,14 @@ public class ConceptRating {
 
 		public void setRating(int rating) {
 			this.rating = rating;
+		}
+		
+		public String getComment() {
+			return comment;
+		}
+		
+		public void setComment(String comment) {
+			this.comment = comment;
 		}
 		
 		

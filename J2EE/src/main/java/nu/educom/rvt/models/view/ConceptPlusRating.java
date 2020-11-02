@@ -2,14 +2,21 @@ package nu.educom.rvt.models.view;
 
 import nu.educom.rvt.models.Concept;
 
-public class ConceptsPlusRatings {
+public class ConceptPlusRating {
 
 	private Concept concept;
 	private int rating;
+	private String comment;
 
-	public ConceptsPlusRatings(Concept concept,int rating) {
+	public ConceptPlusRating(Concept concept,int rating) {
 		this.concept = concept;
 		this.rating = rating;
+	}
+	
+	public ConceptPlusRating(Concept concept,int rating, String comment) {
+		this.concept = concept;
+		this.rating = rating;
+		this.comment = comment;
 	}
 	
 	public Concept getConcept() {
@@ -23,6 +30,12 @@ public class ConceptsPlusRatings {
 	}
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 }

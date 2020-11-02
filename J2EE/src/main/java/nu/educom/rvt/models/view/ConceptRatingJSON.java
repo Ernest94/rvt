@@ -11,14 +11,14 @@ public class ConceptRatingJSON implements Serializable{
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private List<ConceptsPlusRatings> conceptsPlusRatings;
+		private List<ConceptPlusRating> conceptsPlusRatings;
 		private String traineeName;
 		private String traineeLocation;
 		
-		public List<ConceptsPlusRatings> getConceptsPlusRatings() {
+		public List<ConceptPlusRating> getConceptsPlusRatings() {
 			return conceptsPlusRatings;
 		}
-		public void setConceptsPlusRatings(List<ConceptsPlusRatings> conceptsPlusRatings) {
+		public void setConceptPlusRating(List<ConceptPlusRating> conceptsPlusRatings) {
 			this.conceptsPlusRatings = conceptsPlusRatings;
 		}
 		public String getTraineeName() {

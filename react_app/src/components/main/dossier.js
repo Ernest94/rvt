@@ -14,7 +14,8 @@ class Dossier extends React.Component {
         this.state = {
             name: "",
 			email: "", /* JH: Let op dan je geen <tab> charakters gebruikt */
-			role: null,
+            role: null,
+            roleName: "",
 			location: null,
 			startDate: "",
 			pageLoading: false,
@@ -94,6 +95,7 @@ class Dossier extends React.Component {
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
+                roleName: userResponse.data.role.name,
                 location: userResponse.data.location,
                 startDate: userResponse.data.startDate,
                 roleDisplayName: userResponse.data.role.id,
@@ -175,9 +177,13 @@ class Dossier extends React.Component {
     }
   
     render() {
-        const {name, email, startDate, userId, pageLoading, errors, blocked,
+
+        const {name, email, roleName, startDate, userId, pageLoading, errors, blocked,
             serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
-        const {editDisabled, isTrainee} = this.props;
+        const { editDisabled, isTrainee } = this.props;
+        console.log(roleName);
+        const traineeDossier = roleName === "Trainee";
+        
         if (pageLoading) return <span className="center"> Laden... </span>
         if (serverFail) return <span className="center"> Mislukt om de gegevens op te halen. </span> 
         if (blocked) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
@@ -268,7 +274,14 @@ class Dossier extends React.Component {
                         <Link
                             className="buttonLink"
                             to={"/curriculum/" + userId /*+ "/" + name */}>
-                            <button className="button">Review</button>
+                                <button className="button" hidden={!traineeDossier}>Review</button>
+                        </Link>
+                    </div>
+                    <div className="text-center">
+                        <Link
+                            className="buttonLink"
+                            to={"/docentAddReview/"}>
+                                <button className="button" hidden={!traineeDossier}>Review aanmaken/aanpassen</button>
                         </Link>
                     </div>
                     <div className="text-center">
