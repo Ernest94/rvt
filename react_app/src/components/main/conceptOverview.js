@@ -172,7 +172,7 @@ class conceptOverview extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row w-100 mx-auto align-middle text-center">
-                          <div class="col-lg-4 col-sm-4">
+                          <div class="col-lg-4 col-md-5">
                             <label className="mr-1 p-1 align-middle" htmlFor="theme">Thema:</label>
                             <select className="mr-3 p-1 align-middle" name="theme" id="theme"
                                 value={this.state.themeDisplayName}
@@ -183,7 +183,7 @@ class conceptOverview extends React.Component {
                                 {themeOptions}
                             </select>
                           </div>
-                          <div class="col-lg-4 col-sm-8">
+                          <div class="col-lg-4 col-md-7">
                             <label className="mr-1 p-1 align-middle" htmlFor="block">Blok:</label>
                             <input className="mr-3 p-1 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
                           </div>
