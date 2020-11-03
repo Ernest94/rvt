@@ -62,7 +62,7 @@ public class Filler {
 		
 		users.add(trainee1);
 		users.add(trainee2);
-		users.add(trainee3);
+		// users.add(trainee3);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
