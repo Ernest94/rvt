@@ -1,0 +1,8 @@
+.relationTable {
+    width: 100%;
+}
+
+.rvtbutton:disabled {
+    border: none;
+    cursor: not-allowed
+}

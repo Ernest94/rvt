@@ -35,6 +35,7 @@ public class HibernateSession {
                 settings.put(Environment.DRIVER, "com.mysql.jdbc.Driver");
 
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/db_voortgang?createDatabaseIfNotExist=true&serverTimezone=UTC");
+//                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/educom_rvt_2?createDatabaseIfNotExist=true&serverTimezone=UTC");
 
                 settings.put(Environment.USER, "usr_voortgang");
                 
@@ -52,23 +53,22 @@ public class HibernateSession {
                 configuration.addAnnotatedClass(Role.class);
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Location.class);
+                configuration.addAnnotatedClass(UserRelation.class);
+                configuration.addAnnotatedClass(Theme.class);
+                configuration.addAnnotatedClass(Concept.class);                
+                configuration.addAnnotatedClass(Review.class);
+                configuration.addAnnotatedClass(ConceptRating.class);
 
+                
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-
-                    .applySettings(configuration.getProperties()).build();
+                		.applySettings(configuration.getProperties()).build();
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
             } catch (Exception e) {
-
                 e.printStackTrace();
-
             }
-
         }
-
         return sessionFactory;
-
     }
 	
 	public static void shutDown() {

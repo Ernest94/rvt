@@ -11,7 +11,8 @@
 
   <name>J2EE Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://voortgang.educom.nu</url>
+
 
   <dependencies>
   	<dependency>
@@ -26,6 +27,13 @@
 	    <version>0.4</version>
 	</dependency>
   	
+  	
+  	<dependency>
+  		<groupId>one.util</groupId>
+  		<artifactId>streamex</artifactId>
+  		<version>0.7.3</version>
+	</dependency>
+
   	<dependency>
 	    <groupId>javax.activation</groupId>
 	    <artifactId>activation</artifactId>
@@ -93,6 +101,25 @@
 	    <artifactId>jersey-container-grizzly2-http</artifactId>
 	    <version>2.16</version>
 	</dependency>
+    
+    <dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-api</artifactId>
+	    <version>2.6.1</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>org.apache.logging.log4j</groupId>
+	    <artifactId>log4j-core</artifactId>
+	    <version>2.6.1</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-jaxrs -->
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jaxrs</artifactId>
+    <version>3.13.2.Final</version>
+</dependency>
 	
 	
 	

@@ -1,28 +1,15 @@
 import React from 'react';
-import { validate } from 'validate.js';
-import moment from 'moment';
-
 
 class UserInfo extends React.Component {
     
     componentDidMount() {
-        validate.extend(validate.validators.datetime, {
-          // The value is guaranteed not to be null or undefined but otherwise it
-          // could be anything.
-          parse: function(value, options) {
-            return +moment.utc(value);
-          },
-          // Input is a unix timestamp
-          format: function(value, options) {
-            var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
-            return moment.utc(value).format(format);
-          }
-        });
+        this.props.dateValidation();
     }
     
     render() {
         
         if (this.props.currentStep !== 2) {
+            console.log("return because not step 2");
             return null;
         }
         

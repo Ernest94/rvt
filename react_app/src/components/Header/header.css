@@ -2,3 +2,36 @@
   color: white;
   text-decoration: none;
 }
+
+.userName {
+    margin-right: 1rem;
+ 	color: white;
+	text-decoration: none;
+}
+
+
+.align-bottom1Content {
+    width: 100%;
+    vertical-align: bottom;
+    height: 15px;
+    background-color: #a32332;
+    position: absolute;
+    z-index: 180;
+}
+
+.logo {
+    width: 50px;
+}
+
+.logoutbutton {
+    width: inherit;
+    background-color: #a32332;
+    color: white;
+}
+
+.logoutbutton:hover {
+    width: inherit;
+    background-color: white;
+    color: #a32332;
+    border: none;
+}

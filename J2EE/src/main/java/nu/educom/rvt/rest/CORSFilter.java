@@ -1,8 +1,6 @@
 package nu.educom.rvt.rest;
 
 import java.io.IOException;
-
-
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ContainerResponseContext;
@@ -65,7 +63,7 @@ public class CORSFilter implements ContainerRequestFilter, ContainerResponseFilt
                 // you want the client to be able to send to the server,
                 // put it in this list. And remove the ones you don't want.
                 "X-Requested-With, Authorization, " +
-                "Accept-Version, Content-type, Content-MD5, CSRF-Token");
+                "Accept-Version, Content-type, Content-MD5, CSRF-Token, userId");
         }
 
         // Cross origin requests can be either simple requests

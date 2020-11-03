@@ -1,5 +1,5 @@
 footer {    
-    background-color: #aeab9e;
+    background-color: #CC2C3E;
     padding-top: 10px;
     color: #FFFFFF;
 }
@@ -14,4 +14,12 @@ footer .container{
     footer .wrapper{
         border-top: 2px solid #FFFFFF;
     }
+}
+
+footer .wrapper {
+    width: 100%;
+}
+
+.edudeta {
+    height:30px;
 }

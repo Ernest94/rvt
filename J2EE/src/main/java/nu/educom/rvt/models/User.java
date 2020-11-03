@@ -1,15 +1,17 @@
 package nu.educom.rvt.models;
 
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="users")
 public class User {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name= "id")
 	private int id;
 	@Column(name= "name")
@@ -18,23 +20,21 @@ public class User {
 	private String email;
 	@Column(name="password")
 	private String password;
-	
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
 	@ManyToOne
 	@JoinColumn(name="location_id")
 	private Location location;
-	@Column(name="datumActive")
-	private LocalDateTime datumActive;
-	
-	@Column(name="datumInactive")
-	private LocalDateTime datumInactive;
+	@Column(name="dateActive")
+	private LocalDate dateActive;
+	@Column(name="dateInactive")
+	private LocalDate dateInactive;
 
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
-			LocalDateTime datumInactive) {
+	public User(int id, String name, String email, String password, Role role, Location location, LocalDate dateActive,
+			LocalDate dateInactive) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -42,8 +42,8 @@ public class User {
 		this.password = password;
 		this.role = role;
 		this.location = location;
-		this.datumActive = datumActive;
-		this.datumInactive = datumInactive;
+		this.dateActive = dateActive;
+		this.dateInactive = dateInactive;
 	}
 	
 	public User(String name, String email, String password, Role role, Location location) {
@@ -61,16 +61,16 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, Location location, LocalDateTime datumActive,
-			LocalDateTime datumInactive) {
+	public User(String name, String email, String password, Role role, Location location, LocalDate dateActive,
+			LocalDate dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.location = location;
-		this.datumActive = datumActive;
-		this.datumInactive = datumInactive;
+		this.dateActive = dateActive;
+		this.dateInactive = dateInactive;
 	}
 
 	public int getId() {
@@ -109,17 +109,18 @@ public class User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public LocalDateTime getDatumActive() {
-		return datumActive;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public LocalDate getDateActive() {
+		return dateActive;
 	}
-	public void setDatumActive(LocalDateTime datumActive) {
-		this.datumActive = datumActive;
+	public void setDateActive(LocalDate dateActive) {
+		this.dateActive = dateActive;
 	}
-	public LocalDateTime getDatumInactive() {
-		return datumInactive;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public LocalDate getDateInactive() {
+		return dateInactive;
 	}
-	public void setDatumInactive(LocalDateTime datumInactive) {
-		this.datumInactive = datumInactive;
-	}
-	
+	public void setDateInactive(LocalDate dateInactive) {
+		this.dateInactive = dateInactive;
+	}	
 }

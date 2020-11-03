@@ -1,6 +1,8 @@
 package nu.educom.rvt.repositories;
 
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
@@ -39,11 +41,22 @@ public class UserRepository {
 	}
 	
 	protected void update() {
-		
 	}
 	
-	protected void delete() {
-		
+	protected void delete() {	
+	}
+	
+	public List<User> readAll() {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return HibernateSession.loadAllData(User.class, session);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 
 	public User readByEmail(String email) {
@@ -54,11 +67,9 @@ public class UserRepository {
 					.createQuery("from User where email =:email", User.class)
 					.setParameter("email", email)
 					.getSingleResult();
-		}
-		catch (NoResultException ex) {
+		} catch (NoResultException ex) {
 			return null;
-		}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
@@ -74,12 +85,10 @@ public class UserRepository {
 			user.setPassword(password);
 			tx.commit();
 			return user;
-					}
-		finally {
+		} finally {
 			if (session != null) {
 				session.close();
 			}
 		}
 	}
-	
 }

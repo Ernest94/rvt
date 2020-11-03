@@ -3,3 +3,5 @@ Servers/
 RemoteSystemsTempFiles/
 .project
 .settings
+Documents/.DS_Store
+.DS_Store

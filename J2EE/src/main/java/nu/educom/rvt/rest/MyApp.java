@@ -7,11 +7,13 @@ import javax.ws.rs.core.Application;
 
 @ApplicationPath("")
 public class MyApp extends Application {
-	
+    
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> set = new HashSet<>();
 		set.add(UserResource.class);
+		set.add(ThemeConceptResource.class);
+		set.add(ReviewResource.class);
 		set.add(CORSFilter.class);
 		return set;
 	}

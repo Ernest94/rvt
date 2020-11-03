@@ -5,7 +5,7 @@
   <artifactId>J2EE</artifactId>
   <name>J2EE Maven Webapp</name>
   <version>0.0.1-SNAPSHOT</version>
-  <url>http://www.example.com</url>
+  <url>http://voortgang.educom.nu</url>
   <build>
     <finalName>J2EE</finalName>
     <plugins>
