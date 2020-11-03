@@ -246,6 +246,12 @@ class Main extends React.Component {
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={docentAddReview}
                         />
+                            <AccessRoute exact path="/docentAddReview/:userId"
+                            isLoggedIn={loggedIn}
+                            userHasAccess={!isTrainee}
+                            handleReturnToSettings={this.handleReturnToSettings}
+                            component={docentAddReview}
+                        />
                     </Switch>
                 </div>
                 <Footer/>

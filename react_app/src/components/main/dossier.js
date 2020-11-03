@@ -280,7 +280,7 @@ class Dossier extends React.Component {
                     <div className="text-center">
                         <Link
                             className="buttonLink"
-                            to={"/docentAddReview/"}>
+                            to={"/docentAddReview/"  + userId /*+ "/" + name */}>
                                 <button className="button" hidden={!traineeDossier}>Review aanmaken/aanpassen</button>
                         </Link>
                     </div>

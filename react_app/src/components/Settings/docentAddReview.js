@@ -46,14 +46,16 @@ class docentAddReview extends React.Component {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.fakeCurriculumResponse();
+                this.setState({
+                    errors: error
+                });
                 console.log("an error occorured " + error);
             });
     }
 
     createUserIdJson() {
         return {
-            id: 5, //this.state.userId,
+            id: this.state.userId, //6 is ID voor trainee 3/11/2020
         };
     }
 
@@ -66,14 +68,14 @@ class docentAddReview extends React.Component {
         console.log(this.state);
     }
 
-    fakeCurriculumResponse() {
-        this.setState({
-            userName: "Niels",
-            userLocation: "Utrecht",
-            concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-        })
-        console.log(this.state);
-    }
+    // fakeCurriculumResponse() {
+    //     this.setState({
+    //         userName: "Niels",
+    //         userLocation: "Utrecht",
+    //         concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
+    //     })
+    //     console.log(this.state);
+    // }
     
     getActiveDisplayName(bool) {
         if (bool) return "ja";
