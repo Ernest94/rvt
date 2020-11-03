@@ -106,7 +106,6 @@ class docentAddReview extends React.Component {
         });
     }
 
-
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
