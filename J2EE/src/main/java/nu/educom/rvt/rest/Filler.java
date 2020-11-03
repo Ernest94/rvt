@@ -50,12 +50,12 @@ public class Filler {
 
 		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
-		// User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		
 		//add users to db
 		List<User> users = new ArrayList<User>();
 		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),now,endDate));
-		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(4), locations.get(0),now,endDate));
+		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),now,endDate));
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),now,endDate));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),now,endDate));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),now,endDate));
