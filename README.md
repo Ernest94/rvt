@@ -1,6 +1,6 @@
 # EDUCOM REGISTRATIE VOORTGANG TRAINEES (RVT) #
 
-Dit document bevat informatie over het Educom Registratie Voortgang Trainees platform dat ontwikkelt wordt door trainees van Educom.
+Dit document bevat informatie over het Educom Registratie Voortgang Trainees platform dat ontwikkeld wordt door trainees van Educom.
 
 ### Waar is deze repository voor ###
 
@@ -43,7 +43,7 @@ Een request kan vervolgens gedaan worden door in Postman (download [hier](https:
 
 #### Database
 De java code bevat files die de database aanmaken met behulp van hibernate. Om de database inderdaad correct te laten aanmaken wordt er gebruik gemaakt van de xampp sql server (phpmyadmin).
-Zorg ervoor dat de mysql en apache is gestart in Xampp. Als ook de backend server draait (zie vorige sectie) en er wordt een request gedaan, hibernate zal dan checken of de database bestaat en hem aanmaken als dat niet zo is. Ook wordt de database gelijk gevuld met de nodige tabelen.
+Zorg ervoor dat de mysql en apache is gestart in Xampp. Als ook de backend server draait (zie vorige sectie) en er wordt een request gedaan, zal hibernate checken of de database bestaat en deze aanmaken als dat niet zo is. Ook wordt de database gelijk gevuld met de nodige tabellen.
 Om de database aan te maken moet je in je MySQL een nieuwe user aanmaken 
 Gebruikersnaam: usr_voortgang
 Password: zie HibernateSession.java
@@ -53,13 +53,13 @@ globale rechten: Data en Structuur
 
 #### Frontend React
 Voor de frontend is Nodejs nodig. Dit kan [hier](https://nodejs.org/en/download/) gedownload worden.
-Met node js kan de frontend gedraait worden door met opdrachtprompt naar de react_app folder en `npm install` en vervolgens`npm start` te runnen.
-Vervolgens wordt de development server gestart en zal na enkele minuten de standaard browser de start pagina openen (`localhost:3000/login`).
+Met node js kan de frontend gedraaid worden door met opdrachtprompt naar de react_app folder en `npm install` en vervolgens`npm start` te runnen.
+Vervolgens wordt de development server gestart en zal na enkele minuten de standaard browser de startpagina openen (`localhost:3000/login`).
 
 ### Hoe zit de repository in elkaar? 
 
-In deze sectie hoe de folder structuur van deze repository in elkaar zit.
-Dit gaat dan over drie main folders: 
+In deze sectie staat hoe de folderstructuur van deze repository in elkaar zit.
+Dit gaat over drie main folders: 
 
 1. [Documents](#markdown-header-Documents)
 2. [J2EE](#markdown-header-J2EE)
@@ -69,44 +69,44 @@ Bij vragen zie [deze sectie](#markdown-header-Help! Wie moet ik contacten?).
 
 #### Documents
 
-Deze folder bevat alle belangrijke documenten over het project. Hier valt onder andere de ERD en de wireframes. De ERD is een weergave van de database structuur zoals van te voren besproken. Deze ERD moet aangepast worden als de database structuur afwijkt van de huidige versie. De wireframes zijn voorbeeld pagina's zoals die geïmplementeerd gaan worden in de appicatie.
+Deze folder bevat alle belangrijke documenten over het project. Hier valt onder andere de ERD en de wireframes. De ERD is een weergave van de databasestructuur zoals van te voren besproken. Deze ERD moet aangepast worden als de databasestructuur afwijkt van de huidige versie. De wireframes zijn voorbeeldpagina's zoals die geïmplementeerd gaan worden in de applicatie.
 
 
 #### J2EE
 
-Deze folder bevat alle bestanden voor het runnen van de backend. Deze folder heeft zijn eigen `.gitignore` bestand die alle bestanden die niet door de repository moet worden meegenomen.
-Naast dit bestand is er de `pom.xml`. Dit bestand bevat alle dependencies die nodig zijn voor de backend. Met behulp van Maven worden deze dependecies opgehaald en geïnstaleerd.
+Deze folder bevat alle bestanden voor het runnen van de backend. Deze folder heeft zijn eigen `.gitignore` bestand die alle bestanden beschrijft die niet door de repository moet worden meegenomen.
+Naast dit bestand is er de `pom.xml`. Dit bestand bevat alle dependencies die nodig zijn voor de backend. Met behulp van Maven worden deze dependencies opgehaald en geïnstalleerd.
 
-De rest van de files staan in de `src/main/java/nu/educom/rvt` folder. In deze folder zijn de bestanden in 4 folders opgedeeld:
+De rest van de files staan in de `src/main/java/nu/educom/rvt` folder. In deze folder zijn de bestanden in vier folders opgedeeld:
 
 1. [models](#markdown-header-models)
 2. [repositories](#markdown-header-repositories)
 3. [rest](#markdown-header-rest)
 4. [services](#markdown-header-services)
 
-Deze folders zijn zo opgesteld dat er een MVC structuur is in de backed. Hieronder is uitgelegd wat voor bestanden er in elke folder zit.
+Deze folders zijn zo opgesteld dat er een MVC structuur is in de backend. Hieronder is uitgelegd wat voor bestanden elke folder bevat.
 
 ###### models
 
-Deze folder bestaat uit classes die de tabelen representeren van de database en door de applicatie gebruikt kunnen worden op informatie over te dragen tussen functies.
-Ook staan hier classes die een object structuur hebben die handig is voor communicatie is tussen frontend en backend. (bijv. RoleJson.java)
+Deze folder bestaat uit classes die de tabellen representeren van de database en door de applicatie gebruikt kunnen worden om informatie over te dragen tussen functies.
+Ook staan hier classes die een objectstructuur hebben die handig is voor communicatie tussen frontend en backend. (bijv. RoleJson.java)
 
 ###### repositories
 
 Deze folder bevat classes die met behulp van de models het mogelijk maken om de nodige informatie van de database aan te vullen, veranderen of op te halen. 
 Voor elk model in de models folder die een tabel voorstelt in de database is er een repository aangemaakt.
 
-Ook bevat deze folder een bestand dat heet `HibernateSession.java`. Dit bestand bevat de details voor het connecten met de database. Hier moet ook gedefineerd worden van welke models een tabel moet komen in de database.
+Ook bevat deze folder het bestand `HibernateSession.java`. Dit bestand bevat de details voor het verbinden met de database. Hier moet ook gedefinieerd worden van welke models een tabel moet komen in de database.
 
 ###### rest
 
-Het bestand `Main.java` bevat de code om de HTTP server waarop de api gaat draaien te starten.
-Het bestand `MyApp.java` is het startpunt van de api applicatie. Hier staat ook de api path gedefineerd.
+Het bestand `Main.java` bevat de code om de HTTP server te starten waarop de api gaat draaien.
+Het bestand `MyApp.java` is het startpunt van de api applicatie. Hier staat ook de api path gedefinieerd.
 Vervolgens kijkt de applicatie naar de resources die in deze folder staan. De resources bevatten de specifieke paden waarop een request gedaan kan worden. Dit zijn in termen van MVC de controllers.
 
-Ook is er een `Filler.java` bestand. Dit bestand checkt of de database leeg is, en als dat zo is dat de database gevuld wordt met data.
+Ook is er een `Filler.java` bestand. Dit bestand checkt of de database leeg is, en als dat zo is wordt de database gevuld met data.
 
-Als laatste is er het `CORSFilter.java` bestand. Dit bestand zorgt ervoor dat de communicatie tussen back en frontend goed verloopt. Zonder dit bestand worden de requests vanuit de frontend niet correct beantwoord, omdat beide servers op dezelfde host draaien (in development localhost)
+Als laatste is er het `CORSFilter.java` bestand. Dit bestand zorgt ervoor dat de communicatie tussen back- en frontend goed verloopt. Zonder dit bestand worden de requests vanuit de frontend niet correct beantwoord, omdat beide servers op dezelfde host draaien (in development localhost).
 
 ###### services
 
@@ -114,26 +114,26 @@ In deze folder zijn de services die de business logica bevatten van de backend. 
 
 #### react_app
 
-Ook deze folder heeft een eigen `.gitignore` bestand. De andere losse bestande zijn `package.json` en `package-lock.json`.
+Ook deze folder heeft een eigen `.gitignore` bestand. De andere losse bestanden zijn `package.json` en `package-lock.json`.
 `package.json` bevat de depencies en andere React applicatie specificaties. In `package-lock.json` bevat details over elke dependency van de applicatie.
 
-Naast de losse bestanden zijn er twee folder: 
+Naast de losse bestanden zijn er twee folders: 
 
 1. public
 2. src
 
 In de `public ` folder staat de `index.html` die de standaard structuur van de html pagina bevat. Alle specifieke elementen gemaakt met react worden hieraan toegevoegd.
-Ook ataan hier de afbeeldingen die worden toegevoegd
+Ook staan hier de afbeeldingen die worden toegevoegd.
 
 ##### src folder
-De src folder bevat de componenten waaruit een pagina is opgebouwd. De applicatie begint bij het bestand `index.js`. Dit bestand start met het renderen van de App component. Dit component staat in `App.js`. Dit bestand bevat een function die html code returned die andere componeten opvraagt.
+De src folder bevat de componenten waaruit een pagina is opgebouwd. De applicatie begint bij het bestand `index.js`. Dit bestand start met het renderen van de App component. Deze component staat in `App.js`. Dit bestand bevat een functie die html code returned die andere componenten opvraagt.
 Ook bevat de folder styling bestanden voor index en app (`index.css, app.css`). Naast deze losse bestanden zijn er twee folders: 
 
 1. [components](#markdown-header-components)
 2. [constraints](#markdown-header-constraints)
 
 ###### components
-Deze folder bevat bestanden voor elk component van de applicatie.  Elk component bevat een render functie die Html returned. Ook zijn er functies die de requests sturen, requests ontvangen en data structuren. De folder heeft de volgende subfolders: 
+Deze folder bevat bestanden voor elk component van de applicatie.  Elk component bevat een render functie die html returned. Ook zijn er functies die de requests sturen, requests ontvangen en datastructuren. De folder heeft de volgende subfolders: 
 
 1. footer
 2. header
@@ -147,10 +147,10 @@ De `settings` folder bevat de paginas die onderdeel van de instellingen van een 
 
 De `main` folder bevat standaard schermen in de applicatie zoals login en home. Het `main.js` bestand bevat een switch case op te bepalen welk component gerenderd moet worden.
 
-De `routes` folder bevatten functies die met behulp van een conditie bepalen of een route component gerenderd moet worden of dat de gebruiker geen toegang heeft tot deze pagina en naar andere pagina wordt verwezen. Bijvoorbeeld de `privateRoute.js` geeft alleen toegang tot een pagina als de gebruiker is ingelogd.
+De `routes` folder bevatten functies die met behulp van een conditie bepalen of een route component gerenderd moet worden of dat de gebruiker geen toegang heeft tot deze pagina en naar een andere pagina wordt verwezen. Bijvoorbeeld de `privateRoute.js` geeft alleen toegang tot een pagina als de gebruiker is ingelogd.
 
 ###### constraints
-Deze folder bevatten de validaties op de verschillende formulieren in de applicatie zoals bijvoorbeeld het inloggen.
+Deze folder bevat de validaties op de verschillende formulieren in de applicatie zoals bijvoorbeeld het inloggen.
 
 ### Contribution guidelines ###
 
@@ -162,14 +162,9 @@ De `development` branch bevat gaat verder op de versie van de master branch. Hie
 Voordat er gemerged wordt is het wellicht verstandig op te kijken of jouw veranderingen ook blijven werken met de laatste versie van de development branch. Dit kan gedaan worden door de development branch te merge in je eigen branch (`git merge`)
 
 
-### Producition build ###
+### Production build ###
 Voor het draaien van de applicatie in productie moeten zowel de frontend React als de Java Enterprise backend gebuild worden.
 Dit wordt apart van elkaar gedaan op de production branch. Deze branch zal altijd de laatste werkende versie bevatten.
-Als de server eenmaal draait kan er ingelogd worden met de volgende gegevens:
-
-Email	admin@educom.nu
-Wachtwoord	password
-
 
 ##### React
 1. Open command line en ga naar de react app folder (rvt/react_app)
@@ -192,7 +187,7 @@ Wachtwoord	password
 8. Controleer of de grizzly server is gestart (`INFO: [HttpServer] Started`)
 
 ##### Stop Java server
-1. Login via SSH client zoals uitgeled in stap 5 en 6 van Java Enterprise (Jax-rs)
+1. Login via SSH client zoals uitgelegd in stap 5 en 6 van Java Enterprise (Jax-rs)
 2. Check welke service je moet killen met het commando "ps -aux | grep J2EE"
 3. Kijk naar de regel met aan het einde "java -jar J2EE.jar" en onthoud het nummer in de 2de kolom
 4. Kill de server met "kill {nummer}" 
