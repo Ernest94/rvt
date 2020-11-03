@@ -55,14 +55,14 @@ public class Filler {
 		//add users to db
 		List<User> users = new ArrayList<User>();
 		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),now,endDate));
-		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(4), locations.get(0),now,endDate));
+		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),now,endDate));
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),now,endDate));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),now,endDate));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),now,endDate));
 		
 		users.add(trainee1);
 		users.add(trainee2);
-		// users.add(trainee3);
+		//users.add(trainee3);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
