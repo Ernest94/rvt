@@ -5,7 +5,7 @@ import {config} from '../constants';
 import './search.css';
 
 class conceptOverview extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +15,7 @@ class conceptOverview extends React.Component {
             theme: "",
             active: false,
             blocks: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
-            block: '1',          
+            block: '1',
             allConcepts: [],
             currentConcepts: [],
             loading: false,
@@ -30,17 +30,17 @@ class conceptOverview extends React.Component {
         this.getThemes();
         this.getConcepts();
     }
-    
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-           [name]: value 
+           [name]: value
         });
     }
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
-        
+
     }
 
     createUserIdJson() {
@@ -101,7 +101,7 @@ class conceptOverview extends React.Component {
                 });
             })
     }
-    
+
     createFilterJson() {
         return {
             theme: this.state.theme,
@@ -112,7 +112,7 @@ class conceptOverview extends React.Component {
 
     onChangeTheme = (e) => {
         var selectedTheme = this.state.themes.find(theme => theme.id === parseInt(e.target.value));
-        
+
         this.setState({
             theme: selectedTheme,
             themeDisplayName: e.target.value
@@ -134,7 +134,7 @@ class conceptOverview extends React.Component {
     render() {
         const {themes, blocks, pageLoading, buttonDisabled} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
-        
+
         if (blocks === null || themes === null) {
             return (<span className="center">Mislukt om pagina te laden.</span>)
         }
@@ -171,9 +171,10 @@ class conceptOverview extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="w-100 mx-auto align-middle text-center"> 
-                            <label className="mr-2 p-2 align-middle" htmlFor="theme">Thema:</label>
-                            <select className="mr-5 p-2 align-middle" name="theme" id="theme"
+                        <div className="row w-100 mx-auto align-middle text-center">
+                          <div class="col-lg-4 col-sm-4">
+                            <label className="mr-1 p-1 align-middle" htmlFor="theme">Thema:</label>
+                            <select className="mr-3 p-1 align-middle" name="theme" id="theme"
                                 value={this.state.themeDisplayName}
                                 onChange={this.onChangeTheme}
                                 required>
@@ -181,22 +182,26 @@ class conceptOverview extends React.Component {
                                 <option hidden value=''>Thema</option>
                                 {themeOptions}
                             </select>
-                            <label className="mr-2 p-2 align-middle" htmlFor="block">Blok:</label>
-                            <input className="mr-5 p-2 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
-
-                            <label className="mr-2 p-2 align-middle" htmlFor="criteria">Inactief zichtbaar:</label>
-                            <input className="mr-5 p-2 align-middle" id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
+                          </div>
+                          <div class="col-lg-4 col-sm-8">
+                            <label className="mr-1 p-1 align-middle" htmlFor="block">Blok:</label>
+                            <input className="mr-3 p-1 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
+                          </div>
+                          <div class="col-lg-4">
+                            <label className="mr-1 p-1 align-middle" htmlFor="criteria">Inactief zichtbaar:</label>
+                            <input className="mr-3 p-1 align-middle" id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
+                          </div>
                         </div>
-                        
-                        
-                        <div className="text-center"> 
-                            <button className="w-30 mx-auto btn rvtbutton mt-3" 
-                                disabled={buttonDisabled} 
+
+
+                        <div className="text-center">
+                            <button className="w-30 mx-auto btn rvtbutton mt-3"
+                                disabled={buttonDisabled}
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Filter"}
                             </button>
                         </div>
-                    </form>                  
+                    </form>
                 </div >
 
                 <div className="text-center">
