@@ -20,7 +20,7 @@ class docentAddReview extends React.Component {
             pageLoading: false,
             weeksPerBlock: 2,
             value: "",
-            setValue: ""
+            setValue: ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         };
     }
 
@@ -53,7 +53,7 @@ class docentAddReview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: 5, //this.state.userId,
+            id: 6, //this.state.userId,
         };
     }
 
@@ -92,16 +92,20 @@ class docentAddReview extends React.Component {
     }
 
     setValue(event) {
+        console.log(event.target);
         const value = event.target.value;
-        const index = event.target.id;
-        
-        let concepts = this.state.concepts;
-        let concept = concepts[index];
-        // concept.rating = value;
-        concepts[index] = concept;
-        this.setState({
-            concepts: concepts
-        });
+        const index = event.target.name.substring(6);
+      
+        console.log(index);
+        console.log(value);
+
+        //let concepts = this.state.concepts;
+        //let concept = concepts[index];
+        //// concept.rating = value;
+        //concepts[index] = concept;
+        //this.setState({
+        //    concepts: concepts
+        //});
     }
 
 
@@ -140,20 +144,19 @@ class docentAddReview extends React.Component {
                     </td>                  
                     <td className="rating">
                     <div>
-                        <Rating className="rating-star"
-                            value={concept.rating}
-                            name="rating"
-                            onChange={(event) => {
+                            <Rating className="rating-star"
+                                value={concept.rating}
+                                name={"rating" +  index}
+                                onChange={(event) => {
                                 this.setValue(event);
-                            }}
-                            onClick={this.handleInputChange}
-                        />
+                                }}
+                            />
                         <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
                     <td className="comment">
                         <TextareaAutosize className="comment-text" aria-label="minimum height"> 
-                            {concept.comment}
+                            {concept.comment + index}
                         </TextareaAutosize> 
                     </td> 
                 </tr>
