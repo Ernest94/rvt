@@ -50,7 +50,7 @@ public class Filler {
 
 		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
-		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		// User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		
 		//add users to db
 		List<User> users = new ArrayList<User>();
