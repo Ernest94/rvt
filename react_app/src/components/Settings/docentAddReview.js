@@ -46,7 +46,7 @@ class docentAddReview extends React.Component {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.fakeCurriculumResponse();
+                //this.fakeCurriculumResponse();
                 console.log("an error occorured " + error);
             });
     }
