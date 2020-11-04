@@ -81,7 +81,8 @@ class docentAddReview extends React.Component {
     }
 
     getRating(rating) {
-        switch (rating) {           
+        const intRating = parseInt(rating);
+        switch (intRating) {           
             case 1: return ("Matig");
             case 2: return ("Redelijk");
             case 3: return ("Voldoende");
@@ -91,21 +92,32 @@ class docentAddReview extends React.Component {
         }
     }
 
-    setValue(event) {
-        console.log(event.target);
-        const value = event.target.value;
+    setRating(event) {
         const index = event.target.name.substring(6);
-      
-        console.log(index);
+        const value = event.target.value;        
+
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        concept.rating = value;
+        concepts[index] = concept;
+        this.setState({
+            concepts: concepts
+        });
+    }
+
+    setComment(event) {
+        const index = event.target.name.substring(7);
+        const value = event.target.value;
+
         console.log(value);
 
-        //let concepts = this.state.concepts;
-        //let concept = concepts[index];
-        //// concept.rating = value;
-        //concepts[index] = concept;
-        //this.setState({
-        //    concepts: concepts
-        //});
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        concept.comment = value;
+        concepts[index] = concept;
+        this.setState({
+            concepts: concepts
+        });
     }
 
 
@@ -148,15 +160,18 @@ class docentAddReview extends React.Component {
                                 value={concept.rating}
                                 name={"rating" +  index}
                                 onChange={(event) => {
-                                this.setValue(event);
+                                this.setRating(event);
                                 }}
                             />
                         <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize className="comment-text" aria-label="minimum height"> 
-                            {concept.comment + index}
+                        <TextareaAutosize className="comment-text"
+                            aria-label="minimum height"
+                            name={"comment" + index} onChange={(event) => {
+                            this.setComment(event); }}> 
+                            {concept.comment}
                         </TextareaAutosize> 
                     </td> 
                 </tr>
