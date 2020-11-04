@@ -1,0 +1,7 @@
+
+com.ibm.ssl.keystoreName=keystore.p12
+com.ibm.ssl.keyStore=classpath:keystore.p12
+com.ibm.ssl.keyStorePassword=?120qhZl
+com.ibm.ssl.keyStoreType=PKCS12
+com.ibm.ssl.keyStoreProvider=LetsEncrypt
+com.ibm.ssl.keyStoreFileBased=true
