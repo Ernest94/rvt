@@ -3,7 +3,7 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
-import './docentAddReview.css'
+import './review.css'
 import Box from '@material-ui/core/Box';
 
 import {config} from '../constants';
@@ -196,16 +196,16 @@ class docentAddReview extends React.Component {
                         </tbody>
                 </table>
                     <div>
-                        <div className="feedback-box">
-                            <h4 >{"Feedback voor Trainee"}</h4>
-                            <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        <div className="feedback-box-trainee">
+                            <h4 >{"Terugkoppeling naar Trainee:"}</h4>
+                            <textarea rows="2" cols="50"> </textarea> 
                         </div>
-                        <div className="feedback-box">
-                            <h4 >{"Feedback voor kantoor"}</h4>
-                            <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        <div className="feedback-box-kantoor">
+                            <h4 >{"Terugkoppeling naar kantoor:"}</h4>
+                            <textarea rows="2" cols="50"> </textarea> 
                         </div>
                     </div>
-                    <div>
+                    <div className="submit-review-button">
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                         <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
                     </div>

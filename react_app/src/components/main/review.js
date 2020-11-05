@@ -3,12 +3,12 @@ import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
-import './traineeSpecificOverview.css'
+import './review.css'
 
 import {config} from '../constants';
 import './search.css';
 
-class traineeSpecificOverview extends React.Component {
+class Review extends React.Component {
     
     constructor(props) {
         super(props);
@@ -42,7 +42,6 @@ class traineeSpecificOverview extends React.Component {
         console.log(this.createUserIdJson());
         axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {            
-
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -181,12 +180,12 @@ class traineeSpecificOverview extends React.Component {
                         </tbody>
                     </table>
                     <div className="trainee-feedback-box">
-                        <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                        <h4 >{"Terugkoppeling:"}</h4>
+                        <textarea readOnly rows="2" cols="50"> </textarea> 
                     </div>
                 </div>
         )
     }
 }
 
-export default traineeSpecificOverview;
+export default Review;

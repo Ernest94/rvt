@@ -12,18 +12,19 @@ import Settings from '../Settings/settings.js';
 import AddUser from '../Settings/addUser.js';
 import Password from '../Settings/password.js';
 import {Switch, Route} from 'react-router-dom';
-import PrivateRoute from '../routes/privateRoute.js';
+import PrivateRoute from '../routes/PrivateRoute.js';
 import AccessRoute from '../routes/AccessRoute.js';
 import LinkUsers from '../Settings/Linking/LinkUsers.js';
 import addTheme from '../Settings/addTheme.js';
 import addConcept from '../Settings/addConcept.js';
 import conceptOverview from './conceptOverview.js';
-import traineeSpecificOverview from './traineeSpecificOverview.js';
 import addLocation from '../Settings/addLocation.js';
-import docentAddReview from '../Settings/docentAddReview.js';
+import review from './review.js';
+import docentAddReview from './docentAddReview.js';
 
 class Main extends React.Component {
     
+
     constructor(props) {
         super(props);
         
@@ -76,8 +77,8 @@ class Main extends React.Component {
     
     handleSuccesfullAuth(data) {
         this.setState({
-          loggedIn: true,
-          userName: data.name,
+            loggedIn: true,
+            userName: data.name,
             isTrainee: data.role.name === "Trainee",
             isDocent: data.role.name === "Docent",
             isAdmin: data.role.name === "Admin",
@@ -122,8 +123,8 @@ class Main extends React.Component {
     canAddUser() {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
-        /* JH: Mis hier isOffice zij kunnen ook trainees toevoegen */
-        return (isAdmin || isDocent);
+        let isOffice = sessionStorage.getItem("userRole") === "Office";
+        return (isAdmin || isDocent || isOffice);
     }
 
     canSearchUser() {
@@ -140,8 +141,8 @@ class Main extends React.Component {
 
         console.log("isTrainee: " + isTrainee);
         console.log("loggedIn: " + loggedIn);
+        
         return (
-            
             <div>
                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
                 <div className="container main-container">
@@ -224,31 +225,31 @@ class Main extends React.Component {
                         />
                         <AccessRoute exact path="/conceptOverview"
                             isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin || isDocent} /* JH: Volgens mij moet dit isAdmin || isDocent zijn */
+                            userHasAccess={isAdmin || isDocent}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={conceptOverview}
                         />
                         <AccessRoute exact path="/curriculum/:userId"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
-                            component={traineeSpecificOverview}
+                            component={review}
                             getUserId={this.getUserId}
                         />
                         <AccessRoute exact path="/curriculum"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
-                            component={traineeSpecificOverview}
+                            component={review}
                             getUserId={this.getUserId}
                         />
                         <AccessRoute exact path="/docentAddReview"
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={isAdmin || isDocent}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={docentAddReview}
                         />
                             <AccessRoute exact path="/docentAddReview/:userId"
                             isLoggedIn={loggedIn}
-                            userHasAccess={!isTrainee}
+                            userHasAccess={isAdmin || isDocent}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={docentAddReview}
                         />

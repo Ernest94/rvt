@@ -117,9 +117,24 @@ tbody {
     display: block;
     overflow-y: scroll;
     table-layout: auto;
-    max-height: 200px;
+    max-height: 240px;
 }
 
-.trainee-feedback-box {
-      padding: 10px;
+.feedback-box-kantoor{
+    float: left;
+    padding: 15px;
+    /* display:inline-block; */
 }
+
+.feedback-box-trainee{
+    float: left;
+    padding: 15px;
+    /* display:inline-block; */
+}
+
+.submit-review-button {
+    float: left;
+    padding-top: 45px;
+    padding-left: 16px;
+}
+
