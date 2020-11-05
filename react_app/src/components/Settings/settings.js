@@ -17,7 +17,7 @@ class Settings extends React.Component {
 
 
         console.log(this.props.userHasAccess);
-        return (
+        return ( 
             <div >
                 <h2>Menu</h2>
                 <ul>

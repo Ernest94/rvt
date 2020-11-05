@@ -86,7 +86,7 @@ public class ReviewService {
 	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
 		
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
-		if(reviews == null) {
+		if(reviews.size() == 0) {
 			for(Concept concept: concepts) {
 				conceptPlusRating.add(new ConceptPlusRating(concept, 0, ""));
 			}
