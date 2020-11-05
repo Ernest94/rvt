@@ -8,7 +8,7 @@ import './review.css'
 import {config} from '../constants';
 import './search.css';
 
-class Review extends React.Component {
+class review extends React.Component {
     
     constructor(props) {
         super(props);
@@ -188,4 +188,4 @@ class Review extends React.Component {
     }
 }
 
-export default Review;
+export default review;
