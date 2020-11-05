@@ -14,7 +14,6 @@ import Password from '../Settings/password.js';
 import {Switch, Route} from 'react-router-dom';
 import PrivateRoute from '../routes/privateRoute.js';
 import AccessRoute from '../routes/AccessRoute.js';
-import LinkUsers from '../Settings/Linking/LinkUsers.js';
 import addTheme from '../Settings/addTheme.js';
 import addConcept from '../Settings/addConcept.js';
 import conceptOverview from './conceptOverview.js';
