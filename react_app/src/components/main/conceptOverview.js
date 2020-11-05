@@ -71,7 +71,8 @@ class conceptOverview extends React.Component {
     handleCurriculumReponse(data) {
         this.setState({
             userName: data.traineeName,
-            userLocation: data.traineeLocation.name,
+            userLocation: data.traineeLocation,
+            reviewDate: data.reviewDate,
             currentConcepts: data.conceptsPlusRatings,
         });
         console.log(this.state);

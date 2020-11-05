@@ -63,8 +63,9 @@ class traineeSpecificOverview extends React.Component {
     handleCurriculumReponse(data) {
         this.setState({
             userName: data.traineeName,
-            userLocation: data.traineeLocation.name,
-            concepts: data.conceptsPlusRatings ,
+            userLocation: data.traineeLocation,
+            reviewDate: data.reviewDate,
+            concepts: data.conceptsPlusRatings,
         });
         console.log(this.state);
     }
@@ -143,8 +144,8 @@ class traineeSpecificOverview extends React.Component {
         return (
                 <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
-                    <h2 className="trainee-location">{this.state.userLocation}</h2>
-                <h2 className="review-date">{this.state.reviewDate}</h2>
+                    <h3 className="trainee-location">{this.state.userLocation}</h3>
+                <h3 className="review-date">{this.state.reviewDate}</h3>
 
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 

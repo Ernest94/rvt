@@ -63,7 +63,8 @@ class docentAddReview extends React.Component {
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
-            concepts: data.conceptsPlusRatings ,
+            reviewDate: data.reviewDate,
+            concepts: data.conceptsPlusRatings,
         });
         console.log(this.state);
     }

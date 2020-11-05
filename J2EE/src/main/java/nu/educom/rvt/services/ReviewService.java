@@ -1,6 +1,7 @@
 package nu.educom.rvt.services;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -168,6 +169,12 @@ public class ReviewService {
 		removedDuplicates.addAll(concepts);
 		removedDuplicates.removeAll(conceptsWithRatings);
 		return removedDuplicates;
+	}
+	
+	public String getMostRecentReviewDate(List<Review> allReviews) {
+		LocalDate mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return mostRecentDate.format(formatter);
 	}
 	
 }
