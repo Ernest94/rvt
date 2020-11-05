@@ -16,11 +16,12 @@ class docentAddReview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
+            reviewDate: "",
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
             value: "",
-            setValue: ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            setValue: ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
         };
     }
 
@@ -41,14 +42,12 @@ class docentAddReview extends React.Component {
 
     getConcepts() {
         console.log(this.createUserIdJson());
-        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.post("http://localhost:8081" + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {            
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.setState({
-                    errors: error
-                });
+
                 console.log("an error occorured " + error);
             });
     }
@@ -62,7 +61,7 @@ class docentAddReview extends React.Component {
     handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
-            userLocation: data.traineeLocation.name,
+            userLocation: data.traineeLocation,
             concepts: data.conceptsPlusRatings ,
         });
         console.log(this.state);
@@ -183,8 +182,8 @@ class docentAddReview extends React.Component {
         return (
                 <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
-                    <h2 className="trainee-location">{this.state.userLocation}</h2>
-                    <h2 className="review-date">{""}</h2>
+                    <h3 className="trainee-location">{this.state.userLocation}</h3>
+                    <h3 className="review-date">{this.state.reviewDate}</h3>
 
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 

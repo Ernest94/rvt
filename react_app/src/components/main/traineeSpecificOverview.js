@@ -16,6 +16,7 @@ class traineeSpecificOverview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
+            reviewDate: "",
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
@@ -55,7 +56,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: this.state.userId, //5
+            id: this.state.userId,
         };
     }
 
@@ -151,7 +152,7 @@ class traineeSpecificOverview extends React.Component {
                 <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
                     <h2 className="trainee-location">{this.state.userLocation}</h2>
-                    <h2 className="review-date">{""}</h2>
+                <h2 className="review-date">{this.state.reviewDate}</h2>
 
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
