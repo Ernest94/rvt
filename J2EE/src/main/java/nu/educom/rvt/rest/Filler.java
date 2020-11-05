@@ -50,7 +50,7 @@ public class Filler {
 
 		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
-		// User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
+		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),now,endDate);
 		
 		//add users to db
 		List<User> users = new ArrayList<User>();
@@ -62,7 +62,7 @@ public class Filler {
 		
 		users.add(trainee1);
 		users.add(trainee2);
-		//users.add(trainee3);
+		users.add(trainee3);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
@@ -228,12 +228,12 @@ public class Filler {
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3, "no comment"));
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3));
 		
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(1),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(2),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(3),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(4),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(5),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(1),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(2),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(3),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(4),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(5),5));
 		
 		conceptsRatings.add(new ConceptRating(review4,concepts.get(0),4));
 		conceptsRatings.add(new ConceptRating(review4,concepts.get(1),4));

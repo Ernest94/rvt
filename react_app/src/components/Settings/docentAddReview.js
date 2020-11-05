@@ -4,9 +4,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
 import './docentAddReview.css'
-import Box from '@material-ui/core/Box';
 
-import {config} from '../constants';
+import { config } from '../constants';
 
 class docentAddReview extends React.Component {
     
@@ -16,11 +15,14 @@ class docentAddReview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
+            reviewDate: "",
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
             value: "",
-            setValue: ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            setValue: "",
+            traineeFeedback: "",
+            officeFeedback: ""
         };
     }
 
@@ -41,14 +43,12 @@ class docentAddReview extends React.Component {
 
     getConcepts() {
         console.log(this.createUserIdJson());
-        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {            
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.setState({
-                    errors: error
-                });
+
                 console.log("an error occorured " + error);
             });
     }
@@ -62,20 +62,11 @@ class docentAddReview extends React.Component {
     handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
-            userLocation: data.traineeLocation.name,
+            userLocation: data.traineeLocation,
             concepts: data.conceptsPlusRatings ,
         });
         console.log(this.state);
     }
-
-    // fakeCurriculumResponse() {
-    //     this.setState({
-    //         userName: "Niels",
-    //         userLocation: "Utrecht",
-    //         concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-    //     })
-    //     console.log(this.state);
-    // }
     
     getActiveDisplayName(bool) {
         if (bool) return "ja";
@@ -90,7 +81,7 @@ class docentAddReview extends React.Component {
             case 3: return ("Voldoende");
             case 4: return ("Goed");
             case 5: return ("Uitstekend");
-            default: return ("Geen Rating");
+            default: return ("");
         }
     }
 
@@ -135,7 +126,7 @@ class docentAddReview extends React.Component {
     }
 
     render() {
-        const {pageLoading} = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
@@ -183,8 +174,8 @@ class docentAddReview extends React.Component {
         return (
                 <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
-                    <h2 className="trainee-location">{this.state.userLocation}</h2>
-                    <h2 className="review-date">{""}</h2>
+                    <h3 className="trainee-location">{this.state.userLocation}</h3>
+                    <h3 className="review-date">{this.state.reviewDate}</h3>
 
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
@@ -215,12 +206,12 @@ class docentAddReview extends React.Component {
                 </table>
                     <div>
                         <div className="feedback-box">
-                            <h4 >{"Feedback voor Trainee"}</h4>
-                            <textarea id="trainee-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        <h4 >{"Feedback voor Trainee"}</h4>
+                        <textarea id="trainee-feedback-boxid" rows="4" cols="50">{traineeFeedback}</textarea> 
                         </div>
                         <div className="feedback-box">
-                            <h4 >{"Feedback voor kantoor"}</h4>
-                            <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
+                        <h4 >{"Feedback voor kantoor"}</h4>
+                        <textarea id="kantoor-feedback-boxid" rows="4" cols="50">{officeFeedback}</textarea> 
                         </div>
                     </div>
                     <div>

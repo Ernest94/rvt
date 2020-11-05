@@ -71,13 +71,32 @@ public class ReviewService {
 //		}
 //		return conceptsPlusRatings;
 //	}
+	public void makeNewReviewIfNoPending(User user)
+	{
+		ReviewRepository reviewRepo = new ReviewRepository();
+		List<Review> pendingReviews = reviewRepo.readAll().stream()
+														  .filter(r -> r.getUser().getId() == user.getId())
+														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
+														  .collect(Collectors.toList());
+		if(pendingReviews.size() == 0) {
+			reviewRepo.create(new Review(LocalDate.now(), "", "", Review.Status.COMPLETED, user));
+		}
+	}
 	
-	public List<Review> getAllCompletedReviewForUser(User user){
+	public List<Review> getAllReviewsForUser(User user){
 		
 		ReviewRepository reviewRepo = new ReviewRepository();
-		Status status = Review.Status.COMPLETED;
 		List<Review> reviews = reviewRepo.readAll();
 		return	reviews.stream().filter(review -> review.getUser().getId() == user.getId())
+								.collect(Collectors.toList());
+		
+	}
+	
+	public List<Review> getAllCompletedReviewsForUser(User user){
+		
+		ReviewRepository reviewRepo = new ReviewRepository();
+		List<Review> reviews = reviewRepo.readAll();
+		return	reviews.stream().filter(r -> r.getUser().getId() == user.getId())
 								.filter(r -> r.getReviewStatus() == Review.Status.COMPLETED)
 								.collect(Collectors.toList());
 		

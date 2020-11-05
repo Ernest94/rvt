@@ -1,6 +1,5 @@
 import React from 'react';
 import LocationSelection from './locationSelection.js';
-import TeacherSelection from './teacherSelection.js';
 import './roleAndLocation.css';
 
 class RoleAndLocation extends React.Component {

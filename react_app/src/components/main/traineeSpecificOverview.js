@@ -5,8 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Rating from '@material-ui/lab/Rating';
 import './traineeSpecificOverview.css'
 
-import {config} from '../constants';
-import './search.css';
+import { config } from '../constants';
 
 class traineeSpecificOverview extends React.Component {
     
@@ -16,10 +15,12 @@ class traineeSpecificOverview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
+            reviewDate: "",
             concepts: [],
             pageLoading: false,
             weeksPerBlock: 2,
-            errors: ""
+            errors: "",
+            traineeFeedback: ""
         };
     }
 
@@ -40,7 +41,7 @@ class traineeSpecificOverview extends React.Component {
 
     getConcepts() {
         console.log(this.createUserIdJson());
-        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {            
 
                 this.handleCurriculumReponse(response.data);
@@ -55,7 +56,7 @@ class traineeSpecificOverview extends React.Component {
 
     createUserIdJson() {
         return {
-            id: this.state.userId, //5
+            id: this.state.userId,
         };
     }
 
@@ -67,15 +68,6 @@ class traineeSpecificOverview extends React.Component {
         });
         console.log(this.state);
     }
-
-    //fakeCurriculumResponse() {
-    //    this.setState({
-    //        userName: "Niels",
-    //        userLocation: "Utrecht",
-    //        concepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-    //    })
-    //    console.log(this.state);
-    //}
     
     getActiveDisplayName(bool) {
         if (bool) return "ja";
@@ -107,7 +99,8 @@ class traineeSpecificOverview extends React.Component {
     }
 
     render() {
-        const {pageLoading} = this.state;
+        console.log(this.state);
+        const { pageLoading, traineeFeedback } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         var conceptDisplay = this.state.concepts.map((concept) => {
@@ -129,16 +122,16 @@ class traineeSpecificOverview extends React.Component {
                     </td>                  
                     <td className="rating">
                     <div>
-                        <Rating className="rating-star"
-                            value={concept.rating}
-                            name="rating"
-                            readOnly="true"
+                            <Rating className="rating-star"
+                                value={concept.rating}
+                                name="rating"
+                                readOnly={true}
                         />
                         <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize className="comment-text" readOnly aria-label="minimum height"> 
+                        <TextareaAutosize className="comment-text" readOnly={true} aria-label="minimum height"> 
                             {concept.comment}
                             </TextareaAutosize> 
                     </td> 
@@ -151,7 +144,7 @@ class traineeSpecificOverview extends React.Component {
                 <div className="container">
                     <h2 className="trainee-name">Review {this.state.userName}</h2>
                     <h2 className="trainee-location">{this.state.userLocation}</h2>
-                    <h2 className="review-date">{""}</h2>
+                <h2 className="review-date">{this.state.reviewDate}</h2>
 
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
@@ -181,8 +174,8 @@ class traineeSpecificOverview extends React.Component {
                         </tbody>
                     </table>
                     <div className="trainee-feedback-box">
-                        <h4 >{"Feedback voor Trainee"}</h4>
-                        <textarea readOnly rows="4" cols="50"> </textarea> 
+                    <h4 >{"Feedback voor Trainee"}</h4>
+                    <textarea readOnly rows="4" cols="50">{traineeFeedback}</textarea> 
                     </div>
                 </div>
         )

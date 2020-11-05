@@ -42,9 +42,34 @@ public class ReviewResource {
 		ThemeConceptService conceptServ = new ThemeConceptService();
 	    User userOutput = userServ.getUserById(user.getId());
 		
-		List<Review> allReviews = this.reviewServ.getAllCompletedReviewForUser(userOutput);
+		List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
 		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
-		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews); //moet herschreven worden
+		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+		
+		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
+		String traineeName = userOutput.getName();
+		String traineeLocation = userOutput.getLocation().getName();
+		conceptsRatingsJSON.setTraineeName(traineeName);
+		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
+		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+
+		return Response.status(200).entity(conceptsRatingsJSON).build();
+  	}
+	
+	@POST
+	@Path("/makeReview")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getMakeReviewData(User user) {
+		
+		UserService userServ = new UserService(); //load injectables
+		ThemeConceptService conceptServ = new ThemeConceptService();
+	    User userOutput = userServ.getUserById(user.getId());
+		
+	    reviewServ.makeNewReviewIfNoPending(userOutput);
+		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
+		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
