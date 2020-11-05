@@ -27,7 +27,7 @@ public class Main {
   
   static final URI BASE_URI_SECURED = getBaseURISecured();
   
-  static final boolean SECURED = false;
+  static final boolean SECURED = true;
   
 
   static HttpServer startServer() {
@@ -37,11 +37,18 @@ public class Main {
     
     if(SECURED) {
       SSLContextConfigurator sslCon=new SSLContextConfigurator();
-      sslCon.setKeyStoreFile("./src/main/resources/keystore_server"); // contains server keypair
+      sslCon.setKeyStoreFile("./src/main/resources/keystore"); // contains server keypair
       sslCon.setKeyStorePass("?120qhZl");
-      sslCon.setTrustStoreFile("./src/main/resources/truststore_server"); // contains client certificate
+      sslCon.setKeyStoreType("PKCS12");
+      sslCon.setTrustStoreFile("./src/main/resources/educom_voortgang"); // contains client certificate
       sslCon.setTrustStorePass("?120qhZl");
-      return GrizzlyHttpServerFactory.createHttpServer(BASE_URI_SECURED, rc, true, new SSLEngineConfigurator(sslCon));
+      sslCon.setTrustStoreType("PKCS12");
+      if (sslCon.validateConfiguration(true)) {
+        return GrizzlyHttpServerFactory.createHttpServer(BASE_URI_SECURED, rc, true, new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
+      } else {
+        System.out.println("Context is not valid");        
+      }
+      
     }
     return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc, locator);
   }
