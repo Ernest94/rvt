@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URI;
 import javax.ws.rs.core.UriBuilder;
 
-import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
 import org.glassfish.grizzly.ssl.SSLEngineConfigurator;
@@ -22,6 +21,10 @@ public class Main {
   private static URI getBaseURISecured(){
     return UriBuilder.fromUri("https://0.0.0.0/").port(8081).build();
 }
+  private static final String KEY_STORE_FILE = "./src/main/resources/keystore";
+  private static final String KEY_STORE_TYPE = "PKCS12";
+  private static final String KEY_STORE_PW = "?120qhZl";
+  private static final String TRUST_STORE_FILE = "./src/main/resources/educom_voortgang";
 
   static final URI BASE_URI = getBaseURI();
   
@@ -36,13 +39,7 @@ public class Main {
 //	ResourceConfig rc = new ResourceConfig().packages("nu.educom.rvt.rest");
     
     if(SECURED) {
-      SSLContextConfigurator sslCon=new SSLContextConfigurator();
-      sslCon.setKeyStoreFile("./src/main/resources/keystore"); // contains server keypair
-      sslCon.setKeyStorePass("?120qhZl");
-      sslCon.setKeyStoreType("PKCS12");
-      sslCon.setTrustStoreFile("./src/main/resources/educom_voortgang"); // contains client certificate
-      sslCon.setTrustStorePass("?120qhZl");
-      sslCon.setTrustStoreType("PKCS12");
+      SSLContextConfigurator sslCon = setUpSSLCon();
       if (sslCon.validateConfiguration(true)) {
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI_SECURED, rc, true, new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
       } else {
@@ -51,6 +48,18 @@ public class Main {
       
     }
     return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc, locator);
+  }
+  
+  private static SSLContextConfigurator setUpSSLCon(){
+    SSLContextConfigurator sslCon=new SSLContextConfigurator();
+    sslCon.setKeyStoreFile(KEY_STORE_FILE); // contains server keypair
+    sslCon.setKeyStorePass(KEY_STORE_PW);
+    sslCon.setKeyStoreType(KEY_STORE_TYPE);
+    sslCon.setTrustStoreFile(TRUST_STORE_FILE); // contains client certificate
+    sslCon.setTrustStorePass(KEY_STORE_PW);
+    sslCon.setTrustStoreType(KEY_STORE_TYPE);
+    return sslCon;
+    
   }
 
   
