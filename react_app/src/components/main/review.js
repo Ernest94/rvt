@@ -183,13 +183,8 @@ class review extends React.Component {
                         </tbody>
                     </table>
                     <div className="trainee-feedback-box">
-<<<<<<< HEAD:react_app/src/components/main/traineeSpecificOverview.js
-                    <h4 >{"Feedback voor Trainee"}</h4>
-                    <textarea readOnly rows="4" cols="50">{traineeFeedback}</textarea> 
-=======
                         <h4 >{"Terugkoppeling:"}</h4>
                         <textarea readOnly rows="2" cols="50"> </textarea> 
->>>>>>> origin/verwerken_opmerkingen_Jeroen_frontend:react_app/src/components/main/review.js
                     </div>
                 </div>
         )
