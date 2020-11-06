@@ -23,7 +23,6 @@ import docentAddReview from './docentAddReview.js';
 
 class Main extends React.Component {
     
-
     constructor(props) {
         super(props);
         
