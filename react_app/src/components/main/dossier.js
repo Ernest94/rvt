@@ -280,7 +280,7 @@ class Dossier extends React.Component {
                             to={"/curriculum/" + userId /*+ "/" + name */}
                             hidden={!traineeDossier}
                             >
-                                Review
+                            Review
                         </Link>
                     </div>
                     <div>

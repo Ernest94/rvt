@@ -12,7 +12,7 @@ class Settings extends React.Component {
         const addConceptLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
         const addLocationLink = this.props.isAdmin ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
         const conceptOverviewLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
-        const traineeSpecificOverview = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review trainee</Link></li> : <span></span>
+        const review = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review</Link></li> : <span></span>
         const docentAddReviewLink = this.props.userHasAccess ? < li > <Link className="link" to="/docentAddReview">Review toevoegen</Link></li> : <span></span>
 
 
@@ -24,7 +24,7 @@ class Settings extends React.Component {
                     <li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Open Dossier</Link></li>
                     {searchLink}
                     {conceptOverviewLink}
-                    {traineeSpecificOverview}
+                    {review}
                     {docentAddReviewLink}
                     {addUserLink}
                     {addConceptLink}
