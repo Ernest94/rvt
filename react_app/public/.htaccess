@@ -1,4 +1,68 @@
-Options -MultiViews
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.html [QSA,L]
+###########
+#Rewriting#
+###########
+RewriteEngine on
+
+# redirect all http requests to https://
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+
+# redirect to https://...:8081/ if "webapi/" is matched
+RewriteCond %{SERVER_PORT} !^8081$
+RewriteRule ^webapi/(.*[^/])/?$ https://%{HTTP_HOST}:8081/webapi/ [R=301,L]
+
+# Go normally to existing asset or directory
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+RewriteRule ^ - [L]
+ 
+# Redirect to index.html if the requested resource doesn't exist
+RewriteRule ^ /index.html
+
+##########
+#SECURITY#
+##########
+
+#Deny access to folders and files that are hidden
+RedirectMatch 403 /\..*$
+
+#deny access to log files
+<Files ~ "(.log)">
+Order allow,deny
+Deny from all
+</Files>
+
+<Files ~ "(.out)">
+Order allow,deny
+Deny from all
+</Files>
+
+#Deny access to sql files
+<Files ~ "(.sql)">
+Order allow,deny
+Deny from all
+</Files>
+
+#Deny access to jar filess
+<Files ~ "(.jar)">
+Order allow,deny
+Deny from all
+</Files>
+
+#Deny access to scripts
+<Files ~ "(.sh)">
+Order allow,deny
+Deny from all
+</Files>
+
+#Deny listing of directories from browser
+Options -Indexes
+
+# X-XSS-Protection
+Header set X-XSS-Protection "1; mode=block"
+Header always set X-Frame-Options SAMEORIGIN
+Header set X-Content-Type-Options nosniff
+Header set Content-Security-Policy upgrade-insecure-requests
+#Header set Strict-Transport-Security "max-age=31536000;includeSubDomains;"
+#Header set Referrer-Policy: strict-origin-when-cross-origin
+Header set Feature-Policy: "geolocation none"
