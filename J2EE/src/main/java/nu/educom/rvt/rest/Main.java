@@ -37,13 +37,13 @@ public class Main {
     
     if(SECURED) {
       SSLContextConfigurator sslCon=new SSLContextConfigurator();
-      sslCon.setKeyStoreFile("src/main/resources/educom_voortgang.keystore"); // contains server keypair
+      sslCon.setKeyStoreFile("/var/www/vhosts/vps-edu-detacom.hostnet.nl/voortgang.educom.nu/ssl/educom_voortgang.keystore"); // contains server keypair
       sslCon.setKeyStorePass("?120qhZl");
       sslCon.setKeyStoreType("PKCS12");
-      sslCon.setTrustStoreFile("src/main/resources/educom_voortgang.truststore"); // contains client certificate
+      sslCon.setTrustStoreFile("/var/www/vhosts/vps-edu-detacom.hostnet.nl/voortgang.educom.nu/ssl/educom_voortgang.truststore"); // contains client certificate
       sslCon.setTrustStorePass("?120qhZl");
       sslCon.setTrustStoreType("PKCS12");
-      sslCon.setSecurityProtocol("TLSv1.2");
+      sslCon.setSecurityProtocol("TLSv1.3");
       if (!sslCon.validateConfiguration(true)) {
           System.out.println("Context is not valid");
 
