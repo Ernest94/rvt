@@ -118,6 +118,10 @@ class Main extends React.Component {
         return sessionStorage.getItem("userId");
     }
 
+    getUserRole() {
+        return sessionStorage.getItem("userRole");
+    }
+
     canAddUser() {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
@@ -232,24 +236,28 @@ class Main extends React.Component {
                             userHasAccess={true}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
+                            getUserRole={this.getUserRole}
                         />
                         <AccessRoute exact path="/curriculum"
                             isLoggedIn={loggedIn}
                             userHasAccess={true}
                             component={traineeSpecificOverview}
                             getUserId={this.getUserId}
+                            getUserRole={this.getUserRole}
                         />
                         <AccessRoute exact path="/docentAddReview"
                             isLoggedIn={loggedIn}
                             userHasAccess={!isTrainee}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={docentAddReview}
+                            getUserRole={this.getUserRole}
                         />
                             <AccessRoute exact path="/docentAddReview/:userId"
                             isLoggedIn={loggedIn}
                             userHasAccess={!isTrainee}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={docentAddReview}
+                            getUserRole={this.getUserRole}
                         />
                     </Switch>
                 </div>

@@ -26,8 +26,20 @@ class traineeSpecificOverview extends React.Component {
 
     async componentDidMount() {
         this.setState({ pageLoading: true });
-        if (this.props.isTrainee) {
-            this.setState({ userId: this.props.getUserId() });
+
+        console.log(this.props.getUserRole());
+        console.log(this.props.getUserId());
+
+        if (this.props.getUserRole() == "Trainee") {
+
+            const id = this.props.getUserId();
+
+            await this.setState({
+                userId: id,
+            });
+
+            console.log(id);
+            console.log(this.state);
         }
         else {
             const { computedMatch: { params } } = this.props;
@@ -47,9 +59,6 @@ class traineeSpecificOverview extends React.Component {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                this.setState({
-                    errors: error
-                });
                 console.log("an error occorured " + error);
             });
     }
