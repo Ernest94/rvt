@@ -1,6 +1,6 @@
 const prod = {
   url: {
-    API_URL: 'http://voortgang.educom.nu:8081'
+    API_URL: 'https://voortgang.educom.nu:8081'
   }
 };
 
