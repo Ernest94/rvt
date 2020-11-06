@@ -122,6 +122,10 @@ class Main extends React.Component {
         return sessionStorage.getItem("userRole");
     }
 
+    getUserLocation() {
+        return sessionStorage.getItem("userLocation")
+    }
+
     canAddUser() {
         let isAdmin = sessionStorage.getItem("userRole") === "Admin";
         let isDocent = sessionStorage.getItem("userRole") === "Docent";
@@ -199,13 +203,14 @@ class Main extends React.Component {
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
-                        <AccessRoute exact path="/search" 
-                            userHasAccess={!isTrainee} 
-                            component={Search} 
-                            isLoggedIn={loggedIn} 
-                            handleDossierRequest={this.handleDossierRequest} 
+                        <AccessRoute exact path="/search"
+                            userHasAccess={!isTrainee}
+                            component={Search}
+                            isLoggedIn={loggedIn}
+                            handleDossierRequest={this.handleDossierRequest}
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
+                            getUserLocation={this.getUserLocation}
                         />
                         <AccessRoute exact path="/addTheme"
                             isLoggedIn={loggedIn}
