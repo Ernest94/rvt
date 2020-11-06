@@ -151,10 +151,11 @@ class review extends React.Component {
         
         return (
                 <div className="container">
-                    <h2 className="trainee-name">Review {this.state.userName}</h2>
-                    <h3 className="trainee-location">{this.state.userLocation}</h3>
-                <h3 className="review-date">{this.state.reviewDate}</h3>
-
+                    <div class="row">
+                    <h2 class="col-md-4">{this.state.reviewDate}</h2>
+                    <h2 class="col-md-4">Review {this.state.userName}</h2>
+                    <h2 class="col-md-4">{this.state.userLocation}</h2>
+                    </div>
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >

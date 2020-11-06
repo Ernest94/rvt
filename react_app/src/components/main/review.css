@@ -1,3 +1,15 @@
+.review-date{
+    float:left;
+}
+
+.trainee-name{
+    float:left;
+}
+
+.trainee-location{
+    float:left;
+}
+
 .container {
     position:relative;
 }
@@ -137,4 +149,8 @@ tbody {
     padding-top: 45px;
     padding-left: 16px;
 }
+
+
+
+
 
