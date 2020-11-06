@@ -30,7 +30,7 @@ class review extends React.Component {
         console.log(this.props.getUserRole());
         console.log(this.props.getUserId());
 
-        if (this.props.getUserRole() == "Trainee") {
+        if (this.props.getUserRole() === "Trainee") {
 
             const id = this.props.getUserId();
 
@@ -184,8 +184,8 @@ class review extends React.Component {
                         </tbody>
                     </table>
                     <div className="trainee-feedback-box">
-                        <h4 >{"Terugkoppeling:"}</h4>
-                        <textarea readOnly rows="2" cols="50"> </textarea> 
+                    <h4 >{"Terugkoppeling:"}</h4>
+                    <textarea readOnly rows="2" cols="50">{traineeFeedback}</textarea> 
                     </div>
                 </div>
         )

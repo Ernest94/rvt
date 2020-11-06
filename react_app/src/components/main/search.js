@@ -42,8 +42,8 @@ class Search extends React.Component {
         const locationName = this.props.getUserLocation();
         const roleName = "Trainee";
 
-        let role = this.state.roles.find(element => element.name == roleName);
-        let location = this.state.locations.find(element => element.name == locationName)
+        let role = this.state.roles.find(element => element.name === roleName);
+        let location = this.state.locations.find(element => element.name === locationName)
 
         this.setState({
             loading: true,

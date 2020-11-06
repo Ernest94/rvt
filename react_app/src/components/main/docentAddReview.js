@@ -4,8 +4,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import Rating from '@material-ui/lab/Rating';
 
-import './review.css'
-import Box from '@material-ui/core/Box';
+import './review.css'   
 
 import { config } from '../constants';
 
@@ -210,12 +209,12 @@ class docentAddReview extends React.Component {
                 </table>
                     <div>
                         <div className="feedback-box-trainee">
-                            <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                            <textarea rows="2" cols="50"> </textarea> 
+                        <h4 >{"Terugkoppeling naar Trainee:"}</h4>
+                        <textarea rows="2" cols="50">{traineeFeedback}</textarea> 
                         </div>
                         <div className="feedback-box-kantoor">
-                            <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                            <textarea rows="2" cols="50"> </textarea> 
+                        <h4 >{"Terugkoppeling naar kantoor:"}</h4>
+                        <textarea rows="2" cols="50">{officeFeedback}</textarea> 
                         </div>
                     </div>
                     <div className="submit-review-button">
