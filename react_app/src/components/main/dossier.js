@@ -13,12 +13,12 @@ class Dossier extends React.Component {
         super(props);
         this.state = {
             name: "",
-			email: "", /* JH: Let op dan je geen <tab> charakters gebruikt */
+            email: "",
             role: null,
             roleName: "",
-			location: null,
-			startDate: "",
-			pageLoading: false,
+            location: null,
+            startDate: "",
+            pageLoading: false,
             userId: null,
             buttonDisabled: false,
             roles: [],
@@ -202,25 +202,25 @@ class Dossier extends React.Component {
         return (
             <div>
                 <h2 className="text-center">Dossier</h2>
-                <ul className="errors">{errors}</ul>
-                <form onSubmit={this.handleSubmit}>
-                    <div className="input">
-                        <label className="label" htmlFor="name">Naam:</label>
-                        <input className="form" id="name" type="name" name="name" value={name} 
+                <ul className="errors text-center">{errors}</ul>
+                <form onSubmit={this.handleSubmit} className="container col-lg-8">
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                        <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="email">Email:</label>
-                        <input className="form" id="email" type="email" name="email" value={email} 
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
+                        <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="rol">Rol:</label>
-                        <select className="form" name="role" id="role"
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
+                        <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
                             required
@@ -231,9 +231,9 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input">
-                        <label className="label" htmlFor="location">Locatie:</label>
-                        <select className="form" name="location" id="location"
+                    <div className="input row">
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        <select className="form-control col-sm-9" name="location" id="location"
                             value={locationDisplayName}
                             onChange={this.onChangeLocation}
                             required
@@ -244,44 +244,52 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input" >
-                        <label className="label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form" id="startDate" type="date" name="startDate" value={startDate} 
+                    <div className="input row" >
+                        <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-                    {(!editDisabled) ? <button type="submit" className="button">Opslaan</button>: <span></span>}
+                    {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
                 </form>
                 {(editDisabled) ?
-                <div>
-                    <div className="text-center">
+                <div className="buttons">
+                    <div>
                         <Link 
-                            className="buttonLink" 
+                            className="btn btn-danger btn-block" 
                             to={"/dossier/" + userId + "/edit"}
+                            hidden={isTrainee}
+                            role="button"
                             >                        
-                            <button className="button" hidden={isTrainee}>Pas gebruiker aan</button>
+                            Pas gebruiker aan
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <Link 
-                            className="buttonLink" 
-                            to={"/linking/" + userId}>
-                            <button className="button" hidden={isTrainee}>Gelinkte gebruikers</button>
+                            className="btn btn-danger btn-block" 
+                            to={"/linking/" + userId}
+                            hidden={isTrainee}
+                            >
+                            Gelinkte gebruikers
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <Link
-                            className="buttonLink"
-                            to={"/curriculum/" + userId /*+ "/" + name */}>
-                                <button className="button" hidden={!traineeDossier}>Review</button>
+                            className="btn btn-danger btn-block"
+                            to={"/curriculum/" + userId /*+ "/" + name */}
+                            hidden={!traineeDossier}
+                            >
+                            Review
                         </Link>
                     </div>
-                    <div className="text-center">
+                    <div>
                         <Link
-                            className="buttonLink"
-                            to={"/docentAddReview/"}>
-                                <button className="button" hidden={!traineeDossier}>Review aanmaken/aanpassen</button>
+                            className="btn btn-danger btn-block"
+                            to={"/docentAddReview/"  + userId /*+ "/" + name */}
+                                hidden={!traineeDossier}
+                                >
+                                Review aanmaken/aanpassen
                         </Link>
                     </div>
                     <div className="text-center">

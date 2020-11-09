@@ -55,7 +55,7 @@ public class Filler {
 		//add users to db
 		List<User> users = new ArrayList<User>();
 		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),now,endDate));
-		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(4), locations.get(0),now,endDate));
+		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),now,endDate));
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),now,endDate));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),now,endDate));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),now,endDate));
@@ -228,12 +228,12 @@ public class Filler {
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3, "no comment"));
 		conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3));
 		
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(1),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(2),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(3),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(4),4));
-		conceptsRatings.add(new ConceptRating(review3,concepts.get(5),4));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(0),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(1),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(2),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(3),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(4),5));
+		conceptsRatings.add(new ConceptRating(review3,concepts.get(5),5));
 		
 		conceptsRatings.add(new ConceptRating(review4,concepts.get(0),4));
 		conceptsRatings.add(new ConceptRating(review4,concepts.get(1),4));
