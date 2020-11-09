@@ -11,9 +11,9 @@ public class UserSearch {
 	private String email;
 	private Role role;
 	private Location location;
-	private LocalDate dateActive;
+	private String dateActive;
 	
-	public UserSearch(int id, String name, String email, Role role, Location location, LocalDate dateActive)
+	public UserSearch(int id, String name, String email, Role role, Location location, String dateActive)
 	{
         this.id = id;
 		this.name = name;
@@ -53,10 +53,10 @@ public class UserSearch {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	public LocalDate getDateActive() {
+	public String getDateActive() {
 		return dateActive;
 	}
-	public void setDateActive(LocalDate dateActive) {
+	public void setDateActive(String dateActive) {
 		this.dateActive = dateActive;
 	}
 }

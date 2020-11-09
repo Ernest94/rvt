@@ -69,15 +69,6 @@ class Search extends React.Component {
             });
     }
 
-    //findRole(role) {
-    //    console.log(role);
-    //    return role.name == "Trainee";
-    //}
-
-    findlocation(location) {
-        return location;
-    }
-
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
@@ -110,7 +101,6 @@ class Search extends React.Component {
     {
         this.setState({
             users: data.userSearch
-            //users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -211,6 +201,9 @@ class Search extends React.Component {
                     <td className="p-2 text-nowrap align-middle">
                         {user.location.name}
                     </td>
+                    <td className="p-2 text-nowrap align-middle">
+                        {user.dateActive}
+                    </td>
                 </tr >
             )
         });
@@ -278,6 +271,9 @@ class Search extends React.Component {
                                     </th>
                                 <th className="p-2 text-nowrap align-middle">
                                     Locatie
+                                    </th>
+                                <th className="p-2 text-nowrap align-middle">
+                                    Startdatum
                                     </th>
                             </tr>
                         </thead>
