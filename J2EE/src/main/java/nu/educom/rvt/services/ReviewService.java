@@ -22,7 +22,7 @@ public class ReviewService {
 	public List<Concept> getActiveConcepts() {
 		List<Concept> activeConcepts = new ArrayList<Concept>();
 		
-		ConceptRepository conceptRepo = new ConceptRepository();
+        ConceptRepository conceptRepo = new ConceptRepository();
 		
 		//Now assume all concepts are active
 		activeConcepts = conceptRepo.readAll();
@@ -149,6 +149,23 @@ public class ReviewService {
 		removedDuplicates.addAll(concepts);
 		removedDuplicates.removeAll(conceptsWithRatings);
 		return removedDuplicates;
-	}
-	
+    }
+    
+    public Review getReviewById(int reviewId) {
+        ReviewRepository reviewRepo = new ReviewRepository();
+        return reviewRepo.readById(reviewId);
+    }
+
+    public Review completedReview(Review review) {
+        Review completedReview = review;
+        completedReview.setReviewStatus(Review.Status.COMPLETED);
+        return completedReview;
+    }
+    
+    public int updateReview(Review review) {
+        ReviewRepository reviewRepo = new ReviewRepository();
+        reviewRepo.update(review);
+        return 1;
+    }
+
 }

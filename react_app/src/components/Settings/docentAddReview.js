@@ -22,7 +22,8 @@ class docentAddReview extends React.Component {
             pageLoading: false,
             weeksPerBlock: 2,
             value: "",
-            setValue: ""                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+            setValue: "",
+            reviewId: null
         };
     }
 
@@ -137,18 +138,23 @@ class docentAddReview extends React.Component {
 
     submit = () => {
         confirmAlert({
-            title: 'Bevestig ',
+            title: 'Bevestig',
             message: 'wil je geen verdere wijzigingen maken?',
             buttons: [{
-                label: 'Ja',
-                onClick: () => alert('Click Yes')
+                label: 'nee, sla het op',
+                onClick: () => alert('je review is opgeslagen')
             },
             {
-                label: 'Nee',
-                onClick: () => alert('Click No')
-            }]
+                label: 'jawel, breng me terug',
+            //     onClick: () => alert('Click No')
+            }
+        ]
         })
     };
+
+    submitReview() {
+
+    }
 
 
     render() {
@@ -241,7 +247,7 @@ class docentAddReview extends React.Component {
                         </div>
                     </div>
                     <div className="container">
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                         <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
                     </div>
                 </div>

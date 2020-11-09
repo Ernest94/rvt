@@ -54,6 +54,17 @@ public class ReviewResource {
 		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
-  	}
+      }
+    
+	@POST
+    @Path("/confirmReview")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setActiveReviewComplete(Review review){
+        Review reviewOutput = reviewServ.getReviewById(review.getId());
+        Review completedReview = reviewServ.completedReview(reviewOutput);
+        reviewServ.updateReview(completedReview);
+
+		return Response.status(202).build();
+    }
 	
 }
