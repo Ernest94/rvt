@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
 import './docentAddReview.css'
 import Box from '@material-ui/core/Box';
@@ -133,6 +135,22 @@ class docentAddReview extends React.Component {
         }
     }
 
+    submit = () => {
+        confirmAlert({
+            title: 'Bevestig ',
+            message: 'wil je geen verdere wijzigingen maken?',
+            buttons: [{
+                label: 'Ja',
+                onClick: () => alert('Click Yes')
+            },
+            {
+                label: 'Nee',
+                onClick: () => alert('Click No')
+            }]
+        })
+    };
+
+
     render() {
         const {pageLoading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
@@ -186,7 +204,7 @@ class docentAddReview extends React.Component {
                     <h2 className="review-date">{""}</h2>
 
                     <div >
-                        <ul className="errors">{this.state.errors}</ul>                 
+                        <ul className="errors">{this.state.errors}</ul>
                     </div >
                     <table >
                         <thead>
@@ -222,9 +240,9 @@ class docentAddReview extends React.Component {
                             <textarea id="kantoor-feedback-boxid" rows="4" cols="50"> </textarea> 
                         </div>
                     </div>
-                    <div>
+                    <div className="container">
                     {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
+                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
                     </div>
                 </div>
         )
