@@ -22,58 +22,21 @@ import one.util.streamex.StreamEx;
 
 public class ReviewService {
 	
-	public List<Concept> getActiveConcepts() {
+	public List<Concept> getallConcepts() {
 		List<Concept> activeConcepts = new ArrayList<Concept>();
 		
-        ConceptRepository conceptRepo = new ConceptRepository();
-		
-		//Now assume all concepts are active
-		activeConcepts = conceptRepo.readAll();
-		
-		
-		//TO DO: look at the concepts that are active for a user
-//		UserConceptRepository userConceptRepo = new UserConceptRepository();
-//		
-//		List<Concept> allConcepts = conceptRepo.readAll();
-//		List<UserConcept> userConcepts = userConceptRepo.readByUserId(user.getId());
-//		
-//		for (UserConcept userConcept : userConcepts) {
-//			
-//			activeConcepts.add(allConcepts.get(userConcept.getId()));
-//		}
-		
+        ConceptRepository conceptRepo = new ConceptRepository();	
+		activeConcepts = conceptRepo.readAll();		
 		return activeConcepts;
 	}
 	
-	public List<ConceptRating> getLatestConceptRatings() {
-		List<ConceptRating> conceptsRatings = null;
-
-		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+	public List<User> getAllUsersWithPendingReviews(){
+		ReviewRepository reviewRepo = new ReviewRepository();
+		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
 		
-		//now the mock is for 1 trainee and all concept ratings are the last ratings
-		conceptsRatings = conceptRatingRepo.readAll();
-
-		//TO DO: only read the concept ratings of the last given review for the current user
-		
-		
-		return conceptsRatings;
+		return users;
 	}
 	
-	
-//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
-//		List<ConceptPlusRating> conceptsPlusRatings = new ArrayList<ConceptPlusRating>();
-//		int rating = 0;
-//		for (Concept activeConcept : activeConcepts) {
-//			for (ConceptRating conceptRating : conceptRatings) {
-//				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
-//					rating = conceptRating.getRating();
-//				}
-//			}
-//			conceptsPlusRatings.add(new ConceptPlusRating(activeConcept,rating));
-//			rating = 0;
-//		}
-//		return conceptsPlusRatings;
-//	}
 	public void makeNewReviewIfNoPending(User user)
 	{
 		ReviewRepository reviewRepo = new ReviewRepository();
