@@ -103,6 +103,12 @@ public class ReviewService {
 		
 	}
 	
+	/*
+	 * Functie ontvangt: een lijst van reviews waar de conceptRatings van gebruikt moeten worden, Een lijst van alle concepten.
+	 * Functie geeft terug: een lijst van alle concepten met de meest recente rating bij elk concept, gesorteerd op de concepten van de meest recente review en daarna de rest op week.
+	 * 
+	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
+	 */
 	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
 		
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
@@ -188,10 +194,14 @@ public class ReviewService {
         return 1;
     }
 	
-	public String getMostRecentReviewDate(List<Review> allReviews) {
+	public Review getMostRecentReview(List<Review> allReviews) {
 		LocalDate mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		return mostRecentDate.format(formatter);
+		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 	}
 	
+	public String convertDateTimeToString(LocalDate date)
+	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return date.format(formatter);
+	}
 }

@@ -15,6 +15,7 @@ public class ConceptRatingJSON implements Serializable{
 		private String traineeName;
 		private String traineeLocation;
 		private String reviewDate;
+		private int reviewId;
 		
 		public List<ConceptPlusRating> getConceptsPlusRatings() {
 			return conceptsPlusRatings;
@@ -43,6 +44,12 @@ public class ConceptRatingJSON implements Serializable{
 		
 		public static long getSerialversionuid() {
 			return serialVersionUID;
+		}
+		public int getReviewId() {
+			return reviewId;
+		}
+		public void setReviewId(int reviewId) {
+			this.reviewId = reviewId;
 		}
 
 }

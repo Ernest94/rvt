@@ -76,11 +76,16 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReviewDate(allReviews);
+		
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
+		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
+		int reviewId = mostRecentReview.getId();
+		
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
 		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+		conceptsRatingsJSON.setReviewId(reviewId);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
       }
