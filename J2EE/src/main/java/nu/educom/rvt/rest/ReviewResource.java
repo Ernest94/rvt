@@ -49,7 +49,8 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReviewDate(allReviews);
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
+		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -97,6 +98,17 @@ public class ReviewResource {
         Review reviewOutput = reviewServ.getReviewById(review.getId());
         Review completedReview = reviewServ.completedReview(reviewOutput);
         reviewServ.updateReview(completedReview);
+
+		return Response.status(202).build();
+    }
+	
+	@POST
+    @Path("/cancelReview")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setActiveReviewCancelled(Review review){
+        Review reviewOutput = reviewServ.getReviewById(review.getId());
+        Review cancelledReview = reviewServ.cancelledReview(reviewOutput);
+        reviewServ.updateReview(cancelledReview);
 
 		return Response.status(202).build();
     }

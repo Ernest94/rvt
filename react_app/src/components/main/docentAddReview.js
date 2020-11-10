@@ -6,7 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
 
-import './review.css'   
+import './review.css'
 
 import { config } from '../constants';
 
@@ -26,7 +26,8 @@ class docentAddReview extends React.Component {
             setValue: "",
             reviewId: null,
             traineeFeedback: "",
-            officeFeedback: ""
+            officeFeedback: "",
+            message:"",
         };
     }
 
@@ -48,7 +49,7 @@ class docentAddReview extends React.Component {
     getConcepts() {
         console.log(this.createUserIdJson());
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
-            .then(response => {            
+            .then(response => {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -63,12 +64,21 @@ class docentAddReview extends React.Component {
         };
     }
 
+    createReviewIdJSON() {
+        return {
+            id: this.state.reviewId
+        };
+    }
+
+
     handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
+            reviewId:data.reviewId,
+            message: "",
         });
         console.log(this.state);
     }
@@ -136,7 +146,7 @@ class docentAddReview extends React.Component {
             message: 'wil je geen verdere wijzigingen maken?',
             buttons: [{
                 label: 'nee, sla het op',
-                onClick: () => alert('je review is opgeslagen')
+                onClick: () => this.submitReview()
             },
             {
                 label: 'jawel, breng me terug',
@@ -147,7 +157,40 @@ class docentAddReview extends React.Component {
     };
 
     submitReview() {
+        axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
+        .then(response => {
+            this.setState({
+                message: "uw review is succesvol opgeslagen."
+            });
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
+        });
+    }
 
+    cancel = () => {
+        confirmAlert({
+            title: 'annuleer',
+            message: 'wilt u de review annuleren?',
+            buttons: [{
+                label: 'ja',
+                onClick: () => this.cancelReview()
+            },
+            {
+                label: 'nee, breng me terug naar de review',
+            }
+            ]   
+        })
+    };
+
+    cancelReview() {
+        axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
+        .then(response => {
+            this.props.handleReturnToDossier(this.state.userId);
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
+        });
     }
 
 
@@ -244,6 +287,11 @@ class docentAddReview extends React.Component {
                     <div className="container">
                         {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                         <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
+                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.cancel} className="btn btn-primary float-right" type="submit">annuleer review</button>}
+                    </div>
+                    <div>
+                        <p>{this.state.message}</p>
                     </div>
                 </div>
         )

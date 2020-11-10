@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.ReviewStatus;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.models.view.ConceptPlusRating;
@@ -186,6 +187,12 @@ public class ReviewService {
         Review completedReview = review;
         completedReview.setReviewStatus(Review.Status.COMPLETED);
         return completedReview;
+    }
+    
+    public Review cancelledReview(Review review) {
+    	Review cancelledReview = review;
+    	cancelledReview.setReviewStatus(Review.Status.CANCELLED);
+		return cancelledReview;
     }
     
     public int updateReview(Review review) {

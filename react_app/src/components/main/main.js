@@ -97,6 +97,11 @@ class Main extends React.Component {
         this.props.history.push('/dossier/' + id);
     }
 
+    handleReturnToDossier(id) {
+        this.props.history.push('/dossier/' + id);
+    }
+
+
     handleCurriculumRequest(event, id) {
         event.preventDefault();
         this.props.history.push('/curriculum/' + id);
@@ -253,14 +258,14 @@ class Main extends React.Component {
                         <AccessRoute exact path="/docentAddReview"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin || isDocent}
-                            handleReturnToSettings={this.handleReturnToSettings}
+                            handleReturnToDossier={this.handleReturnToDossier}
                             component={docentAddReview}
                             getUserRole={this.getUserRole}
                         />
-                            <AccessRoute exact path="/docentAddReview/:userId"
+                        <AccessRoute exact path="/docentAddReview/:userId"
                             isLoggedIn={loggedIn}
                             userHasAccess={isAdmin || isDocent}
-                            handleReturnToSettings={this.handleReturnToSettings}
+                            handleReturnToDossier={this.handleReturnToDossier}
                             component={docentAddReview}
                             getUserRole={this.getUserRole}
                         />
