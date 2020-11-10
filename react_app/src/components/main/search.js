@@ -179,20 +179,20 @@ class Search extends React.Component {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
-                    <td className="p-2 text-nowrap align-middle">
+                <tr className="row searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.email}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.role.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.location.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.dateActive}
                     </td>
                 </tr >
@@ -250,20 +250,20 @@ class Search extends React.Component {
                 <div className="text-center">
                     <table className="w-100 mx-auto">
                         <thead>
-                            <tr key={0}>
-                                <th className="p-2 text-nowrap align-middle">
+                            <tr className="row" key={0}>
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Naam
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Email
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Rol
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Locatie
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Startdatum
                                     </th>
                             </tr>
