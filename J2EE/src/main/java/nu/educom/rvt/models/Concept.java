@@ -1,6 +1,7 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
+
 import javax.persistence.*;
 
 @Entity

@@ -4,14 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
@@ -168,6 +166,15 @@ public class ReviewService {
 		return conceptPlusRatings;
 	}
 	
+	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
+		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+		Review review = getReviewById(reviewId);
+		List<ConceptRating> ratingList = convertConceptPlusRating(conceptRatings, review);
+		crRepo.createMulti(ratingList);
+
+		return review;
+	}
+	
 	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
 	{
 		List<Concept> removedDuplicates = new ArrayList<>();
@@ -203,5 +210,13 @@ public class ReviewService {
 	{
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		return date.format(formatter);
+	}
+	
+	private List<ConceptRating> convertConceptPlusRating(List<ConceptPlusRating> cpr, Review review){
+		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
+		for(int i = 0; i<cpr.size(); i++) {
+			ratings.add(new ConceptRating(review, cpr.get(i).getConcept(), cpr.get(i).getRating(), cpr.get(i).getComment()));
+		}
+		return ratings;
 	}
 }

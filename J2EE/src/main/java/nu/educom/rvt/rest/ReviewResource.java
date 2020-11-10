@@ -49,7 +49,7 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReviewDate(allReviews);
+		String reviewDate = reviewServ.convertDateTimeToString(reviewServ.getMostRecentReview(allReviews).getDate());
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -99,6 +99,16 @@ public class ReviewResource {
         reviewServ.updateReview(completedReview);
 
 		return Response.status(202).build();
+    }
+	
+	@POST
+    @Path("/addConceptRatings")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addconceptratings(List <ConceptPlusRating> cpr, int reviewId){
+        Review completedReview = reviewServ.addConceptRatings(cpr, reviewId);
+        reviewServ.updateReview(completedReview);
+
+		return Response.status(201).build();
     }
 	
 }
