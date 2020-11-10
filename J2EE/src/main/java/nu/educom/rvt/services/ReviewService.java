@@ -3,6 +3,7 @@ package nu.educom.rvt.services;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -138,10 +139,16 @@ public class ReviewService {
 		for(Concept concept: removedDuplicates) {
 			CPRother.add(new ConceptPlusRating(concept, 0, ""));
 		}
+//		Comparator<ConceptPlusRating> weekCompare = (o1, o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek());
+//		Comparator<ConceptPlusRating> ratingCompare = Comparator.comparing(ConceptPlusRating::getRating);
+		
+//		Comparator<ConceptPlusRating> ratingThenWeek = weekCompare.thenComparing(ratingCompare)
+	
 		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek())).collect(Collectors.toList());		
 		
 		conceptPlusRating.addAll(CPRMostRecent);
-		conceptPlusRating.addAll(CPRother);
+		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() != 0).collect(Collectors.toList()));
+		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() == 0).collect(Collectors.toList()));
 		conceptPlusRating = StreamEx.of(conceptPlusRating).distinct(foo -> foo.getConcept().getId()).toList();
 		
 		return conceptPlusRating;
@@ -208,7 +215,7 @@ public class ReviewService {
 	
 	public String convertDateTimeToString(LocalDate date)
 	{
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return date.format(formatter);
 	}
 }

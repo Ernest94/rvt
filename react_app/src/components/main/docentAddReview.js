@@ -31,6 +31,13 @@ class docentAddReview extends React.Component {
         };
     }
 
+    handleFormChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        });
+    }
+
     async componentDidMount() {
         this.setState({ pageLoading: true });
         if (this.props.isTrainee) {
@@ -185,8 +192,9 @@ class docentAddReview extends React.Component {
 
     cancelReview() {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
-        .then(response => {
-            this.props.handleReturnToDossier(this.state.userId);
+            .then(response => {
+              console.log(this.state)
+              this.props.handleReturnToDossier(this.state.userId);
         })
         .catch((error) => {
             console.log("an error occorured " + error);
@@ -195,7 +203,7 @@ class docentAddReview extends React.Component {
 
 
     render() {
-        const { pageLoading, traineeFeedback, officeFeedback } = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback, reviewDate } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
@@ -239,14 +247,15 @@ class docentAddReview extends React.Component {
             )
         });
 
+        console.log(reviewDate);
         
         return (
                 <div className="container">
-                    <div class="row">
-                    <h2 class="col-md-4">{this.state.reviewDate}</h2>
-                    <h2 class="col-md-4">Review {this.state.userName}</h2>
-                    <h2 class="col-md-4">{this.state.userLocation}</h2>
-                    </div>
+                <div className="pt-4 row">
+                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange}/></h3></div>
+                    <div className="col"><h3 classname="text-center">Review {this.state.userName}</h3></div>
+                    <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                </div>
                     <div >
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
@@ -286,9 +295,9 @@ class docentAddReview extends React.Component {
                     </div>
                     <div className="container">
                         {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.cancel} className="btn btn-primary float-right" type="submit">annuleer review</button>}
+                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Bevestig</button>}
+                        {(this.state.loading) ? <button className="btn btn-primary float-right mr-1" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.cancel} className="btn btn-primary float-right mr-1" type="submit">Annuleer</button>}
                     </div>
                     <div>
                         <p>{this.state.message}</p>
