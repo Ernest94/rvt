@@ -44,7 +44,7 @@ class Permissions{
 
     //PERMISSIONS TO VIEW PAGES
     static canEditDossier() {
-        return (this.isUserAdmin()||this.isUserDocent());
+        return (this.isUserDocent()||this.isUserAdmin());
     }
     static canSeeReview() {
         return (this.isUserAdmin()||this.isUserDocent()||this.isUserTrainee()||this.isUserSales()||this.isUserOffice());

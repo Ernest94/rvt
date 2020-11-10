@@ -4,6 +4,7 @@ import './header.css';
 
 class Header extends React.Component {
     
+    
     render() {
         let button;
         let accountSettings;

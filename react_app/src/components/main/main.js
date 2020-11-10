@@ -34,13 +34,8 @@ class Main extends React.Component {
         this.dateValidation = this.dateValidation.bind(this);
         this.setErrors = this.setErrors.bind(this);
         this.state = {
-            loggedIn : false,
-            userName: "",
-            isTrainee: false,
-            isDocent: false,
-            isAdmin: false,
-            isOffice: false,
-            isSales: false
+            loggedIn:false,
+            userName: ""
         }
     }
     
@@ -69,30 +64,23 @@ class Main extends React.Component {
     handleLogOut() {
         sessionStorage.clear();
         this.setState({
-          loggedIn: false  
-        });
+            loggedIn: false  
+          });
         this.props.history.push('/login');
     }
     
     handleSuccesfullAuth(data) {
         this.setState({
             loggedIn: true,
-            userName: data.name,
-            isTrainee: data.role.name === "Trainee",
-            isDocent: data.role.name === "Docent",
-            isAdmin: data.role.name === "Admin",
-            isOffice: data.role.name === "Kantoor",
-            isSales: data.role.name === "Sales"           
+            userName: data.name
         });
+        sessionStorage.setItem("isUserLoggedIn", true);
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
         sessionStorage.setItem("userLocation", data.location.name);
         sessionStorage.setItem("userLocationId", data.location.id);
-        sessionStorage.setItem("isUserLoggedIn", true);
         this.props.history.push('/settings');
-        console.log(this.state);
-
     }
 
     handleDossierRequest(event, id) {
@@ -124,11 +112,14 @@ class Main extends React.Component {
 
 
     render() {
-        const { isTrainee, isAdmin, isDocent, isOffice, isSales, loggedIn } = this.state;
+
+        console.log(Permissions.canEditDossier());
+        console.log(Permissions.isUserDocent());
+        
 
         return (
             <div>
-                <Header handleLogOut={this.handleLogOut} data={this.state}/>
+                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
                 <div className="container main-container">
                     <Switch>
                         
@@ -142,6 +133,9 @@ class Main extends React.Component {
                         <PrivateRoute exact path="/" 
                             component={Home} 
                         />
+                        <PrivateRoute exact path="/logout" 
+
+                        />                        
                         <PrivateRoute exact path="/settings"
                             component={Settings}
                         />
@@ -151,10 +145,10 @@ class Main extends React.Component {
                             setErrors={this.setErrors}
                         />
                         <PrivateRoute exact path="/dossier/:userId" 
-                            component={Dossier}
                             setErrors={this.setErrors}
                             editDisabled={true}
                             dateValidation={this.dateValidation}
+                            component={Dossier}
                         />
                         <PrivateRoute exact path="/curriculum/:userId"
                             component={review}
