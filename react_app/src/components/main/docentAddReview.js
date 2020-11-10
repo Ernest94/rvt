@@ -2,9 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
 
-import './review.css'   
+import './review.css'
 
 import { config } from '../constants';
 
@@ -22,9 +24,18 @@ class docentAddReview extends React.Component {
             weeksPerBlock: 2,
             value: "",
             setValue: "",
+            reviewId: null,
             traineeFeedback: "",
-            officeFeedback: ""
+            officeFeedback: "",
+            message:"",
         };
+    }
+
+    handleFormChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        });
     }
 
     async componentDidMount() {
@@ -45,7 +56,7 @@ class docentAddReview extends React.Component {
     getConcepts() {
         console.log(this.createUserIdJson());
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
-            .then(response => {            
+            .then(response => {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -60,12 +71,21 @@ class docentAddReview extends React.Component {
         };
     }
 
+    createReviewIdJSON() {
+        return {
+            id: this.state.reviewId
+        };
+    }
+
+
     handleCurriculumReponse(data){
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
+            reviewId:data.reviewId,
+            message: "",
         });
         console.log(this.state);
     }
@@ -127,8 +147,63 @@ class docentAddReview extends React.Component {
         }
     }
 
+    submit = () => {
+        confirmAlert({
+            title: 'Bevestig',
+            message: 'wil je geen verdere wijzigingen maken?',
+            buttons: [{
+                label: 'nee, sla het op',
+                onClick: () => this.submitReview()
+            },
+            {
+                label: 'jawel, breng me terug',
+            //     onClick: () => alert('Click No')
+            }
+        ]
+        })
+    };
+
+    submitReview() {
+        axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
+        .then(response => {
+            this.setState({
+                message: "uw review is succesvol opgeslagen."
+            });
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
+        });
+    }
+
+    cancel = () => {
+        confirmAlert({
+            title: 'annuleer',
+            message: 'wilt u de review annuleren?',
+            buttons: [{
+                label: 'ja',
+                onClick: () => this.cancelReview()
+            },
+            {
+                label: 'nee, breng me terug naar de review',
+            }
+            ]   
+        })
+    };
+
+    cancelReview() {
+        axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
+            .then(response => {
+              console.log(this.state)
+              this.props.handleReturnToDossier(this.state.userId);
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
+        });
+    }
+
+
     render() {
-        const { pageLoading, traineeFeedback, officeFeedback } = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback, reviewDate } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
@@ -172,16 +247,17 @@ class docentAddReview extends React.Component {
             )
         });
 
+        console.log(reviewDate);
         
         return (
                 <div className="container">
-                    <div class="row">
-                    <h2 class="col-md-4">{this.state.reviewDate}</h2>
-                    <h2 class="col-md-4">Review {this.state.userName}</h2>
-                    <h2 class="col-md-4">{this.state.userLocation}</h2>
-                    </div>
+                <div className="pt-4 row">
+                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange}/></h3></div>
+                    <div className="col"><h3 classname="text-center">Review {this.state.userName}</h3></div>
+                    <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                </div>
                     <div >
-                        <ul className="errors">{this.state.errors}</ul>                 
+                        <ul className="errors">{this.state.errors}</ul>
                     </div >
                     <table >
                         <thead>
@@ -217,9 +293,14 @@ class docentAddReview extends React.Component {
                         <textarea rows="2" cols="50">{officeFeedback}</textarea> 
                         </div>
                     </div>
-                    <div className="submit-review-button">
-                    {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button className="btn btn-primary float-right" type="submit">Review toevoegen</button>}
+                    <div className="container">
+                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Bevestig</button>}
+                        {(this.state.loading) ? <button className="btn btn-primary float-right mr-1" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.cancel} className="btn btn-primary float-right mr-1" type="submit">Annuleer</button>}
+                    </div>
+                    <div>
+                        <p>{this.state.message}</p>
                     </div>
                 </div>
         )

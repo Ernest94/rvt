@@ -47,8 +47,14 @@ public class ReviewRepository {
 		}
 	}
 	
-	protected void update() {
-		
+	public void update(Review review) {
+        Session session = HibernateSession.getSessionFactory().openSession();
+	    session.beginTransaction();
+	 
+	    session.update(review); 
+	 
+	    session.getTransaction().commit();
+	    session.close();
 	}
 	
 	protected void delete() {

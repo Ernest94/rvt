@@ -3,6 +3,7 @@ package nu.educom.rvt.rest;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,6 +15,7 @@ import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
+import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.ThemeConceptService;
 import nu.educom.rvt.services.UserService;
@@ -49,7 +51,8 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReviewDate(allReviews);
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
+		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -76,13 +79,51 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReviewDate(allReviews);
+		
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
+		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
+		int reviewId = mostRecentReview.getId();
+		
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
 		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+		conceptsRatingsJSON.setReviewId(reviewId);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
-  	}
+      }
+    
+	@POST
+    @Path("/confirmReview")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setActiveReviewComplete(Review review){
+        Review reviewOutput = reviewServ.getReviewById(review.getId());
+        Review completedReview = reviewServ.completedReview(reviewOutput);
+        reviewServ.updateReview(completedReview);
+
+		return Response.status(202).build();
+    }
+	
+	@POST
+    @Path("/cancelReview")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response setActiveReviewCancelled(Review review){
+        Review reviewOutput = reviewServ.getReviewById(review.getId());
+        Review cancelledReview = reviewServ.cancelledReview(reviewOutput);
+        reviewServ.updateReview(cancelledReview);
+
+		return Response.status(202).build();
+    }
+	
+	@GET
+	@Path("/pendingUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllUsersWithPendingReviews() {
+		UserService userServ = new UserService();
+		List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews();
+		UserSearchJson USJ = userServ.convertToUSJ(foundUsers);
+		
+		return Response.status(200).entity(USJ).build();
+	}
 	
 }

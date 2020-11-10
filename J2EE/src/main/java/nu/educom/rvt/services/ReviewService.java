@@ -3,6 +3,7 @@ package nu.educom.rvt.services;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.ReviewStatus;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.models.view.ConceptPlusRating;
@@ -20,58 +22,21 @@ import one.util.streamex.StreamEx;
 
 public class ReviewService {
 	
-	public List<Concept> getActiveConcepts() {
+	public List<Concept> getallConcepts() {
 		List<Concept> activeConcepts = new ArrayList<Concept>();
 		
-		ConceptRepository conceptRepo = new ConceptRepository();
-		
-		//Now assume all concepts are active
-		activeConcepts = conceptRepo.readAll();
-		
-		
-		//TO DO: look at the concepts that are active for a user
-//		UserConceptRepository userConceptRepo = new UserConceptRepository();
-//		
-//		List<Concept> allConcepts = conceptRepo.readAll();
-//		List<UserConcept> userConcepts = userConceptRepo.readByUserId(user.getId());
-//		
-//		for (UserConcept userConcept : userConcepts) {
-//			
-//			activeConcepts.add(allConcepts.get(userConcept.getId()));
-//		}
-		
+        ConceptRepository conceptRepo = new ConceptRepository();	
+		activeConcepts = conceptRepo.readAll();		
 		return activeConcepts;
 	}
 	
-	public List<ConceptRating> getLatestConceptRatings() {
-		List<ConceptRating> conceptsRatings = null;
-
-		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+	public List<User> getAllUsersWithPendingReviews(){
+		ReviewRepository reviewRepo = new ReviewRepository();
+		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
 		
-		//now the mock is for 1 trainee and all concept ratings are the last ratings
-		conceptsRatings = conceptRatingRepo.readAll();
-
-		//TO DO: only read the concept ratings of the last given review for the current user
-		
-		
-		return conceptsRatings;
+		return users;
 	}
 	
-	
-//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList(List<Concept>activeConcepts, List<ConceptRating> conceptRatings) {
-//		List<ConceptPlusRating> conceptsPlusRatings = new ArrayList<ConceptPlusRating>();
-//		int rating = 0;
-//		for (Concept activeConcept : activeConcepts) {
-//			for (ConceptRating conceptRating : conceptRatings) {
-//				if (activeConcept.getId()==conceptRating.getConcept().getId()) {
-//					rating = conceptRating.getRating();
-//				}
-//			}
-//			conceptsPlusRatings.add(new ConceptPlusRating(activeConcept,rating));
-//			rating = 0;
-//		}
-//		return conceptsPlusRatings;
-//	}
 	public void makeNewReviewIfNoPending(User user)
 	{
 		ReviewRepository reviewRepo = new ReviewRepository();
@@ -103,6 +68,12 @@ public class ReviewService {
 		
 	}
 	
+	/*
+	 * Functie ontvangt: een lijst van reviews waar de conceptRatings van gebruikt moeten worden, Een lijst van alle concepten.
+	 * Functie geeft terug: een lijst van alle concepten met de meest recente rating bij elk concept, gesorteerd op de concepten van de meest recente review en daarna de rest op week.
+	 * 
+	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
+	 */
 	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
 		
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
@@ -131,10 +102,16 @@ public class ReviewService {
 		for(Concept concept: removedDuplicates) {
 			CPRother.add(new ConceptPlusRating(concept, 0, ""));
 		}
+//		Comparator<ConceptPlusRating> weekCompare = (o1, o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek());
+//		Comparator<ConceptPlusRating> ratingCompare = Comparator.comparing(ConceptPlusRating::getRating);
+		
+//		Comparator<ConceptPlusRating> ratingThenWeek = weekCompare.thenComparing(ratingCompare)
+	
 		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek())).collect(Collectors.toList());		
 		
 		conceptPlusRating.addAll(CPRMostRecent);
-		conceptPlusRating.addAll(CPRother);
+		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() != 0).collect(Collectors.toList()));
+		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() == 0).collect(Collectors.toList()));
 		conceptPlusRating = StreamEx.of(conceptPlusRating).distinct(foo -> foo.getConcept().getId()).toList();
 		
 		return conceptPlusRating;
@@ -169,12 +146,39 @@ public class ReviewService {
 		removedDuplicates.addAll(concepts);
 		removedDuplicates.removeAll(conceptsWithRatings);
 		return removedDuplicates;
-	}
+    }
+    
+    public Review getReviewById(int reviewId) {
+        ReviewRepository reviewRepo = new ReviewRepository();
+        return reviewRepo.readById(reviewId);
+    }
+
+    public Review completedReview(Review review) {
+        Review completedReview = review;
+        completedReview.setReviewStatus(Review.Status.COMPLETED);
+        return completedReview;
+    }
+    
+    public Review cancelledReview(Review review) {
+    	Review cancelledReview = review;
+    	cancelledReview.setReviewStatus(Review.Status.CANCELLED);
+		return cancelledReview;
+    }
+    
+    public int updateReview(Review review) {
+        ReviewRepository reviewRepo = new ReviewRepository();
+        reviewRepo.update(review);
+        return 1;
+    }
 	
-	public String getMostRecentReviewDate(List<Review> allReviews) {
+	public Review getMostRecentReview(List<Review> allReviews) {
 		LocalDate mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		return mostRecentDate.format(formatter);
+		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 	}
 	
+	public String convertDateTimeToString(LocalDate date)
+	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return date.format(formatter);
+	}
 }

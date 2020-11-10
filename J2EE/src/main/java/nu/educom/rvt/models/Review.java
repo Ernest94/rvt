@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Review {
 
 	public enum Status {
-		NOT_STARTED,
+		CANCELLED,
 		PENDING,
 		COMPLETED
 	}

@@ -84,8 +84,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-     //               this.fakeHandleSearchReponse();
-                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]});
+                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -95,18 +94,10 @@ class Search extends React.Component {
         }
     }
 
-
-
     handleSearchReponse(data)
     {
         this.setState({
             users: data.userSearch
-        });
-    }
-
-    fakeHandleSearchReponse() {
-        this.setState({
-            users: [{ id: 7, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
         });
     }
 
