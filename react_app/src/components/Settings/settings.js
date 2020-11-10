@@ -1,22 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './settings.css';
+import Permissions from '../main/permissions.js'
 
 class Settings extends React.Component {
     
     render() {
-        const addUserLink = this.props.isAdmin || this.props.isOffice || this.props.isDocent ? <li><Link className="link" to="/addUser">Gebruiker toevoegen</Link></li> : <span></span>
-        const searchLink = !this.props.isTrainee ? <li><Link className="link" to="/Search">Zoeken naar gebruikers</Link></li> : <span></span>
+
+        const addUserLink = Permissions.canAddUser() ? <li><Link className="link" to="/addUser">Gebruiker toevoegen</Link></li> : <span></span>
+        const searchLink = Permissions.canSearch() ? <li><Link className="link" to="/Search">Zoeken naar gebruikers</Link></li> : <span></span>
+        const addThemeLink = Permissions.canAddTheme() ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
+        const addConceptLink = Permissions.canAddConcept() ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
+        const addLocationLink = Permissions.canAddLocation() ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
+        const conceptOverviewLink = Permissions.canSeeConceptOverview() ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
+        const review = Permissions.canSeeOwnReview() ? < li > <Link className="link" to="/curriculum">Review</Link></li> : <span></span>
+        // const docentAddReviewLink = this.props.userHasAccess ? < li > <Link className="link" to="/docentAddReview">Review toevoegen</Link></li> : <span></span>
         //const relationLink = this.props.userHasAccess ? <li><Link className="link" to="/linking">Bekijk relaties</Link></li> : <span></span>
-        const addThemeLink = this.props.isAdmin ? <li><Link className="link" to="/addTheme">Thema toevoegen</Link></li> : <span></span>
-        const addConceptLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/addConcept">Concept toevoegen</Link></li> : <span></span>
-        const addLocationLink = this.props.isAdmin ? <li><Link className="link" to="/addLocation">Locatie toevoegen</Link></li> : <span></span>
-        const conceptOverviewLink = this.props.isAdmin || this.props.isDocent ? <li><Link className="link" to="/conceptOverview">Concepten overzicht</Link></li> : <span></span>
-        const review = this.props.isTrainee ? < li > <Link className="link" to="/curriculum">Review</Link></li> : <span></span>
-        const docentAddReviewLink = this.props.userHasAccess ? < li > <Link className="link" to="/docentAddReview">Review toevoegen</Link></li> : <span></span>
 
-
-        console.log(this.props.userHasAccess);
         return ( 
             <div >
                 <h2>Menu</h2>
@@ -25,7 +25,7 @@ class Settings extends React.Component {
                     {searchLink}
                     {conceptOverviewLink}
                     {review}
-                    {docentAddReviewLink}
+                    {/* {docentAddReviewLink} */}
                     {addUserLink}
                     {addConceptLink}
                     {addThemeLink}

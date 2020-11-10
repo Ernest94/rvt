@@ -20,6 +20,7 @@ import conceptOverview from './conceptOverview.js';
 import addLocation from '../Settings/addLocation.js';
 import review from './review.js';
 import docentAddReview from './docentAddReview.js';
+import Permissions from './permissions.js'
 
 class Main extends React.Component {
     
@@ -88,6 +89,7 @@ class Main extends React.Component {
         sessionStorage.setItem("userRole", data.role.name);
         sessionStorage.setItem("userLocation", data.location.name);
         sessionStorage.setItem("userLocationId", data.location.id);
+        sessionStorage.setItem("isUserLoggedIn", true);
         this.props.history.push('/settings');
         console.log(this.state);
     }
@@ -147,58 +149,53 @@ class Main extends React.Component {
         this.props.history.push('/addUser');
     }
     
+
+
     render() {
         const { isTrainee, isAdmin, isDocent, isOffice, isSales, loggedIn } = this.state;
 
-        console.log("isTrainee: " + isTrainee);
-        console.log("loggedIn: " + loggedIn);
+        // console.log("isTrainee: " + isTrainee);
+        // console.log("loggedIn: " + loggedIn);
+    
         
         return (
             <div>
                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
                 <div className="container main-container">
                     <Switch>
+                        
                         <Route exact path="/login"> 
                             <Login 
                                 handleSuccessfulAuth={this.handleSuccesfullAuth}
                                 setErrors={this.setErrors}
                             /> 
                         </Route>
+
                         <PrivateRoute exact path="/" 
-                            isLoggedIn={loggedIn} 
                             component={Home} 
                         />
                         <PrivateRoute exact path="/settings"
                             component={Settings}
-                            isLoggedIn={loggedIn}
-                            isTrainee={isTrainee}
-                            isDocent={isDocent}
-                            isOffice={isOffice}
-                            isAdmin={isAdmin}
-                            isSales={isSales}
                         />
                         <PrivateRoute exact path="/password" 
                             component={Password} 
-                            isLoggedIn={loggedIn} 
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
-                        <AccessRoute exact path="/dossier/:userId" 
+                        <PrivateRoute exact path="/dossier/:userId" 
                             component={Dossier}
                             setErrors={this.setErrors}
                             editDisabled={true}
-                            userHasAccess={true}
                             dateValidation={this.dateValidation}
-                            isLoggedIn={loggedIn}
                         />
+
                         <AccessRoute exact path="/dossier/:userId/edit" 
                             component={Dossier}
                             setErrors={this.setErrors}
                             dateValidation={this.dateValidation}
                             handleReturnToSettings={this.handleReturnToSettings}
-                            editDisabled={false} 
-                            userHasAccess={isAdmin || isOffice || isDocent}
-                            isLoggedIn={loggedIn}
+                            editDisabled={false}
+                            userHasAccess= {Permissions.canEditDossier()}
                         />
                         <AccessRoute exact path="/addUser"
                             userHasAccess={isAdmin || isOffice || isDocent}
@@ -208,6 +205,7 @@ class Main extends React.Component {
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
+
                         <AccessRoute exact path="/search"
                             userHasAccess={!isTrainee}
                             component={Search}
