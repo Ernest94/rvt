@@ -21,7 +21,11 @@ class Settings extends React.Component {
             <div >
                 <h2>Menu</h2>
                 <ul>
-                    <li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Open Dossier</Link></li>
+                    <h4>Account</h4>
+                    <li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Gebruikersaccount</Link></li>
+                    <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
+                    
+                    <h4>Overig</h4>
                     {searchLink}
                     {conceptOverviewLink}
                     {review}
@@ -30,7 +34,6 @@ class Settings extends React.Component {
                     {addConceptLink}
                     {addThemeLink}
                     {addLocationLink}
-                    <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
                 </ul>
             </div>
         )

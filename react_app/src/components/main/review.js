@@ -6,6 +6,7 @@ import Rating from '@material-ui/lab/Rating';
 import './review.css'
 
 import { config } from '../constants';
+import Permissions from './permissions.js'
 
 class review extends React.Component {
     
@@ -27,12 +28,9 @@ class review extends React.Component {
     async componentDidMount() {
         this.setState({ pageLoading: true });
 
-        console.log(this.props.getUserRole());
-        console.log(this.props.getUserId());
+        if (Permissions.isUserTrainee()) {
 
-        if (this.props.getUserRole() === "Trainee") {
-
-            const id = this.props.getUserId();
+            const id = sessionStorage.getItem("userId");
 
             await this.setState({
                 userId: id,

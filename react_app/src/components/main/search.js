@@ -37,9 +37,7 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
-        console.log("setLocationAndRole:");
-
-        const locationName = this.props.getUserLocation();
+        const locationName = sessionStorage.getItem("userLocation");
         const roleName = "Trainee";
 
         let role = this.state.roles.find(element => element.name === roleName);

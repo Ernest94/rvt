@@ -92,6 +92,7 @@ class Main extends React.Component {
         sessionStorage.setItem("isUserLoggedIn", true);
         this.props.history.push('/settings');
         console.log(this.state);
+
     }
 
     handleDossierRequest(event, id) {
@@ -102,7 +103,6 @@ class Main extends React.Component {
     handleReturnToDossier(id) {
         this.props.history.push('/dossier/' + id);
     }
-
 
     handleCurriculumRequest(event, id) {
         event.preventDefault();
@@ -116,34 +116,6 @@ class Main extends React.Component {
     handleReturnToConcepts() {
         this.props.history.push('/conceptOverview');
     }
-    /* JH TIP: Zet dit soort access functies in een eigen js class permissions.js zodat je ze ook buiten main kan gebruiken */
-    isUserAdmin() {
-        return sessionStorage.getItem("userRole") === "Admin";
-    }
-
-    getUserId() {
-        return sessionStorage.getItem("userId");
-    }
-
-    getUserRole() {
-        return sessionStorage.getItem("userRole");
-    }
-
-    getUserLocation() {
-        return sessionStorage.getItem("userLocation")
-    }
-
-    canAddUser() {
-        let isAdmin = sessionStorage.getItem("userRole") === "Admin";
-        let isDocent = sessionStorage.getItem("userRole") === "Docent";
-        let isOffice = sessionStorage.getItem("userRole") === "Office";
-        return (isAdmin || isDocent || isOffice);
-    }
-
-    canSearchUser() {
-        let isAdmin = sessionStorage.getItem("userRole") === "Admin";
-        return (isAdmin);
-    }
     
     goToAddUserSpecification(role, location) {
         this.props.history.push('/addUser');
@@ -154,10 +126,6 @@ class Main extends React.Component {
     render() {
         const { isTrainee, isAdmin, isDocent, isOffice, isSales, loggedIn } = this.state;
 
-        // console.log("isTrainee: " + isTrainee);
-        // console.log("loggedIn: " + loggedIn);
-    
-        
         return (
             <div>
                 <Header handleLogOut={this.handleLogOut} data={this.state}/>
@@ -188,84 +156,64 @@ class Main extends React.Component {
                             editDisabled={true}
                             dateValidation={this.dateValidation}
                         />
+                        <PrivateRoute exact path="/curriculum/:userId"
+                            component={review}
+                        />
+                        <PrivateRoute exact path="/curriculum"
+                            component={review}
+                        />
 
                         <AccessRoute exact path="/dossier/:userId/edit" 
-                            component={Dossier}
+                            userHasAccess= {Permissions.canEditDossier()}
                             setErrors={this.setErrors}
                             dateValidation={this.dateValidation}
                             handleReturnToSettings={this.handleReturnToSettings}
                             editDisabled={false}
-                            userHasAccess= {Permissions.canEditDossier()}
+                            component={Dossier}
                         />
                         <AccessRoute exact path="/addUser"
-                            userHasAccess={isAdmin || isOffice || isDocent}
+                            userHasAccess={Permissions.canAddUser()}
                             component={AddUser}
                             dateValidation={this.dateValidation}
-                            isLoggedIn={loggedIn} 
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
                         />
-
                         <AccessRoute exact path="/search"
-                            userHasAccess={!isTrainee}
+                            userHasAccess={Permissions.canSearch()}
                             component={Search}
-                            isLoggedIn={loggedIn}
                             handleDossierRequest={this.handleDossierRequest}
                             handleReturnToSettings={this.handleReturnToSettings}
                             setErrors={this.setErrors}
-                            getUserLocation={this.getUserLocation}
                         />
                         <AccessRoute exact path="/addTheme"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin}
+                            userHasAccess={Permissions.canAddTheme()}
                             handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addTheme}
                         />
                         <AccessRoute exact path="/addConcept"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin || isDocent}
+                            userHasAccess={Permissions.canAddConcept()}
                             handleReturnToConcepts={this.handleReturnToConcepts}
                             component={addConcept}              
                         />
                         <AccessRoute exact path="/addLocation"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin}
+                            userHasAccess={Permissions.canAddLocation()}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={addLocation}
                         />
                         <AccessRoute exact path="/conceptOverview"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin || isDocent}
+                            userHasAccess={Permissions.canSeeConceptOverview()}
                             handleReturnToSettings={this.handleReturnToSettings}
                             component={conceptOverview}
                         />
-                        <AccessRoute exact path="/curriculum/:userId"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={true}
-                            component={review}
-                            getUserId={this.getUserId}
-                            getUserRole={this.getUserRole}
-                        />
-                        <AccessRoute exact path="/curriculum"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={true}
-                            component={review}
-                            getUserId={this.getUserId}
-                            getUserRole={this.getUserRole}
-                        />
                         <AccessRoute exact path="/docentAddReview"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin || isDocent}
+                            userHasAccess={Permissions.canAddReview()}
                             handleReturnToDossier={this.handleReturnToDossier}
                             component={docentAddReview}
-                            getUserRole={this.getUserRole}
                         />
                         <AccessRoute exact path="/docentAddReview/:userId"
-                            isLoggedIn={loggedIn}
-                            userHasAccess={isAdmin || isDocent}
+                            userHasAccess={Permissions.canAddReview()}
                             handleReturnToDossier={this.handleReturnToDossier}
                             component={docentAddReview}
-                            getUserRole={this.getUserRole}
                         />
                     </Switch>
                 </div>

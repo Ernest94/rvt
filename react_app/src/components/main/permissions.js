@@ -46,9 +46,9 @@ class Permissions{
     static canEditDossier() {
         return (this.isUserAdmin()||this.isUserDocent());
     }
-
-
-
+    static canSeeReview() {
+        return (this.isUserAdmin()||this.isUserDocent()||this.isUserTrainee()||this.isUserSales()||this.isUserOffice());
+    }
 }
 
 export default Permissions;

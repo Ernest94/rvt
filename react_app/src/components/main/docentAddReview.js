@@ -9,6 +9,7 @@ import Rating from '@material-ui/lab/Rating';
 import './review.css'
 
 import { config } from '../constants';
+import Permissions from './permissions.js'
 
 class docentAddReview extends React.Component {
     
@@ -40,8 +41,8 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         this.setState({ pageLoading: true });
-        if (this.props.isTrainee) {
-            this.setState({ userId: this.props.getUserId() });
+        if (Permissions.isUserTrainee()) {
+            this.setState({ userId: sessionStorage.getItem("userId") });
         }
         else {
             const { computedMatch: { params } } = this.props;

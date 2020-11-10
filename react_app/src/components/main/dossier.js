@@ -41,7 +41,6 @@ class Dossier extends React.Component {
     canViewUserDossier() {
         /* JH TIP: Zie remark op main.js regel 102 om hier een eigen permissions.js van te maken, en daarnaast ook isUserAdmin etc hier te gebruiken */
         const userRole = sessionStorage.getItem("userRole");
-        console.log(this.state.role);
         const roleDossierUser = this.state.role.name;
         const ownUserId = sessionStorage.getItem("userId");
         var isBlocked; /* JH TIP: Ik zou in plaats van isBlocked een isAllowedToView maken, dat maakt de logica hieronder leesbaarder 
