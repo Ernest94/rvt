@@ -33,6 +33,7 @@ class Main extends React.Component {
         this.handleDossierRequest = this.handleDossierRequest.bind(this);
         this.dateValidation = this.dateValidation.bind(this);
         this.setErrors = this.setErrors.bind(this);
+        sessionStorage.clear();
         this.state = {
             loggedIn:false,
             userName: ""
@@ -70,16 +71,17 @@ class Main extends React.Component {
     }
     
     handleSuccesfullAuth(data) {
-        this.setState({
-            loggedIn: true,
-            userName: data.name
-        });
         sessionStorage.setItem("isUserLoggedIn", true);
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
         sessionStorage.setItem("userLocation", data.location.name);
         sessionStorage.setItem("userLocationId", data.location.id);
+        this.setState({
+            loggedIn: true,
+            userName: data.name
+        });
+
         this.props.history.push('/settings');
     }
 
