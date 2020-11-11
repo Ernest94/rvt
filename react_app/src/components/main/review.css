@@ -150,7 +150,34 @@ tbody {
     padding-left: 16px;
 }
 
+.conceptSelection {
+    background-color: rgb(226, 226, 226);
+    border-radius:4px;
+    padding:20px;
+}
 
+.sliderThumb span
+{
+    background:none;
+    top:-5px;
+    left:2px;
+    width:15px;
+    height:15px;
+    color:#000;
+}
+.sliderThumb{
+    background-color:#ffc107!important;
+}
+.conceptSelection .lightButton{
+    margin:0px 5px;
+    padding:1px 3px;
+    min-width:0;
+    background-color:lightGrey;
+}
 
-
-
+.lightButton:hover{
+    background-color:rgb(155, 155, 155)!important;
+}
+.selectionTitle{
+    display:inline;
+}
