@@ -153,11 +153,12 @@ class review extends React.Component {
     {
         this.setState({[name+"Selected"]: newValue});
     }
-    handleCheckChange(e)
+    handleCheckChange(e, id)
     {
-        if(!e.target.checked){
-            this.state.themesSelected.push(e.target.name);
-        } 
+        var localThemes = this.state.themesSelected.slice();
+        let index = localThemes.findIndex((obj) => obj.id === id);
+        localThemes[index].checked= !localThemes[index].checked;
+        this.setState({themesSelected: localThemes});
     }
     createUserIdJson() {
         return {
@@ -203,13 +204,13 @@ class review extends React.Component {
         }
     }
     inSelection(concept) {
-        let index = this.state.themesSelected.findIndex((obj) => obj.id == concept.concept.theme.id);
+        let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
         return(
             this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
             &&
             this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
             &&
-            this.state.themesSelected[index].checked == true
+            this.state.themesSelected[index].checked === true
         )
     }
 
@@ -235,7 +236,7 @@ class review extends React.Component {
         var themeSelection = this.state.themes.map((theme) => {
             return (
                 <FormControlLabel
-                control={<Checkbox name={"theme_" + theme.id} onChange={(e) => this.handleCheckChange(e,theme.id)} />}
+                control={<Checkbox defaultChecked={true}  name={"theme_" + theme.id} onChange={(e) => this.handleCheckChange(e,theme.id)} />}
                 label={theme.abbreviation}
                 />
             )
@@ -293,7 +294,9 @@ class review extends React.Component {
                     </div >
                     
                     <ConceptSelection className="col-md-4" handleChange={this.handleSelectionChange.bind(this)}>
+                        <FormGroup>
                         {themeSelection}
+                        </FormGroup>
                     </ConceptSelection>
                     <table >
                         <thead>
