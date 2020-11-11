@@ -4,6 +4,9 @@ import axios from 'axios';
 import {config} from '../constants';
 import './search.css';
 
+import { withRouter } from 'react-router-dom'
+
+
 class Search extends React.Component {
 
     constructor(props) {
@@ -177,7 +180,8 @@ class Search extends React.Component {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="row searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
+                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)}} >;
+                {/* this.props.handleDossierRequest(e, user.id)}} > */}
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
@@ -276,4 +280,4 @@ class Search extends React.Component {
     }
 }
 
-export default Search;
+export default withRouter(Search);

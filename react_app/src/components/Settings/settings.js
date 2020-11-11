@@ -24,7 +24,7 @@ class Settings extends React.Component {
                     <h4>Account</h4>
                     <li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Gebruikersaccount</Link></li>
                     <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
-                    
+
                     <h4>Overig</h4>
                     {searchLink}
                     {conceptOverviewLink}
