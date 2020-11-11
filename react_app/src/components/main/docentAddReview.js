@@ -16,12 +16,14 @@ class docentAddReview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            pendingUsers: null,
+            pendingUserDisplayName: "",
             userId: null,
             userName: "",
             userLocation: "",
             reviewDate: "",
             concepts: [],
-            pageLoading: false,
+            pageLoading: true,
             weeksPerBlock: 2,
             value: "",
             setValue: "",
@@ -32,14 +34,8 @@ class docentAddReview extends React.Component {
         };
     }
 
-    handleFormChange = (e) => {
-        const { name, value } = e.target;
-        this.setState({
-            [name]: value
-        });
-    }
-
     async componentDidMount() {
+        console.log("begin");
         this.setState({ pageLoading: true });
         if (Permissions.isUserTrainee()) {
             this.setState({ userId: sessionStorage.getItem("userId") });
@@ -48,11 +44,39 @@ class docentAddReview extends React.Component {
             const { computedMatch: { params } } = this.props;
             await this.setState({ userId: params.userId });
         }
-        this.getConcepts();
+        await this.getConcepts();
         console.log(this.state.userId);
+        await this.getPendingUsers();
         this.setState({ pageLoading: false });
+        
     }
-    
+
+    handleFormChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    onChangePendingUser = (e) => {
+        var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
+
+        this.setState({
+            //role: selectedRole,
+            pendingUserDisplayName: e.target.value
+        });
+    }
+
+    getPendingUsers() {
+        axios.get(config.url.API_URL + "/webapi/review/pendingUsers")
+            .then(response => {
+                this.handleUsersReponse(response.data);
+            })
+            .catch((error) => {
+
+                console.log("an error occorured " + error);
+            });
+    }
 
     getConcepts() {
         console.log(this.createUserIdJson());
@@ -78,6 +102,14 @@ class docentAddReview extends React.Component {
         };
     }
 
+    handleUsersReponse(data) {
+        console.log(data);
+        this.setState({
+            pendingUsers: data.userSearch,
+            pendingUserDisplayName: this.state.userName,
+        });
+        console.log(this.state);
+    }
 
     handleCurriculumReponse(data){
         this.setState({
@@ -204,8 +236,19 @@ class docentAddReview extends React.Component {
 
 
     render() {
-        const { pageLoading, traineeFeedback, officeFeedback, reviewDate } = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
+
+        let userOptions = null;
+
+        if (!pageLoading) {
+            userOptions = pendingUsers.map((user) => {
+                return (
+                    <option key={user.id} value={user.id}>{user.name}</option>
+                )
+            });
+        }
+        
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
@@ -253,8 +296,8 @@ class docentAddReview extends React.Component {
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange}/></h3></div>
-                    <div className="col"><h3 classname="text-center">Review {this.state.userName}</h3></div>
+                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange} /></h3></div>
+                    <div className="col"><h3 classname="text-center">Review <select className="border-0 text-center" name="pendingUser" id="pendingUser" value={this.state.pendingUserDisplayName} onChange={this.onChangePendingUser}>{userOptions}</select></h3></div>
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
                 </div>
                     <div >

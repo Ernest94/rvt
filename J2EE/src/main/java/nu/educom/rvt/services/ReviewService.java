@@ -32,6 +32,7 @@ public class ReviewService {
 	
 	public List<User> getAllUsersWithPendingReviews(){
 		ReviewRepository reviewRepo = new ReviewRepository();
+		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
 		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
 		
 		return users;
