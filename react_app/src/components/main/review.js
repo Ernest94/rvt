@@ -15,7 +15,7 @@ class ConceptSelection extends React.Component {
         super(props);
         this.state ={
             stars: [1,5],
-            weeks: [1,8],
+            weeks: [1,10],
         }
 
     }
@@ -57,7 +57,7 @@ class ConceptSelection extends React.Component {
             handleChange={this.handleSliderChange.bind(this)}
             handleChangeCommit={this.props.handleChange.bind(this)}
             min={1}
-            max={8} 
+            max={10} 
             name = "weeks" 
             />
         <div><h5 className="selectionTitle">Thema's</h5></div>
@@ -115,7 +115,7 @@ class review extends React.Component {
             traineeFeedback: "",
             themes: [],
             starsSelected: [1,5], //starting selection
-            weeksSelected: [1,8],
+            weeksSelected: [1,10],
             themesSelected: [], //is filled in getThemes
         };
     }
@@ -301,12 +301,13 @@ class review extends React.Component {
                     </div >
                     <div className="d-flex">
                         <ConceptSelection 
-                            className="d-none d-md-inline col-md-3" 
+                            className="d-none d-lg-inline col-md-3" 
                             handleChange={this.handleSelectionChange.bind(this)}
                             handleCheckChange={this.handleCheckChange.bind(this)}
                             themes={this.state.themes} 
                         />
-                        <table className="reviewTable col-md-10 table">
+                        <div class="table-responsive">
+                        <table className="table reviewTable">
                             <thead>
                                 <tr>
                                     <th className="week">
@@ -330,6 +331,7 @@ class review extends React.Component {
                                 {conceptDisplay}
                             </tbody>
                         </table>
+                        </div>
                         </div>
                     <div className="trainee-feedback-box">
                     <h4 >{"Terugkoppeling:"}</h4>
