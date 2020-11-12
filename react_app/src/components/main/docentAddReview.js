@@ -16,12 +16,13 @@ class docentAddReview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            pendingUsers: [],
             userId: null,
             userName: "",
             userLocation: "",
             reviewDate: "",
             concepts: [],
-            pageLoading: false,
+            pageLoading: true,
             weeksPerBlock: 2,
             value: "",
             setValue: "",
@@ -32,6 +33,24 @@ class docentAddReview extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        console.log("begin");
+        this.setState({ pageLoading: true });      
+        if (Permissions.isUserTrainee()) {
+            await this.setState({ userId: sessionStorage.getItem("userId") });
+        }
+        else {
+            const { computedMatch: { params } } = this.props;
+            await this.setState({ userId: params.userId });
+        }
+        console.log(this.state.userId);
+        this.setState({ pageLoading: false });
+        await this.getPendingUsers();
+        await this.getConcepts();
+        
+        
+    }
+
     handleFormChange = (e) => {
         const { name, value } = e.target;
         this.setState({
@@ -39,20 +58,37 @@ class docentAddReview extends React.Component {
         });
     }
 
-    async componentDidMount() {
-        this.setState({ pageLoading: true });
-        if (Permissions.isUserTrainee()) {
-            this.setState({ userId: sessionStorage.getItem("userId") });
-        }
-        else {
-            const { computedMatch: { params } } = this.props;
-            await this.setState({ userId: params.userId });
-        }
-        this.getConcepts();
-        console.log(this.state.userId);
-        this.setState({ pageLoading: false });
+    onChangePendingUser = (e) => {
+        var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
+
+        this.setTheState(selectedUser);
     }
-    
+
+    async setTheState(selectedUser) {
+        await this.setState({
+            pageLoading: true,
+            userId: selectedUser.id,
+            userName: selectedUser.name,
+            userLocation: selectedUser.location.name,
+        });
+
+        this.getConcepts();
+        this.setState({
+            pageLoading: false
+        })
+    }
+
+    getPendingUsers() {
+        console.log("getPendingUsers")
+        axios.get(config.url.API_URL + "/webapi/review/pendingUsers")
+            .then(response => {
+                console.log("succes");
+                this.handleUsersReponse(response.data);
+            })
+            .catch((error) => {
+                console.log("an error occorured " + error);
+            })
+    }
 
     getConcepts() {
         console.log(this.createUserIdJson());
@@ -78,6 +114,13 @@ class docentAddReview extends React.Component {
         };
     }
 
+    handleUsersReponse(data) {
+        console.log(data);
+        this.setState({
+            pendingUsers: data.userSearch,
+        });
+        console.log(this.state);
+    }
 
     handleCurriculumReponse(data){
         this.setState({
@@ -85,7 +128,7 @@ class docentAddReview extends React.Component {
             userLocation: data.traineeLocation,
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
-            reviewId:data.reviewId,
+            reviewId: data.reviewId,
             message: "",
         });
         console.log(this.state);
@@ -204,8 +247,17 @@ class docentAddReview extends React.Component {
 
 
     render() {
-        const { pageLoading, traineeFeedback, officeFeedback, reviewDate } = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
+
+        let userOptions = null;
+        console.log(pendingUsers);
+            userOptions = pendingUsers.map((user) => {
+                return (
+                    <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
+                )
+            });
+        
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
@@ -247,14 +299,16 @@ class docentAddReview extends React.Component {
                 </tr>
             )
         });
-
-        console.log(reviewDate);
         
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange}/></h3></div>
-                    <div className="col"><h3 classname="text-center">Review {this.state.userName}</h3></div>
+                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange} /></h3></div>
+                    <div className="col">
+                        <h3 classname="text-center">Review
+                            <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
+                        </h3>
+                    </div>
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
                 </div>
                     <div >
