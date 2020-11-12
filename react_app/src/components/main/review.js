@@ -18,14 +18,29 @@ class ConceptSelection extends React.Component {
         }
 
     }
+    
     handleSliderChange(newValue, name){
         this.setState({[name]: newValue})
     }
     render()
     {
+    var themeSelection = this.props.themes.map((theme) => {
+        return (
+            <FormControlLabel
+                control = {<Checkbox defaultChecked={true}  
+                            name = {"theme_" + theme.id} 
+                            onChange = {(e) => this.props.handleCheckChange(e,theme.id)} 
+                            className = "themeCheckbox"
+                            />}
+                    label = {theme.abbreviation}
+                    className = "checkboxControl"
+            />
+        )
+    });
     return (
     <div class={"conceptSelection " + this.props.className} >
-        {this.props.children}
+
+       
         <SliderSelection 
             title="Rating tussen"
             value={this.state.stars} 
@@ -44,6 +59,8 @@ class ConceptSelection extends React.Component {
             max={8} 
             name = "weeks" 
             />
+        <div><h5 className="selectionTitle">Thema's</h5></div>
+        {themeSelection}
     </div>
         )
     }
@@ -233,14 +250,7 @@ class review extends React.Component {
         
         if (pageLoading) return (<span className="center">Laden...</span>)
             
-        var themeSelection = this.state.themes.map((theme) => {
-            return (
-                <FormControlLabel
-                control={<Checkbox defaultChecked={true}  name={"theme_" + theme.id} onChange={(e) => this.handleCheckChange(e,theme.id)} />}
-                label={theme.abbreviation}
-                />
-            )
-        });
+
         var conceptDisplay = this.state.concepts.map((concept) => {
             if (this.inSelection(concept)){
             return (
@@ -285,46 +295,49 @@ class review extends React.Component {
                 <div className="container">
                     
                     <div class="row">
-                    <h2 class="col-md-4">{this.state.reviewDate}</h2>
-                    <h2 class="col-md-4">Review {this.state.userName}</h2>
-                    <h2 class="col-md-4">{this.state.userLocation}</h2>
+                        <h2 class="col-md-4">{this.state.reviewDate}</h2>
+                        <h2 class="col-md-4">Review {this.state.userName}</h2>
+                        <h2 class="col-md-4">{this.state.userLocation}</h2>
                     </div>
                     <div >
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
-                    
-                    <ConceptSelection className="col-md-4" handleChange={this.handleSelectionChange.bind(this)}>
-                        <FormGroup>
-                        {themeSelection}
-                        </FormGroup>
-                    </ConceptSelection>
-                    <table >
-                        <thead>
-                            <tr>
-                                <th className="week">
-                                    Blok
+                    <div className="d-flex">
+                        <ConceptSelection 
+                            className="d-none d-md-inline col-md-3" 
+                            handleChange={this.handleSelectionChange.bind(this)}
+                            handleCheckChange={this.handleCheckChange.bind(this)}
+                            themes={this.state.themes} 
+                        />
+                        <table className="reviewTable col-md-10 table">
+                            <thead>
+                                <tr>
+                                    <th className="week">
+                                        Blok
+                                        </th>
+                                    <th className="theme">
+                                        Thema
+                                        </th>
+                                    <th className="concept">
+                                        Concept
+                                        </th> 
+                                    <th className="rating">
+                                        Vaardigheid
+                                        </th>
+                                    <th className="comment">
+                                        Commentaar
                                     </th>
-                                <th className="theme">
-                                    Thema
-                                    </th>
-                                <th className="concept">
-                                    Concept
-                                    </th> 
-                                <th className="rating">
-                                    Vaardigheid
-                                    </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBody">
-                            {conceptDisplay}
-                        </tbody>
-                    </table>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBody">
+                                {conceptDisplay}
+                            </tbody>
+                        </table>
+                        </div>
                     <div className="trainee-feedback-box">
                         <h4 >{"Terugkoppeling:"}</h4>
                         <textarea readOnly rows="2" cols="50"> </textarea> 
+                        
                     </div>
                 </div>
         )
