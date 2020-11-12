@@ -113,25 +113,6 @@
     font-size:10px;
 }
 
-
-table {
-    width: 100%;
-    display: inline-block;
-}
-  
-thead, tbody, tr {
-    display: table;
-    width: 100%;
-    table-layout: auto;
-}
-
-tbody {
-    display: block;
-    overflow-y: scroll;
-    table-layout: auto;
-    max-height: 240px;
-}
-
 .feedback-box-kantoor{
     float: left;
     padding: 15px;
@@ -149,8 +130,65 @@ tbody {
     padding-top: 45px;
     padding-left: 16px;
 }
+.reviewTable{
+    display:block;
+    height:500px;
+    overflow-y:scroll;
+}
+.reviewTable thead{
+    background-color:#fff!important;
+
+}
+.reviewTable th{
+    position:sticky;
+    top:0;
+    background-color:#fff!important;
+    z-index:1;
+
+}
 
 
+/*#region ConceptSelectionStyling  */
+.conceptSelection {
+    background-color: rgb(226, 226, 226);
+    border-radius:4px;
+    padding:20px;
+}
+.sliderThumb span
+{
+    background:none;
+    top:-5px;
+    left:2px;
+    width:15px;
+    height:15px;
+    color:#000;
+}
+.sliderThumb{
+    background-color:#ffc107!important;
+}
+.conceptSelection .lightButton{
+    margin:0px 5px;
+    padding:1px 3px;
+    min-width:0;
+    background-color:lightGrey;
+}
 
+.lightButton:hover{
+    background-color:rgb(155, 155, 155)!important;
+}
+.selectionTitle{
+    display:inline;
+}
+.themeCheckbox{
+    color:#ffc107!important;
 
-
+}
+.checkboxControl{
+    width:30%;
+    padding:1px;
+}
+.themeCheckbox .icon{
+    height:10px!important;
+    width:10px!important;
+}
+/*#endregion ConceptSelectionStyling */
