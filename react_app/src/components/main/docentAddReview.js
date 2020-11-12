@@ -16,7 +16,7 @@ class docentAddReview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pendingUsers: null,
+            pendingUsers: [],
             pendingUserDisplayName: "",
             userId: null,
             userName: "",
@@ -36,18 +36,17 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         console.log("begin");
-        this.setState({ pageLoading: true });
+        await this.setState({ pageLoading: true });      
         if (Permissions.isUserTrainee()) {
-            this.setState({ userId: sessionStorage.getItem("userId") });
+            await this.setState({ userId: sessionStorage.getItem("userId") });
         }
         else {
             const { computedMatch: { params } } = this.props;
             await this.setState({ userId: params.userId });
         }
-        await this.getConcepts();
         console.log(this.state.userId);
-        await this.getPendingUsers();
-        this.setState({ pageLoading: false });
+        await this.getConcepts();
+        await this.setState({ pageLoading: false });
         
     }
 
@@ -68,14 +67,15 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
+        console.log("getPendingUsers")
         axios.get(config.url.API_URL + "/webapi/review/pendingUsers")
             .then(response => {
+                console.log("succes");
                 this.handleUsersReponse(response.data);
             })
             .catch((error) => {
-
                 console.log("an error occorured " + error);
-            });
+            })
     }
 
     getConcepts() {
@@ -83,6 +83,7 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {
                 this.handleCurriculumReponse(response.data);
+                this.getPendingUsers();
             })
             .catch((error) => {
 
@@ -240,14 +241,12 @@ class docentAddReview extends React.Component {
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         let userOptions = null;
-
-        if (!pageLoading) {
+        console.log(pendingUsers);
             userOptions = pendingUsers.map((user) => {
                 return (
                     <option key={user.id} value={user.id}>{user.name}</option>
                 )
             });
-        }
         
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {

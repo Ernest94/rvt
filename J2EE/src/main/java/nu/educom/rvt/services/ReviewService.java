@@ -46,7 +46,7 @@ public class ReviewService {
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
 														  .collect(Collectors.toList());
 		if(pendingReviews.size() == 0) {
-			reviewRepo.create(new Review(LocalDate.now(), "", "", Review.Status.COMPLETED, user));
+			reviewRepo.create(new Review(LocalDate.now(), "", "", Review.Status.PENDING, user));
 		}
 	}
 	
