@@ -314,7 +314,8 @@ class docentAddReview extends React.Component {
                     <div >
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
-                    <table >
+                    <div className="table-responsive">
+                    <table className="reviewTable table">
                         <thead>
                             <tr>
                                 <th className="week">
@@ -338,6 +339,7 @@ class docentAddReview extends React.Component {
                             {conceptDisplay}
                         </tbody>
                 </table>
+                </div>
                     <div>
                         <div className="feedback-box-trainee">
                         <h4 >{"Terugkoppeling naar Trainee:"}</h4>
