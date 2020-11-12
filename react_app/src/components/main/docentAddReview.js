@@ -17,7 +17,6 @@ class docentAddReview extends React.Component {
         super(props);
         this.state = {
             pendingUsers: [],
-            pendingUserDisplayName: "",
             userId: null,
             userName: "",
             userLocation: "",
@@ -36,7 +35,7 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         console.log("begin");
-        await this.setState({ pageLoading: true });      
+        this.setState({ pageLoading: true });      
         if (Permissions.isUserTrainee()) {
             await this.setState({ userId: sessionStorage.getItem("userId") });
         }
@@ -45,8 +44,10 @@ class docentAddReview extends React.Component {
             await this.setState({ userId: params.userId });
         }
         console.log(this.state.userId);
+        this.setState({ pageLoading: false });
+        await this.getPendingUsers();
         await this.getConcepts();
-        await this.setState({ pageLoading: false });
+        
         
     }
 
@@ -60,10 +61,21 @@ class docentAddReview extends React.Component {
     onChangePendingUser = (e) => {
         var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
 
-        this.setState({
-            //role: selectedRole,
-            pendingUserDisplayName: e.target.value
+        this.setTheState(selectedUser);
+    }
+
+    async setTheState(selectedUser) {
+        await this.setState({
+            pageLoading: true,
+            userId: selectedUser.id,
+            userName: selectedUser.name,
+            userLocation: selectedUser.location.name,
         });
+
+        this.getConcepts();
+        this.setState({
+            pageLoading: false
+        })
     }
 
     getPendingUsers() {
@@ -83,7 +95,6 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {
                 this.handleCurriculumReponse(response.data);
-                this.getPendingUsers();
             })
             .catch((error) => {
 
@@ -107,7 +118,6 @@ class docentAddReview extends React.Component {
         console.log(data);
         this.setState({
             pendingUsers: data.userSearch,
-            pendingUserDisplayName: this.state.userName,
         });
         console.log(this.state);
     }
@@ -118,7 +128,7 @@ class docentAddReview extends React.Component {
             userLocation: data.traineeLocation,
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
-            reviewId:data.reviewId,
+            reviewId: data.reviewId,
             message: "",
         });
         console.log(this.state);
@@ -244,7 +254,7 @@ class docentAddReview extends React.Component {
         console.log(pendingUsers);
             userOptions = pendingUsers.map((user) => {
                 return (
-                    <option key={user.id} value={user.id}>{user.name}</option>
+                    <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
                 )
             });
         
@@ -289,14 +299,16 @@ class docentAddReview extends React.Component {
                 </tr>
             )
         });
-
-        console.log(reviewDate);
         
         return (
                 <div className="container">
                 <div className="pt-4 row">
                     <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange} /></h3></div>
-                    <div className="col"><h3 classname="text-center">Review <select className="border-0 text-center" name="pendingUser" id="pendingUser" value={this.state.pendingUserDisplayName} onChange={this.onChangePendingUser}>{userOptions}</select></h3></div>
+                    <div className="col">
+                        <h3 classname="text-center">Review
+                            <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
+                        </h3>
+                    </div>
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
                 </div>
                     <div >
