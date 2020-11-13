@@ -139,9 +139,13 @@ public class ReviewResource {
     @Path("/addConceptRating")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addconceptrating(ConceptRatingUpdate cru){
-        reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
+		boolean exists = reviewServ.getReviewById(cru.getReviewId())!=null;
+		if(exists) {
+          reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
+  		  return Response.status(201).build();
+		}
+		return Response.status(404).build();
 
-		return Response.status(201).build();
     }
 	
 	@POST
@@ -153,9 +157,7 @@ public class ReviewResource {
 		  reviewServ.replaceReview(review);
 		  return Response.status(202).build();
 		} 
-		else {
-			return Response.status(404).build();
-		}
+		return Response.status(404).build();
 	}
 	
 }
