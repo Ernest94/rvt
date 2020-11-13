@@ -190,9 +190,7 @@ class docentAddReview extends React.Component {
     submitReviewChange(ReviewJson) {
         axios.post(config.url.API_URL + "/webapi/review/tbd", ReviewJson)
             .then(response => {
-                this.setState({
-                    message: "uw review is succesvol opgeslagen."
-                });
+                console.log(response);
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
@@ -202,9 +200,7 @@ class docentAddReview extends React.Component {
     submitConceptRatingChange(conceptRatingJson) {
         axios.post(config.url.API_URL + "/webapi/review/tbd", conceptRatingJson)
             .then(response => {
-                this.setState({
-                    message: "uw review is succesvol opgeslagen."
-                });
+                console.log(response);
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
