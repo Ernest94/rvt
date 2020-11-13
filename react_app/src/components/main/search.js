@@ -37,11 +37,7 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
-<<<<<<< HEAD
         const locationName = sessionStorage.getItem("userLocation");
-=======
-        const locationName = this.props.getUserLocation();
->>>>>>> checkbox
         const roleName = "Trainee";
 
         let role = this.state.roles.find(element => element.name === roleName);
@@ -71,19 +67,16 @@ class Search extends React.Component {
             });
     }
 
-<<<<<<< HEAD
-=======
     findlocation(location) {
         return location;
     }
 
->>>>>>> checkbox
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
         var errors = null
         if (!errors) {
-	console.log(this.createSearchJson());
+	    console.log(this.createSearchJson());
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
