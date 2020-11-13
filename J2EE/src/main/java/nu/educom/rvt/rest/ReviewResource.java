@@ -104,8 +104,8 @@ public class ReviewResource {
 	@POST
     @Path("/addConceptRatings")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addconceptratings(List <ConceptPlusRating> cpr, int reviewId){
-        Review completedReview = reviewServ.addConceptRatings(cpr, reviewId);
+    public Response addconceptratings(ConceptRatingJSON crJSON){
+        Review completedReview = reviewServ.addConceptRatings(crJSON.getConceptsPlusRatings(), crJSON.getReviewId());
         reviewServ.updateReview(completedReview);
 
 		return Response.status(201).build();
