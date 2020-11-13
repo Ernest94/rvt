@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import {Select, MenuItem } from '@material-ui/core';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
@@ -275,7 +276,23 @@ class docentAddReview extends React.Component {
         }
     }
 
+    handleWeekChange(e,id){
+        this.setState(prevState => 
+                ({concepts: prevState.concepts.map(concept => 
+                    concept.concept.id===id? 
+                    {...concept, concept: {...concept.concept, week: e.target.value }}
+                    :concept)
+                })
+        )
+    }
+
     render() {
+        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weekoptions = weeks.map((week) =>(
+                            <MenuItem key={"week_"+week} value={week}>
+                                {"week " + week}
+                            </MenuItem>))
+
         const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
@@ -302,7 +319,13 @@ class docentAddReview extends React.Component {
                         />                   
                     </td>
                     <td className="week" id="text">
-                        {this.getWeekBlock(concept.concept.week)}
+                        <Select  name={"weeks"+concept.concept.id} id={"weeks"+concept.concept.id}
+                            value={concept.concept.week}
+                            renderValue={(value) => this.getWeekBlock(value)}
+                            onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
+                            >
+                            {weekoptions}
+                        </Select>                    
                     </td>
                     <td className="theme" id="text">
                         <span className="theme-text"> {concept.concept.theme.abbreviation}
