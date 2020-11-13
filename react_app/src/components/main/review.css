@@ -92,6 +92,10 @@
     vertical-align: top;
 }
 
+.active{
+    width: 5%;
+}
+
 .week {
     width:15%;
 }
