@@ -3,10 +3,11 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
+
 import nu.educom.rvt.models.ConceptRating;
 
-public class ConceptRatingRepository {
-
+public class conceptUserMutationsRepository {
+	
 	public ConceptRating create(ConceptRating conceptRating) {
 		Session session = null;
 		try {
@@ -62,4 +63,8 @@ public class ConceptRatingRepository {
 	
 	protected void delete() {
 	}
+
+
 }
+
+

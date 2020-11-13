@@ -37,7 +37,11 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
+<<<<<<< HEAD
         const locationName = sessionStorage.getItem("userLocation");
+=======
+        const locationName = this.props.getUserLocation();
+>>>>>>> checkbox
         const roleName = "Trainee";
 
         let role = this.state.roles.find(element => element.name === roleName);
@@ -67,6 +71,13 @@ class Search extends React.Component {
             });
     }
 
+<<<<<<< HEAD
+=======
+    findlocation(location) {
+        return location;
+    }
+
+>>>>>>> checkbox
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});

@@ -6,6 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
 
+import { Checkbox} from '@material-ui/core';
 import './review.css'
 
 import { config } from '../constants';
@@ -32,6 +33,25 @@ class docentAddReview extends React.Component {
             message:"",
         };
     }
+
+    handleFormChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    handleCheckboxChange = (e) => {
+        const { name } = e.target;
+    
+        this.setState(prevState => ({
+            checkboxes: {
+                ...prevState.checkboxes,
+                [name]: !prevState.checkboxes[name]
+            }
+        }));
+    };
+    
 
     async componentDidMount() {
         console.log("begin");
@@ -245,6 +265,15 @@ class docentAddReview extends React.Component {
         });
     }
 
+    setActiveConcept() {
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+        if (checkBox.checked == false){
+          text.style.display = "block";
+        } else {
+           text.style.display = "none";
+        }
+    }
 
     render() {
         const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
@@ -262,21 +291,31 @@ class docentAddReview extends React.Component {
         var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
                 <tr>
-                    <td className="week">
+                    <td className="active">
+                    <Checkbox
+                        // label={option}
+                        // isSelected={this.state.checkboxes.}
+                        // onCheckboxChange={this.handleCheckboxChange}
+                         key={"active_"+concept.concept.id}
+                         defaultChecked={true}
+                         color="default"
+                        />                   
+                    </td>
+                    <td className="week" id="text">
                         {this.getWeekBlock(concept.concept.week)}
                     </td>
-                    <td className="theme">
+                    <td className="theme" id="text">
                         <span className="theme-text"> {concept.concept.theme.abbreviation}
                         <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
                         </span>
                     </td>
-                    <td className="concept">
+                    <td className="concept" id="text">
                         <span className="concept-text">
                         {concept.concept.name}
                         <span className="displayMessage"> {concept.concept.name} </span>
                         </span>
                     </td>                  
-                    <td className="rating">
+                    <td className="rating" id="text">
                     <div>
                             <Rating className="rating-star"
                                 value={concept.rating}
@@ -288,7 +327,7 @@ class docentAddReview extends React.Component {
                         <div className="rating-text"> {this.getRating(concept.rating)} </div>
                         </div>
                     </td>
-                    <td className="comment">
+                    <td className="comment" id="text">
                         <TextareaAutosize className="comment-text"
                             aria-label="minimum height"
                             name={"comment" + index} onChange={(event) => {
@@ -318,18 +357,21 @@ class docentAddReview extends React.Component {
                     <table className="reviewTable table">
                         <thead>
                             <tr>
+                                <th className="active">
+                                    actief
+                                </th>
                                 <th className="week">
                                     Blok
-                                    </th>
+                                </th>
                                 <th className="theme">
                                     Thema
-                                    </th>
+                                </th>
                                 <th className="concept">
                                     Concept
-                                    </th> 
+                                </th> 
                                 <th className="rating">
                                     Vaardigheid
-                                    </th>
+                                </th>
                                 <th className="comment">
                                     Commentaar
                                 </th>
