@@ -78,7 +78,7 @@ public class ReviewService {
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
 														  .collect(Collectors.toList());
 		if(pendingReviews.size() == 0) {
-			reviewRepo.create(new Review(LocalDate.now(), "", "", Review.Status.COMPLETED, user));
+			reviewRepo.create(new Review(LocalDate.now().toString(), "", "", Review.Status.COMPLETED, user));
 		}
 	}
 	
@@ -117,9 +117,9 @@ public class ReviewService {
 			return conceptPlusRating;
 		}
 		
-		LocalDate mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		String mostRecentDate = reviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
 		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
-		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().getDayOfYear() < mostRecentDate.getDayOfYear()).collect(Collectors.toList());
+		List<Review> otherReviews = reviews.stream().filter(r -> LocalDate.parse(r.getDate()).getDayOfYear() < LocalDate.parse(mostRecentDate).getDayOfYear()).collect(Collectors.toList());
 		
 		
 		
@@ -202,7 +202,7 @@ public class ReviewService {
     }
 	
 	public Review getMostRecentReview(List<Review> allReviews) {
-		LocalDate mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		String mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
 		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 	}
 	
@@ -218,5 +218,10 @@ public class ReviewService {
 			ratings.add(new ConceptRating(review, cpr.get(i).getConcept(), cpr.get(i).getRating(), cpr.get(i).getComment()));
 		}
 		return ratings;
+	}
+
+	public void addReview(Review review) {
+		ReviewRepository reviewRepo = new ReviewRepository();
+		reviewRepo.create(review);		
 	}
 }

@@ -49,7 +49,7 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.convertDateTimeToString(reviewServ.getMostRecentReview(allReviews).getDate());
+		String reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -78,7 +78,7 @@ public class ReviewResource {
 		String traineeLocation = userOutput.getLocation().getName();
 		
 		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
-		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
+		String reviewDate = mostRecentReview.getDate();
 		int reviewId = mostRecentReview.getId();
 		
 		conceptsRatingsJSON.setTraineeName(traineeName);
@@ -110,5 +110,14 @@ public class ReviewResource {
 
 		return Response.status(201).build();
     }
+	
+	@POST
+	@Path("/addReview")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addReview(Review review) {
+		reviewServ.addReview(review);
+		
+		return Response.status(202).build();
+	}
 	
 }

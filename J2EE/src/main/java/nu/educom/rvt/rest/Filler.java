@@ -19,8 +19,8 @@ public class Filler {
 	
 	public static void fillDatabase() {
 		
-		LocalDate weekAgo = LocalDate.now().minus(7, ChronoUnit.DAYS);
-		LocalDate dayAgo = LocalDate.now().minus(1, ChronoUnit.DAYS);
+		String weekAgo = LocalDate.now().minus(7, ChronoUnit.DAYS).toString();
+		String dayAgo = LocalDate.now().minus(1, ChronoUnit.DAYS).toString();
 	    String now = LocalDate.now().toString();
 		String endDate = null;
 		
@@ -207,7 +207,7 @@ public class Filler {
 		ReviewRepository reviewRepo = new ReviewRepository();
 		Review review1 = new Review(weekAgo, "Matig bezig trainee1", "Deze trainee is meh bezig", Review.Status.COMPLETED, trainee1);
 		Review review2 = new Review(dayAgo, "Redelijk bezig trainee1", "Deze trainee is voldoende bezig", Review.Status.COMPLETED, trainee1);
-		Review review3 = new Review(LocalDate.parse(now), "Goed bezig trainee1", "Deze trainee is prima bezig", Review.Status.PENDING, trainee1);
+		Review review3 = new Review(now, "Goed bezig trainee1", "Deze trainee is prima bezig", Review.Status.PENDING, trainee1);
 		Review review4 = new Review(dayAgo, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED, trainee2);
 		reviewRepo.create(review1);
 		reviewRepo.create(review2);
