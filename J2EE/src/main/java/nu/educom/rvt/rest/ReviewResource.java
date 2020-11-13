@@ -51,12 +51,7 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-<<<<<<< HEAD
-		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
-		String reviewDate = reviewServ.convertDateTimeToString(mostRecentReview.getDate());
-=======
 		String reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
->>>>>>> origin/add_review
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -147,7 +142,7 @@ public class ReviewResource {
 		if(exists) {
 		  reviewServ.addReview(review);
 		  return Response.status(202).build();
-		}
+		} 
 		else {
 			return Response.status(404).build();
 		}
