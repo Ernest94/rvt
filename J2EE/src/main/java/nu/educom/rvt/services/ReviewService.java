@@ -140,9 +140,9 @@ public class ReviewService {
 	
 	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
 		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		Review review = getReviewById(reviewId);
-		List<ConceptRating> ratingList = convertConceptPlusRating(conceptRatings, review);
+		List<ConceptRating> ratingList = convertConceptPlusRatings(conceptRatings, reviewId);
 		crRepo.createMulti(ratingList);
+		Review review = getReviewById(reviewId);
 
 		return review;
 	}
@@ -173,10 +173,19 @@ public class ReviewService {
 		return cancelledReview;
     }
     
-    public int updateReview(Review review) {
+    public int replaceReview(Review review) {
+    	Review toUpdate = this.getReviewById(review.getId());
+    	review = this.updateReview(review, toUpdate);
         ReviewRepository reviewRepo = new ReviewRepository();
         reviewRepo.update(review);
-        return 1;
+        return review.getId();
+    }
+    
+    public Review updateReview(Review review, Review toUpdate) {
+    	toUpdate.setDate(review.getDate());
+    	toUpdate.setCommentOffice(review.getCommentOffice());
+    	toUpdate.setCommentStudent(review.getCommentStudent());    	
+    	return toUpdate;
     }
 	
 	public Review getMostRecentReview(List<Review> allReviews) {
@@ -190,16 +199,27 @@ public class ReviewService {
 		return date.format(formatter);
 	}
 	
-	private List<ConceptRating> convertConceptPlusRating(List<ConceptPlusRating> cpr, Review review){
+	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId){
 		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
 		for(int i = 0; i<cpr.size(); i++) {
-			ratings.add(new ConceptRating(review, cpr.get(i).getConcept(), cpr.get(i).getRating(), cpr.get(i).getComment()));
+			ratings.add(this.convertConceptPlusRating(cpr.get(i), reviewId));
 		}
 		return ratings;
+	}
+	
+	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) {
+		return new ConceptRating(this.getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
 	}
 
 	public void addReview(Review review) {
 		ReviewRepository reviewRepo = new ReviewRepository();
-		reviewRepo.create(review);		
+		reviewRepo.update(review);		
+	}
+
+	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) {
+		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+		crRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
+		
+		return this.getReviewById(reviewId);
 	}
 }

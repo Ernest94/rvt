@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRatingUpdate;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
@@ -98,7 +99,7 @@ public class ReviewResource {
     public Response setActiveReviewComplete(Review review){
         Review reviewOutput = reviewServ.getReviewById(review.getId());
         Review completedReview = reviewServ.completedReview(reviewOutput);
-        reviewServ.updateReview(completedReview);
+        reviewServ.replaceReview(completedReview);
 
 		return Response.status(202).build();
     }
@@ -109,7 +110,7 @@ public class ReviewResource {
     public Response setActiveReviewCancelled(Review review){
         Review reviewOutput = reviewServ.getReviewById(review.getId());
         Review cancelledReview = reviewServ.cancelledReview(reviewOutput);
-        reviewServ.updateReview(cancelledReview);
+        reviewServ.replaceReview(cancelledReview);
 
 		return Response.status(202).build();
     }
@@ -124,12 +125,21 @@ public class ReviewResource {
 		
 		return Response.status(200).entity(USJ).build();
 	}
+	
+//	@POST
+//    @Path("/addConceptRatings")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public Response addconceptratings(ConceptRatingJSON crJSON){
+//        Review completedReview = reviewServ.addConceptRatings(crJSON.getConceptsPlusRatings(), crJSON.getReviewId());
+//        reviewServ.updateReview(completedReview);
+//		return Response.status(201).build();
+//    }
+
 	@POST
     @Path("/addConceptRating")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addconceptratings(ConceptRatingJSON crJSON){
-        Review completedReview = reviewServ.addConceptRatings(crJSON.getConceptsPlusRatings(), crJSON.getReviewId());
-        reviewServ.updateReview(completedReview);
+    public Response addconceptrating(ConceptRatingUpdate cru){
+        reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
 
 		return Response.status(201).build();
     }
@@ -137,10 +147,10 @@ public class ReviewResource {
 	@POST
 	@Path("/updateReview")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addReview(Review review) {
+	public Response updateReview(Review review) {
 		boolean exists = reviewServ.getReviewById(review.getId())!=null;
 		if(exists) {
-		  reviewServ.addReview(review);
+		  reviewServ.replaceReview(review);
 		  return Response.status(202).build();
 		} 
 		else {
