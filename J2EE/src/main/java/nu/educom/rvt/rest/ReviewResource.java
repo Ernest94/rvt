@@ -125,7 +125,7 @@ public class ReviewResource {
 		return Response.status(200).entity(USJ).build();
 	}
 	@POST
-    @Path("/addConceptRatings")
+    @Path("/addConceptRating")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addconceptratings(ConceptRatingJSON crJSON){
         Review completedReview = reviewServ.addConceptRatings(crJSON.getConceptsPlusRatings(), crJSON.getReviewId());
@@ -135,7 +135,7 @@ public class ReviewResource {
     }
 	
 	@POST
-	@Path("/addReview")
+	@Path("/updateReview")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addReview(Review review) {
 		boolean exists = reviewServ.getReviewById(review.getId())!=null;
