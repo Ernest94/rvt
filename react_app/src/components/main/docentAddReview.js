@@ -139,6 +139,7 @@ class docentAddReview extends React.Component {
         });
 
         let conceptRatingJson = this.createConceptRatingJson(concept);
+        console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
 
@@ -174,8 +175,8 @@ class docentAddReview extends React.Component {
     createReviewJson(){
         return {
             id: this.state.reviewId,
-            officeComment: this.state.officeFeedback,
-            traineeComment: this.state.traineeFeedback,
+            commentOffice: this.state.officeFeedback,
+            commentStudent: this.state.traineeFeedback,
             date: this.state.reviewDate
         }
     }
