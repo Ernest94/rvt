@@ -115,9 +115,14 @@ public class ReviewResource {
 	@Path("/addReview")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addReview(Review review) {
-		reviewServ.addReview(review);
-		
-		return Response.status(202).build();
+		boolean exists = reviewServ.getReviewById(review.getId())!=null;
+		if(exists) {
+		  reviewServ.addReview(review);
+		  return Response.status(202).build();
+		}
+		else {
+			return Response.status(404).build();
+		}
 	}
 	
 }
