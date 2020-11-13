@@ -23,6 +23,7 @@ public class Filler {
 		String dayAgo = LocalDate.now().minus(1, ChronoUnit.DAYS).toString();
 	    String now = LocalDate.now().toString();
 		String endDate = null;
+		LocalDate endDateLD = null;
 		
 		//FILL THE USER TABLE
 		List<Role> roles = new ArrayList<Role>();
@@ -48,17 +49,17 @@ public class Filler {
 		}
 		
 
-		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate));
-		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate));
-		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate));
+		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
+		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
+		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
 		
 		//add users to db
 		List<User> users = new ArrayList<User>();
-		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate)));
-		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate)));
-		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate)));
-		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate)));
-		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),LocalDate.parse(now), LocalDate.parse(endDate)));
+		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),LocalDate.parse(now), endDateLD));
+		users.add(new User("Admin", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),LocalDate.parse(now), endDateLD));
+		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now),endDateLD));
+		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),LocalDate.parse(now), endDateLD));
+		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),LocalDate.parse(now), endDateLD));
 		
 		users.add(trainee1);
 		users.add(trainee2);
