@@ -377,7 +377,7 @@ class docentAddReview extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
                     <div className="table-responsive">
-                    <table className="reviewTable table">
+                    <table className="addReviewTable table">
                         <thead>
                             <tr>
                                 <th className="active">

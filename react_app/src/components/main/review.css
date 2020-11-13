@@ -113,26 +113,33 @@
     padding-top: 45px;
     padding-left: 16px;
 }
-.reviewTable{
+.reviewTable, .addReviewTable{
     display:block;
     height:500px;
     overflow-x:hidden;
 }
 
-.reviewTable thead{
+.reviewTable thead, .addReviewTable thead{
     background-color:#fff!important;
 }
-.reviewTable th{
+.reviewTable th, .addReviewTable th{
     position:sticky;
     top:0;
     background-color:#fff!important;
     z-index:1;
 
 }
-.reviewTable td:nth-child(2){
+.addReviewTable td:nth-child(2){
     white-space: nowrap;
 }
-.reviewTable td:nth-child(4),.reviewTable th:nth-child(4){
+.addReviewTable td:nth-child(4),.reviewTable th:nth-child(4){
+    width:100%;
+}
+
+.reviewTable td:nth-child(1){
+    white-space: nowrap;
+}
+.reviewTable td:nth-child(3),.reviewTable th:nth-child(3){
     width:100%;
 }
 
