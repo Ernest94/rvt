@@ -6,6 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
 
+import { Checkbox} from '@material-ui/core';
 import './review.css'
 
 import { config } from '../constants';
@@ -88,7 +89,6 @@ class docentAddReview extends React.Component {
             id: this.state.reviewId
         };
     }
-
 
     handleCurriculumReponse(data){
         this.setState({
@@ -223,19 +223,6 @@ class docentAddReview extends React.Component {
         }
     }
 
-    createCheckbox = option => (
-        <Checkbox
-          label={option}
-          isSelected={this.state.checkboxes[option]}
-          onCheckboxChange={this.handleCheckboxChange}
-          key={option}
-        />
-      );
-
-    createCheckboxes = () => OPTIONS.map(this.createCheckbox);
-    
-
-
     render() {
         const { pageLoading, traineeFeedback, officeFeedback, reviewDate } = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
@@ -244,16 +231,14 @@ class docentAddReview extends React.Component {
             return (
                 <tr>
                     <td className="active">
-                    {this.createCheckboxes()}
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={this.isSelected}
-                                onChange={this.onCheckboxChange}
-                                className="activeCheckbox"
-                            />
-                            {label}
-                        </label>                    
+                    <Checkbox
+                        // label={option}
+                        // isSelected={this.state.checkboxes.}
+                        // onCheckboxChange={this.handleCheckboxChange}
+                         key={"active_"+concept.concept.id}
+                         defaultChecked={true}
+                         color="default"
+                        />                   
                     </td>
                     <td className="week" id="text">
                         {this.getWeekBlock(concept.concept.week)}
