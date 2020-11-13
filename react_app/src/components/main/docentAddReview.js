@@ -189,7 +189,7 @@ class docentAddReview extends React.Component {
     }
 
     submitReviewChange(ReviewJson) {
-        axios.post(config.url.API_URL + "/webapi/review/tbd", ReviewJson)
+        axios.post(config.url.API_URL + "/webapi/review/addReview", ReviewJson)
             .then(response => {
                 console.log(response);
             })
@@ -199,7 +199,7 @@ class docentAddReview extends React.Component {
     }
 
     submitConceptRatingChange(conceptRatingJson) {
-        axios.post(config.url.API_URL + "/webapi/review/tbd", conceptRatingJson)
+        axios.post(config.url.API_URL + "/webapi/review/addConceptRatings", conceptRatingJson)
             .then(response => {
                 console.log(response);
             })
