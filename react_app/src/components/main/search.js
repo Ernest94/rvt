@@ -37,8 +37,6 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
-        console.log("setLocationAndRole:");
-
         const locationName = this.props.getUserLocation();
         const roleName = "Trainee";
 
@@ -68,11 +66,6 @@ class Search extends React.Component {
                 this.setState({ loading: false });
             });
     }
-
-    //findRole(role) {
-    //    console.log(role);
-    //    return role.name == "Trainee";
-    //}
 
     findlocation(location) {
         return location;
