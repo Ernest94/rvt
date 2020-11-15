@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Review;
 
 public class ConceptRatingRepository {
 
@@ -68,6 +69,19 @@ public class ConceptRatingRepository {
 		}
 	}
 	
+	public ConceptRating readById(int id) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return session.get(ConceptRating.class, id);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	
 	public List<ConceptRating> readByReviewId(int review_id) {
 		Session session = null;
 		try {
@@ -85,8 +99,16 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	protected void update() {
+	public void update(ConceptRating conceptRating) {
+        Session session = HibernateSession.getSessionFactory().openSession();
+	    session.beginTransaction();
+	 
+	    session.update(conceptRating); 
+	 
+	    session.getTransaction().commit();
+	    session.close();
 	}
+	
 	
 	protected void delete() {
 	}
