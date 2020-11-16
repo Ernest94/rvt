@@ -14,7 +14,7 @@ import { config } from '../constants';
 import Permissions from './permissions.js'
 
 class docentAddReview extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -56,7 +56,7 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         console.log("begin");
-        this.setState({ pageLoading: true });      
+        this.setState({ pageLoading: true });
         if (Permissions.isUserTrainee()) {
             await this.setState({ userId: sessionStorage.getItem("userId") });
         }
@@ -68,8 +68,8 @@ class docentAddReview extends React.Component {
         this.setState({ pageLoading: false });
         await this.getPendingUsers();
         await this.getConcepts();
-        
-        
+
+
     }
 
     onChangePendingUser = (e) => {
@@ -141,7 +141,7 @@ class docentAddReview extends React.Component {
         });
         console.log(this.state);
     }
-    
+
     getActiveDisplayName(bool) {
         if (bool) return "ja";
         else return "nee";
@@ -149,7 +149,7 @@ class docentAddReview extends React.Component {
 
     async setRating(event) {
         const index = event.target.name.substring(6);
-        const value = event.target.value;        
+        const value = event.target.value;
 
         let concepts = this.state.concepts;
         let concept = concepts[index];
@@ -204,7 +204,7 @@ class docentAddReview extends React.Component {
 
     createConceptRatingJson(concept) {
         return {
-            id: this.state.reviewId,
+            reviewId: this.state.reviewId,
             conceptPlusRating: concept
         }
     }
@@ -228,7 +228,7 @@ class docentAddReview extends React.Component {
                 console.log("an error occorured " + error);
             });
     }
-    
+
 
     submit = () => {
         confirmAlert({
@@ -269,7 +269,7 @@ class docentAddReview extends React.Component {
             {
                 label: 'nee, breng me terug naar de review',
             }
-            ]   
+            ]
         })
     };
 
@@ -351,7 +351,7 @@ class docentAddReview extends React.Component {
                     <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
                 )
             });
-        
+
 
         var conceptDisplay = this.state.concepts.map((concept, index) => {
             return (
@@ -402,14 +402,14 @@ class docentAddReview extends React.Component {
                         <TextareaAutosize className="comment-text"
                             aria-label="minimum height"
                             name={"comment" + index} onBlur={(event) => {
-                            this.setComment(event); }}> 
+                            this.setComment(event); }}>
                             {concept.comment}
-                        </TextareaAutosize> 
-                    </td> 
+                        </TextareaAutosize>
+                    </td>
                 </tr>
             )
         });
-        
+
         return (
                 <div className="container">
                 <div className="pt-4 row">
@@ -459,14 +459,14 @@ class docentAddReview extends React.Component {
                         <textarea rows="2" name="traineeFeedback" cols="50" onBlur={(event) => {
                             this.setReviewData(event);
                         }}
-                        >{traineeFeedback}</textarea> 
+                        >{traineeFeedback}</textarea>
                         </div>
                         <div className="feedback-box-kantoor">
                         <h4 >{"Terugkoppeling naar kantoor:"}</h4>
                         <textarea rows="2" name="officeFeedback" cols="50" onBlur={(event) => {
                             this.setReviewData(event);
                         }}
-                        >{officeFeedback}</textarea> 
+                        >{officeFeedback}</textarea>
                         </div>
                     </div>
                     <div className="container">
