@@ -160,6 +160,19 @@ public class ReviewService {
         ReviewRepository reviewRepo = new ReviewRepository();
         return reviewRepo.readById(reviewId);
     }
+    
+    public ConceptRating getConceptRatingById(int id) {
+    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    	return conceptRatingRepo.readById(id);
+    }
+    
+    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) {
+    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    	return conceptRatingRepo.readAll().stream()
+    							.filter(c -> c.getReview().getId() == reviewId)
+    							.filter(c -> c.getConcept().getId() == conceptId)
+    							.findFirst().orElse(null);
+    }
 
     public Review completedReview(Review review) {
         Review completedReview = review;
@@ -175,16 +188,17 @@ public class ReviewService {
     
     public int replaceReview(Review review) {
     	Review toUpdate = this.getReviewById(review.getId());
-    	review = this.updateReview(review, toUpdate);
+    	toUpdate = this.updateReview(review, toUpdate);
         ReviewRepository reviewRepo = new ReviewRepository();
-        reviewRepo.update(review);
+        reviewRepo.update(toUpdate);
         return review.getId();
     }
     
     public Review updateReview(Review review, Review toUpdate) {
     	toUpdate.setDate(review.getDate());
     	toUpdate.setCommentOffice(review.getCommentOffice());
-    	toUpdate.setCommentStudent(review.getCommentStudent());    	
+    	toUpdate.setCommentStudent(review.getCommentStudent());   
+    	toUpdate.setReviewStatus(review.getReviewStatus());
     	return toUpdate;
     }
 	
@@ -221,5 +235,15 @@ public class ReviewService {
 		crRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
 		
 		return this.getReviewById(reviewId);
+	}
+	
+	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) {
+		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+		ConceptRating updated = old;
+		updated.setComment(conceptPlusRating.getComment());
+		updated.setRating(conceptPlusRating.getRating());
+		crRepo.update(updated);
+		
+		return this.getReviewById(updated.getReview().getId());
 	}
 }

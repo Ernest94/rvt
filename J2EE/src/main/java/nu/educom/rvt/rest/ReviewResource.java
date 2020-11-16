@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.ConceptRatingUpdate;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
@@ -139,12 +140,17 @@ public class ReviewResource {
     @Path("/addConceptRating")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addconceptrating(ConceptRatingUpdate cru){
-		boolean exists = reviewServ.getReviewById(cru.getReviewId())!=null;
-		if(exists) {
-          reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
-  		  return Response.status(201).build();
+		int reviewId = cru.getReviewId();
+		int conceptId = cru.getConceptPlusRating().getConcept().getId();
+		ConceptRating conceptRating = reviewServ.checkIfConceptRatingExists(reviewId, conceptId);
+		if(conceptRating != null) {
+			reviewServ.updateConceptRating(conceptRating, cru.getConceptPlusRating());
+			return Response.status(201).build();
 		}
-		return Response.status(404).build();
+		else {
+			reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
+	  	    return Response.status(201).build();
+		}
 
     }
 	
