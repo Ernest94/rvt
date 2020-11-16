@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
+import { withRouter } from 'react-router-dom';
 
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -195,7 +196,9 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
               console.log(this.state)
-              this.props.handleReturnToDossier(this.state.userId);
+              this.props.history.push('/dossier/' + this.state.userId);
+
+            //   this.props.handleReturnToDossier(this.state.userId);
         })
         .catch((error) => {
             console.log("an error occorured " + error);
@@ -309,4 +312,4 @@ class docentAddReview extends React.Component {
 
 }
 
-export default docentAddReview;
+export default withRouter(docentAddReview);

@@ -121,6 +121,8 @@ class Dossier extends React.Component {
                     this.setState({buttonDisabled: false, errors: null});
                     
                     this.props.history.push('/settings');
+
+                    // this.props.history.push('/settings');
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  

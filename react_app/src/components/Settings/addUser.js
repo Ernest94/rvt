@@ -3,6 +3,7 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import RoleAndLocation from './roleAndLocation.js';
 import UserInfo from './userInfo.js';
+import { withRouter } from 'react-router-dom';
 
 import constraints from '../../constraints/addUserConstraints';
 import {config} from '../constants';
@@ -183,7 +184,9 @@ class AddUser extends React.Component {
                 .then(response => {
                     this.setState({submitButtonDisabled: false, errors: null});
 
-                    this.props.handleReturnToSettings();
+                    this.props.history.push('/settings');
+
+                    // this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
@@ -262,4 +265,4 @@ class AddUser extends React.Component {
     }
 }
 
-export default AddUser;
+export default withRouter(AddUser);
