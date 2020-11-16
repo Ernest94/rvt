@@ -104,7 +104,7 @@ public class ConceptRatingRepository {
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();
-		    session.update(conceptRating);
+		    session.saveOrUpdate(conceptRating);
 		    session.getTransaction().commit();
 		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
 			
