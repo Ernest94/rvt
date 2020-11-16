@@ -2,9 +2,9 @@ import React from 'react';
 import { validate } from 'validate.js';
 import moment from 'moment';
 
-class Util{
+class Utils {
 
-    setErrors = (errors) => {
+    static setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
             <li key={key}>{errors[key][0]}</li>
         );
@@ -29,4 +29,4 @@ class Util{
 
 
 }
-export default Util;
+export default Utils;

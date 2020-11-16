@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 import constraints from '../../constraints/addUserConstraints';
 import {config} from '../constants';
-import Util from '../main/Util.js';
+import Util from '../main/Utils.js';
 
 class AddUser extends React.Component {
 

@@ -5,7 +5,7 @@ import {config} from '../constants';
 import './search.css';
 
 import { withRouter } from 'react-router-dom'
-import Util from './Util';
+import Util from './Utils';
 
 
 class Search extends React.Component {

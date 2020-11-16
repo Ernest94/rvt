@@ -6,7 +6,7 @@ import {config} from '../constants';
 import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../../constraints/dossierConstraints';
-import Util from './Util';
+import Utils from './Utils';
 
 class Dossier extends React.Component {
     
@@ -34,7 +34,7 @@ class Dossier extends React.Component {
 
     async componentDidMount() {
         const { computedMatch: { params } } = this.props;
-        // Util.dateValidation();
+        // Utils.dateValidation();
         this.props.dateValidation();
         await this.setState({pageLoading: true, userId: params.userId});
         this.getAllInfo();
@@ -135,14 +135,14 @@ class Dossier extends React.Component {
                     const custErr = {changeUser: ["Mislukt om gebruiker te veranderen."]};
                     this.setState({
                         buttonDisabled: false,
-                        errors: Util.setErrors(custErr)
+                        errors: Utils.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: Util.setErrors(errors)
+                errors: Utils.setErrors(errors)
             });
         }
     }

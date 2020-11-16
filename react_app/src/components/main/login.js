@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
-import Util from './Util.js'
+import Util from './Utils.js'
 import constraints from '../../constraints/loginConstraints';
 
 import {config} from '../constants';
@@ -63,7 +63,7 @@ class Login extends React.Component {
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: Util.setErrors(custErr)
+                errors: Util.setErrors(errors)
             });
         }
     }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
 
-import Util from '../main/Util.js'
+import Util from '../main/Utils.js'
 import constraints from '../../constraints/passwordChangeConstraints';
 import {config} from '../constants';
 
