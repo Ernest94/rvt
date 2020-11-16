@@ -1,55 +1,91 @@
+
 # API calls
 
+
+
 ## Samenvatting
-In dit document staan alle api calls die gebruikt worden in de frontend React vanuit de frontend perspectief.
+
+In dit document staan alle api calls die gebruikt worden gesorteerd op hoe ze in de resources staan
+
 Alle requests moeten een ok response teruggeven als de operatie geslaagd is. Ook moet er een correcte error status worden teruggegeven als er iets fout gaat.
 
-## Inhoud
-Elke request is per React component weergegeven.
 
-* [Login](#markdown-header-Login)
-* [AddUser](#markdown-header-AddUser)
-* [Password](#markdown-header-Password)
-* [Dossier](#markdown-header-Dossier)
-* [LinkedUsers](#markdown-header-LinkedUsers)
-* [Search](#markdown-header-Search)
+
+## Inhoud
+
+Elke request is per J2EE resource weergegeven.
+
+*  [User](#markdown-header-User)
+
+*  [Review](#markdown-header-Review)
+
+*  [ThemeConcept](#markdown-header-ThemeConcept)
+
+Alle input wordt meegegeven in een JSON wrapper, tenzij het in de `URI` zit.
+
+
+
 
 ## Requests
+
 elke request start altijd met `/webapi`.
 
-### Login
 
-Type | URI | Geeft | Ontvangt
+
+###User
+elk user request wordt opgevolgd door `/user`
+
+#### Login
+URI: `/login`
+ Header | Input | Datatype | Output | Datatype
+-----   | ------|--------- | ------ | ---------
+  POST  | email | String   | id     | int
+|password| String| name | string
+| | | role | { id: int, name: string} |
+ | | | location | {id: int, name: string} |
+
+
+
+#### Change password
+URI: `/password`
+
+Header | Input | Datatype
 -----|-----|-------|---------
-POST | `user/login`|Json -> { | Json -> {
-||_email_ : String, | _id_ : int,
-||_password_ : String} | _name_ : string,
-||| _role_ : {id:int, name: string},
-||| _location_ : {id: int, name: string}}
+Post | currentPassword | string
+  |  | newPassword | string
+|| userId | integer
 
-### AddUser
-Type | URI | Geeft | Ontvangt
+#### Get Roles
+URI: `/roles`
+Header | Output | Datatype
 -----|-----|-------|---------
-GET|`user/rlt`|-|Json ->  {    
-|||_roles_ : [ {id: int, name: string} ],  
-|||_locations_ : [ {id: int, name:string} ],
-|||_teachers_ : [ {id: int, name: string} ] }
-POST| `user/create`|Json -> { | -
-||_name_ : string, |
-||_email_ : string, |
-||_role_ : {id: int, name: string}, |
-||_location_ : {id: int, name: string},| 
-||_dateActive_ : string}|
+Get | roles | [{id: integer, name: string}]
+ |  | locations | [{id: int, name: string}] |
 
-### Password
-Type | URI | Geeft | Ontvangt
------|-----|-------|---------
-POST| `user/password`| Json -> { |-
-|| _currentPassword_ : string, |
-||_newPassword_ : string, |
-||_userId_ : int} | 
+#### New User
+URI: `/create`
 
-### Dossier
+Header | Input | Datatype
+ ------ | --------| ------
+POST| name | string
+|| email | string,
+|| role | {id: integer, name: string}
+|| location | {id: integer, name: string}
+|| dateActive | string |
+
+#### Link user to user (deprecated)
+URI: `/linking/{userId}`
+ Header | Input | Datatype | Output | Datatype
+-----   | ------|--------- | ------ | ---------
+  POST  | email | String   | id     | int
+| | String| name | string
+| | | role | { id: int, name: string} |
+ | | | location | {id: int, name: string} |
+
+
+
+#### Dossier
+
 Type | URI | Geeft | Ontvangt
 -----|-----|-------|---------
 GET| `user/dossier/` (header userId)| Headervariable -> userId | Json -> {
@@ -57,7 +93,7 @@ GET| `user/dossier/` (header userId)| Headervariable -> userId | Json -> {
 ||| _email_ : string,
 ||| _role_: {id : int, name : string},
 ||| _location_ {id : int, name : string},
-||| _dateActive_: string/Date} __Check of dit een string of date type wordt__ 
+||| _dateActive_: string/Date} __Check of dit een string of date type wordt__
 POST| `user/change`| Json -> { | -
 || _userId_ : int,|
 || _name_ : string,|
@@ -66,23 +102,31 @@ POST| `user/change`| Json -> { | -
 || _location_ {id : int, name : string},|
 || _dateActive_: string} |
 
-### LinkedUsers
-Type | URI | Geeft | Ontvangt
------|-----|-------|---------
-GET| `user/linking`(header userId)| HeaderVariable -> userId | Json ->{
-||| _user_ : {_id_: int, _name_: string, _role_ : {id: int, name: string}, _location_: {id: int, name: string}},
-||| _users_: [ {_id_: int, _name_:string, _role_ : {id: int, name: string}, _location_: {id: int, name: string}, _hasRelation_: boolean} ] }
+
+
+
 POST| `user/changeRelation`| Json -> {|-
 || _userId_ : int,|
 || _changedUsers_ : [{id: int}] } |
 
+
+
 ### Search
+
 Type | URI | Geeft | Ontvangt
+
 -----|-----|-------|---------
-GET| `user/roles`| - |Json ->  {    
-|||_roles_ : [ {id:int, name:string} ],  
+
+GET| `user/roles`| - |Json -> {
+
+|||_roles_ : [ {id:int, name:string} ],
+
 |||_locations_ : [ {id:int, name:string} ] }
+
 POST| `user/search`| Json -> { | Json -> {
+
 || _location_: {id: int, name: string},| _users_: [ {_id_: int, _name_: string, _email_: string, _role_: {id: int, name: string}, _location_: {id: int, name: string}} ]
+
 || _role_ : {id: int, name: string}|
+
 || _criteria_ : string }|
