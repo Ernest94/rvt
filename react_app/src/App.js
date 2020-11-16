@@ -5,21 +5,21 @@ import './App.css';
 
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/footer.js'; 
-import Login from './components/main/login.js';
-import Dossier from './components/main/dossier.js';
-import Home from './components/main/home.js';
-import Search from './components/main/search.js';
-import Settings from './components/Settings/settings.js';
-import AddUser from './components/Settings/addUser.js';
-import Password from './components/Settings/password.js';
+import Login from './components/login.js';
+import Dossier from './components/dossier.js';
+import Home from './components/home.js';
+import Search from './components/UserSearch/search.js';
+import Menu from './components/Menu/menu.js';
+import AddUser from './components/addUser.js';
+import Password from './components/password.js';
 import PrivateRoute from './components/routes/PrivateRoute.js';
 import AccessRoute from './components/routes/AccessRoute.js';
-import addTheme from './components/Settings/addTheme.js';
-import addConcept from './components/Settings/addConcept.js';
-import conceptOverview from './components/main/conceptOverview.js';
-import addLocation from './components/Settings/addLocation.js';
-import review from './components/main/review.js';
-import docentAddReview from './components/main/docentAddReview.js';
+import addTheme from './components/addTheme.js';
+import addConcept from './components/addConcept.js';
+import conceptOverview from './components/conceptOverview.js';
+import addLocation from './components/addLocation.js';
+import review from './components/Review/review.js';
+import docentAddReview from './components/Review/docentAddReview.js';
 
 class App extends React.Component {
     
@@ -58,7 +58,7 @@ class App extends React.Component {
 
                             <PrivateRoute exact path="/" component={Home}/>
              
-                            <PrivateRoute exact path="/settings" component={Settings}/>
+                            <PrivateRoute exact path="/settings" component={Menu}/>
 
                             <PrivateRoute exact path="/password" component={Password}/>
 

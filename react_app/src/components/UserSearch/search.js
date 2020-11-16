@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from '../constants';
+import {config} from '../constants.js';
 import './search.css';
 
 import { withRouter } from 'react-router-dom'
-import Util from './Utils';
-import Permissions from './permissions.js'
+import Util from '../Utils';
+import Permissions from '../permissions.js'
 
 class Search extends React.Component {
 

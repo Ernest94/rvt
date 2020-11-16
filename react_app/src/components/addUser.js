@@ -5,10 +5,10 @@ import RoleAndLocation from './roleAndLocation.js';
 import UserInfo from './userInfo.js';
 import { withRouter } from 'react-router-dom';
 
-import constraints from '../../constraints/addUserConstraints';
-import {config} from '../constants';
-import Utils from '../main/Utils.js';
-import Permissions from '../main/permissions.js'
+import constraints from '../constraints/addUserConstraints';
+import {config} from './constants';
+import Utils from './Utils.js';
+import Permissions from './permissions.js'
 class AddUser extends React.Component {
 
     constructor(props) {

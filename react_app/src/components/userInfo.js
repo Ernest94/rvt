@@ -1,5 +1,5 @@
 import React from 'react';
-import Utils from '../main/Utils.js'
+import Utils from './Utils.js'
 class UserInfo extends React.Component {
     
     componentDidMount() {

@@ -2,10 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link, withRouter } from 'react-router-dom';
-import {config} from '../constants';
+import {config} from './constants';
 import './form.css';
 import Permissions from './permissions.js';
-import constraints from '../../constraints/dossierConstraints';
+import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 
 class Dossier extends React.Component {

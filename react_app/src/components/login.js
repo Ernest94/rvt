@@ -3,9 +3,9 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
 import Util from './Utils.js'
-import constraints from '../../constraints/loginConstraints';
+import constraints from '../constraints/loginConstraints';
 
-import {config} from '../constants';
+import {config} from './constants';
 
 class Login extends React.Component {
     

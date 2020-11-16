@@ -2,8 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import './addings.css';
 
-import {config} from '../constants';
-import Permissions from '../main/permissions.js'
+import {config} from './constants';
+import Permissions from './permissions.js'
 
 class addConcept extends React.Component {
     

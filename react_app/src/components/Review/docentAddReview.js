@@ -10,7 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import './review.css'
 
 import { config } from '../constants';
-import Permissions from './permissions.js'
+import Permissions from '../permissions.js'
 
 class docentAddReview extends React.Component {
     

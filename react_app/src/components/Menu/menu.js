@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './settings.css';
-import Permissions from '../main/permissions.js'
+import './menu.css';
+import Permissions from '../permissions.js'
 
-class Settings extends React.Component {
+class Menu extends React.Component {
     
     render() {
 
@@ -40,4 +40,4 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
+export default Menu;
