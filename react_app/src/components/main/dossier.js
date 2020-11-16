@@ -6,12 +6,14 @@ import {config} from '../constants';
 import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../../constraints/dossierConstraints';
+import Util from './Util';
 
 class Dossier extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
+            errors: null,
             name: "",
             email: "",
             role: null,
@@ -32,12 +34,18 @@ class Dossier extends React.Component {
 
     async componentDidMount() {
         const { computedMatch: { params } } = this.props;
+        // Util.dateValidation();
         this.props.dateValidation();
         await this.setState({pageLoading: true, userId: params.userId});
         this.getAllInfo();
         
     }
     
+    hasAccess() {
+        return Permissions.canEditDossier();
+    }
+
+
     canViewUserDossier() {
         /* JH TIP: Zie remark op main.js regel 102 om hier een eigen permissions.js van te maken, en daarnaast ook isUserAdmin etc hier te gebruiken */
         const userRole = sessionStorage.getItem("userRole");
@@ -121,22 +129,20 @@ class Dossier extends React.Component {
                     this.setState({buttonDisabled: false, errors: null});
                     
                     this.props.history.push('/settings');
-
-                    // this.props.history.push('/settings');
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
                     const custErr = {changeUser: ["Mislukt om gebruiker te veranderen."]};
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(errors)
             });
         }
     }

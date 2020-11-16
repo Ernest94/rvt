@@ -1,30 +1,9 @@
 import React from 'react';
 
-import Login from './components/main/main.js';
-import {useHistory} from 'react-router-dom';
-
-function App() {
-  return (
-      <div className="App">
-            <Main/> {/* history={useHistory()}/> */}
-    </div>
-  );
-}
-
-export default App;
-
-
-
-
-
-
-
-
-import React from 'react';
-import { validate } from 'validate.js';
-import moment from 'moment';
 import {Switch, Route} from 'react-router-dom';
 import './App.css';
+import { validate } from 'validate.js';
+import moment from 'moment';
 
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/footer.js'; 
@@ -49,22 +28,27 @@ class App extends React.Component {
     
     constructor(props) {
         super(props);
+        this.handleLoginState = this.handleLoginState.bind(this);
+        this.handleLogOutState = this.handleLogOutState.bind(this);
         this.dateValidation = this.dateValidation.bind(this);
-        this.setErrors = this.setErrors.bind(this);
         sessionStorage.clear();
         this.state = {
             loggedIn:false,
-            userName: ""
         }
     }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        return foundErrors;
+
+    handleLoginState() {
+        this.setState({
+            loggedIn:true  
+          });
     }
-    
+
+    handleLogOutState() {
+        this.setState({
+            loggedIn: false  
+          });
+    }
+
     dateValidation = () => {
         validate.extend(validate.validators.datetime, {
           // The value is guaranteed not to be null or undefined but otherwise it
@@ -79,96 +63,70 @@ class App extends React.Component {
           }
         });
     }
-    
-    handleLogOut() {
-        sessionStorage.clear();
-        this.setState({
-            loggedIn: false  
-          });
-        this.props.history.push('/login');
-    }
    
     render() {
-
-        console.log(Permissions.canEditDossier());
-        console.log(Permissions.isUserAdmin());
-        
-
         return (
 
             <div>
-                <Header handleLogOut={this.handleLogOut} data={this.state}/>
+                <Header handleLogOutState={this.handleLogOutState}/>
             
             
                     <div className="container main-container">
                         <Switch>
                             
-                            <Route exact path="/login"> 
-                                <Login setErrors={this.setErrors}/> 
+                            <Route exact path="/login">
+                                <Login
+                                    handleLoginState={this.handleLoginState}
+                                    /> 
                             </Route>
 
-                            <PrivateRoute exact path="/" component={Home}/>
+                            <PrivateRoute exact path="/logout"/>
 
-                            {/* <PrivateRoute exact path="/logout"/> */}
-                                                    
+                            <PrivateRoute exact path="/" component={Home}/>
+             
                             <PrivateRoute exact path="/settings" component={Settings}/>
 
-                            <PrivateRoute exact path="/password" 
-                                component={Password} 
-                                setErrors={this.setErrors}/>
+                            <PrivateRoute exact path="/password" component={Password}/>
 
-                            <PrivateRoute exact path="/dossier/:userId" 
-                                setErrors={this.setErrors}
+                            <PrivateRoute exact path="/dossier/:userId" component={Dossier} 
                                 editDisabled={true}
-                                dateValidation={this.dateValidation}
-                                component={Dossier}/>
+                                dateValidation={this.dateValidation}/>
 
                             <PrivateRoute exact path="/curriculum/:userId" component={review}/>
 
                             <PrivateRoute exact path="/curriculum" component={review}/>
 
 
-                            <AccessRoute exact path="/dossier/:userId/edit" 
+                            <AccessRoute exact path="/dossier/:userId/edit" component={Dossier} 
                                 userHasAccess= {Permissions.canEditDossier()}
-                                setErrors={this.setErrors}
                                 dateValidation={this.dateValidation}
                                 editDisabled={false}
-                                component={Dossier}/>
+                                />
 
-                            <AccessRoute exact path="/addUser"
+                            <AccessRoute exact path="/addUser" component={AddUser}
                                 userHasAccess={Permissions.canAddUser()}
-                                component={AddUser}
-                                dateValidation={this.dateValidation}
-                                setErrors={this.setErrors}/>
+                                dateValidation={this.dateValidation}/>
 
-                            <AccessRoute exact path="/search"
-                                userHasAccess={Permissions.canSearch()}
-                                component={Search}
-                                setErrors={this.setErrors}/>
+                            <AccessRoute exact path="/search" component={Search} 
+                                userHasAccess={Permissions.canSearch()}/>
 
-                            <AccessRoute exact path="/addTheme"
-                                userHasAccess={Permissions.canAddTheme()}
-                                component={addTheme}/>
+                            <AccessRoute exact path="/addTheme" component={addTheme} 
+                                userHasAccess={Permissions.canAddTheme()}/>
 
-                            <AccessRoute exact path="/addConcept"
-                                userHasAccess={Permissions.canAddConcept()}
-                                component={addConcept}/>
+                            <AccessRoute exact path="/addConcept" component={addConcept} 
+                                userHasAccess={Permissions.canAddConcept()}/>
 
-                            <AccessRoute exact path="/addLocation"
-                                userHasAccess={Permissions.canAddLocation()}
-                                component={addLocation}/>
+                            <AccessRoute exact path="/addLocation" component={addLocation}
+                                userHasAccess={Permissions.canAddLocation()}/>
 
-                            <AccessRoute exact path="/conceptOverview"
-                                userHasAccess={Permissions.canSeeConceptOverview()}
-                                component={conceptOverview}/>
+                            <AccessRoute exact path="/conceptOverview" component={conceptOverview}
+                                userHasAccess={Permissions.canSeeConceptOverview()}/>
 
-                            <AccessRoute exact path="/docentAddReview"
-                                userHasAccess={Permissions.canAddReview()}
-                                component={docentAddReview}/>
+                            <AccessRoute exact path="/docentAddReview" component={docentAddReview}
+                                userHasAccess={Permissions.canAddReview()}/>
 
-                            <AccessRoute exact path="/docentAddReview/:userId"
-                                userHasAccess={Permissions.canAddReview()}
-                                component={docentAddReview}/>
+                            <AccessRoute exact path="/docentAddReview/:userId" component={docentAddReview}
+                                userHasAccess={Permissions.canAddReview()}/>
 
                         </Switch>
                     </div>

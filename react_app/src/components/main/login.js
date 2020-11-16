@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
-
+import Util from './Util.js'
 import constraints from '../../constraints/loginConstraints';
 
 import {config} from '../constants';
@@ -25,12 +25,7 @@ class Login extends React.Component {
         sessionStorage.setItem("userRole", data.role.name);
         sessionStorage.setItem("userLocation", data.location.name);
         sessionStorage.setItem("userLocationId", data.location.id);
-        console.log(true)
-        // this.setState({
-        //     loggedIn: true,
-        //     userName: data.name
-        // });
-
+        this.props.handleLoginState();
         this.props.history.push('/settings');
     }
 
@@ -59,7 +54,8 @@ class Login extends React.Component {
                     const custErr = {login: ["Mislukt om in te loggen."]};
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
+
                     });
 
                 });
@@ -67,7 +63,7 @@ class Login extends React.Component {
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(custErr)
             });
         }
     }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
 
+import Util from '../main/Util.js'
 import constraints from '../../constraints/passwordChangeConstraints';
 import {config} from '../constants';
 
@@ -36,22 +37,20 @@ class Password extends React.Component {
                     this.setState({buttonDisabled: false, errors: null});
                     
                     this.props.history.push('/settings');
-
-                    // this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     const custErr = {password: ["Mislukt om het wachtwoord te veranderen."]}
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(errors)
             });
         }
     }

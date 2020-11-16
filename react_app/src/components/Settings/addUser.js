@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 import constraints from '../../constraints/addUserConstraints';
 import {config} from '../constants';
+import Util from '../main/Util.js';
 
 class AddUser extends React.Component {
 
@@ -120,7 +121,7 @@ class AddUser extends React.Component {
             this.setState({currentStep: 2, errors: null});
         }
         else {
-            this.props.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
+            Util.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
         console.log(this.state.currentStep);
     }
@@ -183,24 +184,21 @@ class AddUser extends React.Component {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
                     this.setState({submitButtonDisabled: false, errors: null});
-
                     this.props.history.push('/settings');
-
-                    // this.props.handleReturnToSettings();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
                     this.setState({
                         submitButtonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 submitButtonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(errors)
             });
         }
     }
