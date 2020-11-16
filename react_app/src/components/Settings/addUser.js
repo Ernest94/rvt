@@ -7,8 +7,8 @@ import { withRouter } from 'react-router-dom';
 
 import constraints from '../../constraints/addUserConstraints';
 import {config} from '../constants';
-import Util from '../main/Utils.js';
-
+import Utils from '../main/Utils.js';
+import Permissions from '../main/permissions.js'
 class AddUser extends React.Component {
 
     constructor(props) {
@@ -47,6 +47,10 @@ class AddUser extends React.Component {
     componentDidMount() {
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
+    }
+
+    static hasAccess() {
+        return Permissions.canAddUser();
     }
 
     getLocationsAndRoles() {
@@ -121,7 +125,7 @@ class AddUser extends React.Component {
             this.setState({currentStep: 2, errors: null});
         }
         else {
-            Util.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
+            Utils.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
         console.log(this.state.currentStep);
     }
@@ -191,14 +195,14 @@ class AddUser extends React.Component {
                     const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
                     this.setState({
                         submitButtonDisabled: false,
-                        errors: Util.setErrors(custErr)
+                        errors: Utils.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 submitButtonDisabled: false,
-                errors: Util.setErrors(errors)
+                errors: Utils.setErrors(errors)
             });
         }
     }
@@ -248,7 +252,7 @@ class AddUser extends React.Component {
                         role={this.state.role}
                         location={this.state.location}
                         password={this.state.password}
-                        dateValidation={this.props.dateValidation}
+                        // dateValidation={Utils.dateValidation}
                         handleFormChange={this.handleFormChange}
                     />
 

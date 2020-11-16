@@ -3,6 +3,7 @@ import axios from 'axios';
 import './addings.css';
 
 import {config} from '../constants';
+import Permissions from '../main/permissions.js'
 
 class addConcept extends React.Component {
     
@@ -19,6 +20,10 @@ class addConcept extends React.Component {
             message:"",
             themeDisplayName:""
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canAddConcept();
     }
 
     componentDidMount() {

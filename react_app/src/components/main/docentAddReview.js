@@ -33,6 +33,10 @@ class docentAddReview extends React.Component {
         };
     }
 
+    static hasAccess() {
+        return Permissions.canAddReview();
+    }
+
     handleFormChange = (e) => {
         const { name, value } = e.target;
         this.setState({

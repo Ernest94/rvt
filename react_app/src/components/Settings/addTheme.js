@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import {config} from '../constants';
+import Permissions from '../main/permissions.js';
 
 class addTheme extends React.Component {
     
@@ -16,6 +17,10 @@ class addTheme extends React.Component {
         };
     }
     
+    static hasAccess() {
+        return Permissions.canAddTheme();
+    }
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({

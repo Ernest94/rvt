@@ -34,18 +34,17 @@ class Dossier extends React.Component {
 
     async componentDidMount() {
         const { computedMatch: { params } } = this.props;
-        // Utils.dateValidation();
-        this.props.dateValidation();
+        Utils.dateValidation();
+        // this.props.dateValidation();
         await this.setState({pageLoading: true, userId: params.userId});
         this.getAllInfo();
         
     }
     
-    hasAccess() {
+    static hasAccess() {
         return Permissions.canEditDossier();
     }
-
-
+    
     canViewUserDossier() {
         /* JH TIP: Zie remark op main.js regel 102 om hier een eigen permissions.js van te maken, en daarnaast ook isUserAdmin etc hier te gebruiken */
         const userRole = sessionStorage.getItem("userRole");

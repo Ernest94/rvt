@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 
 import {config} from '../constants';
+import Permissions from '../main/permissions.js';
 
 class addLocation extends React.Component {
     
@@ -14,6 +15,10 @@ class addLocation extends React.Component {
             message: "",
             loading: false,
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canAddLocation();
     }
 
     handleFormChange = (e) => {

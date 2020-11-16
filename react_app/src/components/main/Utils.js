@@ -2,7 +2,7 @@ import React from 'react';
 import { validate } from 'validate.js';
 import moment from 'moment';
 
-class Utils {
+class Utils{
 
     static setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
@@ -11,7 +11,7 @@ class Utils {
         return foundErrors;
     }
 
-    dateValidation = () => {
+    static dateValidation = () => {
         validate.extend(validate.validators.datetime, {
           // The value is guaranteed not to be null or undefined but otherwise it
           // could be anything.
@@ -25,8 +25,5 @@ class Utils {
           }
         });
     }
-
-
-
 }
 export default Utils;

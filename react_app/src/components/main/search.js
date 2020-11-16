@@ -6,7 +6,7 @@ import './search.css';
 
 import { withRouter } from 'react-router-dom'
 import Util from './Utils';
-
+import Permissions from './permissions.js'
 
 class Search extends React.Component {
 
@@ -24,6 +24,10 @@ class Search extends React.Component {
             locationDisplayName: "",
             buttonDisabled: false,
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canSearch();
     }
 
     componentDidMount() {
