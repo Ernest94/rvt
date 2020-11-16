@@ -1,6 +1,6 @@
 package nu.educom.rvt.models;
 
-import javax.persistence.Column; 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,9 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
-@Table(name="concept_ratings")
-public class ConceptRating {
+@Table(name="concept_user_mutations")
+public class conceptUserMutations {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -91,5 +92,5 @@ public class ConceptRating {
 			this.comment = comment;
 		}
 		
-		
+	
 }

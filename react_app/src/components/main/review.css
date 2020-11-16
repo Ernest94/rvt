@@ -1,0 +1,193 @@
+.review-date{
+    float:left;
+}
+
+.trainee-name{
+    float:left;
+}
+
+.trainee-location{
+    float:left;
+}
+
+.container {
+    position:relative;
+}
+
+.trainee-name{
+    text-align: center;
+}
+
+.trainee-location{
+    text-align: center;
+}    
+
+.theme-text {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted grey;
+}
+
+.theme-text .displayMessage{
+    visibility: hidden;
+    width: 200px;
+    background-color: #F8F8FF;
+    color: black;
+    font-size: 11px;
+    text-align: center;
+    padding: 5px 0;
+    border: outset 1px;
+    border-color: black;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+    top: 20px;
+    left: 110%;
+  }
+
+.theme-text:hover .displayMessage {
+    visibility: visible;
+    position: absolute;
+    opacity: 1;
+  }
+
+.concept-text {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted grey;
+}
+
+.concept-text .displayMessage{
+    visibility: hidden;
+    width: 200px;
+    background-color: #F8F8FF;
+    color: black;
+    font-size: 11px;
+    text-align: center;
+    padding: 5px 0;
+    border: outset 1px;
+    border-color: black;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+    top: 10px;
+    left: 105%;
+  }
+
+.concept-text:hover .displayMessage {
+    visibility: visible;
+  }
+
+.rating-star {
+    vertical-align: top;
+}
+
+.rating-text {
+    font-size: small;
+    min-width: fit-content;
+    vertical-align: top;
+}
+
+.comment-text {
+    font-size:10px;
+}
+
+.feedback-box-kantoor{
+    float: left;
+    padding: 15px;
+    /* display:inline-block; */
+}
+
+.feedback-box-trainee{
+    float: left;
+    padding: 15px;
+    /* display:inline-block; */
+}
+
+.submit-review-button {
+    float: left;
+    padding-top: 45px;
+    padding-left: 16px;
+}
+.reviewTable, .addReviewTable{
+    display:block;
+    height:500px;
+    overflow-x:hidden;
+}
+
+.reviewTable thead, .addReviewTable thead{
+    background-color:#fff!important;
+}
+.reviewTable th, .addReviewTable th{
+    position:sticky;
+    top:0;
+    background-color:#fff!important;
+    z-index:1;
+
+}
+.addReviewTable td:nth-child(2){
+    white-space: nowrap;
+}
+.addReviewTable td:nth-child(4),.reviewTable th:nth-child(4){
+    width:100%;
+}
+
+.reviewTable td:nth-child(1){
+    white-space: nowrap;
+}
+.reviewTable td:nth-child(3),.reviewTable th:nth-child(3){
+    width:100%;
+}
+
+/*#region ConceptSelectionStyling  */
+.conceptSelection {
+    background-color: rgb(226, 226, 226);
+    border-radius:4px;
+    padding:20px;
+}
+.sliderThumb span
+{
+    background:none;
+    top:-5px;
+    left:2px;
+    width:15px;
+    height:15px;
+    color:#000;
+}
+.sliderThumb{
+    background-color:#ffc107!important;
+}
+.conceptSelection .lightButton{
+    margin:0px 5px;
+    padding:1px 3px;
+    min-width:0;
+    background-color:lightGrey;
+}
+
+.lightButton:hover{
+    background-color:rgb(155, 155, 155)!important;
+}
+.selectionTitle{
+    display:inline;
+}
+.themeCheckbox{
+    color:#ffc107!important;
+
+}
+.checkboxControl{
+    width:30%;
+    padding:1px;
+}
+.themeCheckbox .icon{
+    height:10px!important;
+    width:10px!important;
+}
+/*#endregion ConceptSelectionStyling */
+
+.messageSucces{
+    display: block;
+}

@@ -27,7 +27,7 @@ public class UserConcept {
 	private User user;
 	@Column(name="startdate")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="is_active")
 	private LocalDate endDate;
 	
 	//needed for Hibernate

@@ -1,6 +1,5 @@
 package nu.educom.rvt.models;
 
-import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
@@ -8,7 +7,7 @@ import javax.persistence.*;
 public class Review {
 
 	public enum Status {
-		NOT_STARTED,
+		CANCELLED,
 		PENDING,
 		COMPLETED
 	}
@@ -19,7 +18,7 @@ public class Review {
 	private int id;
 	
 	@Column(name="date")
-	private LocalDate date;
+	private String date;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
@@ -39,7 +38,7 @@ public class Review {
 		super();
 	}
 
-	public Review(LocalDate date, String commentStudent, String commentOffice, Status reviewStatus) {
+	public Review(String date, String commentStudent, String commentOffice, Status reviewStatus) {
 		super();
 		this.date = date;
 		this.commentStudent = commentStudent;
@@ -47,7 +46,7 @@ public class Review {
 		this.reviewStatus = reviewStatus;
 	}
 	
-	public Review(LocalDate date, String commentStudent, String commentOffice, Status reviewStatus, User user) {
+	public Review(String date, String commentStudent, String commentOffice, Status reviewStatus, User user) {
 		super();
 		this.date = date;
 		this.commentStudent = commentStudent;
@@ -65,11 +64,11 @@ public class Review {
 		this.id = id;
 	}
 
-	public LocalDate getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

@@ -22,6 +22,14 @@ public class Theme {
 		super();
 	}
 	
+	public Theme(int id, String name,String abbreviation, String description) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.abbreviation = abbreviation;
+		this.description = description;
+	}
+	
 	public Theme(String name,String abbreviation, String description) {
 		super();
 		this.name = name;

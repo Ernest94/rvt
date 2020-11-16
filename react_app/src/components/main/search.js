@@ -34,14 +34,50 @@ class Search extends React.Component {
         });
     }
 
+
+    setLocationAndRole()
+    {
+        const locationName = sessionStorage.getItem("userLocation");
+        const roleName = "Trainee";
+
+        let role = this.state.roles.find(element => element.name === roleName);
+        let location = this.state.locations.find(element => element.name === locationName)
+
+        this.setState({
+            loading: true,
+            location: location,
+            role: role,
+            locationDisplayName: location.id,
+            roleDisplayName: role.id
+        });
+
+        console.log("post_setState");
+
+        axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
+
+            .then(response => {
+                this.setState({ loading: false, errors: null });
+
+                this.handleSearchReponse(response.data);
+                this.render();
+            })
+            .catch((error) => {
+                console.log("an error occorured " + error);
+                this.setState({ loading: false });
+            });
+    }
+
+    findlocation(location) {
+        return location;
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
         var errors = null
         if (!errors) {
-	console.log(this.createSearchJson());
+	    console.log(this.createSearchJson());
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
-
                 .then(response => {
                     this.setState({loading: false, errors: null});
 
@@ -50,8 +86,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-     //               this.fakeHandleSearchReponse();
-                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]});
+                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -59,38 +94,12 @@ class Search extends React.Component {
             this.setErrors(errors);
             this.setState({loading: false});
         }
-
-        this.setState({buttonDisabled: true});
-        axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
-
-            .then(response => {
-                this.setState({buttonDisabled: false, errors: null});
-
-                this.handleSearchReponse(response.data);
-                this.render();
-            })
-            .catch((error) => {
-                console.log("an error occorured " + error);
-                // this.fakeHandleSearchReponse();
-                const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
-                this.setState({
-                    buttonDisabled: false,
-                    errors: this.props.setErrors(custErr)
-                    });
-            });
     }
 
     handleSearchReponse(data)
     {
         this.setState({
             users: data.userSearch
-            //users: [{ id: 1, name: "Niels", email: "niels.vanrijn@hotmail.com", role: "Trainee", location: "Utrecht" }, { id: 2, name: "Quinten", email: "quinten@hotmail.com", role: "Trainee", location: "Utrecht" }]//data.date.users;
-        });
-    }
-
-    fakeHandleSearchReponse() {
-        this.setState({
-            users: [{ id: 7, name: "Jeroen", email: "jeroen@educom.nu", role: "Docent", location: "Utrecht" }]//data.date.users;
         });
     }
 
@@ -102,6 +111,7 @@ class Search extends React.Component {
                     locations: response.data.locations,
                     pageLoading: false
                 });
+                this.setLocationAndRole();
             })
             .catch(() => {
                 this.setState({
@@ -153,7 +163,7 @@ class Search extends React.Component {
     }
 
     render() {
-        const {roles, locations, users, pageLoading, buttonDisabled} = this.state;
+        const {roles, locations, users, pageLoading, loading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         if (roles === null || locations === null) {
@@ -171,18 +181,21 @@ class Search extends React.Component {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
-                    <td className="p-2 text-nowrap align-middle">
+                <tr className="row searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.email}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.role.name}
                     </td>
-                    <td className="p-2 text-nowrap align-middle">
+                    <td className="p-2 col-sm text-nowrap align-middle">
                         {user.location.name}
+                    </td>
+                    <td className="p-2 col-sm text-nowrap align-middle">
+                        {user.dateActive}
                     </td>
                 </tr >
             )
@@ -197,31 +210,29 @@ class Search extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row w-100 mx-auto align-middle text-center">
-                          <div class="col-lg-3 col-sm-6">
+                          <div className="col-lg-3 col-sm-6">
                             <label className="mr-1 p-1 align-left" htmlFor="role">Rol:</label>
                             <select className="mr-auto p-1 align-left" name="role" id="role"
 
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
-                                required>
+                                >
 
-                                <option hidden value=''>Rol</option>
                                 {rolesOptions}
                             </select>
                           </div>
-                          <div class="col-lg-3 col-sm-6">
+                          <div className="col-lg-3 col-sm-6">
                             <label className="mr-1 p-1 align-left" htmlFor="location">Locatie:</label>
                             <select className="mr-auto p-1 align-left" name="location" id="location"
 
                                 value={this.state.locationDisplayName}
                                 onChange={this.onChangeLocation}
-                                required>
+                                >
 
-                                <option hidden value=''>Locatie</option>
                                 {locationOptions}
                             </select>
                           </div>
-                          <div class="col-lg-6">
+                          <div className="col-lg-6">
                             <label className="mr-1 p-1 align-left" htmlFor="criteria">Zoek Criteria:</label>
                             <input className="mr-auto p-1 align-left" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
@@ -230,9 +241,9 @@ class Search extends React.Component {
 
                         <div className="text-center">
                             <button className="w-30 mx-auto btn btn-danger mt-3"
-                                disabled={buttonDisabled}
+                                disabled={loading}
                                 type="submit">
-                                {(buttonDisabled)?"Laden...": "Zoek"}
+                                {(loading)?"Laden...": "Zoek"}
                             </button>
                         </div>
                     </form>
@@ -241,18 +252,21 @@ class Search extends React.Component {
                 <div className="text-center">
                     <table className="w-100 mx-auto">
                         <thead>
-                            <tr key={0}>
-                                <th className="p-2 text-nowrap align-middle">
+                            <tr className="row" key={0}>
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Naam
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Email
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Rol
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="p-2 col-sm text-nowrap align-middle">
                                     Locatie
+                                    </th>
+                                <th className="p-2 col-sm text-nowrap align-middle">
+                                    Startdatum
                                     </th>
                             </tr>
                         </thead>

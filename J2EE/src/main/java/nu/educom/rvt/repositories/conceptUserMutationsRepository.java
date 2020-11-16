@@ -3,13 +3,11 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.ConceptRating;
-import nu.educom.rvt.models.Review;
 
-public class ConceptRatingRepository {
-
+public class conceptUserMutationsRepository {
+	
 	public ConceptRating create(ConceptRating conceptRating) {
 		Session session = null;
 		try {
@@ -28,33 +26,6 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	public List<ConceptRating> createMulti(List<ConceptRating> crs) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			Transaction tx = session.beginTransaction();
-			for ( int i=0; i<crs.size(); i++ ) {
-			  int conceptId = (int)session.save(crs.get(i));
-			  session.save(crs.get(i));
-	          crs.get(i).setId(conceptId);
-		      if ( i % 20 == 0 ) { 
-		        //flush a batch of inserts and release memory:
-		        session.flush();
-		        session.clear();
-		    }
-		}
-		tx.commit();
-		return crs;
-		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
-			return null;
-		} finally {		   
-			if (session != null) {
-				session.close();
-			}
-		}
-		
-	}
-	
 	public List<ConceptRating> readAll() {
 		Session session = null;
 		try {
@@ -62,19 +33,6 @@ public class ConceptRatingRepository {
 			return HibernateSession.loadAllData(ConceptRating.class, session);
 		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
 			return null;
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
-	
-	public ConceptRating readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(ConceptRating.class, id);
 		}
 		finally {
 			if (session != null) {
@@ -100,17 +58,13 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	public void update(ConceptRating conceptRating) {
-        Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.update(conceptRating); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	protected void update() {
 	}
-	
 	
 	protected void delete() {
 	}
+
+
 }
+
+

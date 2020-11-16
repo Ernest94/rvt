@@ -7,6 +7,10 @@ public class ConceptPlusRating {
 	private Concept concept;
 	private int rating;
 	private String comment;
+	
+	public ConceptPlusRating() {
+		
+	}
 
 	public ConceptPlusRating(Concept concept,int rating) {
 		this.concept = concept;

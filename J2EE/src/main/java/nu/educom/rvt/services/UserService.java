@@ -1,6 +1,7 @@
 package nu.educom.rvt.services;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -140,10 +141,11 @@ public class UserService {
 
 	public UserSearchJson convertToUSJ(List<User> users)
 	{
-		List<UserSearch> userSearch = new ArrayList<>();	
+		List<UserSearch> userSearch = new ArrayList<>();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		for(User user : users)
 		{
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive()));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
 		}		
 		return new UserSearchJson(userSearch);
 	}

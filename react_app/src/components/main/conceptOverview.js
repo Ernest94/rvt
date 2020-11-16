@@ -50,7 +50,7 @@ class conceptOverview extends React.Component {
     }
 
     getConcepts() {
-        axios.post("http://localhost:8081" + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
             .then(response => {
                 this.setState({ buttonDisabled: false, errors: null });
 
@@ -71,7 +71,8 @@ class conceptOverview extends React.Component {
     handleCurriculumReponse(data) {
         this.setState({
             userName: data.traineeName,
-            userLocation: data.traineeLocation.name,
+            userLocation: data.traineeLocation,
+            reviewDate: data.reviewDate,
             currentConcepts: data.conceptsPlusRatings,
         });
         console.log(this.state);
