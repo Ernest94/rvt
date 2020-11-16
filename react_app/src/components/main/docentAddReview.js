@@ -72,13 +72,6 @@ class docentAddReview extends React.Component {
         
     }
 
-    handleFormChange = (e) => {
-        const { name, value } = e.target;
-        this.setState({
-            [name]: value
-        });
-    }
-
     onChangePendingUser = (e) => {
         var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
 
@@ -129,12 +122,6 @@ class docentAddReview extends React.Component {
         };
     }
 
-    createReviewIdJSON() {
-        return {
-            id: this.state.reviewId
-        };
-    }
-
     handleUsersReponse(data) {
         console.log(data);
         this.setState({
@@ -160,19 +147,7 @@ class docentAddReview extends React.Component {
         else return "nee";
     }
 
-    getRating(rating) {
-        const intRating = parseInt(rating);
-        switch (intRating) {           
-            case 1: return ("Matig");
-            case 2: return ("Redelijk");
-            case 3: return ("Voldoende");
-            case 4: return ("Goed");
-            case 5: return ("Uitstekend");
-            default: return ("");
-        }
-    }
-
-    setRating(event) {
+    async setRating(event) {
         const index = event.target.name.substring(6);
         const value = event.target.value;        
 
@@ -180,12 +155,16 @@ class docentAddReview extends React.Component {
         let concept = concepts[index];
         concept.rating = value;
         concepts[index] = concept;
-        this.setState({
+        await this.setState({
             concepts: concepts
         });
+
+        let conceptRatingJson = this.createConceptRatingJson(concept);
+        console.log(conceptRatingJson);
+        this.submitConceptRatingChange(conceptRatingJson);
     }
 
-    setComment(event) {
+    async setComment(event) {
         const index = event.target.name.substring(7);
         const value = event.target.value;
 
@@ -195,33 +174,72 @@ class docentAddReview extends React.Component {
         let concept = concepts[index];
         concept.comment = value;
         concepts[index] = concept;
-        this.setState({
+        await this.setState({
             concepts: concepts
         });
+
+        let conceptRatingJson = this.createConceptRatingJson(concept);
+        console.log(conceptRatingJson);
+        this.submitConceptRatingChange(conceptRatingJson);
     }
 
-    getWeekBlock(week) {
-        const wpb = this.state.weeksPerBlock
-        var devidedweek = Math.ceil(week / wpb);
-        switch (devidedweek) {
-            case 1: return ("week " + 1 + " t/m " + wpb);
-            case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
-            case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
-            case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
-            default: return ("week 9 of later");
+    async setReviewData(event) {
+        const { name, value } = event.target;
+        await this.setState({
+            [name]: value
+        });
+        let reviewJson = this.createReviewJson();
+        console.log(reviewJson);
+        this.submitReviewChange(reviewJson);
+    }
+
+    createReviewJson(){
+        return {
+            id: this.state.reviewId,
+            commentOffice: this.state.officeFeedback,
+            commentStudent: this.state.traineeFeedback,
+            date: this.state.reviewDate
         }
     }
+
+    createConceptRatingJson(concept) {
+        return {
+            id: this.state.reviewId,
+            conceptPlusRating: concept
+        }
+    }
+
+    submitReviewChange(ReviewJson) {
+        axios.post(config.url.API_URL + "/webapi/review/updateReview", ReviewJson)
+            .then(response => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log("an error occorured " + error);
+            });
+    }
+
+    submitConceptRatingChange(conceptRatingJson) {
+        axios.post(config.url.API_URL + "/webapi/review/addConceptRating", conceptRatingJson)
+            .then(response => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log("an error occorured " + error);
+            });
+    }
+    
 
     submit = () => {
         confirmAlert({
             title: 'Bevestig',
-            message: 'wil je geen verdere wijzigingen maken?',
+            message: 'is de review compleet?',
             buttons: [{
-                label: 'nee, sla het op',
+                label: 'ja, sla het op',
                 onClick: () => this.submitReview()
             },
             {
-                label: 'jawel, breng me terug',
+                label: 'nee, breng me terug',
             //     onClick: () => alert('Click No')
             }
         ]
@@ -283,7 +301,37 @@ class docentAddReview extends React.Component {
                     {...concept, concept: {...concept.concept, week: e.target.value }}
                     :concept)
                 })
-        )
+        );
+    }
+
+    createReviewIdJSON() {
+        return {
+            id: this.state.reviewId
+        };
+    }
+
+    getWeekBlock(week) {
+        const wpb = this.state.weeksPerBlock
+        var devidedweek = Math.ceil(week / wpb);
+        switch (devidedweek) {
+            case 1: return ("week " + 1 + " t/m " + wpb);
+            case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
+            case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
+            case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
+            default: return ("week 9 of later");
+        }
+    }
+
+    getRating(rating) {
+        const intRating = parseInt(rating);
+        switch (intRating) {
+            case 1: return ("Matig");
+            case 2: return ("Redelijk");
+            case 3: return ("Voldoende");
+            case 4: return ("Goed");
+            case 5: return ("Uitstekend");
+            default: return ("");
+        }
     }
 
     render() {
@@ -353,7 +401,7 @@ class docentAddReview extends React.Component {
                     <td className="comment" id="text">
                         <TextareaAutosize className="comment-text"
                             aria-label="minimum height"
-                            name={"comment" + index} onChange={(event) => {
+                            name={"comment" + index} onBlur={(event) => {
                             this.setComment(event); }}> 
                             {concept.comment}
                         </TextareaAutosize> 
@@ -365,7 +413,7 @@ class docentAddReview extends React.Component {
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={this.handleFormChange} /></h3></div>
+                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={(event) => { this.setReviewData(event) }} /></h3></div>
                     <div className="col">
                         <h3 classname="text-center">Review
                             <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
@@ -408,11 +456,17 @@ class docentAddReview extends React.Component {
                     <div>
                         <div className="feedback-box-trainee">
                         <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                        <textarea rows="2" cols="50">{traineeFeedback}</textarea> 
+                        <textarea rows="2" name="traineeFeedback" cols="50" onBlur={(event) => {
+                            this.setReviewData(event);
+                        }}
+                        >{traineeFeedback}</textarea> 
                         </div>
                         <div className="feedback-box-kantoor">
                         <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                        <textarea rows="2" cols="50">{officeFeedback}</textarea> 
+                        <textarea rows="2" name="officeFeedback" cols="50" onBlur={(event) => {
+                            this.setReviewData(event);
+                        }}
+                        >{officeFeedback}</textarea> 
                         </div>
                     </div>
                     <div className="container">
@@ -421,7 +475,7 @@ class docentAddReview extends React.Component {
                         {(this.state.loading) ? <button className="btn btn-primary float-right mr-1" type="submit" disabled> Laden...</button>:
                         <button onClick={this.cancel} className="btn btn-primary float-right mr-1" type="submit">Annuleer</button>}
                     </div>
-                    <div>
+                    <div className="float-right mr-1">
                         <p>{this.state.message}</p>
                     </div>
                 </div>
@@ -429,5 +483,4 @@ class docentAddReview extends React.Component {
     }
 
 }
-
 export default docentAddReview;

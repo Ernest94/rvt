@@ -187,3 +187,7 @@
     width:10px!important;
 }
 /*#endregion ConceptSelectionStyling */
+
+.messageSucces{
+    display: block;
+}

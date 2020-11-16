@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ConceptRatingJSON implements Serializable{
 
-	public ConceptRatingJSON() {
+	public ConceptRatingJSON() { 
 	}
 		/**
 		 * 

@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Concept;
@@ -13,7 +12,6 @@ import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.ReviewStatus;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
@@ -46,7 +44,7 @@ public class ReviewService {
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
 														  .collect(Collectors.toList());
 		if(pendingReviews.size() == 0) {
-			reviewRepo.create(new Review(LocalDate.now(), "", "", Review.Status.PENDING, user));
+			reviewRepo.create(new Review(LocalDate.now().toString(), "", "", Review.Status.PENDING, user));
 		}
 	}
 	
@@ -85,9 +83,9 @@ public class ReviewService {
 			return conceptPlusRating;
 		}
 		
-		LocalDate mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		String mostRecentDate = reviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
 		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
-		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().getDayOfYear() < mostRecentDate.getDayOfYear()).collect(Collectors.toList());
+		List<Review> otherReviews = reviews.stream().filter(r -> LocalDate.parse(r.getDate()).getDayOfYear() < LocalDate.parse(mostRecentDate).getDayOfYear()).collect(Collectors.toList());
 		
 		
 		
@@ -140,6 +138,15 @@ public class ReviewService {
 		return conceptPlusRatings;
 	}
 	
+	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
+		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+		Review review = getReviewById(reviewId);
+		List<ConceptRating> ratingList = convertConceptPlusRating(conceptRatings, review);
+		crRepo.createMulti(ratingList);
+
+		return review;
+	}
+	
 	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
 	{
 		List<Concept> removedDuplicates = new ArrayList<>();
@@ -173,7 +180,7 @@ public class ReviewService {
     }
 	
 	public Review getMostRecentReview(List<Review> allReviews) {
-		LocalDate mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDate::compareTo).get();
+		String mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
 		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 	}
 	
@@ -181,5 +188,18 @@ public class ReviewService {
 	{
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return date.format(formatter);
+	}
+	
+	private List<ConceptRating> convertConceptPlusRating(List<ConceptPlusRating> cpr, Review review){
+		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
+		for(int i = 0; i<cpr.size(); i++) {
+			ratings.add(new ConceptRating(review, cpr.get(i).getConcept(), cpr.get(i).getRating(), cpr.get(i).getComment()));
+		}
+		return ratings;
+	}
+
+	public void addReview(Review review) {
+		ReviewRepository reviewRepo = new ReviewRepository();
+		reviewRepo.create(review);		
 	}
 }
