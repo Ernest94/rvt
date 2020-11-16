@@ -100,14 +100,20 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	public void update(ConceptRating conceptRating) {
-        Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.update(conceptRating); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	protected void update(ConceptRating conceptRating) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+		    session.beginTransaction();
+		    session.saveOrUpdate(conceptRating);
+		    session.getTransaction().commit();
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			
+		} finally {		   
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	
