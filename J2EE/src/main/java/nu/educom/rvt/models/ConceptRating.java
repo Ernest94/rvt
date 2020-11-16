@@ -26,10 +26,10 @@ public class ConceptRating {
 		@JoinColumn(name="concept_id")
 		private Concept concept;
 		
-		@Column(name="rating") //0-10, where 10 is the best rating
+		@Column(name="rating") 
 		private int rating;
 		
-		@Column(name="comment") //0-10, where 10 is the best rating
+		@Column(name="comment") 
 		private String comment;
 
 		public ConceptRating() {
