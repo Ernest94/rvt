@@ -94,7 +94,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    Util.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
+                    Util.setErrors({login: ["Mislukt om zoek actie uit te voeren."]});
                     this.setState({loading: false});
                 });
         }

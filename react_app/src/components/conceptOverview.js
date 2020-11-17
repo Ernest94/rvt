@@ -55,10 +55,10 @@ class conceptOverview extends React.Component {
     }
 
     getConcepts() {
-        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.get(config.url.API_URL + "/webapi/review/curriculum/7")
             .then(response => {
                 this.setState({ buttonDisabled: false, errors: null });
-
+                console.log(response.data);
                 this.handleCurriculumReponse(response.data);
                 this.render();
             })
@@ -93,10 +93,10 @@ class conceptOverview extends React.Component {
     }
 
     getThemes() {
-        axios.get(config.url.API_URL + '/webapi/user/themes')
+        axios.get(config.url.API_URL + '/webapi/theme_concept/themes')
             .then(response => {
                 this.setState({
-                    themes: response.data.themes,
+                    themes: response.data,
                     pageLoading: false
                 });
             })
@@ -178,7 +178,7 @@ class conceptOverview extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row w-100 mx-auto align-middle text-center">
-                          <div class="col-lg-4 col-md-5">
+                          <div className="col-lg-4 col-md-5">
                             <label className="mr-1 p-1 align-middle" htmlFor="theme">Thema:</label>
                             <select className="mr-3 p-1 align-middle" name="theme" id="theme"
                                 value={this.state.themeDisplayName}
@@ -189,7 +189,7 @@ class conceptOverview extends React.Component {
                                 {themeOptions}
                             </select>
                           </div>
-                          <div class="col-lg-4 col-md-7">
+                          <div className="col-lg-4 col-md-7">
                             <label className="mr-1 p-1 align-middle" htmlFor="block">Blok:</label>
                             <input className="mr-3 p-1 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
                           </div>
@@ -201,7 +201,7 @@ class conceptOverview extends React.Component {
 
 
                         <div className="text-center">
-                            <button className="w-30 mx-auto btn rvtbutton mt-3"
+                            <button className="w-30 mx-auto btn btn-danger mt-3"
                                 disabled={buttonDisabled}
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Filter"}
