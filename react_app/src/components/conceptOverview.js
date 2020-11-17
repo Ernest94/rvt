@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from '../constants';
-import './search.css';
+import {config} from './constants';
+import './UserSearch/search.css';
+import Permissions from './permissions.js'
 
 class conceptOverview extends React.Component {
 
@@ -23,6 +24,10 @@ class conceptOverview extends React.Component {
             blockDisplayName: '1',
             buttonDisabled: false,
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canSeeConceptOverview();
     }
 
     componentDidMount() {

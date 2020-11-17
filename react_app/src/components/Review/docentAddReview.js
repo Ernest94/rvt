@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
+import { withRouter } from 'react-router-dom';
 
 import {Select, MenuItem } from '@material-ui/core';
 import { confirmAlert } from 'react-confirm-alert'; 
@@ -11,7 +12,7 @@ import { Checkbox} from '@material-ui/core';
 import './review.css'
 
 import { config } from '../constants';
-import Permissions from './permissions.js'
+import Permissions from '../permissions.js'
 
 class docentAddReview extends React.Component {
 
@@ -33,6 +34,10 @@ class docentAddReview extends React.Component {
             officeFeedback: "",
             message:"",
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canAddReview();
     }
 
     handleFormChange = (e) => {
@@ -277,7 +282,9 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
               console.log(this.state)
-              this.props.handleReturnToDossier(this.state.userId);
+              this.props.history.push('/dossier/' + this.state.userId);
+
+            //   this.props.handleReturnToDossier(this.state.userId);
         })
         .catch((error) => {
             console.log("an error occorured " + error);
@@ -483,4 +490,5 @@ class docentAddReview extends React.Component {
     }
 
 }
-export default docentAddReview;
+
+export default withRouter(docentAddReview);

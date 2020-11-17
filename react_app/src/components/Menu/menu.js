@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './settings.css';
-import Permissions from '../main/permissions.js'
+import './menu.css';
+import Permissions from '../permissions.js'
 
-class Settings extends React.Component {
+class Menu extends React.Component {
     
     render() {
 
@@ -24,7 +24,7 @@ class Settings extends React.Component {
                     <h4>Account</h4>
                     <li><Link className="link" to={"/dossier/" + sessionStorage.getItem("userId")}>Gebruikersaccount</Link></li>
                     <li><Link className="link" to="/password">Verander wachtwoord</Link></li>
-                    
+
                     <h4>Overig</h4>
                     {searchLink}
                     {conceptOverviewLink}
@@ -40,4 +40,4 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
+export default Menu;

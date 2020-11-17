@@ -1,9 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
+import { withRouter } from 'react-router-dom'
 
-import constraints from '../../constraints/passwordChangeConstraints';
-import {config} from '../constants';
+import Util from './Utils.js'
+import constraints from '../constraints/passwordChangeConstraints';
+import {config} from './constants';
 
 class Password extends React.Component {
     
@@ -34,21 +36,21 @@ class Password extends React.Component {
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     
-                    this.props.handleReturnToSettings();
+                    this.props.history.push('/settings');
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     const custErr = {password: ["Mislukt om het wachtwoord te veranderen."]}
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(errors)
             });
         }
     }
@@ -96,4 +98,4 @@ class Password extends React.Component {
     }
 }
 
-export default Password;
+export default withRouter(Password);
