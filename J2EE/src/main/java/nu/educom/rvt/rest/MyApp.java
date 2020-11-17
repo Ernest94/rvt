@@ -14,6 +14,7 @@ public class MyApp extends Application {
 		set.add(UserResource.class);
 		set.add(ThemeConceptResource.class);
 		set.add(ReviewResource.class);
+		set.add(LocationResource.class);
 		set.add(CORSFilter.class);
 		return set;
 	}

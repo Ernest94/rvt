@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -86,6 +87,21 @@ public class UserService {
 		return locRepo.readAll();
 	}
 	
+	public int addLocation(Location location) {
+		LocationRepository locationRepo = new LocationRepository();
+		int success = locationRepo.create(location);
+		return success;
+	}
+	
+	public boolean validateLocation(Location location) {	
+		if(location.getName().isEmpty()) {
+			return false;
+		}
+		else {
+			return Pattern.matches("^.*\\p{L}.*$", location.getName());
+		}
+	}
+	
 	public List<User> getFilteredUsers(String criteria, Role role, Location location)
 	{
 		String[] words = criteria.split(" ");
@@ -107,7 +123,6 @@ public class UserService {
 		foundUsers.stream().distinct().collect(Collectors.toList());
 		return foundUsers;
 	}
-	
 	
 	private List<User> findUsersByCriteria(String criteria, Role role, Location location)
 	{
@@ -138,7 +153,6 @@ public class UserService {
 		return filterdUsers;
 	}
 	
-
 	public UserSearchJson convertToUSJ(List<User> users)
 	{
 		List<UserSearch> userSearch = new ArrayList<>();
@@ -149,7 +163,6 @@ public class UserService {
 		}		
 		return new UserSearchJson(userSearch);
 	}
-	
 	
 	public List<User> getConnectedUsers(User user)
 	{
