@@ -3,10 +3,12 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import RoleAndLocation from './roleAndLocation.js';
 import UserInfo from './userInfo.js';
+import { withRouter } from 'react-router-dom';
 
-import constraints from '../../constraints/addUserConstraints';
-import {config} from '../constants';
-
+import constraints from '../constraints/addUserConstraints';
+import {config} from './constants';
+import Utils from './Utils.js';
+import Permissions from './permissions.js'
 class AddUser extends React.Component {
 
     constructor(props) {
@@ -45,6 +47,10 @@ class AddUser extends React.Component {
     componentDidMount() {
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
+    }
+
+    static hasAccess() {
+        return Permissions.canAddUser();
     }
 
     getLocationsAndRoles() {
@@ -119,7 +125,7 @@ class AddUser extends React.Component {
             this.setState({currentStep: 2, errors: null});
         }
         else {
-            this.props.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
+            Utils.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
         }
         console.log(this.state.currentStep);
     }
@@ -182,22 +188,21 @@ class AddUser extends React.Component {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
                     this.setState({submitButtonDisabled: false, errors: null});
-
-                    this.props.handleReturnToSettings();
+                    this.props.history.push('/settings');
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
                     this.setState({
                         submitButtonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Utils.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 submitButtonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Utils.setErrors(errors)
             });
         }
     }
@@ -247,7 +252,7 @@ class AddUser extends React.Component {
                         role={this.state.role}
                         location={this.state.location}
                         password={this.state.password}
-                        dateValidation={this.props.dateValidation}
+                        // dateValidation={Utils.dateValidation}
                         handleFormChange={this.handleFormChange}
                     />
 
@@ -262,4 +267,4 @@ class AddUser extends React.Component {
     }
 }
 
-export default AddUser;
+export default withRouter(AddUser);

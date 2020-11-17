@@ -1,17 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
-import { Link } from 'react-router-dom';
-import {config} from '../constants';
+import { Link, withRouter } from 'react-router-dom';
+import {config} from './constants';
 import './form.css';
-
-import constraints from '../../constraints/dossierConstraints';
+import Permissions from './permissions.js';
+import constraints from '../constraints/dossierConstraints';
+import Utils from './Utils';
 
 class Dossier extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
+            errors: null,
             name: "",
             email: "",
             role: null,
@@ -32,10 +34,15 @@ class Dossier extends React.Component {
 
     async componentDidMount() {
         const { computedMatch: { params } } = this.props;
-        this.props.dateValidation();
+        Utils.dateValidation();
+        // this.props.dateValidation();
         await this.setState({pageLoading: true, userId: params.userId});
         this.getAllInfo();
         
+    }
+    
+    static hasAccess() {
+        return Permissions.canEditDossier();
     }
     
     canViewUserDossier() {
@@ -120,21 +127,21 @@ class Dossier extends React.Component {
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     
-                    this.props.handleReturnToSettings();
+                    this.props.history.push('/settings');
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
                     const custErr = {changeUser: ["Mislukt om gebruiker te veranderen."]};
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Utils.setErrors(custErr)
                     });
                 });
         }
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Utils.setErrors(errors)
             });
         }
     }
@@ -182,7 +189,7 @@ class Dossier extends React.Component {
         const { editDisabled, isTrainee } = this.props;
         console.log(roleName);
         const traineeDossier = roleName === "Trainee";
-        
+
         if (pageLoading) return <span className="center"> Laden... </span>
         if (serverFail) return <span className="center"> Mislukt om de gegevens op te halen. </span> 
         if (blocked) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
@@ -258,7 +265,7 @@ class Dossier extends React.Component {
                         <Link 
                             className="btn btn-danger btn-block" 
                             to={"/dossier/" + userId + "/edit"}
-                            hidden={isTrainee}
+                            hidden={Permissions.isUserTrainee()}
                             role="button"
                             >                        
                             Pas gebruiker aan
@@ -306,4 +313,4 @@ class Dossier extends React.Component {
     }
 }
 
-export default Dossier;
+export default withRouter(Dossier);

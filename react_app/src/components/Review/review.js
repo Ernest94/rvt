@@ -6,7 +6,7 @@ import Rating from '@material-ui/lab/Rating';
 import './review.css'
 
 import { config } from '../constants';
-import Permissions from './permissions.js'
+import Permissions from '../permissions.js'
 import { FormControlLabel, FormGroup, Checkbox,Slider, Button } from '@material-ui/core';
 
 class ConceptSelection extends React.Component {

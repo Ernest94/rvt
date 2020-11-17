@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
+import { withRouter } from 'react-router-dom'
+import Util from './Utils.js'
+import constraints from '../constraints/loginConstraints';
 
-import constraints from '../../constraints/loginConstraints';
-
-import {config} from '../constants';
+import {config} from './constants';
 
 class Login extends React.Component {
     
@@ -16,7 +17,18 @@ class Login extends React.Component {
             buttonDisabled: false,
         };
     }
-    
+
+    handleSuccessfulAuth(data) {
+        sessionStorage.setItem("isUserLoggedIn", true);
+        sessionStorage.setItem("userId", data.id);
+        sessionStorage.setItem("userName", data.name);
+        sessionStorage.setItem("userRole", data.role.name);
+        sessionStorage.setItem("userLocation", data.location.name);
+        sessionStorage.setItem("userLocationId", data.location.id);
+        this.props.handleLoginState();
+        this.props.history.push('/settings');
+    }
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
@@ -33,7 +45,7 @@ class Login extends React.Component {
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     
-                    this.props.handleSuccessfulAuth(response.data);
+                    this.handleSuccessfulAuth(response.data);
                 })
                 .catch((error) => {
                     // use this line to log in without use of database
@@ -42,7 +54,8 @@ class Login extends React.Component {
                     const custErr = {login: ["Mislukt om in te loggen."]};
                     this.setState({
                         buttonDisabled: false,
-                        errors: this.props.setErrors(custErr)
+                        errors: Util.setErrors(custErr)
+
                     });
 
                 });
@@ -50,7 +63,7 @@ class Login extends React.Component {
         else {
             this.setState({
                 buttonDisabled: false,
-                errors: this.props.setErrors(errors)
+                errors: Util.setErrors(errors)
             });
         }
     }
@@ -89,4 +102,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);

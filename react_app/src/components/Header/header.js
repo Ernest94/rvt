@@ -1,18 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import './header.css';
 
 class Header extends React.Component {
     
-    
+    handleLogOut() {
+        sessionStorage.clear();
+        this.props.handleLogOutState();
+        this.props.history.push('/login');
+    }
+
     render() {
         let button;
         let accountSettings;
 
-        if (this.props.data.loggedIn) {
+        if (sessionStorage.getItem("isUserLoggedIn")) {
                button = <div>
-                            <span className="userName">Welkom "{this.props.data.userName}"</span>
-                            <button className="btn rvtbutton logoutbutton" onClick={() => this.props.handleLogOut()}> Log uit </button>
+                            <span className="userName">Welkom "{sessionStorage.getItem("userName")}"</span>
+                            <button className="btn rvtbutton logoutbutton" onClick={() => this.handleLogOut()}> Log uit </button>
                         </div>;
                accountSettings = <Link to="/settings" className="header-link">Menu</Link> ;
         }
@@ -31,4 +36,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);

@@ -1,8 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from '../constants';
+import {config} from '../constants.js';
 import './search.css';
+
+import { withRouter } from 'react-router-dom'
+import Util from '../Utils';
+import Permissions from '../permissions.js'
 
 class Search extends React.Component {
 
@@ -20,6 +24,10 @@ class Search extends React.Component {
             locationDisplayName: "",
             buttonDisabled: false,
         };
+    }
+
+    static hasAccess() {
+        return Permissions.canSearch();
     }
 
     componentDidMount() {
@@ -86,12 +94,12 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    this.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
+                    Util.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
                     this.setState({loading: false});
                 });
         }
         else {
-            this.setErrors(errors);
+            Util.setErrors(errors);
             this.setState({loading: false});
         }
     }
@@ -129,16 +137,6 @@ class Search extends React.Component {
             criteria: this.state.criteria
         }
 }
-
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors
-        });
-    }
-
 
     onChangeRole = (e) => {
         this.setState({
@@ -181,7 +179,7 @@ class Search extends React.Component {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="row searchResult" key={user.id} onClick={(e) => {this.props.handleDossierRequest(e, user.id)}} >
+                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)}} >;
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
@@ -280,4 +278,4 @@ class Search extends React.Component {
     }
 }
 
-export default Search;
+export default withRouter(Search);

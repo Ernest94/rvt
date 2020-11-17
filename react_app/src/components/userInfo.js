@@ -1,15 +1,15 @@
 import React from 'react';
-
+import Utils from './Utils.js'
 class UserInfo extends React.Component {
     
     componentDidMount() {
-        this.props.dateValidation();
+        Utils.dateValidation();
+        // this.props.dateValidation();
     }
     
     render() {
         
         if (this.props.currentStep !== 2) {
-            console.log("return because not step 2");
             return null;
         }
         
