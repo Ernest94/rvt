@@ -1,5 +1,7 @@
 package nu.educom.rvt.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -10,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.view.BundleJson;
 import nu.educom.rvt.services.BundleService;
 
 @Path("/webapi/bundle")
@@ -37,6 +40,9 @@ public class BundleResource {
 	@Path("/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
-		List<Bundle> = bundleServ.getAllBundles();
+		List<Bundle> bundles = bundleServ.getAllBundles();
+		BundleJson bundleJson = new BundleJson(bundles);
+		
+		return Response.status(200).entity(bundleJson).build();
 	}
 }
