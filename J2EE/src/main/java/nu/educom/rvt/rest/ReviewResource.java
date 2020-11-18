@@ -75,15 +75,15 @@ public class ReviewResource {
 	    User userOutput = userServ.getUserById(user.getId());
 			    
 	    reviewServ.makeNewReviewIfNoPending(userOutput);
-		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput); 
-		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsfromUser(userOutput);		
+		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsfromUser(userOutput);
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);	    		
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
 		
-		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
 		String reviewDate = mostRecentReview.getDate();
 		int reviewId = mostRecentReview.getId();
 		
