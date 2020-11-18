@@ -47,7 +47,7 @@ public class ReviewResource {
 	    User userOutput = userServ.getUserById(user.getId());
 		
 		List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
-		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsfromUser(userOutput);
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
@@ -72,10 +72,14 @@ public class ReviewResource {
 		ThemeConceptService conceptServ = new ThemeConceptService();
 	    User userOutput = userServ.getUserById(user.getId());
 		
+	    
 	    reviewServ.makeNewReviewIfNoPending(userOutput);
-		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput);
+		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
 		List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
+		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+	    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
+		
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
