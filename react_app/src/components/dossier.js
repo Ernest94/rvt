@@ -103,7 +103,7 @@ class Dossier extends React.Component {
                 role: userResponse.data.role,
                 roleName: userResponse.data.role.name,
                 location: userResponse.data.location,
-                startDate: userResponse.data.startDate,
+                startDate: userResponse.data.dateActive,
                 roleDisplayName: userResponse.data.role.id,
                 locationDisplayName: userResponse.data.location.id,
                 roles: roleLocResponse.data.roles,
@@ -123,11 +123,10 @@ class Dossier extends React.Component {
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/change", this.createUserJson())
+            axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson())
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
-                    
-                    this.props.history.push('/settings');
+                    this.props.history.push('/dossier/' + this.state.userId);
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
@@ -225,7 +224,7 @@ class Dossier extends React.Component {
                     </div>
 
                     <div className="input row">
-                        <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
+                        <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
@@ -252,11 +251,12 @@ class Dossier extends React.Component {
 
                     <div className="input row" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
+                            value={startDate} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-                    {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
+                    {(!editDisabled) ? <button type="submit" className="btn btn-danger" disabled={this.state.buttonDisabled}>Opslaan</button>: <span></span>}
 
                 </form>
                 {(editDisabled) ?

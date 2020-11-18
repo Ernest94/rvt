@@ -74,6 +74,11 @@ public class UserService {
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
 	}
+	public void updateUser(User user)
+	{
+		UserRepository userRepo = new UserRepository();		
+		userRepo.update(user);
+	}
 	
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
