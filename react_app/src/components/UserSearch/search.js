@@ -207,7 +207,7 @@ class Search extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="search-bar row">
+                        <div className="search-bar row d-flex">
                           <div className="m-auto">
                             <label className="m-1" htmlFor="role">Rol:</label>
                             <select name="role" id="role"
@@ -234,8 +234,8 @@ class Search extends React.Component {
                             <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
                             <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        <div className="m-auto ">
-                            <button className="btn btn-outline-secondary"
+                        <div className="m-auto">
+                            <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
                                 type="submit">
                                 {(loading)?"Laden...": "Zoek"}

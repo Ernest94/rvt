@@ -4,24 +4,18 @@ import './roleAndLocation.css';
 class LocationSelection extends React.Component {
     
     render() {
-        
-     
         const locations = this.props.locations;
-
-        
-            
         const locationsOptions = locations.map((loc) => {
            return (
                 <option key={loc.id} value={loc.id}>{loc.name}</option>
            ) 
         });
         
-        if (this.props.isTrainee === null) { //|| this.props.isTrainee
+        if (this.props.isTrainee === null) {
             return null;
         }
         
         return (
-                 
                 <div className="form-group selection_spacing">
                     <label htmlFor="location">Locatie:</label>
                     <select name="location" id="location" 

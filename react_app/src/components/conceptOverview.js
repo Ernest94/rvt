@@ -177,7 +177,7 @@ class conceptOverview extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="search-bar row">
+                        <div className="search-bar row d-flex">
                           <div class="m-auto">
                             <label className="m-1" htmlFor="theme">Thema:</label>
                             <select name="theme" id="theme"
@@ -198,7 +198,7 @@ class conceptOverview extends React.Component {
                             <input id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
                           </div>
                         <div className="m-auto">
-                            <button className="btn btn-outline-secondary"
+                            <button className="btn btn-outline-secondary m-2"
                                 disabled={buttonDisabled}
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Filter"}

@@ -224,13 +224,13 @@ class AddUser extends React.Component {
         if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
 
         return (
-            <div>
-                <h2>Gebruiker toevoegen</h2>
+            <div className="container">
+                <h2 className="text-center">Gebruiker toevoegen</h2>
 
                 {errorsList}
                 <form onSubmit={this.handleSubmit}>
 
-                    <RoleAndLocation
+                    <RoleAndLocation className="role-location"
                         currentStep={this.state.currentStep}
                         roles={this.state.roles}
                         locations={this.state.locations}
