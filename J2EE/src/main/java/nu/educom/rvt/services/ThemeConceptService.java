@@ -35,7 +35,7 @@ public class ThemeConceptService {
 		return concepts;
 	}
 	
-	public List<Concept> getAllÁctiveConceptsfromUser(User user){
+	public List<Concept> getAllActiveConceptsfromUser(User user){
 		return this.conceptRepo.readAll();
 	}
 }
