@@ -100,7 +100,7 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	protected void update(ConceptRating conceptRating) {
+	public void update(ConceptRating conceptRating) {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
