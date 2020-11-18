@@ -42,7 +42,7 @@ public class LocationRepository {
 			session = HibernateSession.getSessionFactory().openSession();
 			return (Location) session
 					.createQuery("from Location where name =:name", Location.class)
-					.setParameter("email", name)
+					.setParameter("name", name)
 					.getSingleResult();
 		} catch (NoResultException ex) {
 			return null;

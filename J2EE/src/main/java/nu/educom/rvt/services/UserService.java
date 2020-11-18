@@ -94,12 +94,18 @@ public class UserService {
 	}
 	
 	public boolean validateLocation(Location location) {	
-		if(location.getName().isEmpty()) {
+		
+		if(location.getName().trim().isEmpty() || !Pattern.matches("^.*\\p{L}.*$", location.getName())) {
 			return false;
 		}
 		else {
-			return Pattern.matches("^.*\\p{L}.*$", location.getName());
+			return this.doesLocationExist(location);
 		}
+	}
+	public boolean doesLocationExist(Location location) {
+		LocationRepository locationRepo = new LocationRepository();
+		Location duplicate = locationRepo.readByName(location.getName());		
+		return duplicate==null;
 	}
 	
 	public List<User> getFilteredUsers(String criteria, Role role, Location location)

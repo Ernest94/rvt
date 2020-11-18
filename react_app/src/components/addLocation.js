@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import {config} from './constants';
 import Permissions from './permissions.js';
+import Utils from './Utils.js';
 
 class addLocation extends React.Component {
     
@@ -28,28 +29,36 @@ class addLocation extends React.Component {
     }
 
     validate() {
-        return null;
+        if(!this.state.locationName.trim())
+        {
+            this.setState({locationName:""});
+            return {name: ["De locatienaam mag niet leeg zijn"]};
+        }
+        if(!isNaN(this.state.locationName))
+        {
+            return {name: ["De locatienaam moet letters bevatten"]}
+        }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({message: ""});
         var errors = this.validate();
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/locations", this.createLocationJson())  
                 .then(response => {
                     this.succesfullAdd(this.state.locationName);
-                    this.setState({loading: false, errors: null, locationName: ""});
+                    this.setState({errors: null, locationName: ""});
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     console.log(this.createLocationJson());
 
-                    this.setErrors({login: ["Mislukt om locatie toe te voegen."]}); 
+                    this.setState({errors: Utils.setErrors({api: ["Mislukt om locatie toe te voegen. Mogelijk bestaat deze locatie al."]})}); 
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({errors: Utils.setErrors(errors)});
         }
     }
 
@@ -63,14 +72,6 @@ class addLocation extends React.Component {
         this.setState({ message:"Locatie " + name + " is succesvol toegevoegd."});
     }
     
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
 
     render() {
         return (

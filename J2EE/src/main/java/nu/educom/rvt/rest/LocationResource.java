@@ -21,7 +21,7 @@ public class LocationResource{
 		boolean valid = userServ.validateLocation(location);
 		if(valid) {
 			userServ.addLocation(location);
-			return Response.status(200).build();
+			return Response.status(201).build();
 		}
 		else {
 			return Response.status(400).build();
