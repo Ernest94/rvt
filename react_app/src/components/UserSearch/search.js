@@ -207,10 +207,10 @@ class Search extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="row w-100 mx-auto align-middle text-center">
-                          <div className="col-lg-3 col-sm-6">
-                            <label className="mr-1 p-1 align-left" htmlFor="role">Rol:</label>
-                            <select className="mr-auto p-1 align-left" name="role" id="role"
+                        <div className="search-bar row">
+                          <div className="m-auto">
+                            <label className="m-1" htmlFor="role">Rol:</label>
+                            <select name="role" id="role"
 
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
@@ -219,9 +219,9 @@ class Search extends React.Component {
                                 {rolesOptions}
                             </select>
                           </div>
-                          <div className="col-lg-3 col-sm-6">
-                            <label className="mr-1 p-1 align-left" htmlFor="location">Locatie:</label>
-                            <select className="mr-auto p-1 align-left" name="location" id="location"
+                          <div className="m-auto">
+                            <label className="m-1" htmlFor="location">Locatie:</label>
+                            <select name="location" id="location"
 
                                 value={this.state.locationDisplayName}
                                 onChange={this.onChangeLocation}
@@ -230,20 +230,19 @@ class Search extends React.Component {
                                 {locationOptions}
                             </select>
                           </div>
-                          <div className="col-lg-6">
-                            <label className="mr-1 p-1 align-left" htmlFor="criteria">Zoek Criteria:</label>
-                            <input className="mr-auto p-1 align-left" id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                          <div className="m-auto">
+                            <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
+                            <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        </div>
-
-
-                        <div className="text-center">
-                            <button className="w-30 mx-auto btn btn-danger mt-3"
+                        <div className="m-auto ">
+                            <button className="btn btn-outline-secondary"
                                 disabled={loading}
                                 type="submit">
                                 {(loading)?"Laden...": "Zoek"}
                             </button>
                         </div>
+                        </div>
+
                     </form>
                 </div >
 

@@ -2,3 +2,8 @@
     border-bottom: 4px solid #CC2C3E;
     cursor: pointer;
 }
+
+.search-bar {
+    background-color: rgb(253, 235, 235);
+    height: 60px;
+}

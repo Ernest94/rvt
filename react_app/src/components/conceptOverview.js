@@ -177,10 +177,10 @@ class conceptOverview extends React.Component {
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="row w-100 mx-auto align-middle text-center">
-                          <div class="col-lg-4 col-md-5">
-                            <label className="mr-1 p-1 align-middle" htmlFor="theme">Thema:</label>
-                            <select className="mr-3 p-1 align-middle" name="theme" id="theme"
+                        <div className="search-bar row">
+                          <div class="m-auto">
+                            <label className="m-1" htmlFor="theme">Thema:</label>
+                            <select name="theme" id="theme"
                                 value={this.state.themeDisplayName}
                                 onChange={this.onChangeTheme}
                                 required>
@@ -189,24 +189,23 @@ class conceptOverview extends React.Component {
                                 {themeOptions}
                             </select>
                           </div>
-                          <div class="col-lg-4 col-md-7">
-                            <label className="mr-1 p-1 align-middle" htmlFor="block">Blok:</label>
-                            <input className="mr-3 p-1 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
+                          <div class="m-auto">
+                            <label className="m-1" htmlFor="block">Blok:</label>
+                            <input id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
                           </div>
-                          <div class="col-lg-4">
-                            <label className="mr-1 p-1 align-middle" htmlFor="criteria">Inactief zichtbaar:</label>
-                            <input className="mr-3 p-1 align-middle" id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
+                          <div class="m-auto">
+                            <label className="m-1" htmlFor="criteria">Inactief zichtbaar:</label>
+                            <input id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
                           </div>
-                        </div>
-
-
-                        <div className="text-center">
-                            <button className="w-30 mx-auto btn rvtbutton mt-3"
+                        <div className="m-auto">
+                            <button className="btn btn-outline-secondary"
                                 disabled={buttonDisabled}
                                 type="submit">
                                 {(buttonDisabled)?"Laden...": "Filter"}
                             </button>
                         </div>
+                    </div>
+
                     </form>
                 </div >
 
