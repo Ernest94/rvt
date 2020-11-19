@@ -1,15 +1,18 @@
 .input > .form-control {	
     margin-bottom:  10px; 
 }
+.small-form {
+	width:300px;
+}
 .label{
 	max-width:120px;
 }
-.buttons
-{
+
+.buttons{
 	width:200px;
 	margin:auto;
 }
-.buttons  .btn
-{
+
+.buttons .btn{
 	margin-bottom:5px;
 }

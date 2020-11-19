@@ -67,10 +67,16 @@ class Password extends React.Component {
         const {buttonDisabled} = this.state;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         return (
-            <div>
-                <h2>Wachtwoord veranderen</h2>
+            <div className="container">
+                <h2 className="text-center">Wachtwoord veranderen</h2>
+
+                <div className="row justify-content-center m-4">
                 {errorsList}
+                </div>
+
+                <div className="row justify-content-center m-4">
                 <form onSubmit={this.handleSubmit}>
+
                     <div className="form-group">
                         <label htmlFor="current">Huidig wachtwoord:</label>
                         <input className="form-control" id="current" type="password" name="currentPassword" onChange={this.handleFormChange}/>
@@ -78,21 +84,22 @@ class Password extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="newPassword">Nieuw wachtwoord:</label>
-                        <input className="form-control " id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
+                        <input className="form-control" id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
                     </div>
                     
                     <div className="form-group">
                         <label htmlFor="repeatePassword">Herhaal nieuw wachtwoord:</label>
-                        <input className="form-control " id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
+                        <input className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
                     </div>
                     
-                    <button className="btn btn-danger float-right" 
+                    <button className="btn btn-primary float-right" 
                         disabled={buttonDisabled} 
                         type="submit">
                         {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
                     </button>
                     
                 </form> 
+                </div>
             </div>
         )
     }
