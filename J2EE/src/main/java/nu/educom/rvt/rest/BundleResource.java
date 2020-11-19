@@ -28,7 +28,7 @@ public class BundleResource {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewBundle(Bundle bundle) {
-		if(bundle.getName() != null && bundleServ.findBundleByName(bundle.getName()) == null)
+		if(bundle.getName() != null && bundle.getCreator() != null && bundle.getStartDate() != null && bundleServ.findBundleByName(bundle.getName()) == null)
 		{
 			bundleServ.createNewBundle(bundle);
 			return Response.status(201).build();

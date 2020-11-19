@@ -10,6 +10,9 @@ public class Bundle {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
+
+	@Column (name="creator_user_id")
+	private User creator;
 	@Column(name="name")
 	private String name;
 	@Column(name="startdate")
@@ -22,11 +25,18 @@ public class Bundle {
 		super();
 	}
 	
-	public Bundle(String name, String startDate, String endDate) {
+	public Bundle(String name, User creator, String startDate, String endDate) {
 		super();
 		this.name = name;
+		this.creator = creator;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+	
+	public Bundle(String name, User creator, String startDate) {
+		this.name = name;
+		this.creator = creator;
+		this.startDate = startDate;
 	}
 
 	public int getId() {
@@ -44,6 +54,14 @@ public class Bundle {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
 
 	public String getStartDate() {
 		return startDate;
@@ -60,7 +78,4 @@ public class Bundle {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	
-	
-	
 }
