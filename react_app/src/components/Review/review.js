@@ -39,9 +39,7 @@ class ConceptSelection extends React.Component {
         )
     });
     return (
-    <div class={"conceptSelection " + this.props.className} >
-
-       
+    <div className="conceptSelection col-md-3" >
         <SliderSelection 
             title="Rating tussen"
             value={this.state.stars} 
@@ -99,6 +97,53 @@ class SliderSelection extends React.Component {
         )
       }
   }
+class SelectionTable extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state={
+            starsSelected: [1,5], //starting selection
+            weeksSelected: [1,10],
+            themesSelected: [], //is filled in getThemes
+        }
+    }
+    inSelection(concept) {
+        let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
+        return(
+            this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
+            &&
+            this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
+            &&
+            (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
+        )
+    }
+    handleSelectionChange(newValue, name)
+    {
+        this.setState({[name+"Selected"]: newValue});
+    }
+    handleCheckChange(e, id)
+    {
+        var localThemes = this.state.themesSelected.slice();
+        let index = localThemes.findIndex((obj) => obj.id === id);
+        localThemes[index].checked= !localThemes[index].checked;
+        this.setState({themesSelected: localThemes});
+    }
+
+    render(){
+        console.log(this.props.children);
+        return(
+            <div>
+            <ConceptSelection 
+                themes={this.props.themes} 
+                handleChange={this.handleSelectionChange.bind(this)}
+                handleCheckChange={this.handleCheckChange.bind(this)}
+                className={this.props.classNameSelection}/>
+                
+                {this.props.children(this.inSelection.bind(this))}
+            </div>
+        );
+    }
+}
 class review extends React.Component {
     
     constructor(props) {
@@ -164,17 +209,7 @@ class review extends React.Component {
                 console.log("an error occorured " + error);
             });
     }
-    handleSelectionChange(newValue, name)
-    {
-        this.setState({[name+"Selected"]: newValue});
-    }
-    handleCheckChange(e, id)
-    {
-        var localThemes = this.state.themesSelected.slice();
-        let index = localThemes.findIndex((obj) => obj.id === id);
-        localThemes[index].checked= !localThemes[index].checked;
-        this.setState({themesSelected: localThemes});
-    }
+
     createUserIdJson() {
         return {
             id: this.state.userId,
@@ -218,17 +253,7 @@ class review extends React.Component {
             default: return ("");
         }
     }
-    inSelection(concept) {
-        let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
-        return(
-            this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
-            &&
-            this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
-            &&
-            (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
-        
-        )
-    }
+
 
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
@@ -250,8 +275,31 @@ class review extends React.Component {
         if (pageLoading) return (<span className="center">Laden...</span>)
             
 
-        var conceptDisplay = this.state.concepts.map((concept) => {
-            if (this.inSelection(concept)){
+        const ConceptDisplay = ({selectionFunction,}) => (
+        <div class="table-responsive">
+        <table className="table reviewTable">
+            <thead>
+                <tr>
+                    <th className="week">
+                        Blok
+                        </th>
+                    <th className="theme">
+                        Thema
+                        </th>
+                    <th className="concept">
+                        Concept
+                        </th> 
+                    <th className="rating">
+                        Vaardigheid
+                        </th>
+                    <th className="comment">
+                        Commentaar
+                    </th>
+                </tr>
+            </thead>
+            <tbody className="tableBody">
+                {(this.state.concepts.map((concept) => {
+            if (selectionFunction(concept)){
             return (
             
                 <tr>
@@ -287,11 +335,15 @@ class review extends React.Component {
                 </tr >
                 )
             }
-        });
+        }))}
+            </tbody>
+        </table>
+    </div>);
 
         
         return (
                 <div className="container">
+                    
                     <div class="row pt-4">
                     <h3 class="col-md-4 text-center">{this.state.reviewDate}</h3>
                     <h3 class="col-md-4 text-center">Review {this.state.userName}</h3>
@@ -301,38 +353,14 @@ class review extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
                     <div className="d-flex">
-                        <ConceptSelection 
-                            className="d-none d-lg-inline col-md-3" 
-                            handleChange={this.handleSelectionChange.bind(this)}
-                            handleCheckChange={this.handleCheckChange.bind(this)}
-                            themes={this.state.themes} 
-                        />
-                        <div class="table-responsive">
-                        <table className="table reviewTable">
-                            <thead>
-                                <tr>
-                                    <th className="week">
-                                        Blok
-                                        </th>
-                                    <th className="theme">
-                                        Thema
-                                        </th>
-                                    <th className="concept">
-                                        Concept
-                                        </th> 
-                                    <th className="rating">
-                                        Vaardigheid
-                                        </th>
-                                    <th className="comment">
-                                        Commentaar
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="tableBody">
-                                {conceptDisplay}
-                            </tbody>
-                        </table>
-                        </div>
+                        <SelectionTable
+                            classNameSelection="d-none d-lg-inline col-md-3" 
+                            themes={this.state.themes}
+>
+                                {paramFunction=>(
+                                    <ConceptDisplay selectionFunction={paramFunction} themes={this.state.themes}/>
+                                )}
+                        </SelectionTable>
                         </div>
                     <div className="trainee-feedback-box">
                     <h4 >{"Terugkoppeling:"}</h4>
