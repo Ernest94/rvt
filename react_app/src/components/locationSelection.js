@@ -16,7 +16,7 @@ class LocationSelection extends React.Component {
         }
         
         return (
-                <div className="form-group selection_spacing">
+                <div className="">
                     <label htmlFor="location">Locatie:</label>
                     <select name="location" id="location" 
                         value={this.props.locationDisplayName} 

@@ -23,8 +23,9 @@ class RoleAndLocation extends React.Component {
         }
         
         return (
-            <div>
-                <div className="form-group selection_spacing ">
+            <div className="">
+
+                <div className="">
                     <label htmlFor="role">Rol:</label>
                     <select name="role" id="role" 
                         value={this.props.roleDisplayName} 
