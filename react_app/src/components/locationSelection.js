@@ -1,5 +1,4 @@
 import React from 'react';
-import './roleAndLocation.css';
 
 class LocationSelection extends React.Component {
     
@@ -16,9 +15,10 @@ class LocationSelection extends React.Component {
         }
         
         return (
-                <div className="">
+                <div className="my-2">
                     <label htmlFor="location">Locatie:</label>
-                    <select name="location" id="location" 
+                    <div>
+                    <select className="m-1" name="location" id="location" 
                         value={this.props.locationDisplayName} 
                         onChange={this.props.onChangeLocation}
                         required>
@@ -26,6 +26,7 @@ class LocationSelection extends React.Component {
                         <option hidden value=''>Locatie</option>
                         {locationsOptions}
                     </select>
+                    </div>
                 </div>
         )
     }

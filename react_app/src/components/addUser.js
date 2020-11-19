@@ -140,7 +140,7 @@ class AddUser extends React.Component {
         if (currentStep > 1 /*&&  !this.state.isDocent*/) {
             return (
                 <button
-                    className="btn btn-danger m-3"
+                    className="btn btn-primary m-3"
                     type="button" onClick={this._prev}>
                     Vorige
                 </button>
@@ -155,7 +155,7 @@ class AddUser extends React.Component {
         if (currentStep <= 1 ) {
             return (
                 <button
-                    className="btn btn-danger m-3"
+                    className="btn btn-primary m-3"
                     type="button" onClick={this._next}>
                     Volgende
                 </button>
@@ -169,7 +169,7 @@ class AddUser extends React.Component {
 
         if (currentStep === 2) {
             return (
-                    <button className="btn btn-danger m-3"
+                    <button className="btn btn-primary m-3"
                         disabled={submitButtonDisabled}
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
@@ -225,27 +225,31 @@ class AddUser extends React.Component {
 
         return (
             <div className="container">
-                    <h2 className="text-center">Gebruiker toevoegen</h2>
-                {errorsList}
+                <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                        <form onSubmit={this.handleSubmit}>
-                        <div className="col text-center">
-
-                            <RoleAndLocation
-                                currentStep={this.state.currentStep}
-                                roles={this.state.roles}
-                                locations={this.state.locations}
-                                // teachers={this.state.teachers}
-                                // teacherDisplayName={this.state.teacherDisplayName}
-                                roleDisplayName={this.state.roleDisplayName}
-                                locationDisplayName={this.state.locationDisplayName}
-                                onChangeRole={this.onChangeRole}
-                                onChangeLocation={this.onChangeLocation}
-                                // onChangeTeacher={this.onChangeTeacher}
-                                isTrainee={this.state.isTrainee}
-                            />
+                    <div className="col text-center">
+                        {errorsList}
                     </div>
+                    
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="row justify-content-center">
 
+                            <div className="col-4">
+
+                                <RoleAndLocation
+                                    currentStep={this.state.currentStep}
+                                    roles={this.state.roles}
+                                    locations={this.state.locations}
+                                    // teachers={this.state.teachers}
+                                    // teacherDisplayName={this.state.teacherDisplayName}
+                                    roleDisplayName={this.state.roleDisplayName}
+                                    locationDisplayName={this.state.locationDisplayName}
+                                    onChangeRole={this.onChangeRole}
+                                    onChangeLocation={this.onChangeLocation}
+                                    // onChangeTeacher={this.onChangeTeacher}
+                                    isTrainee={this.state.isTrainee}
+                                />
+            
                             <UserInfo
                                 currentStep={this.state.currentStep}
                                 name={this.state.name}
@@ -257,14 +261,17 @@ class AddUser extends React.Component {
                                 // dateValidation={Utils.dateValidation}
                                 handleFormChange={this.handleFormChange}
                             />
+                            </div>
+                        </div>
+
                             <div className="row">
-                            <div className="col text-center">
-                            {this.nextButton}
-                            {this.previousButton}
-                            {this.submitButton}
+                                <div className="col text-center">
+                                    {this.nextButton}
+                                    {this.previousButton}
+                                    {this.submitButton}
+                                </div>
                             </div>
-                            </div>
-                        </form>
+                    </form>
 
             </div>
         )
