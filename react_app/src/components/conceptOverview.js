@@ -152,7 +152,7 @@ class conceptOverview extends React.Component {
 
         var conceptDisplay = this.state.currentConcepts.map((concept) => {
             return (
-                <tr className="searchResult" /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
+                <tr className="searchResult" key={concept.concept.id} /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
                     <td className="p-3 text-nowrap align-middle">
                         {concept.concept.week}
                     </td>
@@ -193,7 +193,7 @@ class conceptOverview extends React.Component {
                             <label className="mr-1 p-1 align-middle" htmlFor="block">Blok:</label>
                             <input className="mr-3 p-1 align-middle" id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
                           </div>
-                          <div class="col-lg-4">
+                          <div className="col-lg-4">
                             <label className="mr-1 p-1 align-middle" htmlFor="criteria">Inactief zichtbaar:</label>
                             <input className="mr-3 p-1 align-middle" id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
                           </div>
