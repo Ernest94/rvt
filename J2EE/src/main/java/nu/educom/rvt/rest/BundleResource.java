@@ -4,17 +4,20 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BundleCheck;
+import nu.educom.rvt.models.view.BundleCheckJson;
 import nu.educom.rvt.models.view.BundleJson;
 import nu.educom.rvt.services.BundleService;
+import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/bundle")
 public class BundleResource {
@@ -48,16 +51,18 @@ public class BundleResource {
 	}
 	
 	@GET
-	@Path("/bundleTrainee")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/bundleTrainee/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTraineeBundles(User user) {
+	public Response getTraineeBundles(@PathParam("userId") int userId) {
+		
+		UserService userServ = new UserService();
+		User user = userServ.getUserById(userId);
 		List<Bundle> bundles = bundleServ.getAllBundles();
 		List<Bundle> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
 		
+		List<BundleCheck> bundleCheck = bundleServ.convertToBundleCheck(bundles, bundlesTrainee);
+		BundleCheckJson bundleCheckJson = new BundleCheckJson(bundleCheck);
 		
-		BundleJson bundleJson = new BundleJson(bundles);
-		
-		return Response.status(200).entity(bundleJson).build();
+		return Response.status(200).entity(bundleCheckJson).build();
 	}
 }

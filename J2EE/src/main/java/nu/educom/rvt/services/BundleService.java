@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.repositories.BundleConceptRepository;
@@ -21,6 +22,7 @@ public class BundleService {
 	public BundleService() {
 		this.bundleRepo = new BundleRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
+		this.bundleTraineeRepo = new BundleTraineeRepository();
 	}
 	
 	public Bundle findBundleByName(String name) {
@@ -37,8 +39,11 @@ public class BundleService {
 	}
 	 
 	public List<Bundle> getAllBundlesFromUser(User user){
-		return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
-												   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
+		List<BundleTrainee> allBundle = bundleTraineeRepo.readAll();
+		List<BundleTrainee> bundleTrainee = allBundle.stream().filter(bundleT -> bundleT.getUser().getId() == user.getId())
+												   								.collect(Collectors.toList());
+		List<Bundle> bundles = bundleTrainee.stream().map(bundleT -> bundleT.getBundle()).collect(Collectors.toList());
+		return bundles;		
 	}
 	
 	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
