@@ -1,11 +1,12 @@
 
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom'
 
 import {config} from './constants';
 import Permissions from './permissions.js';
 
-class addLocation extends React.Component {
+class addBundle extends React.Component {
     
     constructor(props) {
         super(props);
@@ -26,7 +27,6 @@ class addLocation extends React.Component {
         this.setState({
             [name]: value,
         });
-        console.log(name + " " + value);
     }
 
     validate() {
@@ -38,17 +38,13 @@ class addLocation extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            console.log(this.createConceptJson());
-            axios.post(config.url.API_URL + "/webapi/add_bundle", this.createConceptJson())  
+            axios.post(config.url.API_URL + "/webapi/add_bundle", this.createBundleJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
-                    console.log(this.createConceptJson());
-
-                    this.setErrors({login: ["Mislukt om bundel toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om bundel aan te maken."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -58,22 +54,23 @@ class addLocation extends React.Component {
         }
     }
 
-    createConceptJson() {
+    createBundleJson() {
         return {
-            location: this.state.location
+            bundle: this.state.bundle,
+            userId: sessionStorage.getItem("userId")
         }
     }
 
     succesfullAdd(){
-        this.setState({ message:"bundel toegevoegd", locationDisplayName: ""});
+        this.setState({ message:"bundel aangemaakt", locationDisplayName: ""});
     }
 
 
     onChangeLocation = (e) => {
-        var selectedLocation = this.state.location.find(location=> location.id === parseInt(e.target.value));
+        var selectedBundle = this.state.bundle.find(bundle=> bundle.id === parseInt(e.target.value));
         this.setState({
-            location: selectedLocation,
-            locationDisplayName: e.target.value
+            bundle: selectedBundle,
+            bundleDisplayName: e.target.value
         });
     }
     
@@ -96,7 +93,7 @@ class addLocation extends React.Component {
 
         return (
             <div>
-                <h2>Bundel toevoegen</h2>
+                <h2>Bundel aanmaken</h2>
 
                 <div className="container main-container">
                     <form onSubmit={this.handleSubmit}>
@@ -104,8 +101,11 @@ class addLocation extends React.Component {
                             <label htmlFor="name">Naam:</label>
                             <input className="form-control" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
                         </div>
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float-right" type="submit">bundel toevoegen</button>}
+                        <div>{(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                            <button className="btn btn-primary float-right" type="submit">maak aan</button>}</div>
+                        <div ><button className="btn btn-primary float-right" type="submit">annuleer</button></div>
+                            
+
                     </form>
                     <h4 className="text-center">{this.state.message}</h4>
                 </div >
@@ -117,4 +117,4 @@ class addLocation extends React.Component {
 }
 
 
-export default addLocation;
+export default withRouter(addBundle);
