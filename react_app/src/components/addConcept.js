@@ -18,7 +18,8 @@ class addConcept extends React.Component {
             week: 1,
             loading: false,
             message:"",
-            themeDisplayName:""
+            themeDisplayName: "",
+            userId: null
         };
     }
 
@@ -28,6 +29,9 @@ class addConcept extends React.Component {
 
     componentDidMount() {
         this.getThemes()
+        this.setState({
+            userId: sessionStorage.getItem("userId")
+        });
     }
 
     handleFormChange = (e) => {
@@ -117,6 +121,30 @@ class addConcept extends React.Component {
                     pageLoading: false
                 });
             })
+    }
+
+    getYourBundles() {
+
+        if (Permissions.isUserAdmin()) {
+            axios.get(config.url.API_URL + '/webapi/bundle/getAllBundles')
+        }
+        else {
+            axios.get(config.url.API_URL + '/webapi/bundle/getMyBundles/' + this.state.userId)
+                .then(response => {
+                    this.setState({
+                        themes: response.data,
+                        pageLoading: false
+                    });
+                })
+                .catch(() => {
+                    this.setState({
+                        themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
+                        pageLoading: false
+                    });
+                })
+        }
+
+       
     }
     
     setErrors = (errors) => {

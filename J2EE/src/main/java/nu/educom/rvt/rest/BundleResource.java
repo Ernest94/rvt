@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleJson;
 import nu.educom.rvt.services.BundleService;
 
@@ -41,6 +42,20 @@ public class BundleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
 		List<Bundle> bundles = bundleServ.getAllBundles();
+		BundleJson bundleJson = new BundleJson(bundles);
+		
+		return Response.status(200).entity(bundleJson).build();
+	}
+	
+	@GET
+	@Path("/bundleTrainee")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getTraineeBundles(User user) {
+		List<Bundle> bundles = bundleServ.getAllBundles();
+		List<Bundle> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
+		
+		
 		BundleJson bundleJson = new BundleJson(bundles);
 		
 		return Response.status(200).entity(bundleJson).build();
