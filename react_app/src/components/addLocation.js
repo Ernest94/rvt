@@ -96,19 +96,20 @@ class addLocation extends React.Component {
         // });
 
         return (
-            <div>
-                <h2>Locatie toevoegen</h2>
-
-                <div className="container main-container">
+            <div className="container">
+                <h2 className="text-center">Locatie toevoegen</h2>
+                <div className="row justify-content-center">
                     <form onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Naam van locatie:</label>
-                            <input className="form-control" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
-                        </div>
+                        <div className="col">
+                            <div className="form-group">
+                                <label htmlFor="name">Naam van locatie:</label>
+                                <input className="form-control small-form" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
+                            </div>
                         {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                             <button className="btn btn-primary float-right" type="submit">locatie toevoegen</button>}
+                        </div>
                     </form>
-                    <h4 className="text-center">{this.state.message}</h4>
+                    <h4 className="text-center text-succes">{this.state.message}</h4>
                 </div >
             </div>
 

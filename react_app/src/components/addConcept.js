@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import './addings.css';
 
 import {config} from './constants';
 import Permissions from './permissions.js'
@@ -82,7 +81,7 @@ class addConcept extends React.Component {
     succesfullAdd(){
         this.setState({ name:"",
                         description: "",
-                        message:"concept toegevoegd",
+                        message:"Concept toegevoegd",
                         startDate:"",
                         week:"",
                         themeDisplayName: ""});
@@ -138,45 +137,64 @@ class addConcept extends React.Component {
 
         return (
             <div> 
-                <h2>Concept toevoegen</h2>
                 <div className="container main-container">
+                <h2 className="text-center">Concept toevoegen</h2>
+
                     <form onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Naam:</label>
-                            <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                        <div className="row">
+                            <div className="col-6 ">
+                                <div className="float-right">
+                                    <div className="form-group">
+                                        <label htmlFor="name">Naam:</label>
+                                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="description">Beschrijving:</label>
+                                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="theme">Thema:</label>
+                                        <select className="m-2 p-2" name="theme" id="theme"
+                                            value={this.themeDisplayName}
+                                            onChange={this.onChangeTheme}
+                                            required>
+
+                                            <option hidden value=''>Thema</option>
+                                            {themeOptions}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="col-6 ">
+                                <div className="float-left">
+
+                                    <div className="form-group col-6">
+                                        <label htmlFor="week">Week:</label>
+                                        <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label htmlFor="date">Startdatum:</label>
+                                        <input className="form-control col-10" id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="description">Beschrijving:</label>
-                            <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                        <div className="row justify-content-center">
+                            <div className="col-6 ">
+                                <div className="float-right">
+                                    {(this.state.loading) ? <button className="btn btn-primary" type="submit" disabled> Laden...</button>:
+                                    <button className="btn btn-primary" type="submit">Concept toevoegen</button>}
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="theme">Thema:</label>
-                            <select className="mr-5 p-2 align-middle" name="theme" id="theme"
-                                value={this.themeDisplayName}
-                                onChange={this.onChangeTheme}
-                                required>
-
-                                <option hidden value=''>Thema</option>
-                                {themeOptions}
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="week">Week:</label>
-                            <input className="form-control " id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="date">Startdatum:</label>
-                            <input className="form-control " id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
-                        </div>
-
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float" type="submit">Concept toevoegen</button>}
                     </form>
-                    <h4 className="text-center">{this.state.message}</h4>
+                    <h4 className="text-center text-success">{this.state.message}</h4>
                 </div >
             </div>
         )

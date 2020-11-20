@@ -88,7 +88,7 @@ class Login extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="password">Wachtwoord:</label>
-                        <input className="form-control " id="password" type="password" name="password" onChange={this.handleFormChange}/>
+                        <input className="form-control" id="password" type="password" name="password" onChange={this.handleFormChange}/>
                     </div>
 
                     <button className="btn btn-danger float-right" 
