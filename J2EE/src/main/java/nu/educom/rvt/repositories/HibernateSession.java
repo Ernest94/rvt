@@ -57,6 +57,11 @@ public class HibernateSession {
                 configuration.addAnnotatedClass(Theme.class);
                 configuration.addAnnotatedClass(Concept.class);                
                 configuration.addAnnotatedClass(Review.class);
+                configuration.addAnnotatedClass(Bundle.class);
+                configuration.addAnnotatedClass(BundleTrainee.class);
+                configuration.addAnnotatedClass(BundleConcept.class);
+                configuration.addAnnotatedClass(TraineeActive.class);
+                configuration.addAnnotatedClass(TraineeMutation.class);
                 configuration.addAnnotatedClass(ConceptRating.class);
 
                 
