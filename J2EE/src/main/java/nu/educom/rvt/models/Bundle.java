@@ -10,8 +10,8 @@ public class Bundle {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-
-	@Column (name="creator_user_id")
+	@ManyToOne
+	@JoinColumn(name="creator_user_id")
 	private User creator;
 	@Column(name="name")
 	private String name;
