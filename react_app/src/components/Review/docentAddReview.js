@@ -13,6 +13,7 @@ import './review.css'
 
 import { config } from '../constants';
 import Permissions from '../permissions.js'
+import {SelectionTable} from './Selection.js'
 
 class docentAddReview extends React.Component {
 
@@ -294,7 +295,7 @@ class docentAddReview extends React.Component {
     setActiveConcept() {
         var checkBox = document.getElementById("myCheck");
         var text = document.getElementById("text");
-        if (checkBox.checked == false){
+        if (checkBox.checked === false){
           text.style.display = "block";
         } else {
            text.style.display = "none";
@@ -360,8 +361,35 @@ class docentAddReview extends React.Component {
             });
 
 
-        var conceptDisplay = this.state.concepts.map((concept, index) => {
-            return (
+        const ConceptDisplay = ({selectionFunction,}) => (
+            <div className="table-responsive col-md-9">
+                    <table className="addReviewTable table">
+                        <thead>
+                            <tr>
+                                <th className="active">
+                                    actief
+                                </th>
+                                <th className="week">
+                                    Blok
+                                </th>
+                                <th className="theme">
+                                    Thema
+                                </th>
+                                <th className="concept">
+                                    Concept
+                                </th> 
+                                <th className="rating">
+                                    Vaardigheid
+                                </th>
+                                <th className="comment">
+                                    Commentaar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="tableBody">
+        {this.state.concepts.map((concept, index) => {
+            if (selectionFunction(concept)){
+                return (
                 <tr>
                     <td className="active">
                     <Checkbox
@@ -414,8 +442,12 @@ class docentAddReview extends React.Component {
                         </TextareaAutosize>
                     </td>
                 </tr>
-            )
-        });
+            )}
+        })}
+        </tbody>
+        </table>
+        </div>
+        );
 
         return (
                 <div className="container">
@@ -431,35 +463,12 @@ class docentAddReview extends React.Component {
                     <div >
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
-                    <div className="table-responsive">
-                    <table className="addReviewTable table">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th> 
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBody">
-                            {conceptDisplay}
-                        </tbody>
-                </table>
-                </div>
+                    <SelectionTable
+                            >
+                                {paramFunction=>(
+                                    <ConceptDisplay selectionFunction={paramFunction} />
+                                )}
+                        </SelectionTable>
                     <div>
                         <div className="feedback-box-trainee">
                         <h4 >{"Terugkoppeling naar Trainee:"}</h4>
