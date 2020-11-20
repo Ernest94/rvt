@@ -19,7 +19,7 @@ class ConceptSelection extends React.Component {
         }
 
     }
-    
+
     handleSliderChange(newValue, name){
         this.setState({[name]: newValue})
     }
@@ -28,9 +28,9 @@ class ConceptSelection extends React.Component {
     var themeSelection = this.props.themes.map((theme) => {
         return (
             <FormControlLabel
-                control = {<Checkbox defaultChecked={true}  
-                            name = {"theme_" + theme.id} 
-                            onChange = {(e) => this.props.handleCheckChange(e,theme.id)} 
+                control = {<Checkbox defaultChecked={true}
+                            name = {"theme_" + theme.id}
+                            onChange = {(e) => this.props.handleCheckChange(e,theme.id)}
                             className = "themeCheckbox"
                             />}
                     label = {theme.abbreviation}
@@ -41,24 +41,24 @@ class ConceptSelection extends React.Component {
     return (
     <div class={"conceptSelection " + this.props.className} >
 
-       
-        <SliderSelection 
+
+        <SliderSelection
             title="Rating tussen"
-            value={this.state.stars} 
+            value={this.state.stars}
             handleChange={this.handleSliderChange.bind(this)}
             handleChangeCommit={this.props.handleChange.bind(this)}
             min={0}
-            max={5} 
-            name = "stars" 
+            max={5}
+            name = "stars"
         />
-        <SliderSelection 
+        <SliderSelection
             title="Weken"
-            value={this.state.weeks} 
+            value={this.state.weeks}
             handleChange={this.handleSliderChange.bind(this)}
             handleChangeCommit={this.props.handleChange.bind(this)}
             min={1}
-            max={10} 
-            name = "weeks" 
+            max={10}
+            name = "weeks"
             />
         <div><h5 className="selectionTitle">Thema's</h5></div>
         {themeSelection}
@@ -72,11 +72,11 @@ class SliderSelection extends React.Component {
       return (
         <div >
             <div><h5 className="selectionTitle" id={this.props.name + "-slider"} >{this.props.title}</h5>
-                <Button 
+                <Button
                     onClick={()=> {this.props.handleChange([this.props.min,this.props.max],this.props.name);
-                        this.props.handleChangeCommit([this.props.min,this.props.max],this.props.name)}} 
-                    size="small" 
-                    value="All" 
+                        this.props.handleChangeCommit([this.props.min,this.props.max],this.props.name)}}
+                    size="small"
+                    value="All"
                     className="lightButton">all
                 </Button>
             </div>
@@ -100,7 +100,7 @@ class SliderSelection extends React.Component {
       }
   }
 class review extends React.Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -143,21 +143,21 @@ class review extends React.Component {
         console.log(this.state.userId);
         this.setState({ pageLoading: false });
     }
-    
+
     getThemes() {
         axios.get(config.url.API_URL + "/webapi/theme_concept/themes")
-            .then(response => {            
+            .then(response => {
                 this.handleThemeResponse(response.data);
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-            });       
+            });
     }
 
     getConcepts() {
-        console.log(this.createUserIdJson());
-        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
-            .then(response => {            
+        console.log(this.state.userId);
+        axios.get(config.url.API_URL + "/webapi/review/curriculum/" + this.state.userId)
+            .then(response => {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
@@ -175,11 +175,6 @@ class review extends React.Component {
         localThemes[index].checked= !localThemes[index].checked;
         this.setState({themesSelected: localThemes});
     }
-    createUserIdJson() {
-        return {
-            id: this.state.userId,
-        };
-    }
 
     handleCurriculumReponse(data) {
         this.setState({
@@ -192,7 +187,7 @@ class review extends React.Component {
     }
     handleThemeResponse(data) {
         this.selection=[];
-   
+
         for(var i=0; i<data.length; i++){
             this.selection.push({id: data[i].id,checked:true});
         }
@@ -202,14 +197,14 @@ class review extends React.Component {
         })
 
     }
-    
+
     getActiveDisplayName(bool) {
         if (bool) return "ja";
         else return "nee";
     }
 
     getRating(rating) {
-        switch (rating) {           
+        switch (rating) {
             case 1: return ("Matig");
             case 2: return ("Redelijk");
             case 3: return ("Voldoende");
@@ -226,7 +221,7 @@ class review extends React.Component {
             this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
             &&
             (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
-        
+
         )
     }
 
@@ -246,14 +241,14 @@ class review extends React.Component {
     render() {
         console.log(this.state);
         const { pageLoading, traineeFeedback } = this.state;
-        
+
         if (pageLoading) return (<span className="center">Laden...</span>)
-            
+
 
         var conceptDisplay = this.state.concepts.map((concept) => {
             if (this.inSelection(concept)){
             return (
-            
+
                 <tr>
                     <td className="week">
                         {this.getWeekBlock(concept.concept.week)}
@@ -268,7 +263,7 @@ class review extends React.Component {
                         {concept.concept.name}
                         <span className="displayMessage"> {concept.concept.name} </span>
                         </span>
-                    </td>                  
+                    </td>
                     <td className="rating">
                     <div>
                             <Rating className="rating-star"
@@ -280,16 +275,16 @@ class review extends React.Component {
                         </div>
                     </td>
                     <td className="comment">
-                        <TextareaAutosize className="comment-text" readOnly={true} aria-label="minimum height"> 
+                        <TextareaAutosize className="comment-text" readOnly={true} aria-label="minimum height">
                             {concept.comment}
-                            </TextareaAutosize> 
-                    </td> 
+                            </TextareaAutosize>
+                    </td>
                 </tr >
                 )
             }
         });
 
-        
+
         return (
                 <div className="container">
                     <div class="row pt-4">
@@ -298,14 +293,14 @@ class review extends React.Component {
                     <h3 class="col-md-4 text-center">{this.state.userLocation}</h3>
                     </div>
                     <div >
-                        <ul className="errors">{this.state.errors}</ul>                 
+                        <ul className="errors">{this.state.errors}</ul>
                     </div >
                     <div className="d-flex">
-                        <ConceptSelection 
-                            className="d-none d-lg-inline col-md-3" 
+                        <ConceptSelection
+                            className="d-none d-lg-inline col-md-3"
                             handleChange={this.handleSelectionChange.bind(this)}
                             handleCheckChange={this.handleCheckChange.bind(this)}
-                            themes={this.state.themes} 
+                            themes={this.state.themes}
                         />
                         <div class="table-responsive">
                         <table className="table reviewTable">
@@ -319,7 +314,7 @@ class review extends React.Component {
                                         </th>
                                     <th className="concept">
                                         Concept
-                                        </th> 
+                                        </th>
                                     <th className="rating">
                                         Vaardigheid
                                         </th>
@@ -336,7 +331,7 @@ class review extends React.Component {
                         </div>
                     <div className="trainee-feedback-box">
                     <h4 >{"Terugkoppeling:"}</h4>
-                    <textarea readOnly rows="2" cols="50">{traineeFeedback}</textarea> 
+                    <textarea readOnly rows="2" cols="50">{traineeFeedback}</textarea>
                     </div>
                 </div>
         )

@@ -55,10 +55,10 @@ class conceptOverview extends React.Component {
     }
 
     getConcepts() {
-        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
+        axios.get(config.url.API_URL + "/webapi/review/curriculum/7")
             .then(response => {
                 this.setState({ buttonDisabled: false, errors: null });
-
+                console.log(response.data);
                 this.handleCurriculumReponse(response.data);
                 this.render();
             })
@@ -93,10 +93,10 @@ class conceptOverview extends React.Component {
     }
 
     getThemes() {
-        axios.get(config.url.API_URL + '/webapi/user/themes')
+        axios.get(config.url.API_URL + '/webapi/theme_concept/themes')
             .then(response => {
                 this.setState({
-                    themes: response.data.themes,
+                    themes: response.data,
                     pageLoading: false
                 });
             })
@@ -152,7 +152,7 @@ class conceptOverview extends React.Component {
 
         var conceptDisplay = this.state.currentConcepts.map((concept) => {
             return (
-                <tr className="searchResult" /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
+                <tr className="searchResult" key={concept.concept.id} /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
                     <td className="p-3 text-nowrap align-middle">
                         {concept.concept.week}
                     </td>
