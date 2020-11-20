@@ -140,7 +140,7 @@ class AddUser extends React.Component {
         if (currentStep > 1 /*&&  !this.state.isDocent*/) {
             return (
                 <button
-                    className="btn btn-danger"
+                    className="btn btn-primary m-3"
                     type="button" onClick={this._prev}>
                     Vorige
                 </button>
@@ -155,7 +155,7 @@ class AddUser extends React.Component {
         if (currentStep <= 1 ) {
             return (
                 <button
-                    className="btn btn-danger float-right"
+                    className="btn btn-primary m-3"
                     type="button" onClick={this._next}>
                     Volgende
                 </button>
@@ -169,7 +169,7 @@ class AddUser extends React.Component {
 
         if (currentStep === 2) {
             return (
-                    <button className="btn btn-danger float-right"
+                    <button className="btn btn-primary m-3"
                         disabled={submitButtonDisabled}
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
@@ -224,43 +224,54 @@ class AddUser extends React.Component {
         if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
 
         return (
-            <div>
-                <h2>Gebruiker toevoegen</h2>
+            <div className="container">
+                <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                {errorsList}
-                <form onSubmit={this.handleSubmit}>
+                    <div className="col text-center">
+                        {errorsList}
+                    </div>
+                    
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="row justify-content-center">
 
-                    <RoleAndLocation
-                        currentStep={this.state.currentStep}
-                        roles={this.state.roles}
-                        locations={this.state.locations}
-                        // teachers={this.state.teachers}
-                        // teacherDisplayName={this.state.teacherDisplayName}
-                        roleDisplayName={this.state.roleDisplayName}
-                        locationDisplayName={this.state.locationDisplayName}
-                        onChangeRole={this.onChangeRole}
-                        onChangeLocation={this.onChangeLocation}
-                        // onChangeTeacher={this.onChangeTeacher}
-                        isTrainee={this.state.isTrainee}
-                    />
+                            <div className="col-4">
 
-                    <UserInfo
-                        currentStep={this.state.currentStep}
-                        name={this.state.name}
-                        email={this.state.email}
-                        date={this.state.dateActive}
-                        role={this.state.role}
-                        location={this.state.location}
-                        password={this.state.password}
-                        // dateValidation={Utils.dateValidation}
-                        handleFormChange={this.handleFormChange}
-                    />
+                                <RoleAndLocation
+                                    currentStep={this.state.currentStep}
+                                    roles={this.state.roles}
+                                    locations={this.state.locations}
+                                    // teachers={this.state.teachers}
+                                    // teacherDisplayName={this.state.teacherDisplayName}
+                                    roleDisplayName={this.state.roleDisplayName}
+                                    locationDisplayName={this.state.locationDisplayName}
+                                    onChangeRole={this.onChangeRole}
+                                    onChangeLocation={this.onChangeLocation}
+                                    // onChangeTeacher={this.onChangeTeacher}
+                                    isTrainee={this.state.isTrainee}
+                                />
+            
+                            <UserInfo
+                                currentStep={this.state.currentStep}
+                                name={this.state.name}
+                                email={this.state.email}
+                                date={this.state.dateActive}
+                                role={this.state.role}
+                                location={this.state.location}
+                                password={this.state.password}
+                                // dateValidation={Utils.dateValidation}
+                                handleFormChange={this.handleFormChange}
+                            />
+                            </div>
+                        </div>
 
-                    {this.nextButton}
-                    {this.previousButton}
-                    {this.submitButton}
-
-                </form>
+                            <div className="row">
+                                <div className="col text-center">
+                                    {this.nextButton}
+                                    {this.previousButton}
+                                    {this.submitButton}
+                                </div>
+                            </div>
+                    </form>
 
             </div>
         )

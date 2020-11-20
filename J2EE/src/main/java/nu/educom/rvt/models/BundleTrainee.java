@@ -1,5 +1,7 @@
 package nu.educom.rvt.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -104,7 +106,8 @@ public class BundleTrainee {
 		public void setEndDate(String endDate) {
 			this.endDate = endDate;
 		}
-			
+
+	
 }
 
 
