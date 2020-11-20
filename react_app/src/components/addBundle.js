@@ -11,8 +11,7 @@ class addBundle extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            bundle: "",
-            bundleDisplayName: "",
+            name: "",
             message: "",
             loading: false,
         };
@@ -27,6 +26,7 @@ class addBundle extends React.Component {
         this.setState({
             [name]: value,
         });
+        console.log(name + " " + value);
     }
 
     validate() {
@@ -38,7 +38,9 @@ class addBundle extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/add_bundle", this.createBundleJson())  
+            console.log(config.url.API_URL + "/webapi/bundle/create");
+            console.log(this.createBundleJson())
+            axios.post(config.url.API_URL + "/webapi/bundle/create", this.createBundleJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
@@ -56,23 +58,24 @@ class addBundle extends React.Component {
 
     createBundleJson() {
         return {
-            bundle: this.state.bundle,
-            userId: sessionStorage.getItem("userId")
+            name: this.state.name,
+            creator: {"id":sessionStorage.getItem("userId")}
         }
     }
 
     succesfullAdd(){
-        this.setState({ message:"bundel aangemaakt", locationDisplayName: ""});
+        this.setState({ message:"bundel aangemaakt", 
+                        name: ""});
     }
 
 
-    onChangeLocation = (e) => {
-        var selectedBundle = this.state.bundle.find(bundle=> bundle.id === parseInt(e.target.value));
-        this.setState({
-            bundle: selectedBundle,
-            bundleDisplayName: e.target.value
-        });
-    }
+    // onChangeBundle = (e) => {
+    //     var selectedBundle = this.state.name.find(bundle=> bundle.id === parseInt(e.target.value));
+    //     this.setState({
+    //         bundle: selectedBundle,
+    //         bundleDisplayName: e.target.value
+    //     });
+    // }
     
     setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
@@ -85,9 +88,9 @@ class addBundle extends React.Component {
 
     render() {
 
-        // const locationOptions = this.state.location.map((location) => {
+        // const bundleOptions = this.state.bundle.map((bundle) => {
         //     return (
-        //         <option key={location.id} value={location.id}>{location.name}</option>
+        //         <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
         //     )
         // });
 
@@ -99,7 +102,7 @@ class addBundle extends React.Component {
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="name">Naam:</label>
-                            <input className="form-control" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
+                            <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                         </div>
                         <div>{(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
                             <button className="btn btn-primary float-right" type="submit">maak aan</button>}</div>
@@ -107,7 +110,7 @@ class addBundle extends React.Component {
                             
 
                     </form>
-                    <h4 className="text-center">{this.state.message}</h4>
+                    <h4 className="text-center text-success">{this.state.message}</h4>
                 </div >
             </div>
 

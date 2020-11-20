@@ -30,7 +30,7 @@ public class BundleResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewBundle(Bundle bundle) {
 		bundle.setStartDate(LocalDate.now().toString());
-		if(bundle.getName() != null && bundle.getCreator() != null && bundle.getStartDate() != null && bundleServ.findBundleByName(bundle.getName()) == null)
+		if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleServ.findBundleByName(bundle.getName()) == null)
 		{
 			bundleServ.createNewBundle(bundle);
 			return Response.status(201).build();
