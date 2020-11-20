@@ -46,8 +46,9 @@ public class Filler {
 		LocationRepository locationRepo = new LocationRepository();
 		for (Location location : locations) {
 			locationRepo.create(location);
-		}
-		
+        }
+        
+        User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now),endDateLD);
 
 		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
 		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
@@ -60,10 +61,12 @@ public class Filler {
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now),endDateLD));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),LocalDate.parse(now), endDateLD));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),LocalDate.parse(now), endDateLD));
-		
+        
+        
 		users.add(trainee1);
 		users.add(trainee2);
-		users.add(trainee3);
+        users.add(trainee3);
+        user.add(docent1);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
@@ -248,6 +251,13 @@ public class Filler {
 		for (ConceptRating conceptRating : conceptsRatings) {
 			conceptRatingRepo.create(conceptRating);
 		}	
-		
+        
+        BundleRepository bundleRepo = new BundleRepository();
+        Bundle bundle1 = new Bundle(docent1, "Starters bundel", LocalDate.parse(now), endDateLD);
+        Bundle bundle2 = new Bundle("Java bundel", LocalDate.parse(now), endDateLD);
+        bundleRepo.create(bundle1);
+        bundleRepo.create(bundle2);
+
+
 	}
 }
