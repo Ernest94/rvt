@@ -10,15 +10,15 @@ class addLocation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            location: "",
-            locationDisplayName: "",
+            bundle: "",
+            bundleDisplayName: "",
             message: "",
             loading: false,
         };
     }
 
     static hasAccess() {
-        return Permissions.canAddLocation();
+        return Permissions.canAddBundle();
     }
 
     handleFormChange = (e) => {
@@ -39,7 +39,7 @@ class addLocation extends React.Component {
         var errors = this.validate();
         if (!errors) {
             console.log(this.createConceptJson());
-            axios.post(config.url.API_URL + "/webapi/add_location/saveConcept", this.createConceptJson())  
+            axios.post(config.url.API_URL + "/webapi/add_bundle", this.createConceptJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
@@ -48,7 +48,7 @@ class addLocation extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createConceptJson());
 
-                    this.setErrors({login: ["Mislukt om locatie toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om bundel toe te voegen."]}); 
                     this.setState({loading: false});
                 });
         }
@@ -65,8 +65,7 @@ class addLocation extends React.Component {
     }
 
     succesfullAdd(){
-        this.setState({ message:"locatie toegevoegd",
-                        locationDisplayName: ""});
+        this.setState({ message:"bundel toegevoegd", locationDisplayName: ""});
     }
 
 
@@ -97,16 +96,16 @@ class addLocation extends React.Component {
 
         return (
             <div>
-                <h2>Locatie toevoegen</h2>
+                <h2>Bundel toevoegen</h2>
 
                 <div className="container main-container">
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="name">Naam van locatie:</label>
+                            <label htmlFor="name">Naam:</label>
                             <input className="form-control" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
                         </div>
                         {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float-right" type="submit">locatie toevoegen</button>}
+                            <button className="btn btn-primary float-right" type="submit">bundel toevoegen</button>}
                     </form>
                     <h4 className="text-center">{this.state.message}</h4>
                 </div >
