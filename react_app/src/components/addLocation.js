@@ -48,7 +48,7 @@ class addLocation extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createConceptJson());
 
-                    this.setErrors({login: ["Mislukt om concept toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om locatie toe te voegen."]}); 
                     this.setState({loading: false});
                 });
         }
