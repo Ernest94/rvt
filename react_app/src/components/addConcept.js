@@ -99,7 +99,8 @@ class addConcept extends React.Component {
         var selectDate = (e.target.value).toString();
             this.setState({
                 date: selectDate,
-            }); console.log(selectDate);
+            }); 
+            console.log(selectDate);
     }
 
     getThemes() {

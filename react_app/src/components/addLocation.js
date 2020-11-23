@@ -4,16 +4,16 @@ import axios from 'axios';
 
 import {config} from './constants';
 import Permissions from './permissions.js';
+import Utils from './Utils.js';
 
 class addLocation extends React.Component {
     
     constructor(props) {
         super(props);
         this.state = {
-            location: "",
-            locationDisplayName: "",
+            locationName: "",
             message: "",
-            loading: false,
+            errors: null,
         };
     }
 
@@ -26,88 +26,65 @@ class addLocation extends React.Component {
         this.setState({
             [name]: value,
         });
-        console.log(name + " " + value);
     }
 
     validate() {
-        return null;
+        if(!this.state.locationName.trim())
+        {
+            this.setState({locationName:""});
+            return {name: ["De locatienaam mag niet leeg zijn"]};
+        }
+        if(!isNaN(this.state.locationName))
+        {
+            return {name: ["De locatienaam moet letters bevatten"]}
+        }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true}); 
+        this.setState({message: ""});
         var errors = this.validate();
         if (!errors) {
-            console.log(this.createConceptJson());
-            axios.post(config.url.API_URL + "/webapi/add_location/saveConcept", this.createConceptJson())  
+            axios.post(config.url.API_URL + "/webapi/locations", this.createLocationJson())  
                 .then(response => {
-                    this.setState({loading: false, errors: null});
-                    this.succesfullAdd();
+                    this.succesfullAdd(this.state.locationName);
+                    this.setState({errors: null, locationName: ""});
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    console.log(this.createConceptJson());
+                    console.log(this.createLocationJson());
 
-                    this.setErrors({login: ["Mislukt om concept toe te voegen."]}); 
-                    this.setState({loading: false});
+                    this.setState({errors: Utils.setErrors({api: ["Mislukt om locatie toe te voegen. Mogelijk bestaat deze locatie al."]})}); 
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({errors: Utils.setErrors(errors)});
         }
     }
 
-    createConceptJson() {
+    createLocationJson() {
         return {
-            location: this.state.location
+            name: this.state.locationName
         }
     }
 
-    succesfullAdd(){
-        this.setState({ message:"locatie toegevoegd",
-                        locationDisplayName: ""});
-    }
-
-
-    onChangeLocation = (e) => {
-        var selectedLocation = this.state.location.find(location=> location.id === parseInt(e.target.value));
-        this.setState({
-            location: selectedLocation,
-            locationDisplayName: e.target.value
-        });
+    succesfullAdd(name){
+        this.setState({ message:"Locatie " + name + " is succesvol toegevoegd."});
     }
     
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
 
     render() {
-
-        // const locationOptions = this.state.location.map((location) => {
-        //     return (
-        //         <option key={location.id} value={location.id}>{location.name}</option>
-        //     )
-        // });
-
         return (
-            <div className="container">
-                <h2 className="text-center">Locatie toevoegen</h2>
-                <div className="row justify-content-center">
+            <div>
+                <h2>Locatie toevoegen</h2>
+                <div>{this.state.errors}</div>
+                <div className="container main-container">
                     <form onSubmit={this.handleSubmit}>
-                        <div className="col">
-                            <div className="form-group">
-                                <label htmlFor="name">Naam van locatie:</label>
-                                <input className="form-control small-form" id="name" type="text" name="name" value={this.state.location} onChange={this.handleFormChange}/>
-                            </div>
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float-right" type="submit">locatie toevoegen</button>}
+                        <div className="form-group">
+                            <label htmlFor="name">Naam van locatie:</label>
+                            <input className="form-control" id="locationName" type="text" name="locationName" value={this.state.locationName} onChange={this.handleFormChange}/>
                         </div>
+                            <button className="btn btn-danger float-right" type="submit">Locatie toevoegen</button>
                     </form>
                     <h4 className="text-center text-succes">{this.state.message}</h4>
                 </div >
