@@ -16,7 +16,6 @@ public class MyApp extends Application {
 		set.add(ReviewResource.class);
 		set.add(CORSFilter.class);
 		set.add(BundleResource.class);
-
 		return set;
 	}
 	

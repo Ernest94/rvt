@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ConceptBundles;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
@@ -96,7 +99,28 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 	
+	public List<ConceptBundles> getAllConceptsAndAllBundles() {
+		List<ConceptBundles> allConceptsAndAllBundles = new ArrayList<ConceptBundles>();
 
+		List<Concept> concepts = this.conceptRepo.readAll();
+		List<BundleConcept> bundlesConcepts = this.bundleConceptRepo.readAll();
+
+//		for(Concept concept: concepts) {
+//			conceptPlusRating.add(new ConceptPlusRating(concept, 0, ""));
+//		}
+//	
+		
+		for (Concept concept: concepts) {
+			List<BundleConcept> bundlesIncludingConcept = bundlesConcepts
+					  .stream()
+					  .filter(c -> c.getConcept().getId() == concept.getId() )
+					  .collect(Collectors.toList());
+			allConceptsAndAllBundles.add(new ConceptBundles(concept,bundlesIncludingConcept));
+			
+		}
+			
+		return allConceptsAndAllBundles;
+	}
 
 	
 	

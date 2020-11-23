@@ -4,6 +4,9 @@ import axios from 'axios';
 import {config} from './constants';
 import './UserSearch/search.css';
 import Permissions from './permissions.js'
+import Utils from './Utils.js'
+
+import {withRouter} from 'react-router-dom';
 
 class conceptOverview extends React.Component {
 
@@ -55,7 +58,7 @@ class conceptOverview extends React.Component {
     }
 
     getConcepts() {
-        axios.get(config.url.API_URL + "/webapi/review/curriculum/7")
+        axios.get(config.url.API_URL + "/webapi/theme_concept/concepts")
             .then(response => {
                 this.setState({ buttonDisabled: false, errors: null });
                 console.log(response.data);
@@ -64,21 +67,24 @@ class conceptOverview extends React.Component {
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                //this.fakeCurriculumResponse();
-                //const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
+                this.fakeCurriculumResponse();
+                const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
-                    //errors: this.props.setErrors(custErr)
+                    // errors: this.props.setErrors(custErr)
+                    // errors: Utils.setErrors(custErr)
                 });
             });
     }
 
     handleCurriculumReponse(data) {
         this.setState({
-            userName: data.traineeName,
-            userLocation: data.traineeLocation,
-            reviewDate: data.reviewDate,
-            currentConcepts: data.conceptsPlusRatings,
+            // userName: data.traineeName,
+            // userLocation: data.traineeLocation,
+            // reviewDate: data.reviewDate,
+            // currentConcepts: data.conceptsPlusRatings,
+            currentConcepts: data
+
         });
         console.log(this.state);
     }
@@ -152,19 +158,20 @@ class conceptOverview extends React.Component {
 
         var conceptDisplay = this.state.currentConcepts.map((concept) => {
             return (
-                <tr className="searchResult" key={concept.concept.id} /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.concept.week}
-                    </td>
-                    <td className="abbreviationClass p-3 text-nowrap align-middle">
-                        {concept.concept.theme.abbreviation}
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.concept.name}
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
+                <tr className="searchResult" key={concept.id} /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
+                    <td className="">
                         Actief
                     </td>
+                    <td className="">
+                        {concept.week}
+                    </td>
+                    <td className="">
+                        {concept.theme.name}
+                    </td>
+                    <td className="">
+                        {concept.name}
+                    </td>
+
                 </tr >
             )
         });
@@ -208,22 +215,22 @@ class conceptOverview extends React.Component {
 
                     </form>
                 </div >
-
+                <div className="container m-4">
                 <div className="text-center">
                     <table className="w-100 mx-auto">
                         <thead>
                             <tr>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="">
+                                    Actief
+                                    </th>
+                                <th className="">
                                     Week
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="">
                                     Thema
                                     </th>
-                                <th className="p-2 text-nowrap align-middle">
+                                <th className="">
                                     Concept
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Actief
                                     </th>
                             </tr>
                         </thead>
@@ -232,9 +239,10 @@ class conceptOverview extends React.Component {
                         </tbody>
                     </table>
                 </div >
+                </div>
             </div>
         )
     }
 }
 
-export default conceptOverview;
+export default withRouter(conceptOverview);
