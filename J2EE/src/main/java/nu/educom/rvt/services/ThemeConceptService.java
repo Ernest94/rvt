@@ -12,6 +12,7 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptBundles;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRepository;
@@ -99,27 +100,15 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 	
-	public List<ConceptBundles> getAllConceptsAndAllBundles() {
+	public ConceptBundleJSON getAllConceptsAndAllBundles() {
 		List<ConceptBundles> allConceptsAndAllBundles = new ArrayList<ConceptBundles>();
 
 		List<Concept> concepts = this.conceptRepo.readAll();
 		List<BundleConcept> bundlesConcepts = this.bundleConceptRepo.readAll();
-
-//		for(Concept concept: concepts) {
-//			conceptPlusRating.add(new ConceptPlusRating(concept, 0, ""));
-//		}
-//	
+	
+		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(concepts,bundlesConcepts);
 		
-		for (Concept concept: concepts) {
-			List<BundleConcept> bundlesIncludingConcept = bundlesConcepts
-					  .stream()
-					  .filter(c -> c.getConcept().getId() == concept.getId() )
-					  .collect(Collectors.toList());
-			allConceptsAndAllBundles.add(new ConceptBundles(concept,bundlesIncludingConcept));
-			
-		}
-			
-		return allConceptsAndAllBundles;
+		return conceptBundleJSON;
 	}
 
 	

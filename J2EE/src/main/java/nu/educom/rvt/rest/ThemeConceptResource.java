@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptBundles;
 import nu.educom.rvt.models.Concept;
 
@@ -64,8 +65,8 @@ public class ThemeConceptResource {
 	@Path("/concepts/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllConceptsAndBundles() {
-		List<ConceptBundles> allConceptsAndAllBundles = this.themeConceptServ.getAllConceptsAndAllBundles();
-		return (allConceptsAndAllBundles == null ? Response.status(409 /* JH: Had hier 404 verwacht */).build() : 
+		ConceptBundleJSON allConceptsAndAllBundles = this.themeConceptServ.getAllConceptsAndAllBundles();
+		return (allConceptsAndAllBundles == null ? Response.status(404).build() : 
 			Response.status(200).entity(allConceptsAndAllBundles).build());
 	}
 	
