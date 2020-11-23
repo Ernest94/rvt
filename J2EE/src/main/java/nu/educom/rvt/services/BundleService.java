@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleTrainee;
+import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.repositories.BundleConceptRepository;
@@ -27,6 +28,10 @@ public class BundleService {
 	
 	public Bundle findBundleByName(String name) {
 		return bundleRepo.readAll().stream().filter(b -> b.getName() == name).findFirst().orElse(null);
+	}
+	
+	public Bundle getBundleById(int bundleId) {
+		return bundleRepo.readById(bundleId);
 	}
 	
 	public void createNewBundle(Bundle bundle) {
@@ -59,6 +64,11 @@ public class BundleService {
 		
 		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
 		return bundleCheck;		
+	}
+	
+	public List<Concept> getAllConceptsFromBundle(Bundle bundle){
+		return bundleConceptRepo.readAll().stream().filter(conceptBundle -> conceptBundle.getBundle().getId() == bundle.getId())
+												   .map(conceptBundle -> conceptBundle.getConcept()).collect(Collectors.toList());
 	}
 	
 }

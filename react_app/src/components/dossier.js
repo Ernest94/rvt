@@ -224,6 +224,8 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
+
+        const setSelected = MultiSelect.setSelected;
         
         return (
             <div>
