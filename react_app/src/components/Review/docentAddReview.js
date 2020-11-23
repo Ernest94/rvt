@@ -13,7 +13,7 @@ import './review.css'
 
 import { config } from '../constants';
 import Permissions from '../permissions.js'
-import {SelectionTable} from './Selection.js'
+import {SelectionTable} from '../Selection.js'
 
 class docentAddReview extends React.Component {
 
@@ -362,7 +362,7 @@ class docentAddReview extends React.Component {
 
 
         const ConceptDisplay = ({selectionFunction,}) => (
-            <div className="table-responsive col-md-9">
+            <div className="table-responsive col-md-10">
                     <table className="addReviewTable table">
                         <thead>
                             <tr>
@@ -464,6 +464,7 @@ class docentAddReview extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
                     <SelectionTable
+                    fields={["active","stars","weeks","themes"]}
                             >
                                 {paramFunction=>(
                                     <ConceptDisplay selectionFunction={paramFunction} />

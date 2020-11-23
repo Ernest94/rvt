@@ -7,7 +7,7 @@ import './review.css'
 
 import { config } from '../constants'
 import Permissions from '../permissions.js'
-import {SelectionTable} from './Selection.js'
+import {SelectionTable} from '../Selection.js'
 
 class review extends React.Component {
     
@@ -111,7 +111,7 @@ class review extends React.Component {
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         const ConceptDisplay = ({selectionFunction,}) => (
-        <div class="table-responsive col-md-9">
+        <div class="table-responsive col-md-10">
         <table className="table reviewTable">
             <thead>
                 <tr>
@@ -187,6 +187,7 @@ class review extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>                 
                     </div >
                         <SelectionTable
+                        fields={["stars","weeks","themes"]}
                             >
                                 {paramFunction=>(
                                     <ConceptDisplay selectionFunction={paramFunction} />

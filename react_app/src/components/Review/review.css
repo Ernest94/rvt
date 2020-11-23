@@ -166,6 +166,7 @@
     padding:1px 3px;
     min-width:0;
     background-color:lightGrey;
+    float:right;
 }
 
 .lightButton:hover{
@@ -174,14 +175,14 @@
 .selectionTitle{
     display:inline;
 }
-.themeCheckbox{
+.selectionCheckbox{
     color:#ffc107!important;
 }
 .checkboxControl{
-    width:30%;
+    width:45%;
     padding:1px;
 }
-.themeCheckbox .icon{
+.selectionCheckbox .icon{
     height:10px!important;
     width:10px!important;
 }
