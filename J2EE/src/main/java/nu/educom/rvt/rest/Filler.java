@@ -265,14 +265,22 @@ public class Filler {
         
         //FILL THE BUNDLECONCEPT TABLE
         BundleConceptRepository bundleConceptRepo = new BundleConceptRepository();
-
-        
 		List<BundleConcept> BundleConcepts = new ArrayList<BundleConcept>();
-        BundleConcept bundleConcept1 = new BundleConcept(bundle1, concepts.get(0), 0, LocalDate.parse(now).toString(), endDate);
-        BundleConcept bundleConcept2 = new BundleConcept(bundle2, concepts.get(2), 2, LocalDate.parse(now).toString(), endDate);
-
-        bundleConceptRepo.create(bundleConcept1);
-        bundleConceptRepo.create(bundleConcept2);
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(0), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(1), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(2), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(3), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(5), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(8), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(10), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(12), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(2), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(23), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(24), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(5), 0, LocalDate.parse(now).toString(), endDate));
+		for (BundleConcept bundleConcept : BundleConcepts) {
+			bundleConceptRepo.create(bundleConcept);
+		}	
 
         //FILL THE BUNDLETRAINEE TABLE
         BundleTraineeRepository bundleTraineeRepo = new BundleTraineeRepository();

@@ -12,9 +12,10 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
-import nu.educom.rvt.models.view.ConceptBundles;
 import nu.educom.rvt.models.view.ConceptPlusRating;
+import nu.educom.rvt.models.view.ConceptView;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
@@ -101,12 +102,23 @@ public class ThemeConceptService {
 	}
 	
 	public ConceptBundleJSON getAllConceptsAndAllBundles() {
-		List<ConceptBundles> allConceptsAndAllBundles = new ArrayList<ConceptBundles>();
+		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
+		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
 
-		List<Concept> concepts = this.conceptRepo.readAll();
-		List<BundleConcept> bundlesConcepts = this.bundleConceptRepo.readAll();
+		List<Concept> conceptsModel = this.conceptRepo.readAll();
+		List<BundleConcept> bundlesConceptsModel = this.bundleConceptRepo.readAll();
 	
-		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(concepts,bundlesConcepts);
+		for (Concept concept : conceptsModel) {
+			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
+		}
+//		for (BundleConcept bundle : bundlesConceptsModel) {
+//			List<Integer> list_of_concept_ids = new ArrayList<>();
+//			for 
+//			bundlesConceptsView.add(new BundleView(bundle.getBundle().getName(),bundle.getBundle().getCreator().getName(),
+//					bundle.getBundle().getCreator().getLocation(),));
+//		}
+		
+		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(conceptsModel,bundlesConceptsModel);
 		
 		return conceptBundleJSON;
 	}

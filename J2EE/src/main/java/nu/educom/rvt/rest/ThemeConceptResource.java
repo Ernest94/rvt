@@ -8,7 +8,6 @@ import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
-import nu.educom.rvt.models.view.ConceptBundles;
 import nu.educom.rvt.models.Concept;
 
 import nu.educom.rvt.services.ThemeConceptService;

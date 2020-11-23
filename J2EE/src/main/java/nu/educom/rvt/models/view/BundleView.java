@@ -2,14 +2,14 @@ package nu.educom.rvt.models.view;
 
 import java.util.List;
 
-public class Bundle {
+public class BundleView {
 
 	private String name;
 	private String creator_name;
 	private String creator_location;
 	private List<Integer> list_of_concept_ids;
 		
-	public Bundle(String name, String creator_name, String creator_location, List<Integer> list_of_concept_ids) {
+	public BundleView(String name, String creator_name, String creator_location, List<Integer> list_of_concept_ids) {
 		super();
 		this.name = name;
 		this.creator_name = creator_name;
