@@ -238,14 +238,14 @@ class docentAddReview extends React.Component {
 
     submit = () => {
         confirmAlert({
-            title: 'Bevestig',
-            message: 'is de review compleet?',
+            // title: 'Bevestig',
+            message: 'Wilt u de review bevestigen? Let op! Hiermee wordt de review opgeslagen en zichtbaar voor trainees.',
             buttons: [{
-                label: 'ja, sla het op',
+                label: 'Ja',
                 onClick: () => this.submitReview()
             },
             {
-                label: 'nee, breng me terug',
+                label: 'Nee',
             //     onClick: () => alert('Click No')
             }
         ]
@@ -266,14 +266,14 @@ class docentAddReview extends React.Component {
 
     cancel = () => {
         confirmAlert({
-            title: 'annuleer',
-            message: 'wilt u de review annuleren?',
+            // title: 'annuleer',
+            message: 'Wilt u de review annuleren? Let op! Hiermee verwijdert u de gemaakte veranderingen.',
             buttons: [{
-                label: 'ja',
+                label: 'Ja',
                 onClick: () => this.cancelReview()
             },
             {
-                label: 'nee, breng me terug naar de review',
+                label: 'Nee',
             }
             ]
         })

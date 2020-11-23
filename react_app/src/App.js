@@ -18,6 +18,7 @@ import addTheme from './components/addTheme.js';
 import addConcept from './components/addConcept.js';
 import conceptOverview from './components/conceptOverview.js';
 import addLocation from './components/addLocation.js';
+import addBundle from './components/addBundle.js';
 import review from './components/Review/review.js';
 import docentAddReview from './components/Review/docentAddReview.js';
 
@@ -79,6 +80,8 @@ class App extends React.Component {
                             <AccessRoute exact path="/addConcept" component={addConcept}/>
 
                             <AccessRoute exact path="/addLocation" component={addLocation}/>
+
+                            <AccessRoute exact path="/addBundle" component={addBundle}/>
 
                             <AccessRoute exact path="/conceptOverview" component={conceptOverview}/>
 

@@ -7,6 +7,7 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
+import MultiSelect from "react-multi-select-component";
 
 class Dossier extends React.Component {
     
@@ -29,6 +30,7 @@ class Dossier extends React.Component {
             locationDisplayName: "",
             blocked: false,
             serverFail: false,
+            bundleCheck: [],
         };
     }
 
@@ -36,9 +38,9 @@ class Dossier extends React.Component {
         const { computedMatch: { params } } = this.props;
         Utils.dateValidation();
         // this.props.dateValidation();
-        await this.setState({pageLoading: true, userId: params.userId});
-        this.getAllInfo();
-        
+        await this.setState({ pageLoading: true, userId: params.userId });    
+        await console.log(this.state.role);
+        await this.getAllInfo();             
     }
     
     static hasAccess() {
@@ -109,13 +111,32 @@ class Dossier extends React.Component {
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
                 pageLoading: false,
-            });
+           });
+            this.getTraineeBundles();
             this.canViewUserDossier();
            
         })).catch(errors => {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
+    }
+
+    getTraineeBundles() {
+        if (this.state.role.name !== "Trainee") {
+            console.log("dossier is from a non Trainee user");
+            return;
+        }
+
+        axios.get(config.url.API_URL + "/webapi/bundle/bundleTrainee/" + this.state.userId)
+            .then(response => {
+                this.setState({
+                    bundleCheck: response.data.bundleCheck
+                });
+                console.log(this.state.bundleCheck);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     
     handleSubmit = (event) => {
@@ -186,8 +207,7 @@ class Dossier extends React.Component {
 
         const {name, email, roleName, startDate, userId, pageLoading, errors, blocked,
             serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
-        const { editDisabled, isTrainee } = this.props;
-        console.log(roleName);
+        const { editDisabled } = this.props;
         const traineeDossier = roleName === "Trainee";
 
         if (pageLoading) return <span className="center"> Laden... </span>
@@ -226,6 +246,7 @@ class Dossier extends React.Component {
 
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
+                        
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
@@ -271,7 +292,7 @@ class Dossier extends React.Component {
                             Pas gebruiker aan
                         </Link>
                     </div>
-                    <div>
+                    {/* <div>
                         <Link 
                             className="btn btn-danger btn-block" 
                             to={"/linking/" + userId}
@@ -279,7 +300,7 @@ class Dossier extends React.Component {
                             >
                             Gelinkte gebruikers
                         </Link>
-                    </div>
+                    </div> */}
                     <div>
                         <Link
                             className="btn btn-danger btn-block"
@@ -293,7 +314,7 @@ class Dossier extends React.Component {
                         <Link
                             className="btn btn-danger btn-block"
                             to={"/docentAddReview/"  + userId /*+ "/" + name */}
-                                hidden={!traineeDossier}
+                                hidden={!traineeDossier || !Permissions.canAddReview()}
                                 >
                                 Review aanmaken/aanpassen
                         </Link>
