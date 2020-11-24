@@ -5,6 +5,7 @@ import {config} from './constants';
 import './UserSearch/search.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
+import { Checkbox} from '@material-ui/core';
 
 import {withRouter} from 'react-router-dom';
 
@@ -16,9 +17,11 @@ class conceptOverview extends React.Component {
         this.bundles = [];
         this.state = {
             pageLoading: true,
-            errors: null,
-            bundle: null
+            errors: "",
+            selectedBundle: "",
+            selectedConceptIds:[]
         };
+        this.onChangeBundle = this.onChangeBundle.bind(this);
     }
 
     static hasAccess() {
@@ -32,7 +35,6 @@ class conceptOverview extends React.Component {
     getConceptsAndBundles() {
         axios.get(config.url.API_URL + "/webapi/theme_concept/concepts/bundles")
             .then(response => {
-                console.log(response)
                 this.concepts = response.data.concepts;
                 this.bundles = response.data.bundlesConcepts;
                 this.setState({pageLoading: false});
@@ -40,14 +42,26 @@ class conceptOverview extends React.Component {
             .catch((error) => {
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({errors: Utils.setErrors(custErr)});
+                this.setState({errors: Utils.setErrors(error)});
             });
     }
 
     onChangeBundle = (e) => {
-        var selectedBundle = this.bundles.find(bundle => bundle.id === parseInt(e.target.value));
-        this.setState({bundle: selectedBundle.name});
+        var bundleId = e.target.value;
+        this.setState({
+            selectedBundle: bundleId,
+        });
+        this.selectActiveConcepts(bundleId)
     }
 
+    selectActiveConcepts(bundleId) {
+        this.bundles.find(bundle => bundle.id === parseInt(bundleId));
+        var conceptIdsInBundle = this.bundles.find(bundle => bundle.id === parseInt(bundleId)).list_of_concept_ids;
+        // var conceptsInBundle = this.concepts.filter(concept => conceptIdsInBundle.includes(concept.id));
+        this.setState({
+            selectedConceptIds: conceptIdsInBundle,
+        });        
+    }
     // onChangeWeekBlock = (e) => {
     //     this.setState({
     //         block: this.state.blocks.find(loc => loc.id === parseInt(e.target.value)),
@@ -61,24 +75,29 @@ class conceptOverview extends React.Component {
     }
 
     render() {
-        const {weekBlocks, pageLoading} = this.state;
-        const bundles = this.bundles;
-        if (pageLoading) return (<h2 className="center">Laden...</h2>)
-
-        if (weekBlocks === null || bundles === null) {
-            return (<span className="center">Mislukt om pagina te laden.</span>)
-        }
-        const bundleOptions = bundles.map((bundle) => {
+        const bundleOptions = this.bundles.map((bundle) => {
             return (
-                <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
+                <option key={bundle.id} value={bundle.id}> {bundle.name}</option>
             )
         });
 
+        // const {bundle,weekBlocks, pageLoading} = this.state;
+        const {pageLoading} = this.state;
+        if (pageLoading) return (<h2 className="center">Laden...</h2>)
+        // if (weekBlocks === null) {
+        //     return (<span className="center">Mislukt om pagina te laden.</span>)
+        // }
+  
         var conceptDisplay = this.concepts.map((concept) => {
+        var selected = (this.state.selectedConceptIds.includes(concept.id)) ? true:false;
             return (
-                <tr className="searchResult" key={concept.id} /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
-                    <td className="">
-                        Actief
+                <tr className={"searchResult " + (selected ? 'text-dark' : 'text-muted')} key={concept.id}>
+                    <td>
+                    <Checkbox
+                         key={"active_"+concept.id}
+                         checked={this.state.selectedConceptIds.includes(concept.id)}
+                         color="red"
+                        />                   
                     </td>
                     <td className="">
                         {concept.week}
@@ -89,7 +108,6 @@ class conceptOverview extends React.Component {
                     <td className="">
                         {concept.name}
                     </td>
-
                 </tr >
             )
         });
@@ -103,12 +121,11 @@ class conceptOverview extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
 
                     <div>
-                        bundel:
+                        Bundel:
                         <select name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
-
                                 <option hidden value=''>Bundel</option>
                                 {bundleOptions}
                             </select>
