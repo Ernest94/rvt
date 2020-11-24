@@ -54,7 +54,7 @@ class addTheme extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createThemeJson());
 
-                    this.setErrors({login: ["Mislukt om thema toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om thema toe te voegen. Mogelijk bestaat er al een thema met deze naam."]}); 
                     this.setState({loading: false});
                 });
         }

@@ -38,5 +38,20 @@ public class ThemeConceptService {
 	public List<Concept> getAllActiveConceptsfromUser(User user){
 		return this.conceptRepo.readAll();
 	}
+	public boolean doesThemeExist(Theme theme) {
+		ThemeRepository themeRepo = new ThemeRepository();
+		Theme duplicate = themeRepo.readByName(theme.getName());		
+		return duplicate==null;
+	}
+	public boolean validateTheme(Theme theme) {
+		if(theme.getName().trim().isEmpty() 
+		|| theme.getDescription().trim().isEmpty()
+		|| theme.getAbbreviation().trim().isEmpty()) {
+			return false;
+		}
+		else {
+			return this.doesThemeExist(theme);
+		}		
+	}
 }
 	

@@ -23,9 +23,15 @@ public class ThemeConceptResource {
 	@Path("/saveTheme")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveTheme(Theme theme) {
-        /* JH TIP: Mis hier of in de service de controle op alle velden van het thema */ 
-		Theme createdTheme = this.themeConceptServ.addTheme(theme);
-		return (createdTheme == null ? Response.status(409/* JH: Had hier 400 verwacht */).build() : Response.status(201).entity(createdTheme).build());  
+		
+		boolean valid = themeConceptServ.validateTheme(theme);
+		if(valid) {
+			Theme createdTheme = this.themeConceptServ.addTheme(theme);
+			return Response.status(201).entity(createdTheme).build();
+		}
+		else {
+			return Response.status(400).build();
+		}
   	}
 	
 	@GET
