@@ -4,19 +4,31 @@ import java.util.List;
 
 public class BundleView {
 
+	private Integer id;
 	private String name;
 	private String creator_name;
 	private String creator_location;
 	private List<Integer> list_of_concept_ids;
+	private List<Integer> list_of_concept_week_offset;
 		
-	public BundleView(String name, String creator_name, String creator_location, List<Integer> list_of_concept_ids) {
+	public BundleView(Integer id, String name, String creator_name, String creator_location, 
+			List<Integer> list_of_concept_ids, List<Integer> list_of_concept_week_offset ) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.creator_name = creator_name;
 		this.creator_location = creator_location;
 		this.list_of_concept_ids = list_of_concept_ids;
+		this.list_of_concept_week_offset = list_of_concept_week_offset;
 	}
-	
+		
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -41,4 +53,11 @@ public class BundleView {
 	public void setList_of_concept_ids(List<Integer> list_of_concept_ids) {
 		this.list_of_concept_ids = list_of_concept_ids;
 	}
+	public List<Integer> getList_of_concept_week_offset() {
+		return list_of_concept_week_offset;
+	}
+	public void setList_of_concept_week_offset(List<Integer> list_of_concept_week_offset) {
+		this.list_of_concept_week_offset = list_of_concept_week_offset;
+	}
+	
 }
