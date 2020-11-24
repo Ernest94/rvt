@@ -188,6 +188,7 @@ class review extends React.Component {
                     </div >
                         <SelectionTable
                         fields={["stars","weeks","themes"]}
+                        starsSelected={[1,5]}
                             >
                                 {paramFunction=>(
                                     <ConceptDisplay selectionFunction={paramFunction} />

@@ -169,8 +169,8 @@
     float:right;
 }
 
-.lightButton:hover{
-    background-color:rgb(155, 155, 155)!important;
+.conceptSelection .lightButton:hover{
+    background-color:rgb(155, 155, 155);
 }
 .selectionTitle{
     display:inline;
@@ -185,6 +185,12 @@
 .selectionCheckbox .icon{
     height:10px!important;
     width:10px!important;
+}
+.conceptSelection .switchChecked + .switchTrack{
+    background-color:#CC2C3E!important;
+}
+.conceptSelection .switchChecked  .switchThumb{
+    background-color:#CC2C3E!important;
 }
 /*#endregion ConceptSelectionStyling */
 

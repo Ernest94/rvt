@@ -465,6 +465,7 @@ class docentAddReview extends React.Component {
                     </div >
                     <SelectionTable
                     fields={["active","stars","weeks","themes"]}
+                    starsSelected={[0,5]}
                             >
                                 {paramFunction=>(
                                     <ConceptDisplay selectionFunction={paramFunction} />

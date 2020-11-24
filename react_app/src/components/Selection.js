@@ -19,7 +19,6 @@ class SliderSelection extends React.Component {
             marks
             onChange={(e, newValue) => this.props.handleChange(newValue, this.props.name)}
             onChangeCommitted={(e,newValue) => this.props.handleChangeCommit(newValue, this.props.name)}
-            valueLabelDisplay="auto"
             aria-labelledby={this.props.name + "-slider"}
             valueLabelDisplay="on"
             min={this.props.min}
@@ -33,7 +32,12 @@ class SwitchSelection extends React.Component {
     render(){
         return(
             <div>Nee 
-                <Switch />
+                <Switch 
+                classes={{
+                    track: 'switchTrack',
+                    thumb: 'switchThumb',
+                    checked: 'switchChecked',
+                }} />
             Ja
         </div>)}
 }
@@ -84,7 +88,7 @@ class ConceptSelection extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
-            stars: [1,5],
+            stars: [0,5],
             weeks: [1,10],
         }
 
@@ -182,6 +186,7 @@ class SelectionTable extends React.Component {
     }
     componentDidMount(){
         this.getThemes();
+        this.setState({starsSelected:this.props.starsSelected});
     }
     getThemes() {
         axios.get(config.url.API_URL + "/webapi/theme_concept/themes")
