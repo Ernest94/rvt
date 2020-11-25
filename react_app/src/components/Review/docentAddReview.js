@@ -23,7 +23,7 @@ class docentAddReview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
-            reviewDate: "",
+            reviewDate: new Date(),
             concepts: [],
             pageLoading: true,
             weeksPerBlock: 2,
@@ -139,7 +139,7 @@ class docentAddReview extends React.Component {
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
-            reviewDate: data.reviewDate,
+            reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
             reviewId: data.reviewId,
             message: "",
@@ -187,7 +187,15 @@ class docentAddReview extends React.Component {
         console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
-
+    // async setDate(event){
+    //     console.log(event);
+    //     const { name, value } = event.target;
+    //     console.log("Date Input Value: " + value);
+    //     console.log("Date parsed Value: " + new Date(value.split("-")).setTime(new Date().getTime()).toLocaleString());
+    //     this.setState({
+    //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
+    //     },()=>console.log(this.state.reviewDate));
+    // }
     async setReviewData(event) {
         const { name, value } = event.target;
         await this.setState({
@@ -252,14 +260,16 @@ class docentAddReview extends React.Component {
     };
 
     submitReview() {
+        this.setState({reviewDate: new Date()})
         axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
         .then(response => {
-            this.setState({
-                message: "uw review is succesvol opgeslagen."
-            });
+            this.props.history.push('/curriculum/' + this.state.userId);
         })
         .catch((error) => {
-            console.log("an error occorured " + error);
+            this.setState({
+                message: "Er is een technische fout opgetreden bij het bevestigen van deze review."
+            });
+            console.log("an error occurred " + error);
         });
     }
 
@@ -281,7 +291,6 @@ class docentAddReview extends React.Component {
     cancelReview() {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
-              console.log(this.state)
               this.props.history.push('/dossier/' + this.state.userId);
 
             //   this.props.handleReturnToDossier(this.state.userId);
@@ -420,7 +429,18 @@ class docentAddReview extends React.Component {
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={(event) => { this.setReviewData(event) }} /></h3></div>
+                    {/* <div className="col"> Disabled change date function for now because it clashes with DateTime for reviewDate
+                        <h3>
+                            <input 
+                                className="border-0 text-center" 
+                                type="date"
+                                id="date" 
+                                name="reviewDate" 
+                                value={reviewDate.getFullYear() + "-" + reviewDate.getMonth() + "-" + reviewDate.getDate()} 
+                                placeholder="dd-mm-yyyy" 
+                                onChange={(event) => { this.setDate(event) }} />
+                        </h3>
+                    </div> */}
                     <div className="col">
                         <h3 classname="text-center">Review
                             <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
