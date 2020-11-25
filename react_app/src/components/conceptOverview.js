@@ -6,8 +6,9 @@ import './UserSearch/search.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
 import { Checkbox} from '@material-ui/core';
+import { FaPlus } from "react-icons/fa";
 
-import {withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 class conceptOverview extends React.Component {
 
@@ -40,7 +41,7 @@ class conceptOverview extends React.Component {
                 this.concepts = response.data.concepts;
                 this.bundles = response.data.bundlesConcepts;
                 this.setState({pageLoading: false});
-                console.log(this.bundles)
+                // console.log(this.bundles)
             })
             .catch((error) => {
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
@@ -65,19 +66,12 @@ class conceptOverview extends React.Component {
         var conceptIdsInBundle = this.bundles.find(bundle => bundle.id === parseInt(bundleId)).list_of_concept_ids;
         var conceptsWeekOffsetInBundle = this.bundles.find(bundle => bundle.id === parseInt(bundleId)).list_of_concept_week_offset;
         this.setState({
-            selectedConceptIds: conceptIdsInBundle
+            selectedConceptIds: conceptIdsInBundle,
+            selectedConceptsWeekOffset: conceptsWeekOffsetInBundle  
         });      
     }
-    // onChangeWeekBlock = (e) => {
-    //     this.setState({
-    //         block: this.state.blocks.find(loc => loc.id === parseInt(e.target.value)),
-    //         blockDisplayName: e.target.value,
-    //     });
-    // }
-
-    getActiveDisplayName(bool) {
-        if (bool) return "ja";
-        else return "nee";
+    handleAddBundle() {
+        this.props.history.push('/addBundle');
     }
 
     render() {
@@ -87,55 +81,56 @@ class conceptOverview extends React.Component {
             )
         });
 
-        const weekOptions = ["",1,2,3,4,5,6,7,8,9,10,11,12].map((weekOffset) => {
+        const weekOptions = [0,1,2,3,4,5,6,7,8,9,10,11,12].map((weekOffset) => {
             return (
                 <option key={weekOffset} value={weekOffset}> {"Startweek " + (weekOffset ? "+ " + weekOffset : "")}</option>
             )
         });
-        const {pageLoading} = this.state;
-        if (pageLoading) return (<h2 className="center">Laden...</h2>)
 
-  
+        if (this.state.pageLoading) return (<h2 className="center">Laden...</h2>)
+
         var conceptDisplay = this.concepts.map((concept) => {
-            console.log(concept.id-1)
-        var selected = (this.state.selectedConceptIds.includes(concept.id)) ? true:false;
-        var weekoffset =  (this.state.selectedConceptIds.includes(concept.id)) ? "" : "";
+            var selected = (this.state.selectedConceptIds.includes(concept.id)) ? true:false;
+            var weekoffset =  (this.state.selectedConceptIds.includes(concept.id)) ? this.state.selectedConceptsWeekOffset[concept.id-1] : "";
             return (
-                <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
-                    <td>
-                    <Checkbox
-                         key={"active_"+concept.id}
-                         checked={this.state.selectedConceptIds.includes(concept.id)}
-                        />                   
-                    </td>
-                    <td className="">
-                    <select className="m-1" name="week" id="week"
-                                value={weekoffset}
-                                onChange={this.onChangeWeek}
-                                required>
-                                <option hidden value=''></option>
-                                {weekOptions}
-                    </select>
-                    </td>
-                    <td className="">
-                        {concept.theme.name}
-                    </td>
-                    <td className="">
-                        {concept.name}
-                    </td>
-                </tr >
+                    <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
+                        <td>
+                        <Checkbox
+                            key={"active_"+concept.id}
+                            checked={this.state.selectedConceptIds.includes(concept.id)}/>                   
+                        </td>
+                        <td className="">
+                        <select className="m-1" name="week" id="week"
+                                    value={weekoffset}
+                                    onChange={this.onChangeWeek}
+                                    required>
+                                    <option hidden value=''></option>
+                                    {weekOptions}
+                        </select>
+                        </td>
+                        <td className="">
+                            {concept.theme.name}
+                        </td>
+                        <td className="">
+                            {concept.name}
+                        </td>
+                    </tr >
             )
         });
 
 
         return (
 
-            <div>
-                <h2 className="text-center">Concepten overzicht</h2>
-                <div >
-                    <ul className="errors">{this.state.errors}</ul>
+            <div className="container">
 
-                    <div>
+                <h2 className="text-center">Concepten overzicht</h2>
+                
+                <div className="row"> 
+                    <ul className="errors">{this.state.errors}</ul>
+                </div>
+
+                <div className="row">
+                    <div className="col-4">
                         Bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
@@ -144,9 +139,13 @@ class conceptOverview extends React.Component {
                                 <option hidden value=''>Bundel</option>
                                 {bundleOptions}
                             </select>
-
                     </div>
-                </div >
+                    <div className="col-8">
+                        <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                            <FaPlus/>
+                        </Link>
+                   </div>
+                </div>
 
                 <div className="container m-4">
                 <div className="text-center">

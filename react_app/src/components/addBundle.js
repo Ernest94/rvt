@@ -26,7 +26,6 @@ class addBundle extends React.Component {
         this.setState({
             [name]: value,
         });
-        console.log(name + " " + value);
     }
 
     validate() {
@@ -38,12 +37,11 @@ class addBundle extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            console.log(config.url.API_URL + "/webapi/bundle/create");
-            console.log(this.createBundleJson())
             axios.post(config.url.API_URL + "/webapi/bundle/create", this.createBundleJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
+                    this.props.history.push('/conceptOverview');
                 })
                 .catch((error) => {
                     this.setErrors({login: ["Mislukt om bundel aan te maken."]}); 
@@ -67,15 +65,6 @@ class addBundle extends React.Component {
         this.setState({ message:"bundel aangemaakt", 
                         name: ""});
     }
-
-
-    // onChangeBundle = (e) => {
-    //     var selectedBundle = this.state.name.find(bundle=> bundle.id === parseInt(e.target.value));
-    //     this.setState({
-    //         bundle: selectedBundle,
-    //         bundleDisplayName: e.target.value
-    //     });
-    // }
     
     setErrors = (errors) => {
         const foundErrors = Object.keys(errors).map((key) =>
@@ -88,31 +77,33 @@ class addBundle extends React.Component {
 
     render() {
 
-        // const bundleOptions = this.state.bundle.map((bundle) => {
-        //     return (
-        //         <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
-        //     )
-        // });
-
         return (
-            <div>
-                <h2>Bundel aanmaken</h2>
+            <div className="container" >
+                <h2 className="text-center">Bundel aanmaken</h2>
 
-                <div className="container main-container">
                     <form onSubmit={this.handleSubmit}>
+                    <div className="row justify-content-center">
                         <div className="form-group">
                             <label htmlFor="name">Naam:</label>
                             <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                         </div>
-                        <div>{(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                            <button className="btn btn-primary float-right" type="submit">maak aan</button>}</div>
-                        <div ><button className="btn btn-primary float-right" type="submit">annuleer</button></div>
-                            
-
+                    </div>
+                        <div className="row justify-content-center m-1">
+                            <div className="col-4">
+                            {(this.state.loading) ? 
+                                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
+                                <button className="btn btn-primary float-right" type="submit">maak aan</button>}
+                            </div>
+                        </div>
+                        
+                        <div className="row justify-content-center m-1">
+                            <div className="col-4">
+                                <button className="btn btn-primary float-right" type="submit">annuleer</button>
+                            </div>
+                        </div>
                     </form>
                     <h4 className="text-center text-success">{this.state.message}</h4>
-                </div >
-            </div>
+            </div >
 
         )
     }
