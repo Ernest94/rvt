@@ -41,7 +41,7 @@ class conceptOverview extends React.Component {
                 this.concepts = response.data.concepts;
                 this.bundles = response.data.bundlesConcepts;
                 this.setState({pageLoading: false});
-                // console.log(this.bundles)
+                console.log(this.bundles)
             })
             .catch((error) => {
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
@@ -56,10 +56,7 @@ class conceptOverview extends React.Component {
             selectedBundle: bundleId,
         });
         this.selectActiveConcepts(bundleId)
-    }    
-    onChangeWeek = (e) => {
-        console.log(e.target.value);
-    }
+    } 
 
     selectActiveConcepts(bundleId) {
         this.bundles.find(bundle => bundle.id === parseInt(bundleId));
@@ -70,6 +67,29 @@ class conceptOverview extends React.Component {
             selectedConceptsWeekOffset: conceptsWeekOffsetInBundle  
         });      
     }
+
+    onChangeActive = (e) => {
+        var changedConceptId = e.target.id;
+        var indexChangedConceptInSelectedConceptIds = this.state.selectedConceptIds.indexOf(changedConceptId);
+        console.log(indexChangedConceptInSelectedConceptIds)
+       if (this.state.selectedConceptIds.includes(parseInt(changedConceptId.slice(7)))) {
+        this.setState({
+            selectedConceptIds: this.state.selectedConceptIds.filter(function(conceptInStateId) { 
+                return conceptInStateId !== parseInt(changedConceptId.slice(7))})
+        });
+        } else {
+            this.setState(previousState => ({
+                selectedConceptIds: [...previousState.selectedConceptIds, parseInt(changedConceptId.slice(7))],
+                selectedConceptsWeekOffset: [...previousState.selectedConceptsWeekOffset,0],
+            }));        
+        }
+    }
+    
+    onChangeWeek = (e) => {
+        console.log(e.target.value);
+        console.log(e.target.id);
+    }
+
     handleAddBundle() {
         this.props.history.push('/addBundle');
     }
@@ -91,19 +111,23 @@ class conceptOverview extends React.Component {
 
         var conceptDisplay = this.concepts.map((concept) => {
             var selected = (this.state.selectedConceptIds.includes(concept.id)) ? true:false;
-            var weekoffset =  (this.state.selectedConceptIds.includes(concept.id)) ? this.state.selectedConceptsWeekOffset[concept.id-1] : "";
+            var weekoffset =  (this.state.selectedConceptIds.includes(concept.id)) ? this.state.selectedConceptsWeekOffset[this.state.selectedConceptIds.indexOf(concept.id)]: "";
             return (
                     <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
                         <td>
                         <Checkbox
-                            key={"active_"+concept.id}
-                            checked={this.state.selectedConceptIds.includes(concept.id)}/>                   
+                            id={"concept"+concept.id}
+                            checked={this.state.selectedConceptIds.includes(concept.id)}
+                            onChange={this.onChangeActive}
+                            />                   
                         </td>
                         <td className="">
-                        <select className="m-1" name="week" id="week"
+                        <select className="m-1" name="week" 
+                                    id={"concept"+concept.id}
                                     value={weekoffset}
                                     onChange={this.onChangeWeek}
-                                    required>
+                                    required
+                                    disabled={!selected}>
                                     <option hidden value=''></option>
                                     {weekOptions}
                         </select>

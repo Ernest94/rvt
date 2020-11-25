@@ -187,8 +187,8 @@ public class Filler {
 		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,2,now,endDate));
 		concepts.add(new Concept(themes.get(8),"clean code",null,1,now,endDate));
 		//week 3&4
-		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,now,endDate));
-		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,now,endDate));
+		concepts.add(new Concept(themes.get(8),"programma ontwerp",null,3,now,endDate));
+		concepts.add(new Concept(themes.get(8),"plan van aanpak 'devide & conquer'",null,3,now,endDate));
 		//thema werken in/ aan projecten
 		//week 1&2
 		concepts.add(new Concept(themes.get(9),"coding styles ",null,1,now,endDate));
@@ -268,15 +268,15 @@ public class Filler {
 		List<BundleConcept> BundleConcepts = new ArrayList<BundleConcept>();
         BundleConcepts.add(new BundleConcept(bundle1, concepts.get(0), 0, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle1, concepts.get(1), 0, LocalDate.parse(now).toString(), endDate));
-        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(2), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(2), 2, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle1, concepts.get(3), 0, LocalDate.parse(now).toString(), endDate));
-        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(5), 0, LocalDate.parse(now).toString(), endDate));
-        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(8), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(5), 9, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(8), 2, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle1, concepts.get(10), 0, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle1, concepts.get(12), 0, LocalDate.parse(now).toString(), endDate));
-        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(2), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(2), 4, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle2, concepts.get(23), 0, LocalDate.parse(now).toString(), endDate));
-        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(24), 0, LocalDate.parse(now).toString(), endDate));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(24), 9, LocalDate.parse(now).toString(), endDate));
         BundleConcepts.add(new BundleConcept(bundle2, concepts.get(5), 0, LocalDate.parse(now).toString(), endDate));
 		for (BundleConcept bundleConcept : BundleConcepts) {
 			bundleConceptRepo.create(bundleConcept);
