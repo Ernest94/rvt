@@ -297,7 +297,7 @@ class Dossier extends React.Component {
                         <Link
                             className="btn btn-danger btn-block"
                             to={"/docentAddReview/"  + userId /*+ "/" + name */}
-                                hidden={!traineeDossier}
+                                hidden={!traineeDossier || !Permissions.canAddReview()}
                                 >
                                 Review aanmaken/aanpassen
                         </Link>

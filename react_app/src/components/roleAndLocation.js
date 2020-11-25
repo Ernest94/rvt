@@ -1,6 +1,5 @@
 import React from 'react';
 import LocationSelection from './locationSelection.js';
-import './roleAndLocation.css';
 
 class RoleAndLocation extends React.Component {
     
@@ -23,10 +22,12 @@ class RoleAndLocation extends React.Component {
         }
         
         return (
-            <div>
-                <div className="form-group selection_spacing">
+            <div className="m-3 p-2">
+
+                <div className="">
                     <label htmlFor="role">Rol:</label>
-                    <select name="role" id="role" 
+                    <div>
+                    <select className="m-1" name="role" id="role" 
                         value={this.props.roleDisplayName} 
                         onChange={this.props.onChangeRole}
                         required>
@@ -34,9 +35,9 @@ class RoleAndLocation extends React.Component {
                         <option hidden value=''>Rol</option>
                         {rolesOptions}
                     </select>
+                    </div>
                 </div>
                 
-
                 <LocationSelection 
                     locations={this.props.locations}
                     isTrainee={this.props.isTrainee}
