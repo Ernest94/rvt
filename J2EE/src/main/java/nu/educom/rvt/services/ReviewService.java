@@ -1,6 +1,7 @@
 package nu.educom.rvt.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +45,7 @@ public class ReviewService {
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
 														  .collect(Collectors.toList());
 		if(pendingReviews.size() == 0) {
-			reviewRepo.create(new Review(LocalDate.now().toString(), "", "", Review.Status.PENDING, user));
+			reviewRepo.create(new Review(LocalDateTime.now(), "", "", Review.Status.PENDING, user));
 		}
 	}
 	
@@ -83,9 +84,9 @@ public class ReviewService {
 			return conceptPlusRating;
 		}
 		
-		String mostRecentDate = reviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
+		LocalDateTime mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();
 		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
-		List<Review> otherReviews = reviews.stream().filter(r -> LocalDate.parse(r.getDate()).getDayOfYear() < LocalDate.parse(mostRecentDate).getDayOfYear()).collect(Collectors.toList());
+		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).collect(Collectors.toList());
 		
 		
 		
@@ -203,7 +204,7 @@ public class ReviewService {
     }
 	
 	public Review getMostRecentReview(List<Review> allReviews) {
-		String mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(String::compareTo).get();
+		LocalDateTime mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();;
 		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
 	}
 	

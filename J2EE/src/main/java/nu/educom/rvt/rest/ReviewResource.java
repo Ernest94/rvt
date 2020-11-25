@@ -1,5 +1,6 @@
 package nu.educom.rvt.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -53,7 +54,7 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
+		LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -86,7 +87,7 @@ public class ReviewResource {
 		String traineeLocation = userOutput.getLocation().getName();
 		
 		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
-		String reviewDate = mostRecentReview.getDate();
+		LocalDateTime reviewDate = mostRecentReview.getDate();
 		int reviewId = mostRecentReview.getId();
 		
 		conceptsRatingsJSON.setTraineeName(traineeName);
