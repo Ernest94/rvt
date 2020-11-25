@@ -117,33 +117,6 @@ public class ThemeConceptService {
 			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
 		}
 		
-//		List<Integer> list_of_bundle_ids = new ArrayList<>();
-//		for (BundleConcept bundleConcept : bundlesConceptsModel) {
-//			if (!list_of_bundle_ids.contains(bundleConcept.getBundle().getId())) {
-//				list_of_bundle_ids.add(bundleConcept.getBundle().getId());
-//			}
-//		}
-//		
-//		for (Integer bundle_id : list_of_bundle_ids) {
-//			List<Integer> list_of_concept_ids_in_bundle = new ArrayList<>();
-//			List<Integer> list_of_concept_week_offset = new ArrayList<>();
-//			Integer bundleId = null;
-//			String bundleName = null;
-//			String bundleCreatorName = null;
-//			String bundleCreatorLocation = null;
-//			for (BundleConcept bundleConcept : bundlesConceptsModel) {
-//				if (bundleConcept.getBundle().getId()==bundle_id) {
-//					list_of_concept_ids_in_bundle.add(bundleConcept.getConcept().getId());
-//					list_of_concept_week_offset.add(bundleConcept.getWeekOffset());
-//					bundleId = bundleConcept.getBundle().getId();
-//					bundleName = bundleConcept.getBundle().getName();
-//					bundleCreatorName = bundleConcept.getBundle().getCreator().getName();
-//					bundleCreatorLocation = bundleConcept.getBundle().getCreator().getLocation().getName();
-//				}
-//			}
-//			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleCreatorLocation,list_of_concept_ids_in_bundle,list_of_concept_week_offset));
-//		}	
-		
 		for (Bundle bundle : bundlesModel) {
 			List<Integer> list_of_concept_ids_in_bundle = new ArrayList<>();
 			List<Integer> list_of_concept_week_offset = new ArrayList<>();
@@ -163,6 +136,4 @@ public class ThemeConceptService {
 		
 		return conceptBundleJSON;
 	}
-
 }
-	

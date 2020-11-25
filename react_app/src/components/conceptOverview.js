@@ -19,9 +19,11 @@ class conceptOverview extends React.Component {
             pageLoading: true,
             errors: "",
             selectedBundle: "",
-            selectedConceptIds:[]
+            selectedConceptIds:[],
+            selectedConceptsWeekOffset:[]
         };
         this.onChangeBundle = this.onChangeBundle.bind(this);
+        this.onChangeWeek= this.onChangeWeek.bind(this);
     }
 
     static hasAccess() {
@@ -38,6 +40,7 @@ class conceptOverview extends React.Component {
                 this.concepts = response.data.concepts;
                 this.bundles = response.data.bundlesConcepts;
                 this.setState({pageLoading: false});
+                console.log(this.bundles)
             })
             .catch((error) => {
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
@@ -52,15 +55,18 @@ class conceptOverview extends React.Component {
             selectedBundle: bundleId,
         });
         this.selectActiveConcepts(bundleId)
+    }    
+    onChangeWeek = (e) => {
+        console.log(e.target.value);
     }
 
     selectActiveConcepts(bundleId) {
         this.bundles.find(bundle => bundle.id === parseInt(bundleId));
         var conceptIdsInBundle = this.bundles.find(bundle => bundle.id === parseInt(bundleId)).list_of_concept_ids;
-        // var conceptsInBundle = this.concepts.filter(concept => conceptIdsInBundle.includes(concept.id));
+        var conceptsWeekOffsetInBundle = this.bundles.find(bundle => bundle.id === parseInt(bundleId)).list_of_concept_week_offset;
         this.setState({
-            selectedConceptIds: conceptIdsInBundle,
-        });        
+            selectedConceptIds: conceptIdsInBundle
+        });      
     }
     // onChangeWeekBlock = (e) => {
     //     this.setState({
@@ -77,30 +83,39 @@ class conceptOverview extends React.Component {
     render() {
         const bundleOptions = this.bundles.map((bundle) => {
             return (
-                <option key={bundle.id} value={bundle.id}> {bundle.name}</option>
+                <option key={bundle.id} value={bundle.id}> {bundle.name + " (" + bundle.creator_name + ")"}</option>
             )
         });
 
-        // const {bundle,weekBlocks, pageLoading} = this.state;
+        const weekOptions = ["",1,2,3,4,5,6,7,8,9,10,11,12].map((weekOffset) => {
+            return (
+                <option key={weekOffset} value={weekOffset}> {"Startweek " + (weekOffset ? "+ " + weekOffset : "")}</option>
+            )
+        });
         const {pageLoading} = this.state;
         if (pageLoading) return (<h2 className="center">Laden...</h2>)
-        // if (weekBlocks === null) {
-        //     return (<span className="center">Mislukt om pagina te laden.</span>)
-        // }
+
   
         var conceptDisplay = this.concepts.map((concept) => {
+            console.log(concept.id-1)
         var selected = (this.state.selectedConceptIds.includes(concept.id)) ? true:false;
+        var weekoffset =  (this.state.selectedConceptIds.includes(concept.id)) ? "" : "";
             return (
-                <tr className={"searchResult " + (selected ? 'text-dark' : 'text-muted')} key={concept.id}>
+                <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
                     <td>
                     <Checkbox
                          key={"active_"+concept.id}
                          checked={this.state.selectedConceptIds.includes(concept.id)}
-                         color="red"
                         />                   
                     </td>
                     <td className="">
-                        {concept.week}
+                    <select className="m-1" name="week" id="week"
+                                value={weekoffset}
+                                onChange={this.onChangeWeek}
+                                required>
+                                <option hidden value=''></option>
+                                {weekOptions}
+                    </select>
                     </td>
                     <td className="">
                         {concept.theme.name}
@@ -122,7 +137,7 @@ class conceptOverview extends React.Component {
 
                     <div>
                         Bundel:
-                        <select name="bundle" id="bundle"
+                        <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
