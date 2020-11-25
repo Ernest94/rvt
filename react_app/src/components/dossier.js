@@ -209,21 +209,21 @@ class Dossier extends React.Component {
                 <h2 className="text-center">Gebruikersaccount</h2>
                 <ul className="errors text-center">{errors}</ul>
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
                         <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
                         
                         <select className="form-control col-sm-9" name="role" id="role"
@@ -237,7 +237,7 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
                             value={locationDisplayName}
@@ -250,7 +250,7 @@ class Dossier extends React.Component {
                         </select>
                     </div>
 
-                    <div className="input row" >
+                    <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
                             disabled={editDisabled}
