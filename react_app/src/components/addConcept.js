@@ -14,7 +14,7 @@ class addConcept extends React.Component {
             description: "",
             theme: null,
             themes: [],
-            date: null,
+            startDate: null,
             week: 1,
             loading: false,
             message:"",
@@ -75,7 +75,7 @@ class addConcept extends React.Component {
             description: this.state.description,
             theme: {id: this.state.theme.id},
             week: this.state.week,
-            startDate: this.date
+            startDate: this.state.startDate
         }
     }
 
@@ -99,7 +99,7 @@ class addConcept extends React.Component {
     handleChangeDate = (e) => {
         var selectDate = (e.target.value).toString();
             this.setState({
-                date: selectDate,
+                startDate: selectDate,
             }); 
             console.log(selectDate);
     }
