@@ -7,7 +7,9 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
-import MultiSelect from "react-multi-select-component";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 class Dossier extends React.Component {
     
@@ -31,6 +33,7 @@ class Dossier extends React.Component {
             blocked: false,
             serverFail: false,
             bundleCheck: [],
+            selected: [0, 1],
         };
     }
 
@@ -38,9 +41,9 @@ class Dossier extends React.Component {
         const { computedMatch: { params } } = this.props;
         Utils.dateValidation();
         // this.props.dateValidation();
-        await this.setState({ pageLoading: true, userId: params.userId });    
+        await this.setState({ pageLoading: true, userId: params.userId });
         await console.log(this.state.role);
-        await this.getAllInfo();             
+        await this.getAllInfo();
     }
     
     static hasAccess() {
@@ -202,11 +205,19 @@ class Dossier extends React.Component {
             locationDisplayName: e.target.value
         });
     }
-  
+
+    setSelected = (s) => {
+        // const{selected} = this.state.selected;
+        // this.state({
+        //     [selected]: selected
+        // })
+        console.log(s);
+    }
+
     render() {
 
         const {name, email, roleName, startDate, userId, pageLoading, errors, blocked,
-            serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
+            serverFail, locations, roles, roleDisplayName, locationDisplayName, bundleCheck, selected} = this.state;
         const { editDisabled } = this.props;
         const traineeDossier = roleName === "Trainee";
 
@@ -224,7 +235,13 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
-        
+
+        const bundleOptions = bundleCheck.map((bundleCheck) => {
+            return (
+                <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
+            )
+        });    
+
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
@@ -236,7 +253,6 @@ class Dossier extends React.Component {
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
@@ -246,7 +262,6 @@ class Dossier extends React.Component {
 
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
-                        
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
@@ -257,7 +272,6 @@ class Dossier extends React.Component {
                             {rolesOptions}
                         </select>
                     </div>
-
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
@@ -270,12 +284,30 @@ class Dossier extends React.Component {
                             {locationOptions}
                         </select>
                     </div>
-
                     <div className="input row" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
+                    </div>
+                    <div>
+                        <label className="label col col-form-label" htmlFor="bundles">bundels:</label>
+                        <Select
+                        // labelId="demo-mutiple-name-label"
+                        id="demo-mutiple-name"
+                        multiple
+                        name={bundleOptions}
+                        value={bundleOptions}
+                        onChange={this.handleFormChange}
+                        // input={<Input />}
+                        // MenuProps={MenuProps}
+                        >
+                            {bundleCheck.map((bundleCheck) => (
+                                <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
+                                {bundleCheck.bundle.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </div>
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
@@ -288,7 +320,7 @@ class Dossier extends React.Component {
                             to={"/dossier/" + userId + "/edit"}
                             hidden={Permissions.isUserTrainee()}
                             role="button"
-                            >                        
+                            >
                             Pas gebruiker aan
                         </Link>
                     </div>
@@ -333,5 +365,6 @@ class Dossier extends React.Component {
         )
     }
 }
+
 
 export default withRouter(Dossier);
