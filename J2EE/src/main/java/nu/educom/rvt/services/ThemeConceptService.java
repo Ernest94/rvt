@@ -16,6 +16,7 @@ import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptView;
+import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
@@ -107,30 +108,27 @@ public class ThemeConceptService {
 	public ConceptBundleJSON getAllConceptsAndAllBundles() {
 		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
 		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
-
+		
 		List<Concept> conceptsModel = this.conceptRepo.readAll();
 		List<BundleConcept> bundlesConceptsModel = this.bundleConceptRepo.readAll();		
 		List<Bundle> bundlesModel = this.bundleRepo.readAll();
-
 	
 		for (Concept concept : conceptsModel) {
 			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
 		}
 		
 		for (Bundle bundle : bundlesModel) {
-			List<Integer> list_of_concept_ids_in_bundle = new ArrayList<>();
-			List<Integer> list_of_concept_week_offset = new ArrayList<>();
 			Integer bundleId =  bundle.getId();
 			String bundleName = bundle.getName();
 			String bundleCreatorName = bundle.getCreator().getName();
 			String bundleCreatorLocation = bundle.getCreator().getLocation().getName();
+			List<ConceptWeekOffset> bundleConceptWeekOffset = new ArrayList<ConceptWeekOffset>();
 			for (BundleConcept bundleConcept : bundlesConceptsModel) {
 				if (bundleConcept.getBundle().getId()==bundle.getId()) {
-					list_of_concept_ids_in_bundle.add(bundleConcept.getConcept().getId());
-					list_of_concept_week_offset.add(bundleConcept.getWeekOffset());
+					bundleConceptWeekOffset.add(new ConceptWeekOffset(bundleConcept.getConcept().getId(),bundleConcept.getWeekOffset()));
 				}
 			}
-			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleCreatorLocation,list_of_concept_ids_in_bundle,list_of_concept_week_offset));
+			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleCreatorLocation,bundleConceptWeekOffset));
 		}	
 		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(conceptsView,bundlesConceptsView);
 		
