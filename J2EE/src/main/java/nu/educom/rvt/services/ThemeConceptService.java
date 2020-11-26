@@ -8,12 +8,15 @@ import java.util.stream.Stream;
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
+import nu.educom.rvt.repositories.TraineeMutationRepository;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 
@@ -24,6 +27,7 @@ public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
 	private ThemeRepository themeRepo;
 	private TraineeActiveRepository traineeActiveRepo;
+	private TraineeMutationRepository traineeMutationRepo;
 	private BundleTraineeRepository bundleTraineeRepo;  
 	private BundleConceptRepository bundleConceptRepo;
 
@@ -31,6 +35,7 @@ public class ThemeConceptService {
 		this.conceptRepo = new ConceptRepository();
 		this.themeRepo = new ThemeRepository();
 		this.traineeActiveRepo = new TraineeActiveRepository();
+		this.traineeMutationRepo = new TraineeMutationRepository();
 		this.bundleTraineeRepo = new BundleTraineeRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
 	}
@@ -58,10 +63,20 @@ public class ThemeConceptService {
 //	}
 	
 	public List<Concept> getAllActiveConceptsFromUser(User user) {
-		List<Concept> traineeActiveConcepts = this.traineeActiveRepo.readAll().stream().filter(traineeActiveConcept -> traineeActiveConcept.getUser().getId() == user.getId())
+		
+		ReviewService reviewServ = new ReviewService();
+		List<Review> reviews = reviewServ.getAllCompletedReviewsForUser(user);
+		List<ConceptRating> conceptRatings = reviewServ.getAllConceptRatings();
+		List<Concept> traineeActiveConcepts = new ArrayList<>();
+		
+		for(Review review: reviews) {
+			traineeActiveConcepts.addAll(conceptRatings.stream().filter(CR -> CR.getReview().getId() == review.getId()).map(CR -> CR.getConcept()).collect(Collectors.toList()));
+		}		
+		
+		traineeActiveConcepts.addAll(this.traineeActiveRepo.readAll().stream().filter(traineeActiveConcept -> traineeActiveConcept.getUser().getId() == user.getId())
 																				       .filter(traineeActiveConcept -> traineeActiveConcept.getActive() == true)
 																				       .map(traineeActiveConcept -> traineeActiveConcept.getConcept())
-																				       .collect(Collectors.toList());
+																				       .collect(Collectors.toList()));
 		
 		List<Bundle> bundleTrainees = this.bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 																			   .map(bundleTrainee -> bundleTrainee.getBundle())
