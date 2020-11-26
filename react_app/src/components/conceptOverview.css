@@ -1,0 +1,38 @@
+.searchResult:hover {
+    border-bottom: 4px solid #CC2C3E;
+    cursor: pointer;
+}
+
+.search-bar {
+    background-color: rgb(255, 242, 242);
+}
+
+.text-black {
+    color:black;
+}
+
+.concept-overview-table{
+    display:block;
+    height:300px;
+    overflow-x:hidden;
+}
+
+.concept-overview-table thead{
+    background-color:#fff!important;
+}
+
+.concept-overview-table th{
+    position:sticky;
+    top:0;
+    background-color:#fff!important;
+    z-index:1;
+}
+.concept-overview-table td:nth-child(3), .concept-overview-table td:nth-child(4){
+    white-space: nowrap;
+}
+
+.bundle-submit-button{
+    position: absolute;
+    bottom:0;
+    right:0;
+}

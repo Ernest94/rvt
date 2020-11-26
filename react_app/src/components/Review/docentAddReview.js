@@ -237,7 +237,6 @@ class docentAddReview extends React.Component {
 
     submit = () => {
         confirmAlert({
-            // title: 'Bevestig',
             message: 'Wilt u de review bevestigen? Let op! Hiermee wordt de review opgeslagen en zichtbaar voor trainees.',
             buttons: [{
                 label: 'Ja',
@@ -245,7 +244,6 @@ class docentAddReview extends React.Component {
             },
             {
                 label: 'Nee',
-            //     onClick: () => alert('Click No')
             }
         ]
         })

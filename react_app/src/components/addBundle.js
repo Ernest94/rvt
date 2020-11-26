@@ -92,13 +92,13 @@ class addBundle extends React.Component {
                             <div className="col-4">
                             {(this.state.loading) ? 
                                 <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                                <button className="btn btn-primary float-right" type="submit">maak aan</button>}
+                                <button className="btn btn-primary float-right" type="submit">Maak aan</button>}
                             </div>
                         </div>
                         
                         <div className="row justify-content-center m-1">
                             <div className="col-4">
-                                <button className="btn btn-primary float-right" type="submit">annuleer</button>
+                                <button className="btn btn-primary float-right" type="submit">Annuleer</button>
                             </div>
                         </div>
                     </form>

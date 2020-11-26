@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import {config} from './constants';
-import './UserSearch/search.css';
+import './conceptOverview.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
 import { Checkbox} from '@material-ui/core';
@@ -22,10 +22,10 @@ class conceptOverview extends React.Component {
             selectedBundle: "",
             activeConcepts:[],
             activeConceptsWeekOffset:[],
-            activeConceptsAndWeekOffset:[],
         };
         this.onChangeBundle = this.onChangeBundle.bind(this);
         this.onChangeWeek= this.onChangeWeek.bind(this);
+        this.saveBundle = this.saveBundle.bind(this);
     }
 
     static hasAccess() {
@@ -54,7 +54,7 @@ class conceptOverview extends React.Component {
     }
 
     onChangeBundle = (e) => {
-        var bundleKeyId = e.target.value;
+        var bundleKeyId = parseInt(e.target.value);
         this.setState({
             selectedBundle: bundleKeyId,
         });
@@ -71,7 +71,6 @@ class conceptOverview extends React.Component {
 
     onChangeActive = (e) => {
         var idOfChangedConcept = e.target.id;;
-        console.log(idOfChangedConcept)
         var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(parseInt(idOfChangedConcept.slice(7)));
        if (indexChangedConceptInActiveConceptIds>=0) {
         this.setState({
@@ -91,9 +90,38 @@ class conceptOverview extends React.Component {
     onChangeWeek = (e) => {
         var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(parseInt(e.target.id.slice(7)));
         let newActiveConceptsWeekOffset = this.state.activeConceptsWeekOffset;
-        newActiveConceptsWeekOffset[indexChangedConceptInActiveConceptIds] = e.target.value;
+        newActiveConceptsWeekOffset[indexChangedConceptInActiveConceptIds] = parseInt(e.target.value);
         this.setState({activeConceptsWeekOffset: newActiveConceptsWeekOffset});
     }
+
+    bundleJSON() {
+        var activeConceptsAndWeekOffset=[];
+        var activeConcept;
+        for (activeConcept of this.state.activeConcepts) {
+            var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(activeConcept);
+            activeConceptsAndWeekOffset.push({
+                conceptId:activeConcept,
+                weekOffset:this.state.activeConceptsWeekOffset[indexChangedConceptInActiveConceptIds]});
+        }
+        return ({
+            bundleConceptWeekOffset:activeConceptsAndWeekOffset,
+            bundleId:this.state.selectedBundle
+        })
+    }
+
+    saveBundle() {
+        console.log(this.bundleJSON());
+        axios.post(config.url.API_URL + "/webapi/bundle", this.bundleJSON())
+        .then(response => {
+            this.setState({
+                message: "De wijzigingen in de bundel zijn verwerkt"
+            });
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
+        });
+    }
+
 
     handleAddBundle() {
         this.props.history.push('/addBundle');
@@ -120,14 +148,14 @@ class conceptOverview extends React.Component {
             return (
                     <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
                         <td>
-                        <Checkbox
+                        <Checkbox className="" 
                             id={"concept"+concept.id}
                             checked={selected}
                             onChange={this.onChangeActive}
                             />                   
                         </td>
                         <td className="">
-                        <select className="m-1" name="week" 
+                        <select className="p-2" name="week" 
                                     id={"concept"+concept.id}
                                     value={weekoffset}
                                     onChange={this.onChangeWeek}
@@ -138,10 +166,14 @@ class conceptOverview extends React.Component {
                         </select>
                         </td>
                         <td className="">
+                            <div className="p-1">
                             {concept.theme.name}
+                            </div>
                         </td>
                         <td className="">
+                            <div className="p-1">
                             {concept.name}
+                            </div>
                         </td>
                     </tr >
             )
@@ -176,30 +208,37 @@ class conceptOverview extends React.Component {
                    </div>
                 </div>
 
-                <div className="container m-4">
-                <div className="text-center">
-                    <table className="w-100 mx-auto">
-                        <thead>
-                            <tr>
-                                <th className="">
-                                    Actief
-                                    </th>
-                                <th className="">
-                                    Week
-                                    </th>
-                                <th className="">
-                                    Thema
-                                    </th>
-                                <th className="">
-                                    Concept
-                                    </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {conceptDisplay}
-                        </tbody>
-                    </table>
-                </div >
+                <div className="container mt-4">
+                    <div className="row justify-content-center">
+                    <div className="col-9 text-center table-responsive">
+                        <table className="concept-overview-table">
+                            <thead>
+                                <tr>
+                                    <th className="">
+                                        Actief
+                                        </th>
+                                    <th className="">
+                                        Week
+                                        </th>
+                                    <th className="">
+                                        Thema
+                                        </th>
+                                    <th className="">
+                                        Concept
+                                        </th>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBody table">
+                            {conceptDisplay}
+                            </tbody>
+                        </table>
+                    </div >
+                    <div className="col-3">
+                    <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}>
+                        Bundel opslaan
+                    </button>
+                    </div>
+                </div>
                 </div>
             </div>
         )
