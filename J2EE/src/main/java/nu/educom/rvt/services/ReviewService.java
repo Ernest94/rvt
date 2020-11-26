@@ -110,7 +110,7 @@ public class ReviewService {
 		CPRother = bundleServ.getWeekForCPR(CPRother, user);
 		CPRMostRecent = bundleServ.getWeekForCPR(CPRMostRecent, user);
 		
-	
+		CPRMostRecent = CPRMostRecent.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
 		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
 		
 		conceptPlusRating.addAll(CPRMostRecent);

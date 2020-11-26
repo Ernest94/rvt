@@ -6,8 +6,13 @@ public class CPRActive extends ConceptPlusRating{
 	
 	private Boolean active;
 	
-	public CPRActive(Concept concept,int rating, String comment, Integer week, Boolean active) {
-		super(concept,rating,comment,week);
+	public CPRActive(Concept concept, Boolean active) {
+		super(concept,0,"",0);
+		this.active = active;
+	}
+	
+	public CPRActive(ConceptPlusRating CPR, Boolean active) {
+		super(CPR.getConcept(),CPR.getRating(),CPR.getComment(),CPR.getWeek());
 		this.active = active;
 	}
 	

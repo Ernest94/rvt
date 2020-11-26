@@ -13,10 +13,13 @@ import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.CPRActive;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
+import one.util.streamex.StreamEx;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 
@@ -111,11 +114,22 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 	
-
-
-	
-	
-	
+	public List<CPRActive> converToCPRActive (List<ConceptPlusRating> CPRs){
+		
+		List<CPRActive> CPRAs = new ArrayList<>();
+		for(ConceptPlusRating CPR: CPRs) {
+			CPRAs.add(new CPRActive(CPR, true));
+		}
+		
+		List<Concept> inactives = conceptRepo.readAll();
+		for(Concept concept: inactives) {
+			CPRAs.add(new CPRActive(concept, false));
+		}
+		
+		CPRAs = StreamEx.of(CPRAs).distinct(foo -> foo.getConcept().getId()).toList();
+		
+		return CPRAs;		
+	}
 	
 	
 }

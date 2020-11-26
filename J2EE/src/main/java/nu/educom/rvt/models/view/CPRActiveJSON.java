@@ -17,10 +17,10 @@ public class CPRActiveJSON implements Serializable{
 		private String reviewDate;
 		private int reviewId;
 		
-		public List<CPRActive> getConceptsPlusRatings() {
+		public List<CPRActive> getCPRActive() {
 			return CPRActive;
 		}
-		public void setConceptPlusRating(List<CPRActive> CPRActive) {
+		public void setCPRActive(List<CPRActive> CPRActive) {
 			this.CPRActive = CPRActive;
 		}
 		public String getTraineeName() {
