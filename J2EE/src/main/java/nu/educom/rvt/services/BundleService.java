@@ -82,7 +82,8 @@ public class BundleService {
 	
 	public List<ConceptPlusRating> getWeekForCPR(List<ConceptPlusRating> CPRs, User user) {
 		List<ConceptPlusRating> CPRWeek = new ArrayList<>();
-		List<TraineeMutation> traineeMutations = traineeMutationRepo.readAll().stream().filter(traineeMutation -> traineeMutation.getUser().getId() == user.getId())
+		List<TraineeMutation> traineeMutations = traineeMutationRepo.readAll();
+		traineeMutations = traineeMutations.stream().filter(traineeMutation -> traineeMutation.getUser().getId() == user.getId())
 																			  .collect(Collectors.toList());
 		List<BundleTrainee> bundlesTrainee = bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 																		      .collect(Collectors.toList());
