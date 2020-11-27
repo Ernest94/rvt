@@ -90,7 +90,8 @@ class addTheme extends React.Component {
     
     render() {
         return (
-            <div className="container main-container">
+            <div className="container">
+                
                 <h2 className="text-center">Thema toevoegen</h2>
                 <div>{this.state.errors}</div>
                     <form onSubmit={this.handleSubmit}>
