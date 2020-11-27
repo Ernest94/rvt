@@ -165,7 +165,8 @@ public class ReviewResource {
 	public Response updateReview(Review review) {
 		boolean exists = reviewServ.getReviewById(review.getId())!=null;
 		if(exists) {
-		  reviewServ.replaceReview(review);
+			review.setReviewStatus(Review.Status.PENDING);
+			reviewServ.replaceReview(review);
 		  return Response.status(202).build();
 		} 
 		return Response.status(404).build();

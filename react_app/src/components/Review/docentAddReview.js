@@ -139,9 +139,11 @@ class docentAddReview extends React.Component {
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
-            reviewDate: new Date(data.reviewDate),
+            reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
             reviewId: data.reviewId,
+            traineeFeedback: data.commentStudent,
+            officeFeedback: data.commentOffice,
             message: "",
         });
         console.log(this.state);
@@ -202,6 +204,7 @@ class docentAddReview extends React.Component {
             [name]: value
         });
         let reviewJson = this.createReviewJson();
+        console.log(this.state.reviewStatus);
         console.log(reviewJson);
         this.submitReviewChange(reviewJson);
     }
@@ -211,7 +214,7 @@ class docentAddReview extends React.Component {
             id: this.state.reviewId,
             commentOffice: this.state.officeFeedback,
             commentStudent: this.state.traineeFeedback,
-            date: this.state.reviewDate
+            date: this.state.reviewDate,
         }
     }
 
