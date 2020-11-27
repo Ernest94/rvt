@@ -33,7 +33,6 @@ class docentAddReview extends React.Component {
             traineeFeedback: "",
             officeFeedback: "",
             message:"",
-            active:true,
         };
     }
 
@@ -49,7 +48,7 @@ class docentAddReview extends React.Component {
     }
 
     handleCheckboxChange(e,concept){
-        this.setState((prevState)=>({active:!prevState.active}));
+        //need to change the state of concept active attribute here, depending on new concept json
         this.changeConceptActive(concept);
     };
     
@@ -359,7 +358,6 @@ class docentAddReview extends React.Component {
                 <tr>
                     <td className="active">
                     <Checkbox
-                        checked={this.state.active}
                         onChange={(e)=>this.handleCheckboxChange(e,concept)}
                         key={"active_"+concept.concept.id}
                         defaultChecked={true}
