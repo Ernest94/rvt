@@ -51,7 +51,7 @@ public class ReviewResource {
 	    if(userOutput.getRole().getId()==3) {
 			
 			List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
-			List<Concept> allActiveConcepts = conceptServ.getAllÁctiveConceptsfromUser(userOutput);
+			List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 			List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
 			
 			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();

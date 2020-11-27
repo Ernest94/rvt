@@ -179,7 +179,7 @@ class Search extends React.Component {
         });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >;
+                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
