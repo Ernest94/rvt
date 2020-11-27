@@ -7,11 +7,15 @@ import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
-
+import nu.educom.rvt.models.Review.Status;
+/* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class ConceptRatingRepository {
 
 	public ConceptRating create(ConceptRating conceptRating) {
 		Session session = null;
+		if (conceptRating.getReview().getReviewStatus() != Status.PENDING) {
+			throw new IllegalStateException("Modifying an existing Review");
+		}
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();
@@ -30,6 +34,9 @@ public class ConceptRatingRepository {
 	
 	public List<ConceptRating> createMulti(List<ConceptRating> crs) {
 		Session session = null;
+		if (crs.stream().anyMatch(cr -> cr.getReview().getReviewStatus() != Status.PENDING)) {
+			throw new IllegalStateException("Modifying an existing Review");
+		}
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 			Transaction tx = session.beginTransaction();
@@ -41,10 +48,10 @@ public class ConceptRatingRepository {
 		        //flush a batch of inserts and release memory:
 		        session.flush();
 		        session.clear();
-		    }
-		}
-		tx.commit();
-		return crs;
+			    }
+			}
+			tx.commit();
+			return crs;
 		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
 			return null;
 		} finally {		   
@@ -100,15 +107,20 @@ public class ConceptRatingRepository {
 		}
 	}
 	
-	public void update(ConceptRating conceptRating) {
+	public boolean update(ConceptRating conceptRating) {
 		Session session = null;
+		if (conceptRating.getReview().getReviewStatus() != Status.PENDING) {
+			throw new IllegalStateException("Modifying an existing Review");
+		}
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();
 		    session.saveOrUpdate(conceptRating);
 		    session.getTransaction().commit();
+		    return true;
 		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
-			
+			session.getTransaction().rollback();
+			return false;
 		} finally {		   
 			if (session != null) {
 				session.close();

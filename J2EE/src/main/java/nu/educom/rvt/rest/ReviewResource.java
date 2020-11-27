@@ -102,6 +102,7 @@ public class ReviewResource {
     @Path("/confirmReview")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setActiveReviewComplete(Review review){
+		/* JH: Onderstaande drie aanroepen naar service zouden naar repository moeten verhuizen */
         Review reviewOutput = reviewServ.getReviewById(review.getId());
         Review completedReview = reviewServ.completedReview(reviewOutput);
         reviewServ.replaceReview(completedReview);
@@ -113,6 +114,7 @@ public class ReviewResource {
     @Path("/cancelReview")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setActiveReviewCancelled(Review review){
+		/* JH: Onderstaande drie aanroepen naar service zouden naar repository moeten verhuizen */
         Review reviewOutput = reviewServ.getReviewById(review.getId());
         Review cancelledReview = reviewServ.cancelledReview(reviewOutput);
         reviewServ.replaceReview(cancelledReview);
