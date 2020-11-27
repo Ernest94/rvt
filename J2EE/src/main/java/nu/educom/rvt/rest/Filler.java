@@ -46,24 +46,29 @@ public class Filler {
 		LocationRepository locationRepo = new LocationRepository();
 		for (Location location : locations) {
 			locationRepo.create(location);
-		}
-		
-
+        }
+        
+        
 		
 		//FILL THE USER TABLE
-		User trainee1 = new User("Trainee", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
-		User trainee2 = new User("Trainee", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
-		User trainee3 = new User("Trainee", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
-		List<User> users = new ArrayList<User>();
+		User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
+		User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
+        User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),LocalDate.parse(now), endDateLD);
+
+        User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now),endDateLD);
+
+        List<User> users = new ArrayList<User>();
 		users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),LocalDate.parse(now), endDateLD));
 		users.add(new User("Jeffrey Manders", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),LocalDate.parse(now), endDateLD));
 		users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),LocalDate.parse(now),endDateLD));
 		users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),LocalDate.parse(now), endDateLD));
 		users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),LocalDate.parse(now), endDateLD));
-		
+        
+        
 		users.add(trainee1);
 		users.add(trainee2);
-		users.add(trainee3);
+        users.add(trainee3);
+        users.add(docent1);
 		UserService userService = new UserService();
 		for (User user : users) {
 			userService.addUser(user);
@@ -248,6 +253,36 @@ public class Filler {
 		for (ConceptRating conceptRating : conceptsRatings) {
 			conceptRatingRepo.create(conceptRating);
 		}	
-		
+        
+        //FILL THE BUNDLE TABLE
+        BundleRepository bundleRepo = new BundleRepository();
+        
+        Bundle bundle1 = new Bundle("Starters bundel", docent1, LocalDate.parse(now).toString(), endDate);
+        Bundle bundle2 = new Bundle("JavaScript bundel", docent1,  LocalDate.parse(now).toString(), endDate);
+
+        bundleRepo.create(bundle1);
+        bundleRepo.create(bundle2);
+        
+        //FILL THE BUNDLECONCEPT TABLE
+        BundleConceptRepository bundleConceptRepo = new BundleConceptRepository();
+
+        
+		List<BundleConcept> BundleConcepts = new ArrayList<BundleConcept>();
+        BundleConcept bundleConcept1 = new BundleConcept(bundle1, concepts.get(0), 0, LocalDate.parse(now).toString(), endDate);
+        BundleConcept bundleConcept2 = new BundleConcept(bundle2, concepts.get(2), 2, LocalDate.parse(now).toString(), endDate);
+
+        bundleConceptRepo.create(bundleConcept1);
+        bundleConceptRepo.create(bundleConcept2);
+
+        //FILL THE BUNDLETRAINEE TABLE
+        BundleTraineeRepository bundleTraineeRepo = new BundleTraineeRepository();
+
+        BundleTrainee bundleTrainee1 = new BundleTrainee(trainee1, bundle1, 1, LocalDate.parse(now).toString(), endDate);
+        BundleTrainee bundleTrainee2 = new BundleTrainee(trainee2, bundle1, 1, LocalDate.parse(now).toString(), endDate);
+
+        bundleTraineeRepo.create(bundleTrainee1);
+        bundleTraineeRepo.create(bundleTrainee2);
+
+
 	}
 }

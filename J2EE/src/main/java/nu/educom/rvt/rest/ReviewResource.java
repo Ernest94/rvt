@@ -35,7 +35,7 @@ public class ReviewResource {
 	public ReviewResource() {
 		this.reviewServ = new ReviewService();
 	}
-  
+ 
 	@POST
 	@Path("/curriculum")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -47,8 +47,10 @@ public class ReviewResource {
 	    User userOutput = userServ.getUserById(user.getId());
 		
 		List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
-		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsfromUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput); // hier moet de check of iets active is in.
+		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen (WeekOffsetFunctie).
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+		//extra functie om de week te bepalen nadat de ratings eraan zijn gegeven.
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
@@ -71,21 +73,20 @@ public class ReviewResource {
 		UserService userServ = new UserService(); //load injectables
 		ThemeConceptService conceptServ = new ThemeConceptService();
 	    User userOutput = userServ.getUserById(user.getId());
-		
-	    
+			    
 	    reviewServ.makeNewReviewIfNoPending(userOutput);
+
 		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
-		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsfromUser(userOutput);
+		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
 		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
 	    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
-		
-		
+
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
 		
-		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
 		String reviewDate = mostRecentReview.getDate();
 		int reviewId = mostRecentReview.getId();
 		

@@ -99,7 +99,6 @@ public class UserResource {
 		else return Response.status(412).build();
 		
 		return Response.status(201).build();
-
 	}
 
 	@GET

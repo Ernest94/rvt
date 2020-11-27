@@ -48,6 +48,7 @@ public class ThemeConceptResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveConcept(Concept concept) {
         /* JH TIP: Mis hier of in de service de controle op alle velden van het concept */ 
+		
 		Concept createdConcept = this.themeConceptServ.addConcept(concept);
 		return (createdConcept == null ? Response.status(409/* JH: Had hier 400 verwacht */).build() : Response.status(201).build());  
 	}
