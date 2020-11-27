@@ -7,6 +7,10 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
 
 class Dossier extends React.Component {
     
@@ -29,6 +33,8 @@ class Dossier extends React.Component {
             locationDisplayName: "",
             blocked: false,
             serverFail: false,
+            bundleCheck: [],
+            selected: [0, 1],
         };
     }
 
@@ -36,9 +42,9 @@ class Dossier extends React.Component {
         const { computedMatch: { params } } = this.props;
         Utils.dateValidation();
         // this.props.dateValidation();
-        await this.setState({pageLoading: true, userId: params.userId});
-        this.getAllInfo();
-        
+        await this.setState({ pageLoading: true, userId: params.userId });
+        await console.log(this.state.role);
+        await this.getAllInfo();
     }
     
     static hasAccess() {
@@ -109,13 +115,32 @@ class Dossier extends React.Component {
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
                 pageLoading: false,
-            });
+           });
+            this.getTraineeBundles();
             this.canViewUserDossier();
            
         })).catch(errors => {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
+    }
+
+    getTraineeBundles() {
+        if (this.state.role.name !== "Trainee") {
+            console.log("dossier is from a non Trainee user");
+            return;
+        }
+
+        axios.get(config.url.API_URL + "/webapi/bundle/bundleTrainee/" + this.state.userId)
+            .then(response => {
+                this.setState({
+                    bundleCheck: response.data.bundleCheck
+                });
+                console.log(this.state.bundleCheck);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     
     handleSubmit = (event) => {
@@ -175,17 +200,30 @@ class Dossier extends React.Component {
         });
     }
 
+    handleSelectChange = (e) => {
+        const {value} = e.target;
+        console.log(value);
+    }
+
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
             locationDisplayName: e.target.value
         });
     }
-  
+
+    setSelected = (s) => {
+        // const{selected} = this.state.selected;
+        // this.state({
+        //     [selected]: selected
+        // })
+        console.log(s);
+    }
+
     render() {
 
         const {name, email, roleName, startDate, userId, pageLoading, errors, blocked,
-            serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
+            serverFail, locations, roles, roleDisplayName, locationDisplayName, bundleCheck, selected} = this.state;
         const { editDisabled } = this.props;
         const traineeDossier = roleName === "Trainee";
 
@@ -203,7 +241,13 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
-        
+
+        const bundleOptions = bundleCheck.map((bundleCheck) => {
+            return (
+                <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
+            )
+        });    
+
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
@@ -215,7 +259,6 @@ class Dossier extends React.Component {
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
@@ -225,7 +268,6 @@ class Dossier extends React.Component {
 
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
-                        
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={roleDisplayName}
                             onChange={this.onChangeRole}
@@ -236,7 +278,6 @@ class Dossier extends React.Component {
                             {rolesOptions}
                         </select>
                     </div>
-
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
@@ -249,12 +290,32 @@ class Dossier extends React.Component {
                             {locationOptions}
                         </select>
                     </div>
-
                     <div className="input row" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
+                    </div>
+                    <div className="input row">
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        {/* <InputLabel id="demo-mutiple-name-label">Bundels</InputLabel> */}
+                            <Select className="form-control col-sm-9"
+                            // labelId="demo-mutiple-name-label"
+                            id="demo-mutiple-name"
+                            multiple
+                            name="bundle"
+                            value={bundleOptions}
+                            placeholder
+                            onChange={this.handleSelectChange}
+                            // input={<Input />}
+                            // MenuProps={MenuProps}
+                            >
+                            {bundleCheck.map((bundleCheck) => (
+                                <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
+                                {bundleCheck.bundle.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </div>
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
@@ -267,7 +328,7 @@ class Dossier extends React.Component {
                             to={"/dossier/" + userId + "/edit"}
                             hidden={Permissions.isUserTrainee()}
                             role="button"
-                            >                        
+                            >
                             Pas gebruiker aan
                         </Link>
                     </div>
@@ -312,5 +373,6 @@ class Dossier extends React.Component {
         )
     }
 }
+
 
 export default withRouter(Dossier);
