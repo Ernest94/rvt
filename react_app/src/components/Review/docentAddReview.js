@@ -33,6 +33,7 @@ class docentAddReview extends React.Component {
             traineeFeedback: "",
             officeFeedback: "",
             message:"",
+            active:true,
         };
     }
 
@@ -47,15 +48,9 @@ class docentAddReview extends React.Component {
         });
     }
 
-    handleCheckboxChange = (e) => {
-        const { name } = e.target;
-    
-        this.setState(prevState => ({
-            checkboxes: {
-                ...prevState.checkboxes,
-                [name]: !prevState.checkboxes[name]
-            }
-        }));
+    handleCheckboxChange(e,concept){
+        this.setState((prevState)=>({active:!prevState.active}));
+        this.changeConceptActive(concept);
     };
     
 
@@ -116,7 +111,6 @@ class docentAddReview extends React.Component {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-
                 console.log("an error occorured " + error);
             });
     }
@@ -287,18 +281,18 @@ class docentAddReview extends React.Component {
             //   this.props.handleReturnToDossier(this.state.userId);
         })
         .catch((error) => {
-            console.log("an error occorured " + error);
+            console.log("an error occurred " + error);
         });
     }
 
-    setActiveConcept() {
-        var checkBox = document.getElementById("myCheck");
-        var text = document.getElementById("text");
-        if (checkBox.checked == false){
-          text.style.display = "block";
-        } else {
-           text.style.display = "none";
-        }
+    changeConceptActive(concept) {
+        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: concept.concept.id}})
+        .then(response => {
+            console.log("gelukt");
+        })
+        .catch((error) => {
+            console.log("an error occurred " + error);
+        });
     }
 
     handleWeekChange(e,id){
@@ -365,12 +359,11 @@ class docentAddReview extends React.Component {
                 <tr>
                     <td className="active">
                     <Checkbox
-                        // label={option}
-                        // isSelected={this.state.checkboxes.}
-                        // onCheckboxChange={this.handleCheckboxChange}
-                         key={"active_"+concept.concept.id}
-                         defaultChecked={true}
-                         color="default"
+                        checked={this.state.active}
+                        onChange={(e)=>this.handleCheckboxChange(e,concept)}
+                        key={"active_"+concept.concept.id}
+                        defaultChecked={true}
+                        color="default"
                         />                   
                     </td>
                     <td className="week" id="text">

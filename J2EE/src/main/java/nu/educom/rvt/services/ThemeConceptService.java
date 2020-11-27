@@ -1,16 +1,16 @@
 package nu.educom.rvt.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import nu.educom.rvt.models.Bundle;
-import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
@@ -95,9 +95,32 @@ public class ThemeConceptService {
 		
 		return traineeActiveConcepts;
 	}
-	
+	public boolean isConceptInBundleUser(User user, Concept concept) {
+		return conceptRepo.isConceptInUserBundle(concept.getId(),user.getId());
+		
+	}
+	public TraineeActive getCurrentMutationForUserAndConcept(User user, Concept concept) {
+		TraineeActive mutation = traineeActiveRepo.findActiveByUserIdAndConceptId(user.getId(), concept.getId());
+		return mutation;
+	}
 
+	public void createNewMutation(ActiveChangeForUser activeChange) {
 
+		TraineeActive newMutation = new TraineeActive();
+
+		newMutation.setUser(activeChange.getUser());
+		newMutation.setConcept(activeChange.getConcept());
+		newMutation.setActive(activeChange.isActive());
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeActiveRepo.create(newMutation);
+		
+	}
+	public void endMutation(TraineeActive currentMutation) {
+		currentMutation.setEndDate(LocalDate.now());
+		
+		traineeActiveRepo.update(currentMutation);
+	}
 	
 	
 	

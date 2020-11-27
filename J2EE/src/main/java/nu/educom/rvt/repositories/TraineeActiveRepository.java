@@ -30,8 +30,41 @@ public class TraineeActiveRepository {
 			}
 		}
 	}
+	public TraineeActive findActiveByUserIdAndConceptId(int userId, int conceptId) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			TraineeActive result = session
+			.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeActive.class)
+			.setParameter("userId", userId)
+			.setParameter("conceptId", conceptId)
+			.getSingleResult();
+			return result;
+		}
+		catch (Exception e) {
+			return null;
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}		
+	}
 	
-	protected void update() {
+	public void update(TraineeActive traineeActive) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+		    session.beginTransaction();
+		    session.saveOrUpdate(traineeActive);
+		    session.getTransaction().commit();
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			
+		} finally {		   
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	protected void delete() {	

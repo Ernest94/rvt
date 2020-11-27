@@ -74,22 +74,22 @@ public class BundleTraineeRepository {
 		}
 	}
 	
-//	public List<BundleConcept> readByConceptId(int concept_id) {
-//		Session session = null;
-//		try {
-//			session = HibernateSession.getSessionFactory().openSession();
-//			return (List<BundleConcept>) session
-//					.createQuery("from bundle_concept where concept_id =:concept_id", BundleConcept.class)
-//					.setParameter("concept_id", concept_id)
-//					.getResultList();
-//		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
-//			return null;
-//		} finally {
-//			if (session != null) {
-//				session.close();
-//			}
-//		}
-//	} This function isn't necessary yet, but I believe it will be in the future so it's already built. 
+	public List<BundleTrainee> readByUserId(int userId) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return (List<BundleTrainee>) session
+					.createQuery("from bundle_trainee where user_id =:userId", BundleTrainee.class)
+					.setParameter("userId", userId)
+					.getResultList();
+		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	} 
 	
 	protected void update(BundleTrainee bundleTrainee) {
 		Session session = null;

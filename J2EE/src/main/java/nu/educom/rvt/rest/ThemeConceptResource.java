@@ -7,6 +7,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.TraineeActive;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.Concept;
 
 import nu.educom.rvt.services.ThemeConceptService;
@@ -53,5 +56,26 @@ public class ThemeConceptResource {
 	public Response getAllConcepts() {
 		List<Concept> concepts = this.themeConceptServ.getAllConcepts();
 		return (concepts == null ? Response.status(409 /* JH: Had hier 404 verwacht */).build() : Response.status(200).entity(concepts).build());
+	}
+	
+	@POST
+	@Path("/active")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setActive(ActiveChangeForUser activeChange){
+		User user = activeChange.getUser();
+		Concept concept = activeChange.getConcept();
+		TraineeActive currentMutation = themeConceptServ.getCurrentMutationForUserAndConcept(user, concept);
+		
+		if(currentMutation==null) {
+			boolean inBundel = themeConceptServ.isConceptInBundleUser(user, concept);
+			activeChange.setActive(inBundel);
+			themeConceptServ.createNewMutation(activeChange);
+			return Response.status(201).build();
+		}
+		else {
+			themeConceptServ.endMutation(currentMutation);
+			return Response.status(200).build();
+		}
+		
 	}
 }
