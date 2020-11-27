@@ -9,7 +9,8 @@ import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
 
 class Dossier extends React.Component {
     
@@ -199,6 +200,11 @@ class Dossier extends React.Component {
         });
     }
 
+    handleSelectChange = (e) => {
+        const {value} = e.target;
+        console.log(value);
+    }
+
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
@@ -290,18 +296,20 @@ class Dossier extends React.Component {
                             disabled={editDisabled}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div>
-                        <label className="label col col-form-label" htmlFor="bundles">bundels:</label>
-                        <Select
-                        // labelId="demo-mutiple-name-label"
-                        id="demo-mutiple-name"
-                        multiple
-                        name={bundleOptions}
-                        value={bundleOptions}
-                        onChange={this.handleFormChange}
-                        // input={<Input />}
-                        // MenuProps={MenuProps}
-                        >
+                    <div className="input row">
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        {/* <InputLabel id="demo-mutiple-name-label">Bundels</InputLabel> */}
+                            <Select className="form-control col-sm-9"
+                            // labelId="demo-mutiple-name-label"
+                            id="demo-mutiple-name"
+                            multiple
+                            name="bundle"
+                            value={bundleOptions}
+                            placeholder
+                            onChange={this.handleSelectChange}
+                            // input={<Input />}
+                            // MenuProps={MenuProps}
+                            >
                             {bundleCheck.map((bundleCheck) => (
                                 <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
                                 {bundleCheck.bundle.name}
