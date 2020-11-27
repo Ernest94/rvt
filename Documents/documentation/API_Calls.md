@@ -21,6 +21,8 @@ Elke request is per J2EE resource weergegeven.
 
 *  [ThemeConcept](#markdown-header-ThemeConcept)
 
+*  [Location](#mardown-header-Location)
+
 Alle input wordt meegegeven in een JSON wrapper, tenzij het in de `URI` zit.
 
 
@@ -32,8 +34,11 @@ elke request start altijd met `/webapi`.
 
 
 
-###User
+
+### User
+
 elk user request wordt opgevolgd door `/user`
+
 
 #### Login
 URI: `/login`
@@ -82,8 +87,7 @@ URI: `/linking/{userId}`
 | | | role | { id: int, name: string} |
  | | | location | {id: int, name: string} |
 
-
-
+  
 #### Dossier
 
 Type | URI | Geeft | Ontvangt
@@ -110,23 +114,23 @@ POST| `user/changeRelation`| Json -> {|-
 || _changedUsers_ : [{id: int}] } |
 
 
-
 ### Search
 
 Type | URI | Geeft | Ontvangt
-
 -----|-----|-------|---------
-
 GET| `user/roles`| - |Json -> {
-
 |||_roles_ : [ {id:int, name:string} ],
-
 |||_locations_ : [ {id:int, name:string} ] }
-
 POST| `user/search`| Json -> { | Json -> {
-
 || _location_: {id: int, name: string},| _users_: [ {_id_: int, _name_: string, _email_: string, _role_: {id: int, name: string}, _location_: {id: int, name: string}} ]
-
 || _role_ : {id: int, name: string}|
-
 || _criteria_ : string }|
+
+### Location
+
+URI: `locations`  
+
+Header | Input | Datatype
+-------|-------|---------
+POST| name | string
+

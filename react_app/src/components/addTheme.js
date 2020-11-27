@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import {config} from './constants';
 import Permissions from './permissions.js';
+import Utils from './Utils.js'
 
 class addTheme extends React.Component {
     
@@ -30,12 +31,16 @@ class addTheme extends React.Component {
     }
 
     validate() {
-        return null;
+        if(!this.state.name.trim() || !this.state.description.trim() || !this.state.abbreviation.trim())
+        {
+            this.setState({locationName:""});
+            return {name: ["Alle velden moeten worden ingevuld"]};
+        }        
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true}); 
+        this.setState({loading: true, message: ""}); 
         var errors = this.validate();
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/theme_concept/saveTheme", this.createThemeJson())
@@ -49,12 +54,12 @@ class addTheme extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createThemeJson());
 
-                    this.setErrors({login: ["Mislukt om thema toe te voegen."]}); 
+                    this.setErrors({login: ["Mislukt om thema toe te voegen. Mogelijk bestaat er al een thema met deze naam."]}); 
                     this.setState({loading: false});
                 });
         }
         else {
-            this.setErrors(errors);
+            this.setState({errors: Utils.setErrors(errors)});
             this.setState({loading: false});
         }
     }
@@ -88,7 +93,7 @@ class addTheme extends React.Component {
             <div className="container">
                 
                 <h2 className="text-center">Thema toevoegen</h2>
-                    
+                <div>{this.state.errors}</div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row justify-content-center">
 
