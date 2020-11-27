@@ -54,12 +54,8 @@ class addLocation extends React.Component {
                     console.log("an error occorured " + error);
                     console.log(this.createLocationJson());
 
-<<<<<<< .merge_file_a12704
-                    this.setState({errors: Utils.setErrors({api: ["Mislukt om locatie toe te voegen. Mogelijk bestaat deze locatie al."]})}); 
-=======
                     this.setErrors({login: ["Mislukt om locatie toe te voegen."]}); 
                     this.setState({loading: false});
->>>>>>> .merge_file_a05152
                 });
         }
         else {
