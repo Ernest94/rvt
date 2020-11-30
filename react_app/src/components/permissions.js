@@ -54,6 +54,9 @@ class Permissions{
     static canSeeReview() {
         return (this.isUserAdmin()||this.isUserDocent()||this.isUserTrainee()||this.isUserSales()||this.isUserOffice());
     }
+    static canAddBundle() {
+        return (this.isUserDocent()||this.isUserAdmin());
+    }
 }
 
 export default Permissions;

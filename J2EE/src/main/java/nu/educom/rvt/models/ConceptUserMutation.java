@@ -98,7 +98,4 @@ public class ConceptUserMutation {
 		public void setWeek(int week) {
 			this.week = week;
 		}
-		
-		
-	
 }

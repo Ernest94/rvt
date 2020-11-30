@@ -7,6 +7,7 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
+import MultiSelect from "react-multi-select-component";
 
 class Dossier extends React.Component {
     
@@ -32,13 +33,15 @@ class Dossier extends React.Component {
             pageLoading: true,
             buttonDisabled: false,
             serverFail: false,
+            bundleCheck: [],
         };
     }
 
-    componentDidMount() {
+    componentDidMount(props) {
         Utils.dateValidation();
-        this.getAllInfo();
-
+        this.setState({ pageLoading: true, userId: this.props.match.params.userId });    
+        console.log(this.state.role);
+        this.getAllInfo();             
     }
     
     static hasAccess(props) {
@@ -122,7 +125,8 @@ class Dossier extends React.Component {
                 locations: roleLocResponse.data.locations,
 
                 pageLoading: false,
-            });
+           });
+            this.getTraineeBundles();
             this.canViewUserDossier();
             if (!this.props.editDisabled) {this.canEditUserDossier()};
            
@@ -130,6 +134,24 @@ class Dossier extends React.Component {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
+    }
+
+    getTraineeBundles() {
+        if (this.state.role.name !== "Trainee") {
+            console.log("dossier is from a non Trainee user");
+            return;
+        }
+
+        axios.get(config.url.API_URL + "/webapi/bundle/bundleTrainee/" + this.state.userId)
+            .then(response => {
+                this.setState({
+                    bundleCheck: response.data.bundleCheck
+                });
+                console.log(this.state.bundleCheck);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     
     handleSubmit = (event) => {
