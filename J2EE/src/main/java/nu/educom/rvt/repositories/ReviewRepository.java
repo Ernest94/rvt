@@ -49,13 +49,17 @@ public class ReviewRepository {
 	}
 	
 	public void update(Review review) {
-		if (review.getReviewStatus() != Status.PENDING) {
-			throw new IllegalStateException("Modifying an existing Review");
-		}
         Session session = HibernateSession.getSessionFactory().openSession();
 	    session.beginTransaction();
-	 
-	    session.update(review); 
+	    
+	    Review oldReview = session.get(Review.class, review.getId());
+		if (oldReview.getReviewStatus() != Status.PENDING) {
+			throw new IllegalStateException("Modifying an existing Review");
+		}
+		oldReview.setReviewStatus(review.getReviewStatus());
+		oldReview.setCommentOffice(review.getCommentOffice());
+		oldReview.setCommentStudent(review.getCommentStudent());
+		oldReview.setDate(review.getDate());
 	 
 	    session.getTransaction().commit();
 	    session.close();
