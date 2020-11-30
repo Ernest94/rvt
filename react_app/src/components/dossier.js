@@ -37,12 +37,11 @@ class Dossier extends React.Component {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(props) {
         Utils.dateValidation();
-        // this.props.dateValidation();
-        await this.setState({ pageLoading: true, userId: params.userId });    
-        await console.log(this.state.role);
-        await this.getAllInfo();             
+        this.setState({ pageLoading: true, userId: props.match.params.userId });    
+        console.log(this.state.role);
+        this.getAllInfo();             
     }
     
     static hasAccess(props) {

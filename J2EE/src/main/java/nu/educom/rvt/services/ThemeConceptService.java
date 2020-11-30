@@ -95,7 +95,6 @@ public class ThemeConceptService {
 		
 		return traineeActiveConcepts;
 	}
-<<<<<<< .merge_file_a02156
 	public boolean doesThemeExist(Theme theme) {
 		ThemeRepository themeRepo = new ThemeRepository();
 		Theme duplicate = themeRepo.readByName(theme.getName());		
@@ -111,15 +110,6 @@ public class ThemeConceptService {
 			return this.doesThemeExist(theme);
 		}		
 	}
-=======
-	
 
-
-	
-	
-	
-	
-	
->>>>>>> .merge_file_a18164
 }
 	
