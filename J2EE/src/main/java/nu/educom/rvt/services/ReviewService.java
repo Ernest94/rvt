@@ -69,6 +69,8 @@ public class ReviewService {
 	}
 	
 	/*
+	 * JH: Use English comment!
+	 * 
 	 * Functie ontvangt: een lijst van reviews waar de conceptRatings van gebruikt moeten worden, Een lijst van alle concepten.
 	 * Functie geeft terug: een lijst van alle concepten met de meest recente rating bij elk concept, gesorteerd op de concepten van de meest recente review en daarna de rest op week.
 	 * 
