@@ -6,15 +6,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BundleView;
+import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusRating;
+import nu.educom.rvt.models.view.ConceptView;
+import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.BundleConceptRepository;
+import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 
 
@@ -26,6 +33,7 @@ public class ThemeConceptService {
 	private TraineeActiveRepository traineeActiveRepo;
 	private BundleTraineeRepository bundleTraineeRepo;  
 	private BundleConceptRepository bundleConceptRepo;
+	private BundleRepository bundleRepo;
 
 	public ThemeConceptService() {
 		this.conceptRepo = new ConceptRepository();
@@ -33,6 +41,7 @@ public class ThemeConceptService {
 		this.traineeActiveRepo = new TraineeActiveRepository();
 		this.bundleTraineeRepo = new BundleTraineeRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
+		this.bundleRepo = new BundleRepository();
 	}
   
 	public Theme addTheme(Theme theme) {
@@ -96,12 +105,33 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 	
-
-
+	public ConceptBundleJSON getAllConceptsAndAllBundles() {
+		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
+		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
+		
+		List<Concept> conceptsModel = this.conceptRepo.readAll();
+		List<BundleConcept> bundlesConceptsModel = this.bundleConceptRepo.readAll();		
+		List<Bundle> bundlesModel = this.bundleRepo.readAll();
 	
-	
-	
-	
-	
+		for (Concept concept : conceptsModel) {
+			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
+		}
+		
+		for (Bundle bundle : bundlesModel) {
+			Integer bundleId =  bundle.getId();
+			String bundleName = bundle.getName();
+			String bundleCreatorName = bundle.getCreator().getName();
+			String bundleCreatorLocation = bundle.getCreator().getLocation().getName();
+			List<ConceptWeekOffset> bundleConceptWeekOffset = new ArrayList<ConceptWeekOffset>();
+			for (BundleConcept bundleConcept : bundlesConceptsModel) {
+				if (bundleConcept.getBundle().getId()==bundle.getId()) {
+					bundleConceptWeekOffset.add(new ConceptWeekOffset(bundleConcept.getConcept().getId(),bundleConcept.getWeekOffset()));
+				}
+			}
+			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleCreatorLocation,bundleConceptWeekOffset));
+		}	
+		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(conceptsView,bundlesConceptsView);
+		
+		return conceptBundleJSON;
+	}
 }
-	

@@ -353,7 +353,7 @@ class Dossier extends React.Component {
                     <div>
                         <Link
                             className="btn btn-danger btn-block"
-                            to={"/docentAddReview/"  + userId /*+ "/" + name */}
+                            to={"/docentAddReview/"  + userId}
                                 hidden={!traineeDossier || !Permissions.canAddReview()}
                                 >
                                 Review aanmaken/aanpassen
