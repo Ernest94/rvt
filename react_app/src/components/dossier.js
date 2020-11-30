@@ -39,7 +39,7 @@ class Dossier extends React.Component {
 
     componentDidMount(props) {
         Utils.dateValidation();
-        this.setState({ pageLoading: true, userId: props.match.params.userId });    
+        this.setState({ pageLoading: true, userId: this.props.match.params.userId });    
         console.log(this.state.role);
         this.getAllInfo();             
     }
