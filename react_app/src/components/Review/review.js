@@ -17,7 +17,7 @@ class review extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
-            reviewDate: "",
+            reviewDate: new Date(),
             concepts: [],
             pageLoading: true,
             weeksPerBlock: 2,
@@ -64,7 +64,7 @@ class review extends React.Component {
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
-            reviewDate: data.reviewDate,
+            reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
         });
         console.log(this.state);
@@ -179,7 +179,7 @@ class review extends React.Component {
                 <div className="container">
                     
                     <div class="row pt-4">
-                    <h3 class="col-md-4 text-center">{this.state.reviewDate}</h3>
+                    <h3 class="col-md-4 text-center">{this.state.reviewDate.toLocaleDateString('nl-NL')}</h3>
                     <h3 class="col-md-4 text-center">Review {this.state.userName}</h3>
                     <h3 class="col-md-4 text-center">{this.state.userLocation}</h3>
                     </div>

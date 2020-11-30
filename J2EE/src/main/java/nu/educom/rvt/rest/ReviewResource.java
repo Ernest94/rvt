@@ -1,5 +1,6 @@
 package nu.educom.rvt.rest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -55,7 +56,7 @@ public class ReviewResource {
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
-		String reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
+		LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
@@ -86,8 +87,8 @@ public class ReviewResource {
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
 		
-		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
-		String reviewDate = mostRecentReview.getDate();
+		Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
+		LocalDateTime reviewDate = mostRecentReview.getDate();
 		int reviewId = mostRecentReview.getId();
 		
 		conceptsRatingsJSON.setTraineeName(traineeName);
@@ -165,7 +166,8 @@ public class ReviewResource {
 	public Response updateReview(Review review) {
 		boolean exists = reviewServ.getReviewById(review.getId())!=null;
 		if(exists) {
-		  reviewServ.replaceReview(review);
+			review.setReviewStatus(Review.Status.PENDING);
+			reviewServ.replaceReview(review);
 		  return Response.status(202).build();
 		} 
 		return Response.status(404).build();
