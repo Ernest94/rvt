@@ -154,7 +154,7 @@ class conceptOverview extends React.Component {
             return (
                 <tr className="searchResult" /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
                     <td className="p-3 text-nowrap align-middle">
-                        {concept.concept.week}
+                        {concept.week}
                     </td>
                     <td className="abbreviationClass p-3 text-nowrap align-middle">
                         {concept.concept.theme.abbreviation}

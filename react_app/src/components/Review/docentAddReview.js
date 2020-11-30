@@ -375,7 +375,7 @@ class docentAddReview extends React.Component {
                     </td>
                     <td className="week" id="text">
                         <Select  name={"weeks"+concept.concept.id} id={"weeks"+concept.concept.id}
-                            value={concept.concept.week}
+                            value={concept.week}
                             renderValue={(value) => this.getWeekBlock(value)}
                             onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
                             >

@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleCheckJson;
@@ -66,5 +67,16 @@ public class BundleResource {
 		BundleCheckJson bundleCheckJson = new BundleCheckJson(bundleCheck);
 		
 		return Response.status(200).entity(bundleCheckJson).build();
+	}
+	
+	@GET
+	@Path("/conceptsBundle/{bundleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
+				
+		Bundle bundle = bundleServ.getBundleById(bundleId);
+		List<Concept> concepts = bundleServ.getAllConceptsFromBundle(bundle);		
+		
+		return Response.status(200).entity(concepts).build();
 	}
 }

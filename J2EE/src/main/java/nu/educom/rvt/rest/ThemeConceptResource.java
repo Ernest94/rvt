@@ -7,9 +7,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BundleCheck;
+import nu.educom.rvt.models.view.BundleCheckJson;
+import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.Concept;
 
 import nu.educom.rvt.services.ThemeConceptService;
+import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/theme_concept")
 public class ThemeConceptResource {

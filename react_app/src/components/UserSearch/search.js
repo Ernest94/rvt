@@ -215,7 +215,6 @@ class Search extends React.Component {
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
                                 >
-
                                 {rolesOptions}
                             </select>
                           </div>

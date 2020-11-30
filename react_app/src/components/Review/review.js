@@ -256,7 +256,7 @@ class review extends React.Component {
             
                 <tr>
                     <td className="week">
-                        {this.getWeekBlock(concept.concept.week)}
+                        {this.getWeekBlock(concept.week)}
                     </td>
                     <td className="theme">
                         <span className="theme-text"> {concept.concept.theme.abbreviation}

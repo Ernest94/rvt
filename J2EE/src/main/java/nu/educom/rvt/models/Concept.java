@@ -17,8 +17,6 @@ public class Concept {
 	private String name;
 	@Column(name="description")
 	private String description;
-	@Column(name="week")
-	private Integer week;
 	@Column(name="startdate")
 	private String startDate;
 	@Column(name="enddate")
@@ -29,12 +27,11 @@ public class Concept {
 		super();
 	}
 	
-	public Concept(Theme theme, String name, String description, int week, String startDate, String endDate) {
+	public Concept(Theme theme, String name, String description, String startDate, String endDate) {
 		super();
 		this.theme = theme;
 		this.name = name;
 		this.description = description;
-		this.week = week;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -66,14 +63,7 @@ public class Concept {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public Integer getWeek() {
-		return week;
-	}
-	public void setWeek(int week) {
-		this.week = week;
-	}
-
+	
 	public String getStartDate() {
 		return startDate;
 	}

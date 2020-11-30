@@ -15,6 +15,8 @@ import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.ConceptRatingUpdate;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.CPRActive;
+import nu.educom.rvt.models.view.CPRActiveJSON;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
 import nu.educom.rvt.models.view.UserSearchJson;
@@ -49,7 +51,7 @@ public class ReviewResource {
 		List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
 		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput); // hier moet de check of iets active is in.
 		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen (WeekOffsetFunctie).
-		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
 		//extra functie om de week te bepalen nadat de ratings eraan zijn gegeven.
 		
 		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
@@ -76,13 +78,16 @@ public class ReviewResource {
 			    
 	    reviewServ.makeNewReviewIfNoPending(userOutput);
 
-		List<Review> allReviews = this.reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
+		List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
 		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
-		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+		List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
 	    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
-
-		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
+		
+		List<CPRActive> CPRActive = conceptServ.converToCPRActive(conceptsPlusRatings);
+		
+		
+		CPRActiveJSON conceptsRatingsJSON = new CPRActiveJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
 		
@@ -93,7 +98,7 @@ public class ReviewResource {
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
-		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+		conceptsRatingsJSON.setCPRActive(CPRActive);
 		conceptsRatingsJSON.setReviewId(reviewId);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
