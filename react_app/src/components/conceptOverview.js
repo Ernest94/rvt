@@ -64,7 +64,6 @@ class conceptOverview extends React.Component {
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
-                //this.fakeCurriculumResponse();
                 //const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
                 this.setState({
                     buttonDisabled: false,
@@ -80,15 +79,6 @@ class conceptOverview extends React.Component {
             reviewDate: data.reviewDate,
             currentConcepts: data.conceptsPlusRatings,
         });
-        console.log(this.state);
-    }
-
-    fakeCurriculumResponse() {
-        this.setState({
-            userName: "Niels",
-            userLocation: "Utrecht",
-            currentConcepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-        })
         console.log(this.state);
     }
 

@@ -140,7 +140,7 @@ class docentAddReview extends React.Component {
             userName: data.traineeName,
             userLocation: data.traineeLocation,
             reviewDate: data.reviewDate,
-            concepts: data.conceptsPlusRatings,
+            concepts: data.cpractive,
             reviewId: data.reviewId,
             message: "",
         });
@@ -294,7 +294,7 @@ class docentAddReview extends React.Component {
     setActiveConcept() {
         var checkBox = document.getElementById("myCheck");
         var text = document.getElementById("text");
-        if (checkBox.checked == false){
+        if (checkBox.checked === false){
           text.style.display = "block";
         } else {
            text.style.display = "none";

@@ -223,7 +223,7 @@ class review extends React.Component {
         return(
             this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
             &&
-            this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
+            this.state.weeksSelected[0] <= concept.week && concept.week <= this.state.weeksSelected[1]
             &&
             (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
         
