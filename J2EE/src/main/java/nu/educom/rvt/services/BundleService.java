@@ -102,11 +102,11 @@ public class BundleService {
 //			    		newFrontendBundleConcept.getConceptId(),
 //			    		newFrontendBundleConcept.getWeekOffset(),
 //			    		LocalDate.now().toString()));
-//
-				bundleToUpdate.addConcept(new BundleConcept(newFrontendBundleConcept.getBundleId(),
-			    		newFrontendBundleConcept.getConceptId(),
-			    		newFrontendBundleConcept.getWeekOffset(),
-			    		LocalDate.now().toString()));
+////
+//				bundleToUpdate.addConcept(new BundleConcept(newFrontendBundleConcept.getBundleId(),
+//			    		newFrontendBundleConcept.getConceptId(),
+//			    		newFrontendBundleConcept.getWeekOffset(),
+//			    		LocalDate.now().toString()));
 			}
 //		    session.saveOrUpdate(bundleToUpdate);
 		    session.getTransaction().commit();
