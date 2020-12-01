@@ -9,8 +9,7 @@ import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
+
 
 class Dossier extends React.Component {
     

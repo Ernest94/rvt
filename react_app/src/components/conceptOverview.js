@@ -100,18 +100,16 @@ class conceptOverview extends React.Component {
         for (activeConcept of this.state.activeConcepts) {
             var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(activeConcept);
             activeConceptsAndWeekOffset.push({
+                bundleId:this.state.selectedBundle,
                 conceptId:activeConcept,
                 weekOffset:this.state.activeConceptsWeekOffset[indexChangedConceptInActiveConceptIds]});
         }
-        return ({
-            bundleConceptWeekOffset:activeConceptsAndWeekOffset,
-            bundleId:this.state.selectedBundle
-        })
+        return activeConceptsAndWeekOffset
     }
 
     saveBundle() {
         console.log(this.bundleJSON());
-        axios.post(config.url.API_URL + "/webapi/bundle", this.bundleJSON())
+        axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
         .then(response => {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"

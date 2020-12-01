@@ -37,7 +37,6 @@ public class BundleConcept {
 		@Column(name="enddate")
 		private LocalDate endDate;
 		
-		
 		public BundleConcept() {
 			super();
 		}
@@ -58,7 +57,7 @@ public class BundleConcept {
 			this.startDate = startDate;
 			this.endDate = endDate;
 		}
-
+		
 		public int getId() {
 			return id;
 		}
@@ -105,7 +104,5 @@ public class BundleConcept {
 
 		public void setEndDate(LocalDate endDate) {
 			this.endDate = endDate;
-		}
-
-		
+		}		
 }
