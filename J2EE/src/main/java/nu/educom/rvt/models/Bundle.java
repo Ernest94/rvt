@@ -1,6 +1,11 @@
 package nu.educom.rvt.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
+
 
 @Entity
 @Table(name="bundle")
@@ -19,6 +24,10 @@ public class Bundle {
 	private String startDate;
 	@Column(name="enddate")
 	private String endDate;
+	
+	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
+	private List<BundleConcept> allConcepts=new ArrayList<BundleConcept>();
+	
 	
 	//needed for Hibernate
 	public Bundle() {
@@ -79,4 +88,17 @@ public class Bundle {
 		this.endDate = endDate;
 	}
 
+	public List<BundleConcept> getAllConcepts() {
+		return allConcepts;
+	}
+
+	public void addConcept(BundleConcept bc) {
+		allConcepts.add(bc);
+	}
+
+//	public List<BundleConcept> getCurrentConcepts() {
+//		allConcepts.stream().filter(b -> b.
+//				getEnd() == name).findFirst().orElse(null);
+//	}
+	
 }

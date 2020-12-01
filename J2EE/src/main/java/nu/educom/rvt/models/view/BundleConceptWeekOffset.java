@@ -2,28 +2,33 @@ package nu.educom.rvt.models.view;
 
 public class BundleConceptWeekOffset {
 
-	private int bundle_id;
-	private int concept_id;
+	private int bundleId;
+	private int conceptId;
 	private int weekOffset;
 	
-	public BundleConceptWeekOffset(int bundle_id, int concept_id, int weekOffset) {
+	public BundleConceptWeekOffset() {
+		
+	}
+	
+	
+	public BundleConceptWeekOffset(int bundleId, int conceptId, int weekOffset) {
 		super();
-		this.bundle_id = bundle_id;
-		this.concept_id = concept_id;
+		this.bundleId = bundleId;
+		this.conceptId = conceptId;
 		this.weekOffset = weekOffset;
 	}
 	
-	public int getBundle_id() {
-		return bundle_id;
+	public int getBundleId() {
+		return bundleId;
 	}
-	public void setBundle_id(int bundle_id) {
-		this.bundle_id = bundle_id;
+	public void setBundleId(int bundleId) {
+		this.bundleId = bundleId;
 	}
-	public int getConcept_id() {
-		return concept_id;
+	public int getConceptId() {
+		return conceptId;
 	}
-	public void setConcept_id(int concept_id) {
-		this.concept_id = concept_id;
+	public void setConceptId(int conceptId) {
+		this.conceptId = conceptId;
 	}
 	public int getWeekOffset() {
 		return weekOffset;
@@ -31,10 +36,5 @@ public class BundleConceptWeekOffset {
 	public void setWeekOffset(int weekOffset) {
 		this.weekOffset = weekOffset;
 	}
-	
-	
-	
-	
-	
 	
 }
