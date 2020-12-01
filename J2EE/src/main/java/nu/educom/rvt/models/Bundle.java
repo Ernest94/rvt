@@ -1,5 +1,7 @@
 package nu.educom.rvt.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,16 +18,16 @@ public class Bundle {
 	@Column(name="name")
 	private String name;
 	@Column(name="startdate")
-	private String startDate;
+	private LocalDate startDate;
 	@Column(name="enddate")
-	private String endDate;
+	private LocalDate endDate;
 	
 	//needed for Hibernate
 	public Bundle() {
 		super();
 	}
 	
-	public Bundle(String name, User creator, String startDate, String endDate) {
+	public Bundle(String name, User creator, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.name = name;
 		this.creator = creator;
@@ -33,7 +35,7 @@ public class Bundle {
 		this.endDate = endDate;
 	}
 	
-	public Bundle(String name, User creator, String startDate) {
+	public Bundle(String name, User creator, LocalDate startDate) {
 		this.name = name;
 		this.creator = creator;
 		this.startDate = startDate;
@@ -63,19 +65,19 @@ public class Bundle {
 		this.creator = creator;
 	}
 
-	public String getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

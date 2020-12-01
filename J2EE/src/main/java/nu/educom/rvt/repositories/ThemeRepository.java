@@ -2,6 +2,8 @@ package nu.educom.rvt.repositories;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -51,6 +53,22 @@ protected SessionFactory sessionFactory;
 			return session.get(Theme.class, id);
 		}
 		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+	public Theme readByName(String name) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return (Theme) session
+					.createQuery("from Theme where name =:name", Theme.class)
+					.setParameter("name", name)
+					.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		} finally {
 			if (session != null) {
 				session.close();
 			}

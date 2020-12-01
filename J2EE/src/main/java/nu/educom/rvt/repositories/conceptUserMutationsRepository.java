@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import nu.educom.rvt.models.ConceptRating;
-
+/* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class conceptUserMutationsRepository {
 	
 	public ConceptRating create(ConceptRating conceptRating) {
