@@ -342,7 +342,7 @@ class docentAddReview extends React.Component {
     }
 
     render() {
-        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
         const weekoptions = weeks.map((week) =>(
                             <MenuItem key={"week_"+week} value={week}>
                                 {"week " + week}

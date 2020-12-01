@@ -1,10 +1,10 @@
 package nu.educom.rvt.models;
 
-import nu.educom.rvt.models.view.ConceptPlusRating;
+import nu.educom.rvt.models.view.CPRActive;
 
 public class ConceptRatingUpdate {
   private int reviewId;
-  private ConceptPlusRating conceptPlusRating;
+  private CPRActive conceptPlusRating;
 
     public int getReviewId() {
 	  return reviewId;
@@ -14,11 +14,11 @@ public class ConceptRatingUpdate {
 	  this.reviewId = reviewId;
     }
     
-    public ConceptPlusRating getConceptPlusRating() {
+    public CPRActive getConceptPlusRating() {
 	  return conceptPlusRating;
     }
     
-    public void setConceptPlusRating(ConceptPlusRating conceptPlusRating) {
+    public void setConceptPlusRating(CPRActive conceptPlusRating) {
 	  this.conceptPlusRating = conceptPlusRating;
     }
   

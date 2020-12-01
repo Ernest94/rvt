@@ -15,7 +15,7 @@ class ConceptSelection extends React.Component {
         super(props);
         this.state ={
             stars: [1,5],
-            weeks: [1,10],
+            weeks: [0,10],
         }
 
     }

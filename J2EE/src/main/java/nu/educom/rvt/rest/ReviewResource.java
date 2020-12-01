@@ -148,7 +148,7 @@ public class ReviewResource {
 
 	@POST
     @Path("/addConceptRating")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)	
     public Response addconceptrating(ConceptRatingUpdate cru){
 		int reviewId = cru.getReviewId();
 		int conceptId = cru.getConceptPlusRating().getConcept().getId();

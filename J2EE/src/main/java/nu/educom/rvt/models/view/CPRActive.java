@@ -16,6 +16,11 @@ public class CPRActive extends ConceptPlusRating{
 		this.active = active;
 	}
 	
+	public CPRActive(Boolean active, Concept concept, Integer week, String comment, int rating) {
+		super(concept, rating, comment, week);
+		this.active = active;
+	}
+	
 	public Boolean getActive() {
 		return active;
 	}
