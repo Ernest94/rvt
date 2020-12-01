@@ -84,10 +84,10 @@ public class ReviewResource {
 		List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
 	    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
 		
-		List<CPRActive> CPRActive = conceptServ.converToCPRActive(conceptsPlusRatings);
+		List<ConceptPlusRating> CPRActive = conceptServ.converToCPRActive(conceptsPlusRatings);
 		
 		
-		CPRActiveJSON conceptsRatingsJSON = new CPRActiveJSON();
+		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 		String traineeName = userOutput.getName();
 		String traineeLocation = userOutput.getLocation().getName();
 		
@@ -98,7 +98,7 @@ public class ReviewResource {
 		conceptsRatingsJSON.setTraineeName(traineeName);
 		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 		conceptsRatingsJSON.setReviewDate(reviewDate);
-		conceptsRatingsJSON.setCPRActive(CPRActive);
+		conceptsRatingsJSON.setConceptPlusRating(CPRActive);
 		conceptsRatingsJSON.setReviewId(reviewId);
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();

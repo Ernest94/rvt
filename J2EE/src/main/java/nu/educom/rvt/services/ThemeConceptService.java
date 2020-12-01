@@ -114,16 +114,17 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 	
-	public List<CPRActive> converToCPRActive (List<ConceptPlusRating> CPRs){
+	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs){
 		
-		List<CPRActive> CPRAs = new ArrayList<>();
+		List<ConceptPlusRating> CPRAs = new ArrayList<>();
 		for(ConceptPlusRating CPR: CPRs) {
-			CPRAs.add(new CPRActive(CPR, true));
+			CPR.setActive(true);
+			CPRAs.add(CPR);
 		}
 		
 		List<Concept> inactives = conceptRepo.readAll();
 		for(Concept concept: inactives) {
-			CPRAs.add(new CPRActive(concept, false));
+			CPRAs.add(new ConceptPlusRating(concept, false));
 		}
 		
 		CPRAs = StreamEx.of(CPRAs).distinct(foo -> foo.getConcept().getId()).toList();

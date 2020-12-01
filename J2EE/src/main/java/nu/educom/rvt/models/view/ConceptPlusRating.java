@@ -8,6 +8,7 @@ public class ConceptPlusRating {
 	private int rating;
 	private String comment;
 	private int week;
+	private Boolean active;
 	
 	public ConceptPlusRating() {
 		
@@ -17,6 +18,15 @@ public class ConceptPlusRating {
 		this.concept = concept;
 		this.rating = rating;
 		this.week = week;
+		this.comment = "";
+	}
+	
+	public ConceptPlusRating(Concept concept, Boolean active) {
+		this.concept = concept;
+		this.active = active;
+		this.rating = 0;
+		this.week = 0;
+		this.comment = "";
 	}
 	
 	public ConceptPlusRating(Concept concept,int rating, String comment, Integer week) {
@@ -24,6 +34,14 @@ public class ConceptPlusRating {
 		this.rating = rating;
 		this.comment = comment;
 		this.week = week;
+	}
+	
+	public ConceptPlusRating(Concept concept,int rating, String comment, Integer week, Boolean active) {
+		this.concept = concept;
+		this.rating = rating;
+		this.comment = comment;
+		this.week = week;
+		this.active = active;
 	}
 	
 	public Concept getConcept() {
@@ -51,6 +69,14 @@ public class ConceptPlusRating {
 
 	public void setWeek(int week) {
 		this.week = week;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 }
