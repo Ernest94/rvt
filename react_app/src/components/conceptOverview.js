@@ -2,28 +2,30 @@ import React from 'react';
 import axios from 'axios';
 
 import {config} from './constants';
-import './UserSearch/search.css';
+import './conceptOverview.css';
 import Permissions from './permissions.js'
+import Utils from './Utils.js'
+import { Checkbox} from '@material-ui/core';
+import { FaPlus } from "react-icons/fa";
+
+import {Link, withRouter} from 'react-router-dom';
 
 class conceptOverview extends React.Component {
 
     constructor(props) {
         super(props);
+        this.concepts = [];
+        this.bundles = [];
         this.state = {
-            userName: "",
-            userLocation: null,
-            themes: [],
-            theme: "",
-            active: false,
-            blocks: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
-            block: '1',
-            allConcepts: [],
-            currentConcepts: [],
-            loading: false,
-            themeDisplayName: "",
-            blockDisplayName: '1',
-            buttonDisabled: false,
+            pageLoading: true,
+            errors: "",
+            selectedBundle: "",
+            activeConcepts:[],
+            activeConceptsWeekOffset:[],
         };
+        this.onChangeBundle = this.onChangeBundle.bind(this);
+        this.onChangeWeek= this.onChangeWeek.bind(this);
+        this.saveBundle = this.saveBundle.bind(this);
     }
 
     static hasAccess() {
@@ -31,210 +33,216 @@ class conceptOverview extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ pageLoading: true });
-        this.getThemes();
-        this.getConcepts();
+        this.getConceptsAndBundles();
     }
 
-    handleFormChange = (e) => {
-        const {name, value} = e.target;
-        this.setState({
-           [name]: value
-        });
-    }
-    handleSubmit = (event) => {
-        event.preventDefault();
-        this.setState({buttonDisabled: true});
-
-    }
-
-    createUserIdJson() {
-        return {
-            id: 1, //this.state.userId,
-        };
-    }
-
-    getConcepts() {
-        axios.post(config.url.API_URL + "/webapi/review/curriculum", this.createUserIdJson())
+    getConceptsAndBundles() {
+        axios.get(config.url.API_URL + "/webapi/theme_concept/concepts/bundles")
             .then(response => {
-                this.setState({ buttonDisabled: false, errors: null });
-
-                this.handleCurriculumReponse(response.data);
-                this.render();
+                this.concepts = response.data.concepts;
+                this.bundles = response.data.bundlesConcepts;
+                this.setState({
+                    pageLoading: false,
+                });
+            console.log(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
-                //this.fakeCurriculumResponse();
-                //const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
-                this.setState({
-                    buttonDisabled: false,
-                    //errors: this.props.setErrors(custErr)
-                });
+                const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
+                this.setState({errors: Utils.setErrors(custErr)});
+                this.setState({errors: Utils.setErrors(error)});
             });
     }
 
-    handleCurriculumReponse(data) {
+    onChangeBundle = (e) => {
+        var bundleKeyId = parseInt(e.target.value);
         this.setState({
-            userName: data.traineeName,
-            userLocation: data.traineeLocation,
-            reviewDate: data.reviewDate,
-            currentConcepts: data.conceptsPlusRatings,
+            selectedBundle: bundleKeyId,
         });
-        console.log(this.state);
-    }
+        this.selectActiveConcepts(bundleKeyId)
+    } 
 
-    fakeCurriculumResponse() {
+    selectActiveConcepts(bundleKeyId) {
+        var activeBundleConceptsAndWeekOffsets = this.bundles.find(bundle => bundle.id === parseInt(bundleKeyId)).bundleConceptWeekOffset;       
         this.setState({
-            userName: "Niels",
-            userLocation: "Utrecht",
-            currentConcepts: [{ id: 1, theme: { abbriviation: "OOP", name: "Object Oriented Programmeren", description: "beschrijving van OOP" }, name: "MVC", week: 5, rating: 4 }],
-        })
-        console.log(this.state);
+            activeConcepts:activeBundleConceptsAndWeekOffsets.map(element=> element.conceptId),
+            activeConceptsWeekOffset:activeBundleConceptsAndWeekOffsets.map(element => element.weekOffset)
+        });     
     }
 
-    getThemes() {
-        axios.get(config.url.API_URL + '/webapi/user/themes')
-            .then(response => {
-                this.setState({
-                    themes: response.data.themes,
-                    pageLoading: false
-                });
-            })
-            .catch(() => {
-                this.setState({
-                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
-                    pageLoading: false
-                });
-            })
-    }
-
-    createFilterJson() {
-        return {
-            theme: this.state.theme,
-            block: this.state.block,
-            active: this.state.active
+    onChangeActive = (e) => {
+        var idOfChangedConcept = e.target.id;;
+        var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(parseInt(idOfChangedConcept.slice(7)));
+       if (indexChangedConceptInActiveConceptIds>=0) {
+        this.setState({
+            activeConcepts: this.state.activeConcepts.filter(function(value,index,arr) { 
+                return index !== indexChangedConceptInActiveConceptIds}),
+            activeConceptsWeekOffset: this.state.activeConceptsWeekOffset.filter(function(value, index, arr) { 
+                return index !== indexChangedConceptInActiveConceptIds})
+        });
+        } else {
+            this.setState(previousState => ({
+                activeConcepts: [...previousState.activeConcepts, parseInt(idOfChangedConcept.slice(7))],
+                activeConceptsWeekOffset: [...previousState.activeConceptsWeekOffset,0],
+            }));        
         }
     }
+    
+    onChangeWeek = (e) => {
+        var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(parseInt(e.target.id.slice(7)));
+        let newActiveConceptsWeekOffset = this.state.activeConceptsWeekOffset;
+        newActiveConceptsWeekOffset[indexChangedConceptInActiveConceptIds] = parseInt(e.target.value);
+        this.setState({activeConceptsWeekOffset: newActiveConceptsWeekOffset});
+    }
 
-    onChangeTheme = (e) => {
-        var selectedTheme = this.state.themes.find(theme => theme.id === parseInt(e.target.value));
+    bundleJSON() {
+        var activeConceptsAndWeekOffset=[];
+        var activeConcept;
+        for (activeConcept of this.state.activeConcepts) {
+            var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(activeConcept);
+            activeConceptsAndWeekOffset.push({
+                conceptId:activeConcept,
+                weekOffset:this.state.activeConceptsWeekOffset[indexChangedConceptInActiveConceptIds]});
+        }
+        return ({
+            bundleConceptWeekOffset:activeConceptsAndWeekOffset,
+            bundleId:this.state.selectedBundle
+        })
+    }
 
-        this.setState({
-            theme: selectedTheme,
-            themeDisplayName: e.target.value
+    saveBundle() {
+        console.log(this.bundleJSON());
+        axios.post(config.url.API_URL + "/webapi/bundle", this.bundleJSON())
+        .then(response => {
+            this.setState({
+                message: "De wijzigingen in de bundel zijn verwerkt"
+            });
+        })
+        .catch((error) => {
+            console.log("an error occorured " + error);
         });
     }
 
-    onChangeBlock = (e) => {
-        this.setState({
-            block: this.state.blocks.find(loc => loc.id === parseInt(e.target.value)),
-            blockDisplayName: e.target.value,
-        });
-    }
 
-    getActiveDisplayName(bool) {
-        if (bool) return "ja";
-        else return "nee";
+    handleAddBundle() {
+        this.props.history.push('/addBundle');
     }
 
     render() {
-        const {themes, blocks, pageLoading, buttonDisabled} = this.state;
-        if (pageLoading) return (<span className="center">Laden...</span>)
-
-        if (blocks === null || themes === null) {
-            return (<span className="center">Mislukt om pagina te laden.</span>)
-        }
-        const themeOptions = themes.map((theme) => {
+        const bundleOptions = this.bundles.map((bundle) => {
             return (
-                <option key={theme.id} value={theme.id}>{theme.name}</option>
+                <option key={bundle.id} value={bundle.id}> {bundle.name + " (" + bundle.creator_name + ")"}</option>
             )
         });
 
-        var conceptDisplay = this.state.currentConcepts.map((concept) => {
+        const weekOptions = [0,1,2,3,4,5,6,7,8,9,10,11,12].map((weekOffset) => {
             return (
-                <tr className="searchResult" /* onClick={(e) => {this.props.handleDossierRequest(e, concept.id)}} */ >
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.concept.week}
-                    </td>
-                    <td className="abbreviationClass p-3 text-nowrap align-middle">
-                        {concept.concept.theme.abbreviation}
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        {concept.concept.name}
-                    </td>
-                    <td className="p-3 text-nowrap align-middle">
-                        Actief
-                    </td>
-                </tr >
+                <option key={weekOffset} value={weekOffset}> {"Startweek " + (weekOffset ? "+ " + weekOffset : "")}</option>
+            )
+        });
+
+        if (this.state.pageLoading) return (<h2 className="center">Laden...</h2>)
+
+        var conceptDisplay = this.concepts.map((concept) => {
+            var selected = (this.state.activeConcepts.includes(concept.id)) ? true:false;
+            var weekoffset =  (this.state.activeConcepts.includes(concept.id)) ? this.state.activeConceptsWeekOffset[this.state.activeConcepts.indexOf(concept.id)]: "";
+            return (
+                    <tr className={"searchResult " + (selected ? 'text-black' : 'text-muted')} key={concept.id}>
+                        <td>
+                        <Checkbox className="" 
+                            id={"concept"+concept.id}
+                            checked={selected}
+                            onChange={this.onChangeActive}
+                            />                   
+                        </td>
+                        <td className="">
+                        <select className="p-2" name="week" 
+                                    id={"concept"+concept.id}
+                                    value={weekoffset}
+                                    onChange={this.onChangeWeek}
+                                    required
+                                    disabled={!selected}>
+                                    <option hidden value=''></option>
+                                    {weekOptions}
+                        </select>
+                        </td>
+                        <td className="">
+                            <div className="p-1">
+                            {concept.theme.name}
+                            </div>
+                        </td>
+                        <td className="">
+                            <div className="p-1">
+                            {concept.name}
+                            </div>
+                        </td>
+                    </tr >
             )
         });
 
 
         return (
 
-            <div>
+            <div className="container">
+
                 <h2 className="text-center">Concepten overzicht</h2>
-                <div >
+                
+                <div className="row"> 
                     <ul className="errors">{this.state.errors}</ul>
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="search-bar row d-flex">
-                          <div class="m-auto">
-                            <label className="m-1" htmlFor="theme">Thema:</label>
-                            <select name="theme" id="theme"
-                                value={this.state.themeDisplayName}
-                                onChange={this.onChangeTheme}
+                </div>
+
+                <div className="row">
+                    <div className="col-4">
+                        Bundel:
+                        <select className="m-1" name="bundle" id="bundle"
+                                value={this.state.bundle}
+                                onChange={this.onChangeBundle}
                                 required>
-
-                                <option hidden value=''>Thema</option>
-                                {themeOptions}
+                                <option hidden value=''>Bundel</option>
+                                {bundleOptions}
                             </select>
-                          </div>
-                          <div class="m-auto">
-                            <label className="m-1" htmlFor="block">Blok:</label>
-                            <input id="block" type="number" name="block" min="1" max="52" onChange={this.handleFormChange} />
-                          </div>
-                          <div class="m-auto">
-                            <label className="m-1" htmlFor="criteria">Inactief zichtbaar:</label>
-                            <input id="criteria" type="checkbox" name="criteria" onChange={this.toggleActive} />
-                          </div>
-                        <div className="m-auto">
-                            <button className="btn btn-outline-secondary m-2"
-                                disabled={buttonDisabled}
-                                type="submit">
-                                {(buttonDisabled)?"Laden...": "Filter"}
-                            </button>
-                        </div>
                     </div>
+                    <div className="col-8">
+                        <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                            <FaPlus/>
+                        </Link>
+                   </div>
+                </div>
 
-                    </form>
-                </div >
-
-                <div className="text-center">
-                    <table className="w-100 mx-auto">
-                        <thead>
-                            <tr>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Week
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Thema
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Concept
-                                    </th>
-                                <th className="p-2 text-nowrap align-middle">
-                                    Actief
-                                    </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {conceptDisplay}
-                        </tbody>
-                    </table>
-                </div >
+                <div className="container mt-4">
+                    <div className="row justify-content-center">
+                    <div className="col-9 text-center table-responsive">
+                        <table className="concept-overview-table">
+                            <thead>
+                                <tr>
+                                    <th className="">
+                                        Actief
+                                        </th>
+                                    <th className="">
+                                        Week
+                                        </th>
+                                    <th className="">
+                                        Thema
+                                        </th>
+                                    <th className="">
+                                        Concept
+                                        </th>
+                                </tr>
+                            </thead>
+                            <tbody className="tableBody table">
+                            {conceptDisplay}
+                            </tbody>
+                        </table>
+                    </div >
+                    <div className="col-3">
+                    <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}>
+                        Bundel opslaan
+                    </button>
+                    </div>
+                </div>
+                </div>
             </div>
         )
     }
 }
 
-export default conceptOverview;
+export default withRouter(conceptOverview);

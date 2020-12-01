@@ -13,9 +13,9 @@ public class ConceptRatingRepository {
 
 	public ConceptRating create(ConceptRating conceptRating) {
 		Session session = null;
-		if (conceptRating.getReview().getReviewStatus() != Status.PENDING) {
-			throw new IllegalStateException("Modifying an existing Review");
-		}
+//		if (conceptRating.getReview().getReviewStatus() != Status.PENDING) {
+//			throw new IllegalStateException("Modifying an existing Review");
+//		}
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();

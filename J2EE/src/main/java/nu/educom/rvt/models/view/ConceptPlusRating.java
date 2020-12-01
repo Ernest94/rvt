@@ -6,7 +6,7 @@ public class ConceptPlusRating {
 
 	private Concept concept;
 	private int rating;
-	private String comment;
+	private String comment;	
 	
 	public ConceptPlusRating() {
 		

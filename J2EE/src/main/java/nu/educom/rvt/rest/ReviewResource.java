@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -36,33 +37,35 @@ public class ReviewResource {
 	public ReviewResource() {
 		this.reviewServ = new ReviewService();
 	}
- 
-	@POST
-	@Path("/curriculum")
-	@Consumes(MediaType.APPLICATION_JSON)
+
+  
+	@GET
+	@Path("/curriculum/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getActiveConceptsAndRating(User user) {
+	public Response getActiveConceptsAndRating(@PathParam("userId") int userId) {
 		
 		UserService userServ = new UserService(); //load injectables
 		ThemeConceptService conceptServ = new ThemeConceptService();
-	    User userOutput = userServ.getUserById(user.getId());
-		
-		List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
-		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput); // hier moet de check of iets active is in.
-		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen (WeekOffsetFunctie).
-		List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
-		//extra functie om de week te bepalen nadat de ratings eraan zijn gegeven.
-		
-		ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
-		String traineeName = userOutput.getName();
-		String traineeLocation = userOutput.getLocation().getName();
-		LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
-		conceptsRatingsJSON.setTraineeName(traineeName);
-		conceptsRatingsJSON.setTraineeLocation(traineeLocation);
-		conceptsRatingsJSON.setReviewDate(reviewDate);
-		conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
 
-		return Response.status(200).entity(conceptsRatingsJSON).build();
+	    User userOutput = userServ.getUserById(userId);
+	    if(userOutput.getRole().getId()==3) {
+			
+			List<Review> allReviews = this.reviewServ.getAllCompletedReviewsForUser(userOutput);
+			List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
+			List<ConceptPlusRating> conceptsPlusRatings = this.reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+			
+			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
+			String traineeName = userOutput.getName();
+			String traineeLocation = userOutput.getLocation().getName();
+			LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
+			conceptsRatingsJSON.setTraineeName(traineeName);
+			conceptsRatingsJSON.setTraineeLocation(traineeLocation);
+			conceptsRatingsJSON.setReviewDate(reviewDate);
+			conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+
+			return Response.status(200).entity(conceptsRatingsJSON).build();
+	    }
+	  return Response.status(412).build();
   	}
 	
 	@POST
@@ -157,7 +160,7 @@ public class ReviewResource {
 		}
 		else {
 			reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
-	  	    return Response.status(201).build();
+	  	    return Response.status(404).build();
 		}
 
     }
