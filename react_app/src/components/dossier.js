@@ -275,14 +275,14 @@ class Dossier extends React.Component {
                             disabled={editDisabled || !allowedToEditFields.includes("name")}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled || !allowedToEditFields.includes("email")}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={role.id}
@@ -294,7 +294,7 @@ class Dossier extends React.Component {
                             {rolesOptions}
                         </select>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
                             value={location.id}
@@ -306,14 +306,14 @@ class Dossier extends React.Component {
                             {locationOptions}
                         </select>
                     </div>
-                    <div className="input row" >
+                    <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             value={startDate} 
                             disabled={editDisabled || !allowedToEditFields.includes("startDate")}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
                         {/* <InputLabel id="demo-mutiple-name-label">Bundels</InputLabel> */}
                             <Select className="form-control col-sm-9"
