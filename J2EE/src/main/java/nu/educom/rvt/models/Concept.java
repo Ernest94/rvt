@@ -1,6 +1,7 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -94,5 +95,21 @@ public class Concept {
 	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Concept)) {
+			return false;
+		}
+		Concept other = (Concept) obj;
+		Integer Zero = Integer.valueOf(0);
+		if (Zero.compareTo(getId()) < 0 && Zero.compareTo(other.getId()) < 0) {
+			return getId().equals(other.getId());
+		} 
+		return Objects.equals(getName(), other.getName()) &&
+			   Objects.equals(getDescription(), other.getDescription()) &&
+			   Objects.equals(getStartDate(), other.getStartDate()) &&
+			   Objects.equals(getEndDate(), other.getEndDate());
 	}
 }
