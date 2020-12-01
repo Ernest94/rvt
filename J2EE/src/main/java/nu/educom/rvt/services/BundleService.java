@@ -9,7 +9,6 @@ import org.hibernate.Session;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
-import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
@@ -41,7 +40,9 @@ public class BundleService {
 	
 	public int isBundleIdConsistent(List<BundleConceptWeekOffset> bundleConcepts) {
 		int bundleId = bundleConcepts.get(0).getBundleId();
-		List<BundleConceptWeekOffset> checkBundleConcepts = bundleConcepts.stream().filter(element -> element.getBundleId()==bundleId).collect(Collectors.toList());	
+		List<BundleConceptWeekOffset> checkBundleConcepts = bundleConcepts.stream()
+				.filter(element -> element.getBundleId()==bundleId)
+				.collect(Collectors.toList());	
 		if (bundleConcepts.size()==checkBundleConcepts.size()) {
 			return bundleId;
 		} else {
@@ -51,10 +52,14 @@ public class BundleService {
 	
 	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) {
 		Session session = HibernateSession.getSessionFactory().openSession();
+	    session.beginTransaction();
 		Bundle bundleToUpdate = bundleRepo.readById(bundleId);
 		List<BundleConcept> databaseBundleConcepts = bundleToUpdate.getAllConcepts();
-		List<Integer> frontendBundleConceptIds = frontendBundleConcepts.stream().map(item -> item.getConceptId()).collect(Collectors.toList());
-
+		List<Integer> frontendBundleConceptIds = frontendBundleConcepts.stream()
+				.map(item -> item.getConceptId())
+				.collect(Collectors.toList());
+		System.out.print(frontendBundleConceptIds);
+		
 		for (BundleConcept databaseBundleConcept : databaseBundleConcepts) {
 			int j=0;
 			if (!frontendBundleConceptIds.contains(databaseBundleConcept.getConcept().getId())) {
@@ -84,15 +89,33 @@ public class BundleService {
 			}
 		}
 		if (frontendBundleConcepts.isEmpty()) {
+			
+//		    session.getTransaction().commit();
+		    session.close();
 			return 1;
 		} else {
-			for (BundleConceptWeekOffset newFrontendBundleConcept : frontendBundleConcepts)
-		    session.save(new BundleConcept(newFrontendBundleConcept.getBundleId(),
-		    		newFrontendBundleConcept.getConceptId(),
-		    		newFrontendBundleConcept.getWeekOffset(),
-		    		LocalDate.now().toString()));
-			return 1;
+			
+			//conceptRepo read by ids -> frontendBundleConcepts
+			//
+			for (BundleConceptWeekOffset newFrontendBundleConcept : frontendBundleConcepts) {
+//			    session.saveOrUpdate(new BundleConcept(newFrontendBundleConcept.getBundleId(),
+//			    		newFrontendBundleConcept.getConceptId(),
+//			    		newFrontendBundleConcept.getWeekOffset(),
+//			    		LocalDate.now().toString()));
+//
+				bundleToUpdate.addConcept(new BundleConcept(newFrontendBundleConcept.getBundleId(),
+			    		newFrontendBundleConcept.getConceptId(),
+			    		newFrontendBundleConcept.getWeekOffset(),
+			    		LocalDate.now().toString()));
+			}
+//		    session.saveOrUpdate(bundleToUpdate);
+		    session.getTransaction().commit();
+		    session.close();
+		    return 1;
 		}
+//		catch //			session.getTransaction().rollback();
+
+		
 	}
 	
 	public void createNewBundle(Bundle bundle) {

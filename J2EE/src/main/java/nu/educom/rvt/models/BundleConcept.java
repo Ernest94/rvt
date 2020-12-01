@@ -35,11 +35,13 @@ public class BundleConcept {
 		@Column(name="enddate")
 		private String endDate;
 			
-		@Column(name="bundle_id")
-		private int bundleId;
+//		@ManyToOne
+		@JoinColumn(name="bundle_id", insertable = false, updatable = false)
+		private int bundle_id;
 		
-		@Column(name="concept_id")
-		private int conceptId;
+//		@ManyToOne
+		@JoinColumn(name="concept_id", insertable = false, updatable = false)
+		private int concept_id;
 		
 		public BundleConcept() {
 			super();
@@ -64,8 +66,8 @@ public class BundleConcept {
 		
 		public BundleConcept(int bundleId, int conceptId, int weekOffset, String startDate) {
 			super();
-			this.bundleId = bundleId;
-			this.conceptId = conceptId;
+			this.bundle_id = bundleId;
+			this.concept_id = conceptId;
 			this.weekOffset = weekOffset;
 			this.startDate = startDate;
 		}
@@ -118,20 +120,20 @@ public class BundleConcept {
 			this.endDate = endDate;
 		}
 
-		public int getBundleId() {
-			return bundleId;
+		public int getBundl_id() {
+			return bundle_id;
 		}
 
-		public void setBundleId(int bundleId) {
-			this.bundleId = bundleId;
+		public void setBundle_id(int bundleId) {
+			this.bundle_id = bundleId;
 		}
 
-		public int getConceptId() {
-			return conceptId;
+		public int getConcept_id() {
+			return concept_id;
 		}
 
-		public void setConceptId(int conceptId) {
-			this.conceptId = conceptId;
+		public void setConcept_id(int conceptId) {
+			this.concept_id = conceptId;
 		}
 
 		

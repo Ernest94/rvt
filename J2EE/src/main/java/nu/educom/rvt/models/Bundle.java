@@ -2,7 +2,6 @@ package nu.educom.rvt.models;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.*;
 
@@ -26,7 +25,7 @@ public class Bundle {
 	private String endDate;
 	
 	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
-	private List<BundleConcept> allConcepts=new ArrayList<BundleConcept>();
+	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
 	
 	
 	//needed for Hibernate
