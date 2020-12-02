@@ -3,6 +3,7 @@ package nu.educom.rvt.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
@@ -96,9 +97,8 @@ public class Bundle {
 		allConcepts.add(bc);
 	}
 
-//	public List<BundleConcept> getCurrentConcepts() {
-//		allConcepts.stream().filter(b -> b.
-//				getEnd() == name).findFirst().orElse(null);
-//	}
+	public List<BundleConcept> getCurrentConcepts() {
+		return allConcepts.stream().filter(item-> item.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList());
+	}
 	
 }
