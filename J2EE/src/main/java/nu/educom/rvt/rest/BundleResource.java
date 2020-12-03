@@ -68,8 +68,8 @@ public class BundleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
 		List<Bundle> bundles = bundleServ.getAllBundles();
-		BundleJson bundleJson = new BundleJson(bundles);
-		return Response.status(200).entity(bundleJson).build();
+//		BundleJson bundleJson = new BundleJson(bundles);
+		return Response.status(200).entity(bundles).build();
 	}
 	
 	@GET

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
-@Table(name="concepts")
+@Table(name="concept")
 public class Concept {
 
 	@Id
