@@ -25,7 +25,7 @@ public class Bundle {
 	@Column(name="enddate")
 	private LocalDate endDate;
 	
-	@OneToMany(mappedBy="bundle", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
 	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
 	
 	//needed for Hibernate

@@ -21,7 +21,7 @@ public class BundleConcept {
 		@Column(name="id")
 		private int id;
 	
-		@ManyToOne(fetch = FetchType.LAZY)
+		@ManyToOne
 		@JoinColumn(name="bundle_id")
 		private Bundle bundle;
 		
