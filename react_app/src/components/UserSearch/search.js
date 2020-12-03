@@ -7,6 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
+import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -14,14 +15,13 @@ class Search extends React.Component {
         super(props);
         this.state = {
             locations: [],
-            location: "",
+            selectedLocations: [],
             roles: [],
             role: "",
             criteria: "",
             users: [],
             loading: false,
             roleDisplayName: "",
-            locationDisplayName: "",
             buttonDisabled: false,
         };
     }
@@ -53,9 +53,8 @@ class Search extends React.Component {
 
         this.setState({
             loading: true,
-            location: location,
+            selectedLocations: [location],
             role: role,
-            locationDisplayName: location.id,
             roleDisplayName: role.id
         });
 
@@ -94,7 +93,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    Util.setErrors({login: ["Mislukt om zoek actie uit te voeren."]});
+                    Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
                     this.setState({loading: false});
                 });
         }
@@ -132,7 +131,7 @@ class Search extends React.Component {
 
     createSearchJson() {
         return {
-            location: this.state.location,
+            locations: this.state.selectedLocations,
             role: this.state.role,
             criteria: this.state.criteria
         }
@@ -153,13 +152,6 @@ class Search extends React.Component {
         });
     }
 
-    onChangeLocation = (e) => {
-        this.setState({
-            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value,
-        });
-    }
-
     render() {
         const {roles, locations, users, pageLoading, loading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
@@ -170,11 +162,6 @@ class Search extends React.Component {
         const rolesOptions = roles.map((role) => {
             return (
                 <option key={role.id} value={role.id}>{role.name}</option>
-            )
-        });
-        const locationOptions = locations.map((location) => {
-            return (
-                <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
         var userDisplay = users.map((user) => {
@@ -220,16 +207,30 @@ class Search extends React.Component {
                             </select>
                           </div>
                           <div className="m-auto">
-                            <label className="m-1" htmlFor="location">Locatie:</label>
-                            <select name="location" id="location"
-
-                                value={this.state.locationDisplayName}
-                                onChange={this.onChangeLocation}
+                            <FormControl className="search locationInput">
+                                <InputLabel id="location-label" >Locatie: </InputLabel>
+                                <Select
+                                labelId="location-label"
+                                id="location"
+                                name="selectedLocations" 
+                                multiple
+                                value={this.state.selectedLocations}
+                                onChange={this.handleFormChange}
+                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                                MenuProps={{
+                                    variant: "menu",
+                                    getContentAnchorEl: null}
+                                }
+                                input={<Input id="select-location" />}
                                 >
-
-                                {locationOptions}
-                            </select>
-                          </div>
+                                {locations.map((location) => (
+                                    <MenuItem key={location.id} value={location}>
+                                        {location.name}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                            </FormControl>
+                          </div> 
                           <div className="m-auto">
                             <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
                             <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />

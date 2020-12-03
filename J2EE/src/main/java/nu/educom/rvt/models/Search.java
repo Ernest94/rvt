@@ -1,10 +1,12 @@
 package nu.educom.rvt.models;
 
+import java.util.List;
+
 public class Search {
 
 	private String criteria;
 	private Role role;
-	private Location location;
+	private List<Location> locations;
 	
 	public String getCriteria() {
 		return criteria;
@@ -20,10 +22,10 @@ public class Search {
 		this.role = role;
 	}
 	
-	public Location getLocation() {
-		return location;
+	public List<Location> getLocations() {
+		return locations;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 }

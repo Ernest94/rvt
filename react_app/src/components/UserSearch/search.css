@@ -10,3 +10,6 @@
 .text-black {
     color:black;
 }
+.search.locationInput{
+    width:250px;
+}

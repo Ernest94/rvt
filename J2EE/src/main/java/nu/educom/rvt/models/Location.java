@@ -20,7 +20,6 @@ public class Location {
 		this.name = name;
 	}
 	
-	
 	public int getId() {
 		return id;
 	}
@@ -32,7 +31,24 @@ public class Location {
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Location) || obj == null) {
+			return false;
+		}
+		else {
+			Location toCompare = (Location) obj;
+			if(this.id != 0 && toCompare.getId() != 0) {
+				return this.id == toCompare.getId();
+			}
+			else {
+				//Add other attribute comparisons here if they are added to object
+				return (this.name == toCompare.getName());
+			}
+		}
 	}
 }

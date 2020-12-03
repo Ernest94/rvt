@@ -126,7 +126,7 @@ public class UserService {
 		return duplicate==null;
 	}
 	
-	public List<User> getFilteredUsers(String criteria, Role role, Location location)
+	public List<User> getFilteredUsers(String criteria, Role role, List<Location> locations)
 	{
 		String[] words = criteria.split(" ");
 		List<User> foundUsers = new ArrayList<>();	
@@ -136,12 +136,12 @@ public class UserService {
 			{
 				if(word != "")
 	            {
-	                foundUsers.addAll(findUsersByCriteria(word, role, location));
+	                foundUsers.addAll(findUsersByCriteria(word, role, locations));
 	            } 
 			}
 		} 
 		else {
-			foundUsers.addAll(findUsersByCriteria(null, role, location));
+			foundUsers.addAll(findUsersByCriteria(null, role, locations));
 		}
 		
 		foundUsers.stream().distinct().collect(Collectors.toList());
@@ -149,7 +149,7 @@ public class UserService {
 	}
 	
 	
-	public List<User> findUsersByCriteria(String criteria, Role role, Location location)
+	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations)
 	{
 		UserRepository userRepo = new UserRepository();
 		List<User> allUsers = userRepo.readAll();
@@ -159,9 +159,12 @@ public class UserService {
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
 				.collect(Collectors.toList()));
 		
+
 		filterdUsers = filterdUsers.stream()
-				.filter(u -> u.getLocation().getId() == location.getId() || location == null)
-				.collect(Collectors.toList());
+				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
+				.collect(Collectors.toList());			
+	
+		
 		if (criteria != null) {
 			filterdUsers = filterdUsers.stream()
 					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
