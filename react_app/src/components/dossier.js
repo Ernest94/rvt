@@ -344,8 +344,8 @@ class Dossier extends React.Component {
                             to={"/dossier/" + userId + "/edit"}
                             hidden={allowedToEdit}
                             role="button"
-                            >
-                            Pas gebruiker aan
+                            >                        
+                            Gegevens aanpassen
                         </Link>
                     </div>
                     <div>
