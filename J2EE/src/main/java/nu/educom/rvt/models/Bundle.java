@@ -1,6 +1,11 @@
 package nu.educom.rvt.models;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
+
 
 @Entity
 @Table(name="bundle")
@@ -16,16 +21,20 @@ public class Bundle {
 	@Column(name="name")
 	private String name;
 	@Column(name="startdate")
-	private String startDate;
+	private LocalDate startDate;
 	@Column(name="enddate")
-	private String endDate;
+	private LocalDate endDate;
+	
+	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
+	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
+	
 	
 	//needed for Hibernate
 	public Bundle() {
 		super();
 	}
 	
-	public Bundle(String name, User creator, String startDate, String endDate) {
+	public Bundle(String name, User creator, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.name = name;
 		this.creator = creator;
@@ -33,7 +42,7 @@ public class Bundle {
 		this.endDate = endDate;
 	}
 	
-	public Bundle(String name, User creator, String startDate) {
+	public Bundle(String name, User creator, LocalDate startDate) {
 		this.name = name;
 		this.creator = creator;
 		this.startDate = startDate;
@@ -63,20 +72,33 @@ public class Bundle {
 		this.creator = creator;
 	}
 
-	public String getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
+	public List<BundleConcept> getAllConcepts() {
+		return allConcepts;
+	}
+
+	public void addConcept(BundleConcept bc) {
+		allConcepts.add(bc);
+	}
+
+//	public List<BundleConcept> getCurrentConcepts() {
+//		allConcepts.stream().filter(b -> b.
+//				getEnd() == name).findFirst().orElse(null);
+//	}
+	
 }

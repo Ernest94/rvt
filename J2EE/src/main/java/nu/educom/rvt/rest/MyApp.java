@@ -18,7 +18,6 @@ public class MyApp extends Application {
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
 		set.add(BundleResource.class);
-
 		return set;
 	}
 	

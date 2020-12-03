@@ -24,7 +24,7 @@ public class Filler {
 		LocalDateTime weekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
 		LocalDateTime dayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
 	    LocalDateTime nowLDT = LocalDateTime.now();
-	    LocalDateTime endDate = null;
+//	    LocalDateTime endDate = null;
 	    
 	    LocalDate nowLD = LocalDate.now();
 		LocalDate endDateLD = null;
@@ -267,28 +267,36 @@ public class Filler {
         //FILL THE BUNDLE TABLE
         BundleRepository bundleRepo = new BundleRepository();
         
-        Bundle bundle1 = new Bundle("Starters bundel", docent1, nowLD.toString(), null);
-        Bundle bundle2 = new Bundle("JavaScript bundel", docent1,  nowLD.toString(), null);
+        Bundle bundle1 = new Bundle("Starters bundel", docent1, nowLD, endDateLD);
+        Bundle bundle2 = new Bundle("JavaScript bundel", docent1, nowLD, endDateLD);
 
         bundleRepo.create(bundle1);
         bundleRepo.create(bundle2);
         
         //FILL THE BUNDLECONCEPT TABLE
         BundleConceptRepository bundleConceptRepo = new BundleConceptRepository();
-
-        
 		List<BundleConcept> BundleConcepts = new ArrayList<BundleConcept>();
-        BundleConcept bundleConcept1 = new BundleConcept(bundle1, concepts.get(0), 0, nowLD.toString(), null);
-        BundleConcept bundleConcept2 = new BundleConcept(bundle2, concepts.get(2), 2, nowLD.toString(), null);
-
-        bundleConceptRepo.create(bundleConcept1);
-        bundleConceptRepo.create(bundleConcept2);
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(0), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(1), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(2), 2, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(3), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(5), 9, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(8), 2, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(10), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle1, concepts.get(12), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(2), 4, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(23), 0, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(24), 9, nowLD, endDateLD));
+        BundleConcepts.add(new BundleConcept(bundle2, concepts.get(5), 0, nowLD, endDateLD));
+		for (BundleConcept bundleConcept : BundleConcepts) {
+			bundleConceptRepo.create(bundleConcept);
+		}	
 
         //FILL THE BUNDLETRAINEE TABLE
         BundleTraineeRepository bundleTraineeRepo = new BundleTraineeRepository();
 
-        BundleTrainee bundleTrainee1 = new BundleTrainee(trainee1, bundle1, 1, nowLD.toString(), null);
-        BundleTrainee bundleTrainee2 = new BundleTrainee(trainee2, bundle1, 1, nowLD.toString(), null);
+        BundleTrainee bundleTrainee1 = new BundleTrainee(trainee1, bundle1, 1, nowLD, endDateLD);
+        BundleTrainee bundleTrainee2 = new BundleTrainee(trainee2, bundle1, 1, nowLD, endDateLD);
 
         bundleTraineeRepo.create(bundleTrainee1);
         bundleTraineeRepo.create(bundleTrainee2);
