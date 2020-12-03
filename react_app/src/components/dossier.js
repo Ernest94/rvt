@@ -268,7 +268,7 @@ class Dossier extends React.Component {
                             hidden={Permissions.isUserTrainee()}
                             role="button"
                             >                        
-                            Pas gebruiker aan
+                            Gegevens aanpassen
                         </Link>
                     </div>
                     {/* <div>
