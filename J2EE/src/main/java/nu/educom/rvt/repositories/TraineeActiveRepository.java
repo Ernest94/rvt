@@ -1,44 +1,28 @@
 package nu.educom.rvt.repositories;
 
 import java.util.List;
-
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import nu.educom.rvt.models.TraineeActive;
 
-import nu.educom.rvt.models.UserRelation;
+public class TraineeActiveRepository {
+	public TraineeActiveRepository() {
+	}
 
-/* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
-public class UserRelationRepository {
-	protected SessionFactory sessionFactory;
-	
-	public void create(UserRelation relation) {
+	public void create(TraineeActive traineeActive) {
 		Session session = HibernateSession.getSessionFactory().openSession();
 	    session.beginTransaction();
 	 
-	    session.save(relation); 
+	    session.save(traineeActive); 
 	 
 	    session.getTransaction().commit();
 	    session.close();
 	}
 	
-	public UserRelation readById(int id) {
+	public TraineeActive readById(int id) {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(UserRelation.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
-	
-	public List<UserRelation> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(UserRelation.class, session);
+			return session.get(TraineeActive.class, id);
 		}
 		finally {
 			if (session != null) {
@@ -48,10 +32,21 @@ public class UserRelationRepository {
 	}
 	
 	protected void update() {
-		
 	}
 	
-	protected void delete() {
-		
+	protected void delete() {	
+	}
+	
+	public List<TraineeActive> readAll() {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return HibernateSession.loadAllData(TraineeActive.class, session);
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 }

@@ -7,6 +7,9 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 class Dossier extends React.Component {
     
@@ -14,51 +17,58 @@ class Dossier extends React.Component {
         super(props);
         this.state = {
             errors: null,
+
+            userId: null,
             name: "",
             email: "",
-            role: null,
-            roleName: "",
-            location: null,
+            role: {},
+            location: {},
             startDate: "",
-            pageLoading: false,
-            userId: null,
-            buttonDisabled: false,
+
             roles: [],
             locations: [],
-            roleDisplayName: "",
-            locationDisplayName: "",
-            blocked: false,
+
+            allowedToView: false,
+            allowedToEdit: false,
+            allowedToEditFields: [],
+
+            pageLoading: true,
+            buttonDisabled: false,
             serverFail: false,
+            bundleCheck: [],
+            selected: [0, 1],
         };
     }
 
-    async componentDidMount() {
-        const { computedMatch: { params } } = this.props;
+    componentDidMount(props) {
         Utils.dateValidation();
-        // this.props.dateValidation();
-        await this.setState({pageLoading: true, userId: params.userId});
-        this.getAllInfo();
-        
+        this.setState({ pageLoading: true, userId: this.props.match.params.userId });    
+        console.log(this.state.role);
+        this.getAllInfo();             
     }
     
-    static hasAccess() {
-        return Permissions.canEditDossier();
+    static hasAccess(props) {
+        return Permissions.canViewDossier(props.match.params.userId);
     }
     
+    isOwnUserId(){
+        const userId = sessionStorage.getItem("userId");
+        const dossierId = this.state.userId;
+        return userId===dossierId;               
+    }
     canViewUserDossier() {
-        /* JH TIP: Zie remark op main.js regel 102 om hier een eigen permissions.js van te maken, en daarnaast ook isUserAdmin etc hier te gebruiken */
         const userRole = sessionStorage.getItem("userRole");
-        const roleDossierUser = this.state.role.name;
-        const ownUserId = sessionStorage.getItem("userId");
-        var isBlocked; /* JH TIP: Ik zou in plaats van isBlocked een isAllowedToView maken, dat maakt de logica hieronder leesbaarder 
+        const dossierRole = this.state.role.name;
+
+        var isAllowedToView; 
         switch (userRole) {
             case "Trainee":
-                isAllowedToView = isOwnUserId(this.state.userId);
+                isAllowedToView = this.isOwnUserId();
                 break;
             case "Docent":
             case "Sales":
             case "Office":
-                isAllowedToView = isTraineeDossier(this.state.role) || isOwnUserId(this.state.userId);
+                isAllowedToView = dossierRole==="Trainee" || this.isOwnUserId();
                 break;
             case "Admin":
                 isAllowedToView = true;
@@ -67,30 +77,38 @@ class Dossier extends React.Component {
                 isAllowedToView = false;
                 break;
         }
-        this.setState({blocked: !isAllowedToView});
-        */
+        this.setState({allowedToView: isAllowedToView});
+    }
+    canEditUserDossier(){
+        const userRole = sessionStorage.getItem("userRole");
+        const dossierRole = this.state.role.name;
+
+        var isAllowedToEdit= {name:false, email:false, role: false, location: false, startDate: false};
+        var fields = [];
         switch (userRole) {
+            case "Sales":
             case "Trainee":
-                isBlocked = ownUserId !== this.state.userId
+                isAllowedToEdit = this.isOwnUserId();
+                fields= ["name", "email"];
                 break;
             case "Docent":
-                isBlocked = (roleDossierUser !== "Trainee" && ownUserId !== this.state.userId);
-                break;
-            case "Sales":
-                isBlocked = roleDossierUser === "Admin"; /* JH: Vreemd ik had hier verwacht dat sales ook alleen trainees en zichzelf mocht zien */
-                break;
             case "Office":
-                isBlocked = (roleDossierUser === "Admin" || roleDossierUser === "Sales"); /* JH: Vreemd ik had hier verwacht dat office ook alleen trainees en zichzelf mocht zien */
+                isAllowedToEdit = dossierRole==="Trainee" || this.isOwnUserId();
+                fields = ["name", "email", "location", "startDate"];
+                break;
+            case "Admin":
+                isAllowedToEdit = true;
+                fields = ["name", "email", "location", "role", "startDate"];
                 break;
             default:
-                isBlocked = false; /* JH: Dit is gevaarlijk, het is beter om case admin: isBlocked = false te hebben en de default case op isBlocked = true te zetten */
+                isAllowedToEdit = false;
                 break;
         }
-        this.setState({blocked: isBlocked});
+        this.setState({allowedToEdit: isAllowedToEdit, allowedToEditFields: fields});        
     }
-    
     getAllInfo() {
-        const {userId} = this.state;
+        const userId =  this.props.match.params.userId;
+
         const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier',  {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         
@@ -98,24 +116,45 @@ class Dossier extends React.Component {
            const userResponse = responses[0]
            const roleLocResponse = responses[1]
            this.setState({
+                userId: userId,
+
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
-                roleName: userResponse.data.role.name,
                 location: userResponse.data.location,
-                startDate: userResponse.data.startDate,
-                roleDisplayName: userResponse.data.role.id,
-                locationDisplayName: userResponse.data.location.id,
+                startDate: userResponse.data.dateActive,
+
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
+
                 pageLoading: false,
-            });
+           });
+            this.getTraineeBundles();
             this.canViewUserDossier();
+            if (!this.props.editDisabled) {this.canEditUserDossier()};
            
         })).catch(errors => {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
+    }
+
+    getTraineeBundles() {
+        if (this.state.role.name !== "Trainee") {
+            console.log("dossier is from a non Trainee user");
+            return;
+        }
+
+        axios.get(config.url.API_URL + "/webapi/bundle/bundleTrainee/" + this.state.userId)
+            .then(response => {
+                this.setState({
+                    bundleCheck: response.data.bundleCheck
+                });
+                console.log(this.state.bundleCheck);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     
     handleSubmit = (event) => {
@@ -123,11 +162,10 @@ class Dossier extends React.Component {
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/change", this.createUserJson())
+            axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson())
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
-                    
-                    this.props.history.push('/settings');
+                    this.props.history.push('/dossier/' + this.state.userId);
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);  
@@ -175,23 +213,38 @@ class Dossier extends React.Component {
         });
     }
 
+    handleSelectChange = (e) => {
+        const {value} = e.target;
+        console.log(value);
+    }
+
     onChangeLocation = (e) => {
         this.setState({
             location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
             locationDisplayName: e.target.value
         });
     }
-  
+
+    setSelected = (s) => {
+        // const{selected} = this.state.selected;
+        // this.state({
+        //     [selected]: selected
+        // })
+        console.log(s);
+    }
+
     render() {
 
-        const {name, email, roleName, startDate, userId, pageLoading, errors, blocked,
-            serverFail, locations, roles, roleDisplayName, locationDisplayName} = this.state;
-        const { editDisabled } = this.props;
-        const traineeDossier = roleName === "Trainee";
+        const {location, role, name, email, roleName, startDate, userId, pageLoading, errors, blocked,
+               serverFail, locations, roles, roleDisplayName, locationDisplayName, bundleCheck, 
+               allowedToView, allowedToEdit, allowedToEditFields} = this.state;
+
+        const {editDisabled} = this.props;
+        const traineeDossier = role.name === "Trainee";
 
         if (pageLoading) return <span className="center"> Laden... </span>
         if (serverFail) return <span className="center"> Mislukt om de gegevens op te halen. </span> 
-        if (blocked) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
+        if (!allowedToView) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
         
         const rolesOptions = roles.map((role) => {
             return (
@@ -203,7 +256,13 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
-        
+
+        const bundleOptions = bundleCheck.map((bundleCheck) => {
+            return (
+                <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
+            )
+        });    
+
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
@@ -212,49 +271,67 @@ class Dossier extends React.Component {
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
                         <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
-                            disabled={editDisabled}
+                            disabled={editDisabled || !allowedToEditFields.includes("name")}
                             onChange={this.handleFormChange}/>
                     </div>
-
-                    <div className="input row dossier">
+                    <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
-                        disabled={editDisabled}
+                        disabled={editDisabled || !allowedToEditFields.includes("email")}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row dossier">
+                    <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="rol">Rol:</label>
-                        
                         <select className="form-control col-sm-9" name="role" id="role"
-                            value={roleDisplayName}
+                            value={role.id}
                             onChange={this.onChangeRole}
                             required
-                            disabled={editDisabled}>
+                            disabled={editDisabled || !allowedToEditFields.includes("role")}>
 
                             <option hidden value=''>Rol</option>
                             {rolesOptions}
                         </select>
                     </div>
-
-                    <div className="input row dossier">
+                    <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
-                            value={locationDisplayName}
+                            value={location.id}
                             onChange={this.onChangeLocation}
                             required
-                            disabled={editDisabled}>
+                            disabled={editDisabled || !allowedToEditFields.includes("location")}>
 
                             <option hidden value=''>Locatie</option>
                             {locationOptions}
                         </select>
                     </div>
-
-                    <div className="input row dossier" >
+                    <div className="input row" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" value={startDate} 
-                            disabled={editDisabled}
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
+                            value={startDate} 
+                            disabled={editDisabled || !allowedToEditFields.includes("startDate")}
                             onChange={this.handleFormChange}/>
+                    </div>
+                    <div className="input row">
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        {/* <InputLabel id="demo-mutiple-name-label">Bundels</InputLabel> */}
+                            <Select className="form-control col-sm-9"
+                            // labelId="demo-mutiple-name-label"
+                            id="demo-mutiple-name"
+                            multiple
+                            name="bundle"
+                            value={bundleOptions}
+                            placeholder
+                            onChange={this.handleSelectChange}
+                            // input={<Input />}
+                            // MenuProps={MenuProps}
+                            >
+                            {bundleCheck.map((bundleCheck) => (
+                                <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
+                                {bundleCheck.bundle.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </div>
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
@@ -265,21 +342,12 @@ class Dossier extends React.Component {
                         <Link 
                             className="btn btn-danger btn-block" 
                             to={"/dossier/" + userId + "/edit"}
-                            hidden={Permissions.isUserTrainee()}
+                            hidden={allowedToEdit}
                             role="button"
                             >                        
                             Gegevens aanpassen
                         </Link>
                     </div>
-                    {/* <div>
-                        <Link 
-                            className="btn btn-danger btn-block" 
-                            to={"/linking/" + userId}
-                            hidden={isTrainee}
-                            >
-                            Gelinkte gebruikers
-                        </Link>
-                    </div> */}
                     <div>
                         <Link
                             className="btn btn-danger btn-block"
@@ -292,7 +360,7 @@ class Dossier extends React.Component {
                     <div>
                         <Link
                             className="btn btn-danger btn-block"
-                            to={"/docentAddReview/"  + userId /*+ "/" + name */}
+                            to={"/docentAddReview/"  + userId}
                                 hidden={!traineeDossier || !Permissions.canAddReview()}
                                 >
                                 Review aanmaken/aanpassen
@@ -312,5 +380,6 @@ class Dossier extends React.Component {
         )
     }
 }
+
 
 export default withRouter(Dossier);

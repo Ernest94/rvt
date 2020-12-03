@@ -43,11 +43,19 @@ class Permissions{
     }
 
     //PERMISSIONS TO VIEW PAGES
-    static canEditDossier() {
-        return (this.isUserDocent()||this.isUserAdmin());
+    static canViewDossier(dossierId) {
+        if(sessionStorage.getItem("userId")===dossierId){
+            return true;
+        }
+        else{
+            return (!this.isUserTrainee());
+        }
     }
     static canSeeReview() {
         return (this.isUserAdmin()||this.isUserDocent()||this.isUserTrainee()||this.isUserSales()||this.isUserOffice());
+    }
+    static canAddBundle() {
+        return (this.isUserDocent()||this.isUserAdmin());
     }
 }
 

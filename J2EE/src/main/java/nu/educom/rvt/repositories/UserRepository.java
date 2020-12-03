@@ -40,7 +40,22 @@ public class UserRepository {
 		}
 	}
 	
-	protected void update() {
+	public void update(User user) {
+
+		Session session = HibernateSession.getSessionFactory().openSession();
+	    session.beginTransaction();
+		User toUpdate = this.readById(user.getId());
+		toUpdate.setName(user.getName());
+		toUpdate.setEmail(user.getEmail());
+		toUpdate.setRole(user.getRole());
+		toUpdate.setLocation(user.getLocation());
+		toUpdate.setDateActive(user.getDateActive());
+	    
+	    session.update(toUpdate); 
+	 
+	    session.getTransaction().commit();
+		session.close();
+
 	}
 	
 	protected void delete() {	

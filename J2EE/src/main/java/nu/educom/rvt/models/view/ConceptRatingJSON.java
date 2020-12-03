@@ -1,7 +1,10 @@
 package nu.educom.rvt.models.view;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 public class ConceptRatingJSON implements Serializable{
 
@@ -14,7 +17,7 @@ public class ConceptRatingJSON implements Serializable{
 		private List<ConceptPlusRating> conceptsPlusRatings;
 		private String traineeName;
 		private String traineeLocation;
-		private String reviewDate;
+		private LocalDateTime reviewDate;
 		private int reviewId;
 		
 		public List<ConceptPlusRating> getConceptsPlusRatings() {
@@ -35,10 +38,13 @@ public class ConceptRatingJSON implements Serializable{
 		public void setTraineeLocation(String traineeLocation) {
 			this.traineeLocation = traineeLocation;
 		}
-		public String getReviewDate() {
+		
+		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+		public LocalDateTime getReviewDate() {
 			return reviewDate;
 		}
-		public void setReviewDate(String reviewDate) {
+		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+		public void setReviewDate(LocalDateTime reviewDate) {
 			this.reviewDate = reviewDate;
 		}
 		

@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.Review.Status;
 
 public class ReviewRepository {
 
@@ -50,8 +51,15 @@ public class ReviewRepository {
 	public void update(Review review) {
         Session session = HibernateSession.getSessionFactory().openSession();
 	    session.beginTransaction();
-	 
-	    session.update(review); 
+	    
+	    Review oldReview = session.get(Review.class, review.getId());
+		if (oldReview.getReviewStatus() != Status.PENDING) {
+			throw new IllegalStateException("Modifying an existing Review");
+		}
+		oldReview.setReviewStatus(review.getReviewStatus());
+		oldReview.setCommentOffice(review.getCommentOffice());
+		oldReview.setCommentStudent(review.getCommentStudent());
+		oldReview.setDate(review.getDate());
 	 
 	    session.getTransaction().commit();
 	    session.close();

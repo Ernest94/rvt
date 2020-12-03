@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import nu.educom.rvt.models.UserConcept;
 
+/* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class UserConceptRepository {
 	
 	public UserConcept create(UserConcept userConcept) {

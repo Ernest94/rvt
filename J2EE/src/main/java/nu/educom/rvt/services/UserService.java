@@ -55,6 +55,19 @@ public class UserService {
 		return null;
 	}
 	
+	public Location getLocationById(int id) {
+		LocationRepository locationRepo = new LocationRepository();
+	    Location location = locationRepo.readById(id);
+		return location;
+	}
+	
+	public Role getRoleById(int id) {
+		RoleRepository roleRepo = new RoleRepository();
+	    Role role = roleRepo.readById(id);
+		return role;
+		
+	}
+	
 	public boolean validateUser(User user) {
 		UserRepository userRepo = new UserRepository();
 		User foundUser = userRepo.readByEmail(user.getEmail());
@@ -74,6 +87,11 @@ public class UserService {
 		UserRepository userRepo = new UserRepository();
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
+	}
+	public void updateUser(User user)
+	{
+		UserRepository userRepo = new UserRepository();		
+		userRepo.update(user);
 	}
 	
 	public List<Role> getRoles() {
@@ -130,7 +148,8 @@ public class UserService {
 		return foundUsers;
 	}
 	
-	private List<User> findUsersByCriteria(String criteria, Role role, Location location)
+	
+	public List<User> findUsersByCriteria(String criteria, Role role, Location location)
 	{
 		UserRepository userRepo = new UserRepository();
 		List<User> allUsers = userRepo.readAll();

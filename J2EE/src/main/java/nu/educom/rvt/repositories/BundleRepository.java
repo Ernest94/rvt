@@ -1,26 +1,26 @@
 package nu.educom.rvt.repositories;
 
-import java.util.List;
 
-import javax.persistence.NoResultException;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.ConceptRating;
 
-import nu.educom.rvt.models.Theme;
+public class BundleRepository {
 
-public class ThemeRepository {
 protected SessionFactory sessionFactory;
 	
-	public Theme create(Theme theme) {
+	public Bundle create(Bundle bundle) {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();
-		    int themeId = (int)session.save(theme);
+		    int bundleId = (int)session.save(bundle);
 		    session.getTransaction().commit();
-		    theme.setId(themeId);
-			return theme;
+		    bundle.setId(bundleId);
+			return bundle;
 		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
 			return null;
 		} finally {		   
@@ -30,11 +30,12 @@ protected SessionFactory sessionFactory;
 		}
 	}
 	
-	public List<Theme> readAll() {
+	public List<Bundle> readAll() {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(Theme.class, session);
+			return HibernateSession.loadAllData(Bundle.class, session);
+			
 		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
 			return null;
 		}
@@ -45,37 +46,38 @@ protected SessionFactory sessionFactory;
 		}
 	}
 	
+	public Bundle readById(int id) {
+		Session session = null;
+//		try {
+			session = HibernateSession.getSessionFactory().openSession();
+//			session.createQuery("FROM Bundle WHERE id=:id ").parameter
+			return session.get(Bundle.class, id);
+//		}
+//		finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+	}
 	
-	public Theme readById(int id) {
+	protected void update(Bundle bundle) {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(Theme.class, id);
-		}
-		finally {
+		    session.beginTransaction();
+		    
+		    session.saveOrUpdate(bundle);
+		    
+		    session.getTransaction().commit();
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			//TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			
+		} finally {		   
 			if (session != null) {
 				session.close();
 			}
 		}
-	}
-	public Theme readByName(String name) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return (Theme) session
-					.createQuery("from Theme where name =:name", Theme.class)
-					.setParameter("name", name)
-					.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
-	
-	protected void update() {
 	}
 	
 	protected void delete() {
