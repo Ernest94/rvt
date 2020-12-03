@@ -34,7 +34,7 @@ public class BundleResource {
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewBundle(Bundle bundle) {
-		bundle.setStartDate(LocalDate.now().toString());
+		bundle.setStartDate(LocalDate.now());
 		if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleServ.findBundleByName(bundle.getName()) == null)
 		{
 			bundleServ.createNewBundle(bundle);

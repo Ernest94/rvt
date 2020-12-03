@@ -13,6 +13,7 @@ import './review.css'
 
 import { config } from '../constants';
 import Permissions from '../permissions.js'
+import {SelectionTable} from '../Selection.js'
 
 class docentAddReview extends React.Component {
 
@@ -23,7 +24,7 @@ class docentAddReview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
-            reviewDate: "",
+            reviewDate: new Date(),
             concepts: [],
             pageLoading: true,
             weeksPerBlock: 2,
@@ -142,6 +143,8 @@ class docentAddReview extends React.Component {
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
             reviewId: data.reviewId,
+            traineeFeedback: data.commentStudent,
+            officeFeedback: data.commentOffice,
             message: "",
         });
         console.log(this.state);
@@ -187,13 +190,22 @@ class docentAddReview extends React.Component {
         console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
-
+    // async setDate(event){
+    //     console.log(event);
+    //     const { name, value } = event.target;
+    //     console.log("Date Input Value: " + value);
+    //     console.log("Date parsed Value: " + new Date(value.split("-")).setTime(new Date().getTime()).toLocaleString());
+    //     this.setState({
+    //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
+    //     },()=>console.log(this.state.reviewDate));
+    // }
     async setReviewData(event) {
         const { name, value } = event.target;
         await this.setState({
             [name]: value
         });
         let reviewJson = this.createReviewJson();
+        console.log(this.state.reviewStatus);
         console.log(reviewJson);
         this.submitReviewChange(reviewJson);
     }
@@ -203,7 +215,7 @@ class docentAddReview extends React.Component {
             id: this.state.reviewId,
             commentOffice: this.state.officeFeedback,
             commentStudent: this.state.traineeFeedback,
-            date: this.state.reviewDate
+            date: this.state.reviewDate,
         }
     }
 
@@ -237,7 +249,6 @@ class docentAddReview extends React.Component {
 
     submit = () => {
         confirmAlert({
-            // title: 'Bevestig',
             message: 'Wilt u de review bevestigen? Let op! Hiermee wordt de review opgeslagen en zichtbaar voor trainees.',
             buttons: [{
                 label: 'Ja',
@@ -245,21 +256,22 @@ class docentAddReview extends React.Component {
             },
             {
                 label: 'Nee',
-            //     onClick: () => alert('Click No')
             }
         ]
         })
     };
 
     submitReview() {
+        this.setState({reviewDate: new Date()})
         axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
         .then(response => {
-            this.setState({
-                message: "uw review is succesvol opgeslagen."
-            });
+            this.props.history.push('/curriculum/' + this.state.userId);
         })
         .catch((error) => {
-            console.log("an error occorured " + error);
+            this.setState({
+                message: "Er is een technische fout opgetreden bij het bevestigen van deze review."
+            });
+            console.log("an error occurred " + error);
         });
     }
 
@@ -281,7 +293,6 @@ class docentAddReview extends React.Component {
     cancelReview() {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
-              console.log(this.state)
               this.props.history.push('/dossier/' + this.state.userId);
 
             //   this.props.handleReturnToDossier(this.state.userId);
@@ -361,8 +372,35 @@ class docentAddReview extends React.Component {
             });
 
 
-        var conceptDisplay = this.state.concepts.map((concept, index) => {
-            return (
+        const ConceptDisplay = ({selectionFunction,}) => (
+            <div className="table-responsive col-md-10">
+                    <table className="addReviewTable table">
+                        <thead>
+                            <tr>
+                                <th className="active">
+                                    actief
+                                </th>
+                                <th className="week">
+                                    Blok
+                                </th>
+                                <th className="theme">
+                                    Thema
+                                </th>
+                                <th className="concept">
+                                    Concept
+                                </th> 
+                                <th className="rating">
+                                    Vaardigheid
+                                </th>
+                                <th className="comment">
+                                    Commentaar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="tableBody">
+        {this.state.concepts.map((concept, index) => {
+            if (selectionFunction(concept)){
+                return (
                 <tr>
                     <td className="active">
                     <Checkbox
@@ -415,13 +453,28 @@ class docentAddReview extends React.Component {
                         </TextareaAutosize>
                     </td>
                 </tr>
-            )
-        });
+            )}
+        })}
+        </tbody>
+        </table>
+        </div>
+        );
 
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={(event) => { this.setReviewData(event) }} /></h3></div>
+                    {/* <div className="col"> Disabled change date function for now because it clashes with DateTime for reviewDate
+                        <h3>
+                            <input 
+                                className="border-0 text-center" 
+                                type="date"
+                                id="date" 
+                                name="reviewDate" 
+                                value={reviewDate.getFullYear() + "-" + reviewDate.getMonth() + "-" + reviewDate.getDate()} 
+                                placeholder="dd-mm-yyyy" 
+                                onChange={(event) => { this.setDate(event) }} />
+                        </h3>
+                    </div> */}
                     <div className="col">
                         <h3 classname="text-center">Review
                             <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
@@ -432,35 +485,14 @@ class docentAddReview extends React.Component {
                     <div >
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
-                    <div className="table-responsive">
-                    <table className="addReviewTable table">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th> 
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBody">
-                            {conceptDisplay}
-                        </tbody>
-                </table>
-                </div>
+                    <SelectionTable
+                    fields={["active","stars","weeks","themes"]}
+                    starsSelected={[0,5]}
+                            >
+                                {paramFunction=>(
+                                    <ConceptDisplay selectionFunction={paramFunction} />
+                                )}
+                        </SelectionTable>
                     <div>
                         <div className="feedback-box-trainee">
                         <h4 >{"Terugkoppeling naar Trainee:"}</h4>

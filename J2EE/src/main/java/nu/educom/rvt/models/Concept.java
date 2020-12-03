@@ -1,6 +1,11 @@
 package nu.educom.rvt.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="concepts")
@@ -18,16 +23,16 @@ public class Concept {
 	@Column(name="description")
 	private String description;
 	@Column(name="startdate")
-	private String startDate;
+	private LocalDate startDate;
 	@Column(name="enddate")
-	private String endDate;
+	private LocalDate endDate;
 	
 	//needed for Hibernate
 	public Concept() {
 		super();
 	}
 	
-	public Concept(Theme theme, String name, String description, String startDate, String endDate) {
+	public Concept(Theme theme, String name, String description, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.theme = theme;
 		this.name = name;
@@ -63,18 +68,20 @@ public class Concept {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public String getStartDate() {
+
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	
-	public String getEndDate() {
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 }

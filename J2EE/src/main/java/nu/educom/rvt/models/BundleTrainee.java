@@ -32,17 +32,17 @@ public class BundleTrainee {
 		private int startWeek;
 		
 		@Column(name="startdate")
-		private String startDate;
+		private LocalDate startDate;
 		
 		@Column(name="enddate")
-		private String endDate;
+		private LocalDate endDate;
 		
 		
 		public BundleTrainee() {
 			super();
 		}
 		
-		public BundleTrainee(User user, Bundle bundle, int startWeek, String startDate) {
+		public BundleTrainee(User user, Bundle bundle, int startWeek, LocalDate startDate) {
 			super();
 			this.user = user;
 			this.bundle = bundle;
@@ -50,7 +50,7 @@ public class BundleTrainee {
 			this.startDate = startDate;
 		}
 		
-		public BundleTrainee(User user, Bundle bundle, int startWeek, String startDate, String endDate) {
+		public BundleTrainee(User user, Bundle bundle, int startWeek, LocalDate startDate, LocalDate endDate) {
 			super();
 			this.user = user;
 			this.bundle = bundle;
@@ -91,19 +91,19 @@ public class BundleTrainee {
 			this.startWeek = startWeek;
 		}
 
-		public String getStartDate() {
+		public LocalDate getStartDate() {
 			return startDate;
 		}
 
-		public void setStartDate(String startDate) {
+		public void setStartDate(LocalDate startDate) {
 			this.startDate = startDate;
 		}
 
-		public String getEndDate() {
+		public LocalDate getEndDate() {
 			return endDate;
 		}
 
-		public void setEndDate(String endDate) {
+		public void setEndDate(LocalDate endDate) {
 			this.endDate = endDate;
 		}
 
