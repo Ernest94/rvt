@@ -114,8 +114,10 @@ class conceptOverview extends React.Component {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"
             });
+            this.props.history.push('/settings');
         })
         .catch((error) => {
+            this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
             console.log("an error occorured " + error);
         });
     }
@@ -184,8 +186,8 @@ class conceptOverview extends React.Component {
 
                 <h2 className="text-center">Concepten overzicht</h2>
                 
-                <div className="row"> 
-                    <ul className="errors">{this.state.errors}</ul>
+                <div className="row justify-content-center">
+                        <ul className="errors">{this.state.errors}</ul>
                 </div>
 
                 <div className="row">

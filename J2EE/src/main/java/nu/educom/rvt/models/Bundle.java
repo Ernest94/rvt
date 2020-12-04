@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="bundle")
@@ -24,7 +26,7 @@ public class Bundle {
 	private LocalDate startDate;
 	@Column(name="enddate")
 	private LocalDate endDate;
-	
+	@JsonManagedReference
  	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
 	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
 	

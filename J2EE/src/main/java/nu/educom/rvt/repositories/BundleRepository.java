@@ -40,9 +40,9 @@ protected SessionFactory sessionFactory;
 			return null;
 		}
 		finally {
-			if (session != null) {
-				session.close();
-			}
+//			if (session != null) {
+//				session.close();
+//			}
 		}
 	}
 	
