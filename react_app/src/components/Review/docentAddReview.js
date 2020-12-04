@@ -28,7 +28,6 @@ class docentAddReview extends React.Component {
             concepts: [],
             pageLoading: true,
             weeksPerBlock: 2,
-            value: "",
             setValue: "",
             reviewId: null,
             traineeFeedback: "",
@@ -39,6 +38,20 @@ class docentAddReview extends React.Component {
 
     static hasAccess() {
         return Permissions.canAddReview();
+    }
+
+    async componentDidMount() {
+        this.setState({ pageLoading: true });
+        if (Permissions.isUserTrainee()) {
+            await this.setState({ userId: sessionStorage.getItem("userId") });
+        }
+        else {
+            const { computedMatch: { params } } = this.props;
+            await this.setState({ userId: params.userId });
+        }
+        console.log(this.state.userId);
+        this.setState({ pageLoading: false });
+        await this.getConcepts();
     }
 
     handleFormChange = (e) => {
@@ -60,28 +73,12 @@ class docentAddReview extends React.Component {
     };
     
 
-    async componentDidMount() {
-        console.log("begin");
-        this.setState({ pageLoading: true });
-        if (Permissions.isUserTrainee()) {
-            await this.setState({ userId: sessionStorage.getItem("userId") });
-        }
-        else {
-            const { computedMatch: { params } } = this.props;
-            await this.setState({ userId: params.userId });
-        }
-        console.log(this.state.userId);
-        this.setState({ pageLoading: false });
-        await this.getPendingUsers();
-        await this.getConcepts();
 
-
-    }
 
     onChangePendingUser = (e) => {
         var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
-
         this.setTheState(selectedUser);
+        this.getPendingUsers();
     }
 
     async setTheState(selectedUser) {
@@ -99,22 +96,20 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
-        console.log("getPendingUsers")
-        axios.get(config.url.API_URL + "/webapi/review/pendingUsers")
+        axios.get(config.url.API_URL + "/webapi/review/pending/location/" + sessionStorage.getItem("userLocationId"))
             .then(response => {
-                console.log("succes");
                 this.handleUsersReponse(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             })
     }
 
     getConcepts() {
-        console.log(this.createUserIdJson());
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {
                 this.handleCurriculumReponse(response.data);
+                this.getPendingUsers();
             })
             .catch((error) => {
 
@@ -129,11 +124,9 @@ class docentAddReview extends React.Component {
     }
 
     handleUsersReponse(data) {
-        console.log(data);
         this.setState({
             pendingUsers: data.userSearch,
         });
-        console.log(this.state);
     }
 
     handleCurriculumReponse(data){
@@ -147,7 +140,6 @@ class docentAddReview extends React.Component {
             officeFeedback: data.commentOffice,
             message: "",
         });
-        console.log(this.state);
     }
 
     getActiveDisplayName(bool) {
@@ -176,8 +168,6 @@ class docentAddReview extends React.Component {
         const index = event.target.name.substring(7);
         const value = event.target.value;
 
-        console.log(value);
-
         let concepts = this.state.concepts;
         let concept = concepts[index];
         concept.comment = value;
@@ -205,7 +195,6 @@ class docentAddReview extends React.Component {
             [name]: value
         });
         let reviewJson = this.createReviewJson();
-        console.log(this.state.reviewStatus);
         console.log(reviewJson);
         this.submitReviewChange(reviewJson);
     }
@@ -363,12 +352,11 @@ class docentAddReview extends React.Component {
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         let userOptions = null;
-        console.log(pendingUsers);
-            userOptions = pendingUsers.map((user) => {
-                return (
-                    <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
-                )
-            });
+        userOptions = pendingUsers.map((user) => {
+            return (
+                <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
+            )
+        });
 
 
         const ConceptDisplay = ({selectionFunction,}) => (
@@ -447,9 +435,8 @@ class docentAddReview extends React.Component {
                         <TextareaAutosize className="comment-text"
                             aria-label="minimum height"
                             name={"comment" + index} onBlur={(event) => {
-                            this.setComment(event); }}>
-                            {concept.comment}
-                        </TextareaAutosize>
+                            this.setComment(event); }}
+                            value={concept.comment} />
                     </td>
                 </tr>
             )}
@@ -475,8 +462,22 @@ class docentAddReview extends React.Component {
                         </h3>
                     </div> */}
                     <div className="col">
-                        <h3 classname="text-center">Review
-                            <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
+                        <h3 classname="text-center">Review van 
+                            <select 
+                                className="border-0" 
+                                name="pendingUser" 
+                                id="pendingUser" 
+                                value={this.state.userId} 
+                                onChange={this.onChangePendingUser}>
+                                    <option 
+                                        className="text-center" 
+                                        value="" 
+                                        selected 
+                                        disabled 
+                                        hidden>{this.state.userName}
+                                    </option>
+                                    {userOptions}
+                                </select>
                         </h3>
                     </div>
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
@@ -498,14 +499,14 @@ class docentAddReview extends React.Component {
                         <textarea rows="2" name="traineeFeedback" cols="50" onBlur={(event) => {
                             this.setReviewData(event);
                         }}
-                        >{traineeFeedback}</textarea>
+                        value={traineeFeedback}/>
                         </div>
                         <div className="feedback-box-kantoor">
                         <h4 >{"Terugkoppeling naar kantoor:"}</h4>
                         <textarea rows="2" name="officeFeedback" cols="50" onBlur={(event) => {
                             this.setReviewData(event);
                         }}
-                        >{officeFeedback}</textarea>
+                        value={officeFeedback}/>
                         </div>
                     </div>
                     <div className="container">

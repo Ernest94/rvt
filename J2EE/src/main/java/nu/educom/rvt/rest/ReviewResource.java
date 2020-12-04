@@ -128,11 +128,11 @@ public class ReviewResource {
     }
 	
 	@GET
-	@Path("/pendingUsers")
+	@Path("/pending/location/{locationId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUsersWithPendingReviews() {
+	public Response getAllUsersWithPendingReviews(@PathParam("locationId") int locationId) {
 		UserService userServ = new UserService();
-		List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews();
+		List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(locationId);
 		UserSearchJson USJ = userServ.convertToUSJ(foundUsers);
 		
 		return Response.status(200).entity(USJ).build();

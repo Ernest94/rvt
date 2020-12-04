@@ -27,10 +27,10 @@ public class ReviewService {
 		return activeConcepts;
 	}
 	
-	public List<User> getAllUsersWithPendingReviews(){
+	public List<User> getAllUsersWithPendingReviews(int locationId){
 		ReviewRepository reviewRepo = new ReviewRepository();
 //		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
-		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
+		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->u.getLocation().getId() == locationId).collect(Collectors.toList());
 		
 		return users;
 	}
