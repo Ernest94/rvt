@@ -8,5 +8,9 @@
 }
 
 .text-black {
-    color:black;
+    color:black!important;
+}
+
+.search.locationInput{
+    width:170px;
 }

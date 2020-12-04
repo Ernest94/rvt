@@ -127,9 +127,8 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUsers(Search search) {
 		UserService userServ = new UserService();
-		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocation());
-		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
-		
+		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocations());
+		UserSearchJson USJ = userServ.convertToUSJ(searchResult);
 		return Response.status(200).entity(USJ).build();
 	}
 	
