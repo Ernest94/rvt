@@ -191,20 +191,23 @@ class conceptOverview extends React.Component {
                 </div>
 
                 <div className="row">
-                    <div className="col-4">
-                        Bundel:
+                    <div className="col-3">
+                        Selecteer een bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
-                                <option hidden value=''>Bundel</option>
+                                <option hidden value=''></option>
                                 {bundleOptions}
                             </select>
                     </div>
                     <div className="col-8">
-                        <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
-                            <FaPlus/>
-                        </Link>
+
+                        <span>
+                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                                <FaPlus/>
+                            </Link>
+                        </span>
                    </div>
                 </div>
 
