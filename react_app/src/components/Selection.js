@@ -88,12 +88,15 @@ class ConceptSelection extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
-            stars: [0,5],
+            stars: [1,5],
             weeks: [1,10],
         }
 
     }
-    
+    componentDidMount(){
+        console.log(this.props.starsSelected);
+        this.setState({stars: this.props.starsSelected});
+    }
     handleSliderChange(newValue, name){
         this.setState({[name]: newValue})
     }
@@ -258,6 +261,7 @@ class SelectionTable extends React.Component {
                 themes={this.state.themes} 
                 handleChange={this.handleSelectionChange.bind(this)}
                 handleCheckChange={this.handleCheckChange.bind(this)}
+                starsSelected={this.props.starsSelected}
                 />
                 {this.props.children(this.inSelectionTotal.bind(this))}
             </div>
