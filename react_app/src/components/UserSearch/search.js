@@ -58,8 +58,6 @@ class Search extends React.Component {
             roleDisplayName: role.id
         });
 
-        console.log("post_setState");
-
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
             .then(response => {
@@ -83,7 +81,6 @@ class Search extends React.Component {
         this.setState({loading: true});
         var errors = null
         if (!errors) {
-	    console.log(this.createSearchJson());
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
@@ -122,8 +119,8 @@ class Search extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    roles: null, // [{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
-                    locations: null, // [{id: 1, name: "Utrecht"}],
+                    roles: null,
+                    locations: null,
                     pageLoading: false
                 });
             })
@@ -188,14 +185,19 @@ class Search extends React.Component {
 
 
         return (
+            <div className="container">
 
-            <div>
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
-                <div >
+
+                <div className="row"> 
                     <ul className="errors">{this.state.errors}</ul>
+                </div>
+
                     <form onSubmit={this.handleSubmit}>
+
                         <div className="search-bar row d-flex">
-                          <div className="m-auto">
+
+                          <div className="m-auto col-2">
                             <label className="m-1" htmlFor="role">Rol:</label>
                             <select name="role" id="role"
 
@@ -206,10 +208,10 @@ class Search extends React.Component {
                                 {rolesOptions}
                             </select>
                           </div>
-                          <div className="m-auto">
-                            <FormControl className="search locationInput">
-                                <InputLabel id="location-label" >Locatie: </InputLabel>
+                          <div className="m-auto col-4">
+                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
                                 <Select
+                                className="m-1 text-black"
                                 labelId="location-label"
                                 id="location"
                                 name="selectedLocations" 
@@ -229,13 +231,13 @@ class Search extends React.Component {
                                     </MenuItem>
                                 ))}
                                 </Select>
-                            </FormControl>
+                                </InputLabel>
                           </div> 
-                          <div className="m-auto">
+                          <div className="m-auto col-4">
                             <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
                             <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        <div className="m-auto">
+                        <div className="m-auto col-2">
                             <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
                                 type="submit">
@@ -245,7 +247,6 @@ class Search extends React.Component {
                         </div>
 
                     </form>
-                </div >
 
                 <div className="text-center">
                     <table className="w-100 mx-auto">
