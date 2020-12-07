@@ -492,31 +492,32 @@ class docentAddReview extends React.Component {
                                     <ConceptDisplay selectionFunction={paramFunction} />
                                 )}
                         </SelectionTable>
-                    <div>
-                        <div className="feedback-box-trainee">
-                        <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                        <textarea rows="2" name="traineeFeedback" cols="50" onBlur={(event) => {
-                            this.setReviewData(event);
-                        }}
-                        >{traineeFeedback}</textarea>
-                        </div>
-                        <div className="feedback-box-kantoor">
-                        <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                        <textarea rows="2" name="officeFeedback" cols="50" onBlur={(event) => {
-                            this.setReviewData(event);
-                        }}
-                        >{officeFeedback}</textarea>
-                        </div>
-                    </div>
-                    <div className="container">
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Bevestig</button>}
-                        {(this.state.loading) ? <button className="btn btn-primary float-right mr-1" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.cancel} className="btn btn-primary float-right mr-1" type="submit">Annuleer</button>}
-                    </div>
                     <div className="float-right mr-1">
                         <p>{this.state.message}</p>
                     </div>
+                    <div className="review-bottom-bar container d-flex">
+                        <div>
+                            <h4 >{"Terugkoppeling naar Trainee:"}</h4>
+                            <textarea rows="2" name="traineeFeedback" onBlur={(event) => {
+                                this.setReviewData(event);
+                            }}
+                            >{traineeFeedback}</textarea>
+                        </div>
+                        <div>
+                            <h4 >{"Terugkoppeling naar kantoor:"}</h4>
+                            <textarea rows="2" name="officeFeedback" onBlur={(event) => {
+                                this.setReviewData(event);
+                            }}
+                            >{officeFeedback}</textarea>
+                        </div>
+                        <div>
+                            {(this.state.loading) ? <button className="btn btn-danger" type="submit" disabled> Laden...</button>:
+                            <button onClick={this.submit} className="btn btn-danger" type="submit">Bevestig</button>}
+                            {(this.state.loading) ? <button className="btn btn-danger mr-1" type="submit" disabled> Laden...</button>:
+                            <button onClick={this.cancel} className="btn btn-danger mr-1" type="submit">Annuleer</button>}
+                        </div>
+                    </div>
+
                 </div>
         )
     }
