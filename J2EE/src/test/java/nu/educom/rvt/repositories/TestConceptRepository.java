@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ import nu.educom.rvt.rest.Filler;
  */
 class TestConceptRepository {
 
+	private Session session;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -38,7 +41,7 @@ class TestConceptRepository {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		// Optional create database here for every test
+		session = TestHibernateSession.openSessionAndTransaction();
 	}
 	
 	/**
@@ -46,21 +49,22 @@ class TestConceptRepository {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
-		TestHibernateSession.closeSession();
+		TestHibernateSession.closeSession(session);
 	}
 	
 	@Test
-	void testCreate() {
+	void testCreate() throws DatabaseException {
 		// Prepare
-		ConceptRepository cr = new ConceptRepository();
+		ConceptRepository cr = new ConceptRepository(session);
 		LocalDate startDate = LocalDate.of(2020, 11, 2);
 		LocalDate endDate = null;
-		ThemeRepository tr = new ThemeRepository();
+		ThemeRepository tr = new ThemeRepository(session);
 		Theme theme = tr.readByName("API");
 		Concept concept = new Concept(theme, "testConcept", "Description of test concept", 3, startDate, endDate);
 		
 		// Run
 		Concept result = cr.create(concept);
+		session.getTransaction().commit();
 		
 		// Validate
 		assertNotNull(result);
@@ -68,10 +72,11 @@ class TestConceptRepository {
 		assertTrue(newId > 0);
 		
 		// To ensure it is in the database, we close the session and reopen it
-		TestHibernateSession.closeSession();
+		TestHibernateSession.closeSession(session);
+		session = TestHibernateSession.openSession();
 		
 		// create new Repository
-		ConceptRepository cr2 = new ConceptRepository();
+		ConceptRepository cr2 = new ConceptRepository(session);
 		Concept result2 = cr2.readById(newId);
 		// check if they are the same
 		assertNotNull(result2);
@@ -86,9 +91,9 @@ class TestConceptRepository {
 	}
 
 	@Test
-	void testReadAll() {
+	void testReadAll() throws DatabaseException {
 		// Prepare
-		ConceptRepository cr = new ConceptRepository();
+		ConceptRepository cr = new ConceptRepository(session);
 		
 		// Run
 		List<Concept> result = cr.readAll();
@@ -99,9 +104,9 @@ class TestConceptRepository {
 	}
 
 	@Test
-	void testReadById() {
+	void testReadById() throws DatabaseException {
 		// Prepare
-		ConceptRepository cr = new ConceptRepository();
+		ConceptRepository cr = new ConceptRepository(session);
 		
 		// Run
 		Concept result = cr.readById(3);

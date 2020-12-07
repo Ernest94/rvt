@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import nu.educom.rvt.models.Bundle;
@@ -16,29 +18,32 @@ import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
+import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.HibernateSession;
 import one.util.streamex.StreamEx;
 
 public class BundleService {
+	private static final Logger LOG = LogManager.getLogger();
 
 	private BundleRepository bundleRepo;
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleTraineeRepository bundleTraineeRepo;
 	
-	public BundleService() {
-		this.bundleRepo = new BundleRepository();
-		this.bundleConceptRepo = new BundleConceptRepository();
+	public BundleService(Session session) {
+		this.bundleRepo = new BundleRepository(session);
+		this.bundleConceptRepo = new BundleConceptRepository(session);
+		this.bundleTraineeRepo = new BundleTraineeRepository(session);
 	}
 	
-	public Bundle findBundleByName(String name) {
+	public Bundle findBundleByName(String name) throws DatabaseException {
 		return bundleRepo.readAll().stream().filter(b -> b.getName() == name).findFirst().orElse(null);
 	}
 	
-	public Bundle findBundleById(int bundle_id) {
+	public Bundle findBundleById(int bundle_id) throws DatabaseException {
 		return bundleRepo.readById(bundle_id);
 		
 	}
-	
+	// TODO move to a BundelLogic class
 	public int isBundleIdConsistent(List<BundleConceptWeekOffset> bundleConcepts) {
 		int bundleId = bundleConcepts.get(0).getBundleId();
 		List<BundleConceptWeekOffset> checkBundleConcepts = bundleConcepts.stream()
@@ -51,7 +56,7 @@ public class BundleService {
 		}
 	}
 	
-	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) {
+	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) throws DatabaseException {
 		Session session = HibernateSession.getSessionFactory().openSession();
 	    session.beginTransaction();
 	    
@@ -60,14 +65,13 @@ public class BundleService {
 		List<Integer> frontendBundleConceptIds = frontendBundleConcepts.stream()
 																		.map(item -> item.getConceptId())
 																		.collect(Collectors.toList());
-		System.out.print("frontendBundleConcepts: " + frontendBundleConcepts + "\n");
-		System.out.print("length of frontendBundleConcepts: " + frontendBundleConcepts.size() + "\n");
-	
+		LOG.debug("frontendBundleConcepts: {}", frontendBundleConcepts);
+	    LOG.trace("length of frontendBundleConcepts: {}", frontendBundleConcepts.size());
 //		List<BundleConceptWeekOffset> bundleConceptsToAddToDB = new ArrayList<>();
 		List<BundleConceptWeekOffset> bundleConceptsToAddToDB = frontendBundleConcepts.stream().collect(Collectors.toList());
 		int i=0;
 		for (BundleConcept databaseBundleConcept : databaseBundleConcepts) {
-			System.out.print("index of databaseBundleConcept: " + i + "\n");
+			LOG.trace("index of databaseBundleConcept: {}", i);
 			if (!frontendBundleConceptIds.contains(databaseBundleConcept.getConcept().getId())) {
 				databaseBundleConcept.setEndDate(LocalDate.now());
 			    session.saveOrUpdate(databaseBundleConcept);
@@ -75,10 +79,10 @@ public class BundleService {
 			}	
 			int j=0;
 			for (BundleConceptWeekOffset frontendBundleConcept : frontendBundleConcepts) {
-				System.out.print("index of frontendBundleConcept: " + j + "\n");
+				LOG.trace("index of frontendBundleConcept: {} ", j);
 				if (((Integer)databaseBundleConcept.getConcept().getId()).equals((Integer)frontendBundleConcept.getConceptId()) 
 						&& ((Integer)databaseBundleConcept.getWeekOffset()).equals((Integer)frontendBundleConcept.getWeekOffset())) {
-					System.out.print("Concept exists in database and weekoffset is the same" + "\n");
+					LOG.trace("Concept exists in database and weekoffset is the same");
 					bundleConceptsToAddToDB = bundleConceptsToAddToDB.stream()
 											.filter(item -> !(((Integer)item.getConceptId()).equals((Integer)frontendBundleConcept.getConceptId())))
 											.collect(Collectors.toList());
@@ -112,20 +116,20 @@ public class BundleService {
 		}	
 	}
 	
-	public void createNewBundle(Bundle bundle) {
+	public void createNewBundle(Bundle bundle) throws DatabaseException {
 		bundleRepo.create(bundle);
 	}
 	
-	public List<Bundle> getAllBundles()
-	{
+	public List<Bundle> getAllBundles() throws DatabaseException {
 		return bundleRepo.readAll();
 	}
 	 
-	public List<Bundle> getAllBundlesFromUser(User user){
+	public List<Bundle> getAllBundlesFromUser(User user) throws DatabaseException{
+		// TODO Change to return new UserRepository().readById(user.getId()).Bundels();
 		return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 												   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
 	}
-	
+	// TODO move to a BundelLogic class
 	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
 		
 		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();

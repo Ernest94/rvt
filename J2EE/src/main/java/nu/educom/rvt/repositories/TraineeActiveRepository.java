@@ -5,48 +5,31 @@ import org.hibernate.Session;
 import nu.educom.rvt.models.TraineeActive;
 
 public class TraineeActiveRepository {
-	public TraineeActiveRepository() {
+	private final Session session;
+	
+	public TraineeActiveRepository(Session session) {
+		super();
+		this.session = session;
 	}
 
-	public void create(TraineeActive traineeActive) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.save(traineeActive); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	public void create(TraineeActive traineeActive) throws DatabaseException {
+		session.save(traineeActive); 
 	}
 	
-	public TraineeActive readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(TraineeActive.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<TraineeActive> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(TraineeActive.class, session);
+		
 	}
 	
-	protected void update() {
+	public TraineeActive readById(int id) throws DatabaseException {
+		return session.get(TraineeActive.class, id);
 	}
 	
-	protected void delete() {	
+	protected void update() throws DatabaseException {
 	}
 	
-	public List<TraineeActive> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(TraineeActive.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	protected void delete() throws DatabaseException {	
 	}
+	
+	
 }

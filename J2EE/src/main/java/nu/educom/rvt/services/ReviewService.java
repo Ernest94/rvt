@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hibernate.Session;
+
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
@@ -14,30 +16,36 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.ReviewRepository;
 import one.util.streamex.StreamEx;
 
 public class ReviewService {
+	private final ReviewRepository reviewRepo;
+	private final ConceptRepository conceptRepo;
+	private final ConceptRatingRepository conceptRatingRepo;
 	
-	public List<Concept> getallConcepts() {
-		List<Concept> activeConcepts = new ArrayList<Concept>();
-		
-        ConceptRepository conceptRepo = new ConceptRepository();	
-		activeConcepts = conceptRepo.readAll();		
+	public ReviewService(Session session) {
+		super();
+		reviewRepo = new ReviewRepository(session);
+		conceptRepo = new ConceptRepository(session);
+		conceptRatingRepo = new ConceptRatingRepository(session);
+	}
+
+	public List<Concept> getallConcepts() throws DatabaseException {
+		List<Concept> activeConcepts = conceptRepo.readAll();		
 		return activeConcepts;
 	}
 	
-	public List<User> getAllUsersWithPendingReviews(){
-		ReviewRepository reviewRepo = new ReviewRepository();
-//		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
+	public List<User> getAllUsersWithPendingReviews() throws DatabaseException {
+		//		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
 		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
 		
 		return users;
 	}
 	
-	public void makeNewReviewIfNoPending(User user)
+	public void makeNewReviewIfNoPending(User user) throws DatabaseException
 	{
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> pendingReviews = reviewRepo.readAll().stream()
 														  .filter(r -> r.getUser().getId() == user.getId())
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
@@ -47,18 +55,16 @@ public class ReviewService {
 		}
 	}
 	
-	public List<Review> getAllReviewsForUser(User user){
+	public List<Review> getAllReviewsForUser(User user) throws DatabaseException{
 		
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> reviews = reviewRepo.readAll();
 		return	reviews.stream().filter(review -> review.getUser().getId() == user.getId())
 								.collect(Collectors.toList());
 		
 	}
 	
-	public List<Review> getAllCompletedReviewsForUser(User user){
+	public List<Review> getAllCompletedReviewsForUser(User user) throws DatabaseException{
 		
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> reviews = reviewRepo.readAll();
 		return	reviews.stream().filter(r -> r.getUser().getId() == user.getId())
 								.filter(r -> r.getReviewStatus() == Review.Status.COMPLETED)
@@ -74,7 +80,7 @@ public class ReviewService {
 	 * 
 	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
 	 */
-	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
+	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews) throws DatabaseException{
 		
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
 		if(reviews.size() == 0) {
@@ -117,10 +123,9 @@ public class ReviewService {
 		return conceptPlusRating;
 	}
 	
-	private List<ConceptPlusRating> getCPRFromReview(Review review)
+	private List<ConceptPlusRating> getCPRFromReview(Review review) throws DatabaseException
 	{
 		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
-		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
 		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream()
 															   .filter(c -> c.getReview().getId() == review.getId())
 															   .sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek()))
@@ -139,13 +144,10 @@ public class ReviewService {
 		return conceptPlusRatings;
 	}
 	
-	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) throws DatabaseException {
 		List<ConceptRating> ratingList = convertConceptPlusRatings(conceptRatings, reviewId);
-		crRepo.createMulti(ratingList);
-		Review review = getReviewById(reviewId);
-
-		return review;
+		conceptRatingRepo.createMulti(ratingList);
+		return getReviewById(reviewId);
 	}
 	
 	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
@@ -157,41 +159,31 @@ public class ReviewService {
 		return removedDuplicates;
     }
     
-    public Review getReviewById(int reviewId) {
-        ReviewRepository reviewRepo = new ReviewRepository();
+    public Review getReviewById(int reviewId) throws DatabaseException {
         return reviewRepo.readById(reviewId);
     }
     
-    public ConceptRating getConceptRatingById(int id) {
-    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    public ConceptRating getConceptRatingById(int id) throws DatabaseException {
     	return conceptRatingRepo.readById(id);
     }
     
-    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) {
-    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) throws DatabaseException {
     	return conceptRatingRepo.readAll().stream()
     							.filter(c -> c.getReview().getId() == reviewId)
     							.filter(c -> c.getConcept().getId() == conceptId)
     							.findFirst().orElse(null);
     }
 
-    public Review completedReview(Review review) {
-        Review completedReview = review;
-        completedReview.setReviewStatus(Review.Status.COMPLETED);
-        return completedReview;
+    public Review completedReview(int reviewId) throws DatabaseException {
+    	return reviewRepo.updateStatus(reviewId, Review.Status.COMPLETED);
     }
     
-    public Review cancelledReview(Review review) {
-    	Review cancelledReview = review;
-    	cancelledReview.setReviewStatus(Review.Status.CANCELLED);
-		return cancelledReview;
+    public Review cancelledReview(int reviewId) throws DatabaseException {
+    	return reviewRepo.updateStatus(reviewId, Review.Status.CANCELLED);
     }
     
-    public int replaceReview(Review review) {
-    	Review toUpdate = this.getReviewById(review.getId());
-    	toUpdate = this.updateReview(review, toUpdate);
-        ReviewRepository reviewRepo = new ReviewRepository();
-        reviewRepo.update(toUpdate);
+    public int replaceReview(Review review) throws DatabaseException {
+        reviewRepo.update(review);
         return review.getId();
     }
     
@@ -214,7 +206,7 @@ public class ReviewService {
 		return date.format(formatter);
 	}
 	
-	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId){
+	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId) throws DatabaseException{
 		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
 		for(int i = 0; i<cpr.size(); i++) {
 			ratings.add(this.convertConceptPlusRating(cpr.get(i), reviewId));
@@ -222,29 +214,23 @@ public class ReviewService {
 		return ratings;
 	}
 	
-	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) {
-		return new ConceptRating(this.getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
+	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) throws DatabaseException {
+		return new ConceptRating(getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
 	}
 
-	public void addReview(Review review) {
-		ReviewRepository reviewRepo = new ReviewRepository();
+	public void addReview(Review review) throws DatabaseException {
 		reviewRepo.update(review);		
 	}
 
-	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		crRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
-		
-		return this.getReviewById(reviewId);
+	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) throws DatabaseException {
+		conceptRatingRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
+		return getReviewById(reviewId);
 	}
 	
-	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		ConceptRating updated = old;
+	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) throws DatabaseException {
+		ConceptRating updated = conceptRatingRepo.readById(old.getId());
 		updated.setComment(conceptPlusRating.getComment());
-		updated.setRating(conceptPlusRating.getRating());
-		crRepo.update(updated);
-		
-		return this.getReviewById(updated.getReview().getId());
+		updated.setRating(conceptPlusRating.getRating());		
+		return updated.getReview();
 	}
 }

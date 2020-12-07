@@ -79,16 +79,34 @@ public class HibernateSession {
 		    throw new UnableToConnectException();
 		}
 	}
-	
+	    
+    public static Session openSession() {
+        return sessionFactory.openSession();
+    }
+    
+    public static Session openSessionAndTransaction() {
+        Session session = openSession();
+        session.beginTransaction();
+        return session;
+    }
+    
 	public static void shutDown() {
 		getSessionFactory().close();
 	}
-	
-	public static <T> List<T> loadAllData(Class<T> type, Session session) {
-	    CriteriaBuilder builder = session.getCriteriaBuilder();
-	    CriteriaQuery<T> criteria = builder.createQuery(type);
-	    criteria.from(type);
-	    List<T> data = session.createQuery(criteria).getResultList();
-	    return data;
-	  }
+
+    public static <T> List<T> loadAllData(Class<T> type, Session session) throws DatabaseException {
+	    if (session == null || !session.isOpen()) {
+            throw new DatabaseException("Load all data of type " + type.getName() + " called on an session that is not open");
+    	}
+
+	    try {
+		    CriteriaBuilder builder = session.getCriteriaBuilder();
+		    CriteriaQuery<T> criteria = builder.createQuery(type);
+		    criteria.from(type);
+		    List<T> data = session.createQuery(criteria).getResultList();
+		    return data;
+		} catch (IllegalStateException e) {
+		    throw new DatabaseException(e);
+		}
+    }
 }

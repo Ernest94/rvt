@@ -11,32 +11,53 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleJson;
+import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.HibernateSession;
 import nu.educom.rvt.services.BundleService;
 
 @Path("/webapi/bundle")
 public class BundleResource {
-
-	private BundleService bundleServ;
-	
-	public BundleResource() {
-		this.bundleServ = new BundleService();
-	}
+	private static final Logger LOG = LogManager.getLogger();
 	
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewBundle(Bundle bundle) {
-		bundle.setStartDate(LocalDate.now());
-		if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleServ.findBundleByName(bundle.getName()) == null)
-		{
-			bundleServ.createNewBundle(bundle);
-			return Response.status(201).build();
+		LOG.debug("createNewBundle {} called", bundle);
+		Session session = null;
+		try {
+			session = HibernateSession.openSessionAndTransaction();
+			BundleService bundleService = new BundleService(session);
+			
+			bundle.setStartDate(LocalDate.now());
+			// TODO move the validation to a BundleLogic class so this reads if (BundelLogic.isValidBundel(bundel)) { .... including logging
+			if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleService.findBundleByName(bundle.getName()) == null)
+			{
+				bundleService.createNewBundle(bundle);
+				return Response.status(201).build();
+			}
+			else {
+				return Response.status(412).build();
+			}
+		} catch (DatabaseException e) {
+			LOG.error("CreateNewBundle failed", e);
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return Response.status(500).build();
+		} finally {
+			if (session != null) { 
+				session.close();
+			}
 		}
-		else return Response.status(412).build();
 	}	
 	
 	// 1. check if bundle_id consistent
@@ -53,13 +74,31 @@ public class BundleResource {
 	@Path("/change")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response changeBundle(List<BundleConceptWeekOffset> frontendBundleConcepts) {
-		int bundleId = bundleServ.isBundleIdConsistent(frontendBundleConcepts);
-		if (bundleId==-1) {
-			return Response.status(412).build();
-		} else {
-			bundleServ.updateBundle(bundleId,frontendBundleConcepts);
-//			System.out.print(bundleId);
-			return Response.status(201).build();
+		LOG.debug("changeBundle called for bundle id {}", 
+				  frontendBundleConcepts.isEmpty() ? "<none>" : frontendBundleConcepts.get(0).getBundleId());
+		Session session = null;
+		try {
+			session = HibernateSession.openSessionAndTransaction();
+			BundleService bundleService = new BundleService(session);
+			int bundleId = bundleService.isBundleIdConsistent(frontendBundleConcepts);
+			if (bundleId==-1) {
+				return Response.status(412).build();
+			} 
+			else {
+				/*Bundle bundle =*/ bundleService.updateBundle(bundleId,frontendBundleConcepts);
+				session.getTransaction().commit();
+				return Response.status(201).build(/* TODO stuur de nieuwe bundel terug, new JSONBundel(bundle)*/);
+			}
+		} catch (DatabaseException e) {
+			LOG.error("change bundel failed", e);
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return Response.status(500).build();
+		} finally {
+			if (session != null) { 
+				session.close();
+			}
 		}
 	}
 	
@@ -67,22 +106,36 @@ public class BundleResource {
 	@Path("/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
-		List<Bundle> bundles = bundleServ.getAllBundles();
-//		BundleJson bundleJson = new BundleJson(bundles);
-		return Response.status(200).entity(bundles).build();
+		LOG.trace("getAllBundles called");
+		try (Session session = HibernateSession.openSession()) {
+			BundleService bundleService = new BundleService(session);
+			List<Bundle> bundles = bundleService.getAllBundles();
+//			BundleJson bundleJson = new BundleJson(bundles);
+			return Response.status(200).entity(bundles).build();
+		} catch (DatabaseException e) {
+			LOG.error("get all bundels failed", e);
+			return Response.status(500).build();
+		}
 	}
-	
+
 	@GET
 	@Path("/bundleTrainee")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(User user) {
-		List<Bundle> bundles = bundleServ.getAllBundles();
-//		List<Bundle> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
-		
-		
-		BundleJson bundleJson = new BundleJson(bundles);
-		
-		return Response.status(200).entity(bundleJson).build();
+		LOG.debug("getTraineeBundles for user {} called", user);
+		try (Session session = HibernateSession.openSession()) {
+			BundleService bundleService = new BundleService(session);
+			List<Bundle> bundles = bundleService.getAllBundles();
+//			List<Bundle> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
+			
+			BundleJson bundleJson = new BundleJson(bundles);
+			
+			return Response.status(200).entity(bundleJson).build();
+		} catch (DatabaseException e) {
+			LOG.error("get all bundels failed", e);
+			return Response.status(500).build();
+		}
 	}
+	
 }

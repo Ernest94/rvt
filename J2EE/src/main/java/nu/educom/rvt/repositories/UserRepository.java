@@ -1,109 +1,58 @@
 package nu.educom.rvt.repositories;
 
-
 import java.util.List;
-
-import javax.persistence.NoResultException;
-
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.User;
 
 public class UserRepository {
-	protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public UserRepository() {
+	public UserRepository(Session session) {
+		this.session = session;
 	}
 
-	public void create(User user) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
+	public User create(User user) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
+		}
 	    session.save(user); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	    return user;
 	}
 	
-	public User readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(User.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public User readById(int id) throws DatabaseException {
+		return session.get(User.class, id);
 	}
 	
-	public void update(User user) {
-
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
+	public void update(User user) throws DatabaseException {
 		User toUpdate = this.readById(user.getId());
 		toUpdate.setName(user.getName());
 		toUpdate.setEmail(user.getEmail());
 		toUpdate.setRole(user.getRole());
+		//TODO Fix location met record structure
 		toUpdate.setLocation(user.getLocation());
 		toUpdate.setDateActive(user.getDateActive());
-	    
-	    session.update(toUpdate); 
-	 
-	    session.getTransaction().commit();
-		session.close();
-
 	}
 	
-	protected void delete() {	
+	protected void delete() throws DatabaseException {	
 	}
 	
-	public List<User> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(User.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<User> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(User.class, session);
 	}
 
-	public User readByEmail(String email) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return (User) session
-					.createQuery("from User where email =:email", User.class)
-					.setParameter("email", email)
-					.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public User readByEmail(String email) throws DatabaseException {
+		return (User) session
+			.createQuery("from User where email =:email", User.class) /* JH TODO: Check endDate of user */
+			.setParameter("email", email)
+			.uniqueResultOptional().orElse(null);
 	}
 	
-	public User updatePassword(User user, String password) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			Transaction tx = session.beginTransaction();
-			session.update(user);
-			user.setPassword(password);
-			tx.commit();
-			return user;
-		} finally {
-			if (session != null) {
-				session.close();
-			}
+	public User updatePassword(User user, String password) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
+		user.setPassword(password);
+		return user;
 	}
 }
