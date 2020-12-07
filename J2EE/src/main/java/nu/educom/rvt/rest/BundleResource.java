@@ -39,13 +39,13 @@ public class BundleResource {
 		else return Response.status(412).build();
 	}	
 	
-	//1. check if bundle_id consistent
+	// 1. check if bundle_id consistent
 	// 2. collect bundle from database (Hibernate) (or collect the bundle_concept with specific bundle_id from database (Hibernate))
 	// 2. 
 	// 3. loop over all current concepts in bundle
-	// 4a. exist in frontend bundle_concepts -> weekoffset is the same -> remove from frontend bundle_concepts
-	// 4b. exist in frontend bundle_concepts -> weekoffset is not the same -> close current record open new record and remove from frontend bundle_concepts
-	// 4c. if not exists in frontend bundle_concepts -> close record
+	// 4a. if not exists in frontend bundle_concepts -> close record
+	// 4b. exist in frontend bundle_concepts -> weekoffset is the same -> remove from frontend bundle_concepts
+	// 4c. exist in frontend bundle_concepts -> weekoffset is not the same -> close current record open new record and remove from frontend bundle_concepts
 	// 5. if frontend bundle_concepts empty -> done
 	// 6. if frontend bundle_concepts not empty -> get all concepts based on ids left in frontend bundle_concept -> 
 	// 	loop over frontend bundle_concepts -> create new bundle_conept object ->  add to bundle_table database				
@@ -60,7 +60,6 @@ public class BundleResource {
 			bundleServ.updateBundle(bundleId,frontendBundleConcepts);
 //			System.out.print(bundleId);
 			return Response.status(201).build();
-
 		}
 	}
 	
@@ -69,8 +68,8 @@ public class BundleResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
 		List<Bundle> bundles = bundleServ.getAllBundles();
-		BundleJson bundleJson = new BundleJson(bundles);
-		return Response.status(200).entity(bundleJson).build();
+//		BundleJson bundleJson = new BundleJson(bundles);
+		return Response.status(200).entity(bundles).build();
 	}
 	
 	@GET

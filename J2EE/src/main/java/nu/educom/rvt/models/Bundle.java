@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="bundle")
@@ -24,10 +26,9 @@ public class Bundle {
 	private LocalDate startDate;
 	@Column(name="enddate")
 	private LocalDate endDate;
-	
-	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
+	@JsonManagedReference
+ 	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
 	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
-	
 	
 	//needed for Hibernate
 	public Bundle() {
@@ -97,8 +98,7 @@ public class Bundle {
 	}
 
 //	public List<BundleConcept> getCurrentConcepts() {
-//		allConcepts.stream().filter(b -> b.
-//				getEnd() == name).findFirst().orElse(null);
+//		return allConcepts.stream().filter(item-> item.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList());
 //	}
 	
 }

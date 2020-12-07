@@ -113,8 +113,10 @@ class conceptOverview extends React.Component {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"
             });
+            this.props.history.push('/settings');
         })
         .catch((error) => {
+            this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
             console.log("an error occorured " + error);
         });
     }
@@ -183,25 +185,28 @@ class conceptOverview extends React.Component {
 
                 <h2 className="text-center">Concepten overzicht</h2>
                 
-                <div className="row"> 
-                    <ul className="errors">{this.state.errors}</ul>
+                <div className="row justify-content-center">
+                        <ul className="errors">{this.state.errors}</ul>
                 </div>
 
                 <div className="row">
-                    <div className="col-4">
-                        Bundel:
+                    <div className="col-3">
+                        Selecteer een bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
-                                <option hidden value=''>Bundel</option>
+                                <option hidden value=''></option>
                                 {bundleOptions}
                             </select>
                     </div>
                     <div className="col-8">
-                        <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
-                            <FaPlus/>
-                        </Link>
+
+                        <span>
+                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                                <FaPlus/>
+                            </Link>
+                        </span>
                    </div>
                 </div>
 

@@ -3,7 +3,7 @@ package nu.educom.rvt.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="themes")
+@Table(name="theme")
 public class Theme {
 
 	@Id

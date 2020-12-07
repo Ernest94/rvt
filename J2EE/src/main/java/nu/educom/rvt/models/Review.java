@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import nu.educom.rvt.models.view.LocalDateTimeAdapter;
 
 @Entity
-@Table(name="reviews")
+@Table(name="review")
 public class Review {
 
 	public enum Status {

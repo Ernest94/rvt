@@ -3,18 +3,14 @@ package nu.educom.rvt.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
-import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Theme;
-import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
-import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptView;
 import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.repositories.ConceptRepository;
