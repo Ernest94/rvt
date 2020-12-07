@@ -157,7 +157,7 @@ class addConcept extends React.Component {
 
     handleBundleResponse(data) {
         this.setState({
-            bundles: data.bundles,
+            bundles: data,
         });
     }
     
