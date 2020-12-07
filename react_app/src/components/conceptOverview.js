@@ -39,9 +39,9 @@ class conceptOverview extends React.Component {
     getConceptsAndBundles() {
         axios.get(config.url.API_URL + "/webapi/theme_concept/concepts/bundles")
             .then(response => {
+                this.concepts = response.data.concepts;
+                this.bundles = response.data.bundlesConcepts;
                 this.setState({
-                    concepts: response.data.concepts,
-                    bundles: response.data.bundlesConcepts,
                     pageLoading: false,
                 });
             console.log(response.data);
