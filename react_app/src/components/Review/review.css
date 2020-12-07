@@ -4,23 +4,59 @@
 
 .trainee-name{
     float:left;
+    text-align: center;
 }
 
 .trainee-location{
     float:left;
+    text-align: center;
 }
 
 .container {
     position:relative;
 }
 
-.trainee-name{
-    text-align: center;
+.review-bottom-bar div {
+    padding:5px;
+    margin:0px 15px;
+}
+.review-bottom-bar button{
+    margin:5px;
+}
+.review-bottom-bar div textarea{
+    width:90%;
 }
 
-.trainee-location{
-    text-align: center;
-}    
+/*#region ReviewTable */
+.reviewTable, .addReviewTable{
+    display:block;
+    height:500px;
+    overflow-x:hidden;
+}
+
+.reviewTable thead, .addReviewTable thead{
+    background-color:#fff!important;
+}
+.reviewTable th, .addReviewTable th{
+    position:sticky;
+    top:0;
+    background-color:#fff!important;
+    z-index:1;
+
+}
+.addReviewTable td:nth-child(2){
+    white-space: nowrap;
+}
+.addReviewTable td:nth-child(4),.reviewTable th:nth-child(4){
+    width:100%;
+}
+
+.reviewTable td:nth-child(1){
+    white-space: nowrap;
+}
+.reviewTable td:nth-child(3),.reviewTable th:nth-child(3){
+    width:100%;
+}
 
 .theme-text {
     position: relative;
@@ -96,52 +132,7 @@
     font-size:10px;
 }
 
-.feedback-box-kantoor{
-    float: left;
-    padding: 15px;
-    /* display:inline-block; */
-}
-
-.feedback-box-trainee{
-    float: left;
-    padding: 15px;
-    /* display:inline-block; */
-}
-
-.submit-review-button {
-    float: left;
-    padding-top: 45px;
-    padding-left: 16px;
-}
-.reviewTable, .addReviewTable{
-    display:block;
-    height:500px;
-    overflow-x:hidden;
-}
-
-.reviewTable thead, .addReviewTable thead{
-    background-color:#fff!important;
-}
-.reviewTable th, .addReviewTable th{
-    position:sticky;
-    top:0;
-    background-color:#fff!important;
-    z-index:1;
-
-}
-.addReviewTable td:nth-child(2){
-    white-space: nowrap;
-}
-.addReviewTable td:nth-child(4),.reviewTable th:nth-child(4){
-    width:100%;
-}
-
-.reviewTable td:nth-child(1){
-    white-space: nowrap;
-}
-.reviewTable td:nth-child(3),.reviewTable th:nth-child(3){
-    width:100%;
-}
+/*#endregion ReviewTable */
 
 /*#region ConceptSelectionStyling  */
 .conceptSelection {
@@ -166,25 +157,31 @@
     padding:1px 3px;
     min-width:0;
     background-color:lightGrey;
+    float:right;
 }
 
-.lightButton:hover{
-    background-color:rgb(155, 155, 155)!important;
+.conceptSelection .lightButton:hover{
+    background-color:rgb(155, 155, 155);
 }
 .selectionTitle{
     display:inline;
 }
-.themeCheckbox{
+.selectionCheckbox{
     color:#ffc107!important;
-
 }
 .checkboxControl{
-    width:30%;
+    width:45%;
     padding:1px;
 }
-.themeCheckbox .icon{
+.selectionCheckbox .icon{
     height:10px!important;
     width:10px!important;
+}
+.conceptSelection .switchChecked + .switchTrack{
+    background-color:#CC2C3E!important;
+}
+.conceptSelection .switchChecked  .switchThumb{
+    background-color:#CC2C3E!important;
 }
 /*#endregion ConceptSelectionStyling */
 

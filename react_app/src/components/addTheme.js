@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import {config} from './constants';
 import Permissions from './permissions.js';
+import Utils from './Utils.js'
+import {Link} from 'react-router-dom';
 
 class addTheme extends React.Component {
     
@@ -30,32 +32,34 @@ class addTheme extends React.Component {
     }
 
     validate() {
-        return null;
+        if(!this.state.name.trim() || !this.state.description.trim() || !this.state.abbreviation.trim())
+        {
+            this.setState({locationName:""});
+            return {input: ["Alle velden moeten worden ingevuld"]};
+        }        
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({loading: true}); 
+        this.setState({loading: true, message: ""}); 
         var errors = this.validate();
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/theme_concept/saveTheme", this.createThemeJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
-                    
-                    // this.props.handleReturnToConcepts();
                     this.succesfullAdd();
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    console.log(this.createThemeJson());
-
-                    this.setErrors({login: ["Mislukt om thema toe te voegen."]}); 
-                    this.setState({loading: false});
+                    this.setState({loading: false, 
+                        errors: Utils.setErrors({input: ["Mislukt om thema toe te voegen. Mogelijk bestaat er al een thema met deze naam."]})});
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({
+                errors: Utils.setErrors(errors),
+                loading: false
+            });
         }
     }
 
@@ -74,20 +78,12 @@ class addTheme extends React.Component {
         }
     }
     
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
-    
     render() {
         return (
-            <div className="container main-container">
+            <div className="container">
+                
                 <h2 className="text-center">Thema toevoegen</h2>
-                    
+                <div className="text-danger" >{this.state.errors}</div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row justify-content-center">
 
@@ -106,13 +102,22 @@ class addTheme extends React.Component {
                                         <label htmlFor="abbreviation">Afkorting:</label>
                                         <input className="form-control " id="abbreviation" type="text" name="abbreviation" value={this.state.abbreviation} onChange={this.handleFormChange} />
                                     </div>
-                                {(this.state.loading) ? 
-                                    <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                                    <button className="btn btn-primary float-right"  type="submit">Thema toevoegen</button>}
+
+                                    {(this.state.loading) ? 
+                                        <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                                        <button className="btn btn-primary float-right"  type="submit">Thema toevoegen</button>}
                                 </div>
                         </div>
-
                     </form>
+
+                    <div className="row justify-content-center">
+                        <div className="col-4 m-1">
+                            {(this.state.loading) ? 
+                                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>}
+                        </div>
+                    </div> 
+
                     <h4 className="text-success text-center">{this.state.message}</h4>
 
                 </div >

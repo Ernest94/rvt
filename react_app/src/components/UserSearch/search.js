@@ -7,6 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
+import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -14,14 +15,13 @@ class Search extends React.Component {
         super(props);
         this.state = {
             locations: [],
-            location: "",
+            selectedLocations: [],
             roles: [],
             role: "",
             criteria: "",
             users: [],
             loading: false,
             roleDisplayName: "",
-            locationDisplayName: "",
             buttonDisabled: false,
         };
     }
@@ -53,13 +53,10 @@ class Search extends React.Component {
 
         this.setState({
             loading: true,
-            location: location,
+            selectedLocations: [location],
             role: role,
-            locationDisplayName: location.id,
             roleDisplayName: role.id
         });
-
-        console.log("post_setState");
 
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
@@ -84,7 +81,6 @@ class Search extends React.Component {
         this.setState({loading: true});
         var errors = null
         if (!errors) {
-	    console.log(this.createSearchJson());
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
@@ -94,7 +90,7 @@ class Search extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    Util.setErrors({login: ["Mislukt om zoek actie uit te voeren."]}); 
+                    Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
                     this.setState({loading: false});
                 });
         }
@@ -123,8 +119,8 @@ class Search extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    roles: null, // [{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
-                    locations: null, // [{id: 1, name: "Utrecht"}],
+                    roles: null,
+                    locations: null,
                     pageLoading: false
                 });
             })
@@ -132,7 +128,7 @@ class Search extends React.Component {
 
     createSearchJson() {
         return {
-            location: this.state.location,
+            locations: this.state.selectedLocations,
             role: this.state.role,
             criteria: this.state.criteria
         }
@@ -153,13 +149,6 @@ class Search extends React.Component {
         });
     }
 
-    onChangeLocation = (e) => {
-        this.setState({
-            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value,
-        });
-    }
-
     render() {
         const {roles, locations, users, pageLoading, loading} = this.state;
         if (pageLoading) return (<span className="center">Laden...</span>)
@@ -172,14 +161,9 @@ class Search extends React.Component {
                 <option key={role.id} value={role.id}>{role.name}</option>
             )
         });
-        const locationOptions = locations.map((location) => {
-            return (
-                <option key={location.id} value={location.id}>{location.name}</option>
-            )
-        });
         var userDisplay = users.map((user) => {
             return (
-                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)}} >
+                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
@@ -201,40 +185,58 @@ class Search extends React.Component {
 
 
         return (
+            <div className="container">
 
-            <div>
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
-                <div >
+
+                <div className="row"> 
                     <ul className="errors">{this.state.errors}</ul>
+                </div>
+
                     <form onSubmit={this.handleSubmit}>
+
                         <div className="search-bar row d-flex">
-                          <div className="m-auto">
+
+                          <div className="m-auto col-2">
                             <label className="m-1" htmlFor="role">Rol:</label>
                             <select name="role" id="role"
 
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
                                 >
-
                                 {rolesOptions}
                             </select>
                           </div>
-                          <div className="m-auto">
-                            <label className="m-1" htmlFor="location">Locatie:</label>
-                            <select name="location" id="location"
-
-                                value={this.state.locationDisplayName}
-                                onChange={this.onChangeLocation}
+                          <div className="m-auto col-4">
+                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
+                                <Select
+                                className="m-1 text-black"
+                                labelId="location-label"
+                                id="location"
+                                name="selectedLocations" 
+                                multiple
+                                value={this.state.selectedLocations}
+                                onChange={this.handleFormChange}
+                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                                MenuProps={{
+                                    variant: "menu",
+                                    getContentAnchorEl: null}
+                                }
+                                input={<Input id="select-location" />}
                                 >
-
-                                {locationOptions}
-                            </select>
-                          </div>
-                          <div className="m-auto">
+                                {locations.map((location) => (
+                                    <MenuItem key={location.id} value={location}>
+                                        {location.name}
+                                    </MenuItem>
+                                ))}
+                                </Select>
+                                </InputLabel>
+                          </div> 
+                          <div className="m-auto col-4">
                             <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
                             <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        <div className="m-auto">
+                        <div className="m-auto col-2">
                             <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
                                 type="submit">
@@ -244,7 +246,6 @@ class Search extends React.Component {
                         </div>
 
                     </form>
-                </div >
 
                 <div className="text-center">
                     <table className="w-100 mx-auto">

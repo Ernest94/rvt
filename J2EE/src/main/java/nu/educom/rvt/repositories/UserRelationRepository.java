@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.UserRelation;
 
+/* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class UserRelationRepository {
 	protected SessionFactory sessionFactory;
 	

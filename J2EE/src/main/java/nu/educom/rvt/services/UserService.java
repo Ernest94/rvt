@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -54,6 +55,19 @@ public class UserService {
 		return null;
 	}
 	
+	public Location getLocationById(int id) {
+		LocationRepository locationRepo = new LocationRepository();
+	    Location location = locationRepo.readById(id);
+		return location;
+	}
+	
+	public Role getRoleById(int id) {
+		RoleRepository roleRepo = new RoleRepository();
+	    Role role = roleRepo.readById(id);
+		return role;
+		
+	}
+	
 	public boolean validateUser(User user) {
 		UserRepository userRepo = new UserRepository();
 		User foundUser = userRepo.readByEmail(user.getEmail());
@@ -74,6 +88,11 @@ public class UserService {
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
 	}
+	public void updateUser(User user)
+	{
+		UserRepository userRepo = new UserRepository();		
+		userRepo.update(user);
+	}
 	
 	public List<Role> getRoles() {
 		RoleRepository roleRepo = new RoleRepository();
@@ -86,7 +105,28 @@ public class UserService {
 		return locRepo.readAll();
 	}
 	
-	public List<User> getFilteredUsers(String criteria, Role role, Location location)
+	public int addLocation(Location location) {
+		LocationRepository locationRepo = new LocationRepository();
+		int success = locationRepo.create(location);
+		return success;
+	}
+	
+	public boolean validateLocation(Location location) {	
+		
+		if(location.getName().trim().isEmpty() || !Pattern.matches("^.*\\p{L}.*$", location.getName())) {
+			return false;
+		}
+		else {
+			return this.doesLocationExist(location);
+		}
+	}
+	public boolean doesLocationExist(Location location) {
+		LocationRepository locationRepo = new LocationRepository();
+		Location duplicate = locationRepo.readByName(location.getName());		
+		return duplicate==null;
+	}
+	
+	public List<User> getFilteredUsers(String criteria, Role role, List<Location> locations)
 	{
 		String[] words = criteria.split(" ");
 		List<User> foundUsers = new ArrayList<>();	
@@ -96,12 +136,12 @@ public class UserService {
 			{
 				if(word != "")
 	            {
-	                foundUsers.addAll(findUsersByCriteria(word, role, location));
+	                foundUsers.addAll(findUsersByCriteria(word, role, locations));
 	            } 
 			}
 		} 
 		else {
-			foundUsers.addAll(findUsersByCriteria(null, role, location));
+			foundUsers.addAll(findUsersByCriteria(null, role, locations));
 		}
 		
 		foundUsers.stream().distinct().collect(Collectors.toList());
@@ -109,7 +149,7 @@ public class UserService {
 	}
 	
 	
-	private List<User> findUsersByCriteria(String criteria, Role role, Location location)
+	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations)
 	{
 		UserRepository userRepo = new UserRepository();
 		List<User> allUsers = userRepo.readAll();
@@ -119,9 +159,12 @@ public class UserService {
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
 				.collect(Collectors.toList()));
 		
+
 		filterdUsers = filterdUsers.stream()
-				.filter(u -> u.getLocation().getId() == location.getId() || location == null)
-				.collect(Collectors.toList());
+				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
+				.collect(Collectors.toList());			
+	
+		
 		if (criteria != null) {
 			filterdUsers = filterdUsers.stream()
 					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
@@ -138,7 +181,6 @@ public class UserService {
 		return filterdUsers;
 	}
 	
-
 	public UserSearchJson convertToUSJ(List<User> users)
 	{
 		List<UserSearch> userSearch = new ArrayList<>();
@@ -149,7 +191,6 @@ public class UserService {
 		}		
 		return new UserSearchJson(userSearch);
 	}
-	
 	
 	public List<User> getConnectedUsers(User user)
 	{

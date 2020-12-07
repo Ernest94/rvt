@@ -1,6 +1,8 @@
 package nu.educom.rvt.models.view;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.Role;
 

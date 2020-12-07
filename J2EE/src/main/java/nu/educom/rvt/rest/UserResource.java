@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -73,9 +74,6 @@ public class UserResource {
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
-		if (Filler.isDatabaseEmpty()) {
-			Filler.fillDatabase();
-		}
 		UserService userServ = new UserService();
 		List<Role> roles = userServ.getRoles();	
 		List<Location> locations = userServ.getLocations();
@@ -104,20 +102,20 @@ public class UserResource {
 	@Path("/linking")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllRelations(@HeaderParam("userId") int userId){
-	  UserService userServ = new UserService();//load injectables
-	  User user = userServ.getUserById(userId);
-	  List<User> connectedUsers = userServ.getConnectedUsers(user);
-	  List<User> possibleRelatedUsers = userServ.getPossibleRelations(user);
-	  List<LinkedUsers> linkedUsers = userServ.combineUsers(user, connectedUsers, possibleRelatedUsers);
-	  LinkJson linkJson = new LinkJson(user, linkedUsers);
-	  
-	  boolean valid = true;
-	  
-	  if(valid) {
-        return Response.status(200).entity(linkJson).build();
-	  } else {
-        return Response.status(404).build();	    
-	  }
+        UserService userServ = new UserService();//load injectables
+        User user = userServ.getUserById(userId);
+        List<User> connectedUsers = userServ.getConnectedUsers(user);
+        List<User> possibleRelatedUsers = userServ.getPossibleRelations(user);
+        List<LinkedUsers> linkedUsers = userServ.combineUsers(user, connectedUsers, possibleRelatedUsers);
+        LinkJson linkJson = new LinkJson(user, linkedUsers);
+        
+        boolean valid = true;
+        
+        if(valid) {
+            return Response.status(200).entity(linkJson).build();
+        } else {
+            return Response.status(404).build();	    
+        }
 	}
 	
 	@POST
@@ -126,9 +124,8 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUsers(Search search) {
 		UserService userServ = new UserService();
-		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocation());
-		UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
-		
+		List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocations());
+		UserSearchJson USJ = userServ.convertToUSJ(searchResult);
 		return Response.status(200).entity(USJ).build();
 	}
 	
@@ -173,6 +170,21 @@ public class UserResource {
         return Response.status(400).build();        
       }
     }	
+	
+	@PUT
+	@Path("/dossier")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateUser(User user) {
+		UserService userServ = new UserService();
+		User foundUser = userServ.getUserById(user.getId());
+		if(foundUser==null) {
+			return Response.status(400).build();  
+		}
+		else {
+			userServ.updateUser(user);
+			return Response.status(200).build();
+		}
+	}
 	
 }
 

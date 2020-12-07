@@ -1,15 +1,24 @@
 package nu.educom.rvt.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column; 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
+@Where(clause = "enddate IS NULL")
 @Table(name="bundle_concept")
 public class BundleConcept {
 
@@ -17,7 +26,8 @@ public class BundleConcept {
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		@Column(name="id")
 		private int id;
-	
+		
+		@JsonBackReference
 		@ManyToOne
 		@JoinColumn(name="bundle_id")
 		private Bundle bundle;
@@ -30,17 +40,16 @@ public class BundleConcept {
 		private int weekOffset;
 		
 		@Column(name="startdate")
-		private String startDate;
+		private LocalDate startDate;
 		
 		@Column(name="enddate")
-		private String endDate;
-		
+		private LocalDate endDate;
 		
 		public BundleConcept() {
 			super();
 		}
 		
-		public BundleConcept(Bundle bundle, Concept concept, int weekOffset, String startDate) {
+		public BundleConcept(Bundle bundle, Concept concept, int weekOffset, LocalDate startDate) {
 			super();
 			this.bundle = bundle;
 			this.concept = concept;
@@ -48,7 +57,7 @@ public class BundleConcept {
 			this.startDate = startDate;
 		}
 		
-		public BundleConcept(Bundle bundle, Concept concept, int weekOffset, String startDate, String endDate) {
+		public BundleConcept(Bundle bundle, Concept concept, int weekOffset, LocalDate startDate, LocalDate endDate) {
 			super();
 			this.bundle = bundle;
 			this.concept = concept;
@@ -56,7 +65,7 @@ public class BundleConcept {
 			this.startDate = startDate;
 			this.endDate = endDate;
 		}
-
+		
 		public int getId() {
 			return id;
 		}
@@ -64,7 +73,7 @@ public class BundleConcept {
 		public void setId(int id) {
 			this.id = id;
 		}
-
+		
 		public Bundle getBundle() {
 			return bundle;
 		}
@@ -89,21 +98,19 @@ public class BundleConcept {
 			this.weekOffset = weekOffset;
 		}
 
-		public String getStartDate() {
+		public LocalDate getStartDate() {
 			return startDate;
 		}
 
-		public void setStartDate(String startDate) {
+		public void setStartDate(LocalDate startDate) {
 			this.startDate = startDate;
 		}
 
-		public String getEndDate() {
+		public LocalDate getEndDate() {
 			return endDate;
 		}
 
-		public void setEndDate(String endDate) {
+		public void setEndDate(LocalDate endDate) {
 			this.endDate = endDate;
-		}
-
-		
+		}		
 }

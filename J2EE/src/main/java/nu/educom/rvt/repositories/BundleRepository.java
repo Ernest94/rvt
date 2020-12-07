@@ -35,27 +35,29 @@ protected SessionFactory sessionFactory;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 			return HibernateSession.loadAllData(Bundle.class, session);
+			
 		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
 			return null;
 		}
 		finally {
-			if (session != null) {
-				session.close();
-			}
+//			if (session != null) {
+//				session.close();
+//			}
 		}
 	}
 	
 	public Bundle readById(int id) {
 		Session session = null;
-		try {
+//		try {
 			session = HibernateSession.getSessionFactory().openSession();
+//			session.createQuery("FROM Bundle WHERE id=:id ").parameter
 			return session.get(Bundle.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+//		}
+//		finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
 	}
 	
 	protected void update(Bundle bundle) {
@@ -63,9 +65,13 @@ protected SessionFactory sessionFactory;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();
 		    session.beginTransaction();
+		    
 		    session.saveOrUpdate(bundle);
+		    
 		    session.getTransaction().commit();
-		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+		} catch (Exception e) {
+			session.getTransaction().rollback();
+			//TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
 			
 		} finally {		   
 			if (session != null) {

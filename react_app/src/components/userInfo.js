@@ -4,7 +4,6 @@ class UserInfo extends React.Component {
     
     componentDidMount() {
         Utils.dateValidation();
-        // this.props.dateValidation();
     }
     
     render() {

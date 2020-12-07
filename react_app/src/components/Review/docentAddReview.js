@@ -13,6 +13,7 @@ import './review.css'
 
 import { config } from '../constants';
 import Permissions from '../permissions.js'
+import {SelectionTable} from '../Selection.js'
 
 class docentAddReview extends React.Component {
 
@@ -23,11 +24,10 @@ class docentAddReview extends React.Component {
             userId: null,
             userName: "",
             userLocation: "",
-            reviewDate: "",
+            reviewDate: new Date(),
             concepts: [],
             pageLoading: true,
             weeksPerBlock: 2,
-            value: "",
             setValue: "",
             reviewId: null,
             traineeFeedback: "",
@@ -38,6 +38,20 @@ class docentAddReview extends React.Component {
 
     static hasAccess() {
         return Permissions.canAddReview();
+    }
+
+    async componentDidMount() {
+        this.setState({ pageLoading: true });
+        if (Permissions.isUserTrainee()) {
+            await this.setState({ userId: sessionStorage.getItem("userId") });
+        }
+        else {
+            const { computedMatch: { params } } = this.props;
+            await this.setState({ userId: params.userId });
+        }
+        console.log(this.state.userId);
+        this.setState({ pageLoading: false });
+        await this.getConcepts();
     }
 
     handleFormChange = (e) => {
@@ -53,28 +67,12 @@ class docentAddReview extends React.Component {
     };
     
 
-    async componentDidMount() {
-        console.log("begin");
-        this.setState({ pageLoading: true });
-        if (Permissions.isUserTrainee()) {
-            await this.setState({ userId: sessionStorage.getItem("userId") });
-        }
-        else {
-            const { computedMatch: { params } } = this.props;
-            await this.setState({ userId: params.userId });
-        }
-        console.log(this.state.userId);
-        this.setState({ pageLoading: false });
-        await this.getPendingUsers();
-        await this.getConcepts();
 
-
-    }
 
     onChangePendingUser = (e) => {
         var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
-
         this.setTheState(selectedUser);
+        this.getPendingUsers();
     }
 
     async setTheState(selectedUser) {
@@ -92,22 +90,20 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
-        console.log("getPendingUsers")
-        axios.get(config.url.API_URL + "/webapi/review/pendingUsers")
+        axios.get(config.url.API_URL + "/webapi/review/pending/location/" + sessionStorage.getItem("userLocationId"))
             .then(response => {
-                console.log("succes");
                 this.handleUsersReponse(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             })
     }
 
     getConcepts() {
-        console.log(this.createUserIdJson());
         axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
             .then(response => {
                 this.handleCurriculumReponse(response.data);
+                this.getPendingUsers();
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
@@ -121,11 +117,9 @@ class docentAddReview extends React.Component {
     }
 
     handleUsersReponse(data) {
-        console.log(data);
         this.setState({
             pendingUsers: data.userSearch,
         });
-        console.log(this.state);
     }
 
     handleCurriculumReponse(data){
@@ -135,9 +129,10 @@ class docentAddReview extends React.Component {
             reviewDate: data.reviewDate,
             concepts: data.conceptsPlusRatings,
             reviewId: data.reviewId,
+            traineeFeedback: data.commentStudent,
+            officeFeedback: data.commentOffice,
             message: "",
         });
-        console.log(this.state);
     }
 
     getActiveDisplayName(bool) {
@@ -166,8 +161,6 @@ class docentAddReview extends React.Component {
         const index = event.target.name.substring(7);
         const value = event.target.value;
 
-        console.log(value);
-
         let concepts = this.state.concepts;
         let concept = concepts[index];
         concept.comment = value;
@@ -180,7 +173,15 @@ class docentAddReview extends React.Component {
         console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
-
+    // async setDate(event){
+    //     console.log(event);
+    //     const { name, value } = event.target;
+    //     console.log("Date Input Value: " + value);
+    //     console.log("Date parsed Value: " + new Date(value.split("-")).setTime(new Date().getTime()).toLocaleString());
+    //     this.setState({
+    //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
+    //     },()=>console.log(this.state.reviewDate));
+    // }
     async setReviewData(event) {
         const { name, value } = event.target;
         await this.setState({
@@ -196,7 +197,7 @@ class docentAddReview extends React.Component {
             id: this.state.reviewId,
             commentOffice: this.state.officeFeedback,
             commentStudent: this.state.traineeFeedback,
-            date: this.state.reviewDate
+            date: this.state.reviewDate,
         }
     }
 
@@ -230,7 +231,6 @@ class docentAddReview extends React.Component {
 
     submit = () => {
         confirmAlert({
-            // title: 'Bevestig',
             message: 'Wilt u de review bevestigen? Let op! Hiermee wordt de review opgeslagen en zichtbaar voor trainees.',
             buttons: [{
                 label: 'Ja',
@@ -238,21 +238,22 @@ class docentAddReview extends React.Component {
             },
             {
                 label: 'Nee',
-            //     onClick: () => alert('Click No')
             }
         ]
         })
     };
 
     submitReview() {
+        this.setState({reviewDate: new Date()})
         axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
         .then(response => {
-            this.setState({
-                message: "uw review is succesvol opgeslagen."
-            });
+            this.props.history.push('/curriculum/' + this.state.userId);
         })
         .catch((error) => {
-            console.log("an error occorured " + error);
+            this.setState({
+                message: "Er is een technische fout opgetreden bij het bevestigen van deze review."
+            });
+            console.log("an error occurred " + error);
         });
     }
 
@@ -274,7 +275,6 @@ class docentAddReview extends React.Component {
     cancelReview() {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
-              console.log(this.state)
               this.props.history.push('/dossier/' + this.state.userId);
 
             //   this.props.handleReturnToDossier(this.state.userId);
@@ -292,6 +292,16 @@ class docentAddReview extends React.Component {
         .catch((error) => {
             console.log("an error occurred " + error);
         });
+    }
+
+    setActiveConcept() {
+        var checkBox = document.getElementById("myCheck");
+        var text = document.getElementById("text");
+        if (checkBox.checked === false){
+          text.style.display = "block";
+        } else {
+           text.style.display = "none";
+        }
     }
 
     handleWeekChange(e,id){
@@ -314,9 +324,10 @@ class docentAddReview extends React.Component {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
+            case 0: return ("geen week aangegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
-            case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
+            case 3: return ("week " + (1 + 2 * wpb) + " t/m " +  (3 * wpb));
             case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
             default: return ("week 9 of later");
         }
@@ -335,7 +346,7 @@ class docentAddReview extends React.Component {
     }
 
     render() {
-        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
         const weekoptions = weeks.map((week) =>(
                             <MenuItem key={"week_"+week} value={week}>
                                 {"week " + week}
@@ -345,16 +356,42 @@ class docentAddReview extends React.Component {
         if (pageLoading) return (<span className="center">Laden...</span>)
 
         let userOptions = null;
-        console.log(pendingUsers);
-            userOptions = pendingUsers.map((user) => {
-                return (
-                    <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
-                )
-            });
-
-
-        var conceptDisplay = this.state.concepts.map((concept, index) => {
+        userOptions = pendingUsers.map((user) => {
             return (
+                <option className="text-center" key={user.id} value={user.id}>{user.name}</option>
+            )
+        });
+
+
+        const ConceptDisplay = ({selectionFunction,}) => (
+            <div className="table-responsive col-md-10">
+                    <table className="addReviewTable table">
+                        <thead>
+                            <tr>
+                                <th className="active">
+                                    actief
+                                </th>
+                                <th className="week">
+                                    Blok
+                                </th>
+                                <th className="theme">
+                                    Thema
+                                </th>
+                                <th className="concept">
+                                    Concept
+                                </th> 
+                                <th className="rating">
+                                    Vaardigheid
+                                </th>
+                                <th className="comment">
+                                    Commentaar
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="tableBody">
+        {this.state.concepts.map((concept, index) => {
+            if (selectionFunction(concept)){
+                return (
                 <tr>
                     <td className="active">
                     <Checkbox
@@ -362,11 +399,15 @@ class docentAddReview extends React.Component {
                         key={"active_"+concept.concept.id}
                         defaultChecked={true}
                         color="default"
+                        // label={option}
+                        // isSelected={this.state.checkboxes.}
+                        // onCheckboxChange={this.handleCheckboxChange}
+                        //  defaultChecked={concept.active}
                         />                   
                     </td>
                     <td className="week" id="text">
                         <Select  name={"weeks"+concept.concept.id} id={"weeks"+concept.concept.id}
-                            value={concept.concept.week}
+                            value={concept.week}
                             renderValue={(value) => this.getWeekBlock(value)}
                             onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
                             >
@@ -400,21 +441,49 @@ class docentAddReview extends React.Component {
                         <TextareaAutosize className="comment-text"
                             aria-label="minimum height"
                             name={"comment" + index} onBlur={(event) => {
-                            this.setComment(event); }}>
-                            {concept.comment}
-                        </TextareaAutosize>
+                            this.setComment(event); }}
+                            value={concept.comment} />
                     </td>
                 </tr>
-            )
-        });
+            )}
+        })}
+        </tbody>
+        </table>
+        </div>
+        );
 
         return (
                 <div className="container">
                 <div className="pt-4 row">
-                    <div className="col"><h3><input className="border-0 text-center" type="date" id="date" name="reviewDate" value={reviewDate} placeholder="dd-mm-yyyy" onChange={(event) => { this.setReviewData(event) }} /></h3></div>
+                    {/* <div className="col"> Disabled change date function for now because it clashes with DateTime for reviewDate
+                        <h3>
+                            <input 
+                                className="border-0 text-center" 
+                                type="date"
+                                id="date" 
+                                name="reviewDate" 
+                                value={reviewDate.getFullYear() + "-" + reviewDate.getMonth() + "-" + reviewDate.getDate()} 
+                                placeholder="dd-mm-yyyy" 
+                                onChange={(event) => { this.setDate(event) }} />
+                        </h3>
+                    </div> */}
                     <div className="col">
-                        <h3 classname="text-center">Review
-                            <select className="border-0" name="pendingUser" id="pendingUser" value={this.state.UserId} onChange={this.onChangePendingUser}><option className="text-center" value="" selected disabled hidden>{this.state.userName}</option>{userOptions}</select>
+                        <h3 classname="text-center">Review van 
+                            <select 
+                                className="border-0" 
+                                name="pendingUser" 
+                                id="pendingUser" 
+                                value={this.state.userId} 
+                                onChange={this.onChangePendingUser}>
+                                    <option 
+                                        className="text-center" 
+                                        value="" 
+                                        selected 
+                                        disabled 
+                                        hidden>{this.state.userName}
+                                    </option>
+                                    {userOptions}
+                                </select>
                         </h3>
                     </div>
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
@@ -422,60 +491,41 @@ class docentAddReview extends React.Component {
                     <div >
                         <ul className="errors">{this.state.errors}</ul>
                     </div >
-                    <div className="table-responsive">
-                    <table className="addReviewTable table">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th> 
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="tableBody">
-                            {conceptDisplay}
-                        </tbody>
-                </table>
-                </div>
-                    <div>
-                        <div className="feedback-box-trainee">
-                        <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                        <textarea rows="2" name="traineeFeedback" cols="50" onBlur={(event) => {
-                            this.setReviewData(event);
-                        }}
-                        >{traineeFeedback}</textarea>
-                        </div>
-                        <div className="feedback-box-kantoor">
-                        <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                        <textarea rows="2" name="officeFeedback" cols="50" onBlur={(event) => {
-                            this.setReviewData(event);
-                        }}
-                        >{officeFeedback}</textarea>
-                        </div>
-                    </div>
-                    <div className="container">
-                        {(this.state.loading) ? <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.submit} className="btn btn-primary float-right" type="submit">Bevestig</button>}
-                        {(this.state.loading) ? <button className="btn btn-primary float-right mr-1" type="submit" disabled> Laden...</button>:
-                        <button onClick={this.cancel} className="btn btn-primary float-right mr-1" type="submit">Annuleer</button>}
-                    </div>
+                    <SelectionTable
+                    fields={["active","stars","weeks","themes"]}
+                    starsSelected={[0,5]}
+                            >
+                                {paramFunction=>(
+                                    <ConceptDisplay selectionFunction={paramFunction} />
+                                )}
+                        </SelectionTable>
+
                     <div className="float-right mr-1">
                         <p>{this.state.message}</p>
                     </div>
+                    <div className="review-bottom-bar container d-flex">
+                        <div>
+                            <h4 >{"Terugkoppeling naar Trainee:"}</h4>
+                            <textarea value={traineeFeedback} rows="2" name="traineeFeedback" onBlur={(event) => {
+                                this.setReviewData(event);
+                            }}/>
+                        </div>
+                        <div>
+                            <h4 >{"Terugkoppeling naar kantoor:"}</h4>
+                            <textarea value={officeFeedback} rows="2" name="officeFeedback" onBlur={(event) => {
+                                this.setReviewData(event);
+                            }}/>
+
+                        
+                        </div>
+                        <div>
+                            {(this.state.loading) ? <button className="btn btn-danger" type="submit" disabled> Laden...</button>:
+                            <button onClick={this.submit} className="btn btn-danger" type="submit">Bevestig</button>}
+                            {(this.state.loading) ? <button className="btn btn-danger mr-1" type="submit" disabled> Laden...</button>:
+                            <button onClick={this.cancel} className="btn btn-danger mr-1" type="submit">Annuleer</button>}
+                        </div>
+                    </div>
+
                 </div>
         )
     }

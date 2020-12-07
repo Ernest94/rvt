@@ -3,10 +3,13 @@ package nu.educom.rvt.repositories;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.Theme;
 
 public class ConceptRepository {
 
@@ -82,6 +85,23 @@ protected SessionFactory sessionFactory;
 				session.close();
 			}
 		}				
+	}
+	
+	public Concept readByName(String name) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return (Concept) session
+					.createQuery("from Concept where name =:name", Concept.class)
+					.setParameter("name", name)
+					.getSingleResult();
+		} catch (NoResultException ex) {
+			return null;
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 	
 	protected void update() {
