@@ -210,18 +210,6 @@ class review extends React.Component {
             default: return ("");
         }
     }
-    inSelection(concept) {
-        let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
-        console.log(concept);
-
-        return(
-            this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
-            &&
-            this.state.weeksSelected[0] <= concept.week && concept.week <= this.state.weeksSelected[1]
-            &&
-            (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
-        )
-    }
 
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock

@@ -51,6 +51,10 @@ public class BundleService {
 	{
 		return bundleRepo.readAll();
 	}
+	
+	public List<Bundle> getAllCreatorBundles(User user){
+		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
+	}
 	 
 	public List<Bundle> getAllBundlesFromUser(User user){
 		List<BundleTrainee> allBundle = bundleTraineeRepo.readAll();

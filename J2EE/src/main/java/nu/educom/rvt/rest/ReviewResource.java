@@ -17,8 +17,6 @@ import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.ConceptRatingUpdate;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.view.CPRActive;
-import nu.educom.rvt.models.view.CPRActiveJSON;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
 import nu.educom.rvt.models.view.UserSearchJson;

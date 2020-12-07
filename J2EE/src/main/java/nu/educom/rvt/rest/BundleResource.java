@@ -54,6 +54,19 @@ public class BundleResource {
 	}
 	
 	@GET
+	@Path("/bundleCreator/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCreatorBundles(@PathParam("userId") int userId) {
+		
+		UserService userServ = new UserService();
+		User user = userServ.getUserById(userId);
+		List<Bundle> bundles = bundleServ.getAllCreatorBundles(user);
+		BundleJson bundleJson = new BundleJson(bundles);
+		
+		return Response.status(200).entity(bundleJson).build();
+	}
+	
+	@GET
 	@Path("/bundleTrainee/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(@PathParam("userId") int userId) {

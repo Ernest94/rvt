@@ -1,6 +1,5 @@
 package nu.educom.rvt.models;
 
-import nu.educom.rvt.models.view.CPRActive;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 
 public class ConceptRatingUpdate {
