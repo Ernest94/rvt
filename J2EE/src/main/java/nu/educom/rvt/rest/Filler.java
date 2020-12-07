@@ -100,112 +100,112 @@ public class Filler {
 		List<Concept> concepts = new ArrayList<Concept>();
 		//thema webserver
 		//week 1&2
-		concepts.add(new Concept(themes.get(0),"webserver opzetten",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(0),"document root, local host",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(0),"request/response flow",null,1,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(0),"webserver opzetten",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(0),"document root, local host",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(0),"request/response flow",null,nowLD,endDateLD));
 		//thema IDE
 		//week 1&2
-		concepts.add(new Concept(themes.get(1),"code omgeving basis",null,2,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(1),"code omgeving basis",null,nowLD,endDateLD));
 		//thema front end
 		//week 1&2
-		concepts.add(new Concept(themes.get(2),"documentopbouw",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"pagina indeling (divisions, paragraphs, lists)",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"interaction- anchors, forms/inputfields",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"uiterlijk (colors, fonts, borders)",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"weergave( inline, block, margin/padding)",null,1,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"documentopbouw",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"pagina indeling (divisions, paragraphs, lists)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"interaction- anchors, forms/inputfields",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"uiterlijk (colors, fonts, borders)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"weergave( inline, block, margin/padding)",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(2),"wireframe voor GUI design",null,3,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"framework",null,3,nowLD,endDateLD));		
+		concepts.add(new Concept(themes.get(2),"wireframe voor GUI design",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"framework",null,nowLD,endDateLD));		
 		//week5&6
-		concepts.add(new Concept(themes.get(2),"Template Enige",null,6,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"JavaScript Front End",null,5,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(2),"AJAX",null,5,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"Template Enige",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"JavaScript Front End",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"AJAX",null,nowLD,endDateLD));
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(2),"Advanced UI",null,8,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"Advanced UI",null,nowLD,endDateLD));
 		//week 10 t/m 12
-		concepts.add(new Concept(themes.get(2),"Front-end Frameworks",null,11,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(2),"Front-end Frameworks",null,nowLD,endDateLD));
 		//thema coding
 		//week 1&2
-		concepts.add(new Concept(themes.get(3),"variabelen,data types",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"iteraties (loops), Selecties (if/else, switch)",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"Functies en Scope",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"sequenties",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"Post-afhandeling",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"URL parameters",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"File Handling(read/write)",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"bron code organisatie",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"herbruikbare code",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"debuggen",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"clean code",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"dry code",null,2,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"variabelen,data types",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"iteraties (loops), Selecties (if/else, switch)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"Functies en Scope",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"sequenties",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"Post-afhandeling",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"URL parameters",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"File Handling(read/write)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"bron code organisatie",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"herbruikbare code",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"debuggen",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"clean code",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"dry code",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(3),"multiparts forms",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"$_post + $_files",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"sessions en connections",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"defensief programmeren",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"map en dictionary",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"error handling (try, catch & finally)",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(3),"error logging",null,4,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"multiparts forms",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"$_post + $_files",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"sessions en connections",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"defensief programmeren",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"map en dictionary",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"error handling (try, catch & finally)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"error logging",null,nowLD,endDateLD));
 		//week 5&6
-		concepts.add(new Concept(themes.get(3),"frameworks",null,6,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"frameworks",null,nowLD,endDateLD));
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(3),"2e taal al het voorgaande & OOP",null,7,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(3),"2e taal al het voorgaande & OOP",null,nowLD,endDateLD));
 		//week 10 t/m 12
-		concepts.add(new Concept(themes.get(3),"2e taal verdieping",null,10,nowLD,endDateLD));		
+		concepts.add(new Concept(themes.get(3),"2e taal verdieping",null,nowLD,endDateLD));		
 		//thema Database (relationeel)
 		//week 1&2
-		concepts.add(new Concept(themes.get(4),"normalisatie en databasebouw",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(4),"queries (Select, where, group by)",null,2,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"normalisatie en databasebouw",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"queries (Select, where, group by)",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(4),"queries (join, having)",null,3,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(4),"nested / sub- queries",null,3,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"queries (join, having)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"nested / sub- queries",null,nowLD,endDateLD));
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(4),"transactions (ROLLBACK en COMMIT)",null,9,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"transactions (ROLLBACK en COMMIT)",null,nowLD,endDateLD));
 		//week 10 t/m 12
-		concepts.add(new Concept(themes.get(4),"kennis van no-sql",null,11,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(4),"kennis van no-sql",null,nowLD,endDateLD));
 		//thema connecties (API)
 		//week 3&4
-		concepts.add(new Concept(themes.get(5),"API's gebruiken",null,4,nowLD,endDateLD));		
+		concepts.add(new Concept(themes.get(5),"API's gebruiken",null,nowLD,endDateLD));		
 		//week 5&6
-		concepts.add(new Concept(themes.get(5),"API's bouwen",null,5,nowLD,endDateLD));		
+		concepts.add(new Concept(themes.get(5),"API's bouwen",null,nowLD,endDateLD));		
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(5),"API's bouwen",null,9,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(5),"API's bouwen",null,nowLD,endDateLD));
 		//thema programming paradigms
 		//week 1&2
-		concepts.add(new Concept(themes.get(6),"OOP (objecten, methods, properties)",null,2,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"OOP (objecten, methods, properties)",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(6),"OOP (encapsulation, polymorphism)",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(6),"OOP (abstract Methods en classes)",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(6),"OOP (static Methods en properties)",null,4,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"OOP (encapsulation, polymorphism)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"OOP (abstract Methods en classes)",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"OOP (static Methods en properties)",null,nowLD,endDateLD));
 		//week 5&6
-		concepts.add(new Concept(themes.get(6),"Design Patterns (PHP)",null,6,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"Design Patterns (PHP)",null,nowLD,endDateLD));
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(6),"Design Patterns (JS)",null,7,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(6),"Design Patterns (JS)",null,nowLD,endDateLD));
 		//thema ontwerp methodieken
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(7),"MVC",null,7,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(7),"MVVM",null,9,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(7),"MPC",null,9,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(7),"MVC",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(7),"MVVM",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(7),"MPC",null,nowLD,endDateLD));
 		//thema problem solving
 		//week 1&2
-		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,2,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(8),"clean code",null,1,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(8),"clean code",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,3,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(8),"algorithme ontwerp",null,nowLD,endDateLD));
 		//thema werken in/ aan projecten
 		//week 1&2
-		concepts.add(new Concept(themes.get(9),"coding styles ",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(9),"file structuur",null,1,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(9),"programma structuur",null,1,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"coding styles ",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"file structuur",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"programma structuur",null,nowLD,endDateLD));
 		//week 3&4
-		concepts.add(new Concept(themes.get(9),"project management",null,4,nowLD,endDateLD));
-		concepts.add(new Concept(themes.get(9),"versiebeheer",null,4,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"project management",null,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"versiebeheer",null,nowLD,endDateLD));
 		//week 7 t/m 9
-		concepts.add(new Concept(themes.get(9),"deployment",null,8,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(9),"deployment",null,nowLD,endDateLD));
 		//thema beeldvorming
 		//week 1&2
-		concepts.add(new Concept(themes.get(10),"verschilllen en overeenkomsten talen",null,2,nowLD,endDateLD));
+		concepts.add(new Concept(themes.get(10),"verschilllen en overeenkomsten talen",null,nowLD,endDateLD));
 		ConceptRepository conceptRepo = new ConceptRepository();
 		for (Concept concept : concepts) {
 			conceptRepo.create(concept);

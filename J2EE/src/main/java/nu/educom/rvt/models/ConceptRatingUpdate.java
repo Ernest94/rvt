@@ -4,6 +4,7 @@ import nu.educom.rvt.models.view.ConceptPlusRating;
 
 public class ConceptRatingUpdate {
   private int reviewId;
+  private Boolean active;
   private ConceptPlusRating conceptPlusRating;
 
     public int getReviewId() {
@@ -21,6 +22,14 @@ public class ConceptRatingUpdate {
     public void setConceptPlusRating(ConceptPlusRating conceptPlusRating) {
 	  this.conceptPlusRating = conceptPlusRating;
     }
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
   
   
 }

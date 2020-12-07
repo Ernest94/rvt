@@ -232,7 +232,7 @@ class SelectionTable extends React.Component {
                 return this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1];
             case "weeks":
                 //This will probably have to change dependent on new concept implementation
-                return this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1];
+                return this.state.weeksSelected[0] <= concept.week && concept.week <= this.state.weeksSelected[1];
             case "themes":
                 let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
                 return(this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)

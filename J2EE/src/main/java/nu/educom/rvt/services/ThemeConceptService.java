@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptView;
@@ -16,6 +19,8 @@ import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
+import nu.educom.rvt.repositories.TraineeMutationRepository;
+import one.util.streamex.StreamEx;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
@@ -27,6 +32,7 @@ public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
 	private ThemeRepository themeRepo;
 	private TraineeActiveRepository traineeActiveRepo;
+	private TraineeMutationRepository traineeMutationRepo;
 	private BundleTraineeRepository bundleTraineeRepo;  
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleRepository bundleRepo;
@@ -35,6 +41,7 @@ public class ThemeConceptService {
 		this.conceptRepo = new ConceptRepository();
 		this.themeRepo = new ThemeRepository();
 		this.traineeActiveRepo = new TraineeActiveRepository();
+		this.traineeMutationRepo = new TraineeMutationRepository();
 		this.bundleTraineeRepo = new BundleTraineeRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
 		this.bundleRepo = new BundleRepository();
@@ -65,10 +72,20 @@ public class ThemeConceptService {
 //	}
 	
 	public List<Concept> getAllActiveConceptsFromUser(User user) {
-		List<Concept> traineeActiveConcepts = this.traineeActiveRepo.readAll().stream().filter(traineeActiveConcept -> traineeActiveConcept.getUser().getId() == user.getId())
+		
+		ReviewService reviewServ = new ReviewService();
+		List<Review> reviews = reviewServ.getAllCompletedReviewsForUser(user);
+		List<ConceptRating> conceptRatings = reviewServ.getAllConceptRatings();
+		List<Concept> traineeActiveConcepts = new ArrayList<>();
+		
+		for(Review review: reviews) {
+			traineeActiveConcepts.addAll(conceptRatings.stream().filter(CR -> CR.getReview().getId() == review.getId()).map(CR -> CR.getConcept()).collect(Collectors.toList()));
+		}		
+		
+		traineeActiveConcepts.addAll(this.traineeActiveRepo.readAll().stream().filter(traineeActiveConcept -> traineeActiveConcept.getUser().getId() == user.getId())
 																				       .filter(traineeActiveConcept -> traineeActiveConcept.getActive() == true)
 																				       .map(traineeActiveConcept -> traineeActiveConcept.getConcept())
-																				       .collect(Collectors.toList());
+																				       .collect(Collectors.toList()));
 		
 		List<Bundle> bundleTrainees = this.bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 																			   .map(bundleTrainee -> bundleTrainee.getBundle())
@@ -101,6 +118,24 @@ public class ThemeConceptService {
 		//verwijdert alle duplicaten door de .distinct()
 		
 		return traineeActiveConcepts;
+	}
+	
+	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs){
+		
+		List<ConceptPlusRating> CPRAs = new ArrayList<>();
+		for(ConceptPlusRating CPR: CPRs) {
+			CPR.setActive(true);
+			CPRAs.add(CPR);
+		}
+		
+		List<Concept> inactives = conceptRepo.readAll();
+		for(Concept concept: inactives) {
+			CPRAs.add(new ConceptPlusRating(concept, false));
+		}
+		
+		CPRAs = StreamEx.of(CPRAs).distinct(foo -> foo.getConcept().getId()).toList();
+		
+		return CPRAs;		
 	}
 	
 	public ConceptBundleJSON getAllConceptsAndAllBundles() {

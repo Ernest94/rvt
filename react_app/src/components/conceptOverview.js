@@ -39,9 +39,9 @@ class conceptOverview extends React.Component {
     getConceptsAndBundles() {
         axios.get(config.url.API_URL + "/webapi/theme_concept/concepts/bundles")
             .then(response => {
-                this.concepts = response.data.concepts;
-                this.bundles = response.data.bundlesConcepts;
                 this.setState({
+                    concepts: response.data.concepts,
+                    bundles: response.data.bundlesConcepts,
                     pageLoading: false,
                 });
             console.log(response.data);
@@ -60,6 +60,22 @@ class conceptOverview extends React.Component {
         });
         this.selectActiveConcepts(bundleKeyId)
     } 
+
+    getThemes() {
+        axios.get(config.url.API_URL + '/webapi/user/themes')
+            .then(response => {
+                this.setState({
+                    themes: response.data.themes,
+                    pageLoading: false
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
+                    pageLoading: false
+                });
+            })
+    }
 
     selectActiveConcepts(bundleKeyId) {
         var activeBundleConceptsAndWeekOffsets = this.bundles.find(bundle => bundle.id === parseInt(bundleKeyId)).bundleConceptWeekOffset;       

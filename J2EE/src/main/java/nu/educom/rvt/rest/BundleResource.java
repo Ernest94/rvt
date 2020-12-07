@@ -7,15 +7,18 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleJson;
 import nu.educom.rvt.services.BundleService;
+import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/bundle")
 public class BundleResource {
@@ -73,8 +76,20 @@ public class BundleResource {
 	}
 	
 	@GET
-	@Path("/bundleTrainee")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/bundleCreator/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCreatorBundles(@PathParam("userId") int userId) {
+		
+		UserService userServ = new UserService();
+		User user = userServ.getUserById(userId);
+		List<Bundle> bundles = bundleServ.getAllCreatorBundles(user);
+		BundleJson bundleJson = new BundleJson(bundles);
+		
+		return Response.status(200).entity(bundleJson).build();
+	}
+	
+	@GET
+	@Path("/bundleTrainee/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(User user) {
 		List<Bundle> bundles = bundleServ.getAllBundles();
@@ -84,5 +99,16 @@ public class BundleResource {
 		BundleJson bundleJson = new BundleJson(bundles);
 		
 		return Response.status(200).entity(bundleJson).build();
+	}
+	
+	@GET
+	@Path("/conceptsBundle/{bundleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
+				
+		Bundle bundle = bundleServ.getBundleById(bundleId);
+		List<Concept> concepts = bundleServ.getAllConceptsFromBundle(bundle);		
+		
+		return Response.status(200).entity(concepts).build();
 	}
 }

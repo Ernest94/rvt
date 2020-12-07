@@ -23,8 +23,6 @@ public class Concept {
 	private String name;
 	@Column(name="description")
 	private String description;
-	@Column(name="week")
-	private Integer week;
 	@Column(name="startdate")
 	private LocalDate startDate;
 	@Column(name="enddate")
@@ -35,12 +33,11 @@ public class Concept {
 		super();
 	}
 	
-	public Concept(Theme theme, String name, String description, int week, LocalDate startDate, LocalDate endDate) {
+	public Concept(Theme theme, String name, String description, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.theme = theme;
 		this.name = name;
 		this.description = description;
-		this.week = week;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -73,14 +70,6 @@ public class Concept {
 		this.description = description;
 	}
 
-	public Integer getWeek() {
-		return week;
-	}
-	public void setWeek(int week) {
-		this.week = week;
-	}
-	
-	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getStartDate() {
 		return startDate;
 	}

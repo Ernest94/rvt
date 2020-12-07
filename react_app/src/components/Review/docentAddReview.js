@@ -332,9 +332,10 @@ class docentAddReview extends React.Component {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
+            case 0: return ("geen week aangegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
-            case 3: return ("week " + (1 + 2 * wpb) + " t/m " + (3 * wpb));
+            case 3: return ("week " + (1 + 2 * wpb) + " t/m " +  (3 * wpb));
             case 4: return ("week " + (1 + 3 * wpb) + " t/m " + (4 * wpb));
             default: return ("week 9 of later");
         }
@@ -353,7 +354,7 @@ class docentAddReview extends React.Component {
     }
 
     render() {
-        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
         const weekoptions = weeks.map((week) =>(
                             <MenuItem key={"week_"+week} value={week}>
                                 {"week " + week}
@@ -407,13 +408,13 @@ class docentAddReview extends React.Component {
                         // isSelected={this.state.checkboxes.}
                         // onCheckboxChange={this.handleCheckboxChange}
                          key={"active_"+concept.concept.id}
-                         defaultChecked={true}
+                         defaultChecked={concept.active}
                          color="default"
                         />                   
                     </td>
                     <td className="week" id="text">
                         <Select  name={"weeks"+concept.concept.id} id={"weeks"+concept.concept.id}
-                            value={concept.concept.week}
+                            value={concept.week}
                             renderValue={(value) => this.getWeekBlock(value)}
                             onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
                             >

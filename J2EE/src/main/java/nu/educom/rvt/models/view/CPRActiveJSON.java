@@ -1,30 +1,27 @@
 package nu.educom.rvt.models.view;
-	
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+public class CPRActiveJSON implements Serializable{
 
-public class ConceptRatingJSON implements Serializable{
-
-	public ConceptRatingJSON() { 
+	public CPRActiveJSON() { 
 	}
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		private List<ConceptPlusRating> conceptsPlusRatings;
+		private List<CPRActive> CPRActive;
 		private String traineeName;
 		private String traineeLocation;
-		private LocalDateTime reviewDate;
+		private String reviewDate;
 		private int reviewId;
 		
-		public List<ConceptPlusRating> getConceptsPlusRatings() {
-			return conceptsPlusRatings;
+		public List<CPRActive> getCPRActive() {
+			return CPRActive;
 		}
-		public void setConceptPlusRating(List<ConceptPlusRating> conceptsPlusRatings) {
-			this.conceptsPlusRatings = conceptsPlusRatings;
+		public void setCPRActive(List<CPRActive> CPRActive) {
+			this.CPRActive = CPRActive;
 		}
 		public String getTraineeName() {
 			return traineeName;
@@ -38,13 +35,10 @@ public class ConceptRatingJSON implements Serializable{
 		public void setTraineeLocation(String traineeLocation) {
 			this.traineeLocation = traineeLocation;
 		}
-		
-		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-		public LocalDateTime getReviewDate() {
+		public String getReviewDate() {
 			return reviewDate;
 		}
-		@XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
-		public void setReviewDate(LocalDateTime reviewDate) {
+		public void setReviewDate(String reviewDate) {
 			this.reviewDate = reviewDate;
 		}
 		
