@@ -43,7 +43,6 @@ class Dossier extends React.Component {
     componentDidMount(props) {
         Utils.dateValidation();
         this.setState({ pageLoading: true, userId: this.props.match.params.userId });    
-        console.log(this.state.role);
         this.getAllInfo();             
     }
     
@@ -150,7 +149,7 @@ class Dossier extends React.Component {
                 this.setState({
                     bundleCheck: response.data.bundleCheck
                 });
-                console.log(this.state.bundleCheck);
+                console.log(response.data.bundleCheck);
             })
             .catch((error) => {
                 console.log(error);
@@ -257,11 +256,11 @@ class Dossier extends React.Component {
             )
         });
 
-        const bundleOptions = bundleCheck.map((bundleCheck) => {
-            return (
-                <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
-            )
-        });    
+        // const bundleOptions = bundleCheck.map((bundleCheck) => {
+        //     return (
+        //         <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
+        //     )
+        // });    
 
         return (
             <div>
@@ -320,17 +319,17 @@ class Dossier extends React.Component {
                             id="demo-mutiple-name"
                             multiple
                             name="bundle"
-                            value={bundleOptions}
+                            // value={bundleOptions}
                             placeholder
                             onChange={this.handleSelectChange}
                             // input={<Input />}
                             // MenuProps={MenuProps}
                             >
-                            {bundleCheck.map((bundleCheck) => (
-                                <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
-                                {bundleCheck.bundle.name}
-                                </MenuItem>
-                            ))}
+                            {/* {bundleCheck.map((bundleCheck) => ( */}
+                                {/* // <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()} */}
+                                {/* {bundleCheck.bundle.name} */}
+                                {/* </MenuItem> */}
+                            {/* ))} */}
                         </Select>
                     </div>
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}

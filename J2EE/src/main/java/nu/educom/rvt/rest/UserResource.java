@@ -74,9 +74,6 @@ public class UserResource {
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
-		if (Filler.isDatabaseEmpty()) {
-			Filler.fillDatabase();
-		}
 		UserService userServ = new UserService();
 		List<Role> roles = userServ.getRoles();	
 		List<Location> locations = userServ.getLocations();

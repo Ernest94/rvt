@@ -34,11 +34,11 @@ class addConcept extends React.Component {
     async componentDidMount() {
         this.getThemes()
         
-        await this.setState({
+        this.setState({
             userId: sessionStorage.getItem("userId")
         });
-        await this.getYourBundles()
-        await console.log("State:", this.state)
+        this.getYourBundles()
+        console.log("State:", this.state)
     }
 
     handleFormChange = (e) => {
@@ -161,14 +161,14 @@ class addConcept extends React.Component {
         });
     }
     
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
+    // setErrors = (errors) => {
+    //     const foundErrors = Object.keys(errors).map((key) =>
+    //         <li key={key}>{errors[key][0]}</li>
+    //     );
+    //     this.setState({
+    //        errors: foundErrors 
+    //     });
+    // }
 
     add = (e) => {
         let chosenBundles = this.state.chosenBundles;
