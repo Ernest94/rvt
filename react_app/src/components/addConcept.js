@@ -4,6 +4,8 @@ import axios from 'axios';
 import {config} from './constants';
 import Permissions from './permissions.js'
 import './form.css'
+import Utils from './Utils.js'
+import {Link} from 'react-router-dom';
 
 class addConcept extends React.Component {
     
@@ -38,38 +40,37 @@ class addConcept extends React.Component {
         const {name, value} = e.target;
         this.setState({
             [name]: value,
+            message: ""
         });
-        console.log(name + " " + value);
     }
-
     validate() {
-        return null;
+        if(!this.state.name.trim() || !this.state.description.trim() || this.state.themeDisplayName=="")
+        {
+            return {input: ["Alle velden moeten worden ingevuld"]};
+        }        
     }
 
     handleSubmit = (event) => {
+        console.log(this.createConceptJson())
         event.preventDefault();
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            console.log(this.createConceptJson());
             axios.post(config.url.API_URL + "/webapi/theme_concept/saveConcept", this.createConceptJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
-                    
-                    //this.props.handleReturnToConcepts();
                     this.succesfullAdd();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
-                    console.log(this.createConceptJson());
-
-                    this.setErrors({login: ["Mislukt om concept toe te voegen."]}); 
-                    this.setState({loading: false});
+                    this.setState({loading: false, 
+                        errors: Utils.setErrors({input: ["Mislukt om concept toe te voegen. Mogelijk bestaat er al een concept met deze naam."]})});
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({
+                errors: Utils.setErrors(errors),
+                loading: false
+            });
         }
     }
     
@@ -78,8 +79,8 @@ class addConcept extends React.Component {
             name: this.state.name,
             description: this.state.description,
             theme: {id: this.state.theme.id},
-            week: this.state.week,
-            startDate: this.state.startDate
+            // week: this.state.week,
+            // startDate: this.state.startDate
         }
     }
 
@@ -100,13 +101,12 @@ class addConcept extends React.Component {
         });
     }
 
-    handleChangeDate = (e) => {
-        var selectDate = (e.target.value).toString();
-            this.setState({
-                startDate: selectDate,
-            }); 
-            console.log(selectDate);
-    }
+    // handleChangeDate = (e) => {
+    //     var selectDate = (e.target.value).toString();
+    //         this.setState({
+    //             startDate: selectDate,
+    //         }); 
+    // }
 
     getThemes() {
         axios.get(config.url.API_URL + '/webapi/theme_concept/themes')
@@ -118,7 +118,6 @@ class addConcept extends React.Component {
             })
             .catch(() => {
                 this.setState({
-                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
                     pageLoading: false
                 });
             })
@@ -139,22 +138,11 @@ class addConcept extends React.Component {
                 })
                 .catch(() => {
                     this.setState({
-                        themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
                         pageLoading: false
                     });
                 })
         }
 
-       
-    }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
     }
     
     render() {
@@ -170,6 +158,7 @@ class addConcept extends React.Component {
                 <div className="container main-container">
 
                 <h2 className="text-center ">Concept toevoegen</h2>
+                <div className="text-danger" >{this.state.errors}</div>
 
                     <form onSubmit={this.handleSubmit}>
                         
@@ -200,30 +189,39 @@ class addConcept extends React.Component {
                             </div>
                         </div>
 
-                        <div className="row m-2 justify-content-center">
+                        {/* <div className="row m-2 justify-content-center">
                             <label className="col-2" htmlFor="week">Week:</label>
                             <div className="col-3">
                                 <input className="col-4" id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="row m-2 mb-4 justify-content-center">
+                        {/* <div className="row m-2 mb-4 justify-content-center">
                             <label className="col-2" htmlFor="date">Startdatum:</label>
                             <div className="col-3">
                                 <input className="col-9" id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="row justify-content-center">
-                            <div className="col-6 ">
+                            <div className="col-6 m">
                                 <div className="float-right">
                                     {(this.state.loading) ? <button className="btn btn-primary" type="submit" disabled> Laden...</button>:
                                     <button className="btn btn-primary" type="submit">Concept toevoegen</button>}
                                 </div>
                             </div>
                         </div>
+                        </form>
 
-                    </form>
+                        <div className="row justify-content-center">
+                            <div className="col-6">
+                                <div className="float-right m-1">
+                                    {(this.state.loading) ? <button className="btn btn-primary" disabled> Laden...</button>:
+                                    <Link to={"/settings"} className="btn btn-primary">Annuleren</Link>}
+                                </div>
+                            </div>
+                        </div>
+                        
                     <h4 className="text-center text-success">{this.state.message}</h4>
                 </div >
             </div>

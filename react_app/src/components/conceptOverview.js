@@ -108,7 +108,6 @@ class conceptOverview extends React.Component {
     }
 
     saveBundle() {
-        console.log(this.bundleJSON());
         axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
         .then(response => {
             this.setState({

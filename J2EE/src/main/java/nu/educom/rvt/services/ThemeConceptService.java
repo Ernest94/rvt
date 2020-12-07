@@ -54,6 +54,8 @@ public class ThemeConceptService {
 	}
 	
 	public Concept addConcept(Concept concept) {
+		
+		
 		Concept createdConcept = this.conceptRepo.create(concept);
 		return createdConcept;
 	}
@@ -149,6 +151,23 @@ public class ThemeConceptService {
 		}
 		else {
 			return this.doesThemeExist(theme);
+		}		
+	}
+	
+	public boolean doesConceptExist(Concept concept) {
+		ConceptRepository conceptRepo = new ConceptRepository();
+		Concept duplicate = conceptRepo.readByName(concept.getName());		
+		return duplicate==null;
+    }
+    
+	public boolean validateConcept(Concept concept) {
+		if(concept.getName().trim().isEmpty() 
+		|| concept.getDescription().trim().isEmpty()
+		|| concept.getTheme()==null) {
+			return false;
+		}
+		else {
+			return this.doesConceptExist(concept);
 		}		
 	}
 

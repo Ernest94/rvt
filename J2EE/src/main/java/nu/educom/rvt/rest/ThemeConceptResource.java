@@ -1,5 +1,6 @@
 package nu.educom.rvt.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.ws.rs.*;
@@ -43,16 +44,19 @@ public class ThemeConceptResource {
 			Response.status(200).entity(themes).build());
 	}
 	
-	
 	@POST
 	@Path("/saveConcept")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response saveConcept(Concept concept) {
-        //* JH TIP: Mis hier of in de service de controle op alle velden van het concept */ 
-		
-		Concept createdConcept = this.themeConceptServ.addConcept(concept);
-		return (createdConcept == null ? Response.status(409/* JH: Had hier 400 verwacht */).build() : 
-			Response.status(201).build());  
+		concept.setStartDate(LocalDate.now());
+		boolean valid = themeConceptServ.validateConcept(concept);
+		if(valid) {
+			Concept createdConcept = this.themeConceptServ.addConcept(concept);
+			return Response.status(201).entity(createdConcept).build();
+		}
+		else {
+			return Response.status(400).build();
+		}
 	}
 	
 	@GET
