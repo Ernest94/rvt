@@ -15,6 +15,7 @@ public class ActiveChangeForUser implements Serializable {
 	private User user;
 	private Concept concept;
 	private boolean active;
+	
 	public ActiveChangeForUser() {
 		
 	}
@@ -30,7 +31,7 @@ public class ActiveChangeForUser implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 	public void setActive(boolean active) {

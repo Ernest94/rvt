@@ -89,7 +89,7 @@ class ConceptSelection extends React.Component {
         super(props);
         this.state ={
             stars: [1,5],
-            weeks: [1,10],
+            weeks: [0,10],
         }
 
     }
@@ -125,7 +125,7 @@ class ConceptSelection extends React.Component {
                 value={this.state.weeks} 
                 handleChange={this.handleSliderChange.bind(this)}
                 handleChangeCommit={this.props.handleChange.bind(this)}
-                min={1}
+                min={0}
                 max={10} 
             />
             </Selector>
@@ -180,7 +180,7 @@ class SelectionTable extends React.Component {
         super(props);
         this.state={
             starsSelected: [1,5], //starting selection
-            weeksSelected: [1,10],
+            weeksSelected: [0,10],
             themesSelected: [], 
             activeSelected: false,
             themes: [],

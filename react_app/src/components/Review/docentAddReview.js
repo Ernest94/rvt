@@ -49,7 +49,6 @@ class docentAddReview extends React.Component {
             const { computedMatch: { params } } = this.props;
             await this.setState({ userId: params.userId });
         }
-        console.log(this.state.userId);
         this.setState({ pageLoading: false });
         await this.getConcepts();
     }
@@ -60,14 +59,6 @@ class docentAddReview extends React.Component {
             [name]: value
         });
     }
-
-    handleCheckboxChange(e,concept){
-        //need to change the state of concept active attribute here, depending on new concept json
-        this.changeConceptActive(concept);
-    };
-    
-
-
 
     onChangePendingUser = (e) => {
         var selectedUser = this.state.pendingUsers.find(user => user.id === parseInt(e.target.value));
@@ -123,6 +114,7 @@ class docentAddReview extends React.Component {
     }
 
     handleCurriculumReponse(data){
+        console.log(data);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
@@ -153,7 +145,6 @@ class docentAddReview extends React.Component {
         });
 
         let conceptRatingJson = this.createConceptRatingJson(concept);
-        console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
 
@@ -170,9 +161,9 @@ class docentAddReview extends React.Component {
         });
 
         let conceptRatingJson = this.createConceptRatingJson(concept);
-        console.log(conceptRatingJson);
         this.submitConceptRatingChange(conceptRatingJson);
     }
+
     // async setDate(event){
     //     console.log(event);
     //     const { name, value } = event.target;
@@ -182,13 +173,13 @@ class docentAddReview extends React.Component {
     //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
     //     },()=>console.log(this.state.reviewDate));
     // }
+
     async setReviewData(event) {
         const { name, value } = event.target;
         await this.setState({
             [name]: value
         });
         let reviewJson = this.createReviewJson();
-        console.log(reviewJson);
         this.submitReviewChange(reviewJson);
     }
 
@@ -211,7 +202,6 @@ class docentAddReview extends React.Component {
     submitReviewChange(ReviewJson) {
         axios.post(config.url.API_URL + "/webapi/review/updateReview", ReviewJson)
             .then(response => {
-                console.log(response);
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
@@ -221,13 +211,11 @@ class docentAddReview extends React.Component {
     submitConceptRatingChange(conceptRatingJson) {
         axios.post(config.url.API_URL + "/webapi/review/addConceptRating", conceptRatingJson)
             .then(response => {
-                console.log(response);
             })
             .catch((error) => {
                 console.log("an error occorured " + error);
             });
     }
-
 
     submit = () => {
         confirmAlert({
@@ -276,48 +264,59 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
             .then(response => {
               this.props.history.push('/dossier/' + this.state.userId);
-
-            //   this.props.handleReturnToDossier(this.state.userId);
         })
         .catch((error) => {
             console.log("an error occurred " + error);
         });
     }
 
-    changeConceptActive(concept) {
-        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: concept.concept.id}})
-        .then(response => {
-            console.log("gelukt");
-        })
-        .catch((error) => {
-            console.log("an error occurred " + error);
-        });
-    }
-
-    setActiveConcept() {
-        var checkBox = document.getElementById("myCheck");
-        var text = document.getElementById("text");
-        if (checkBox.checked === false){
-          text.style.display = "block";
-        } else {
-           text.style.display = "none";
-        }
-    }
+    // setActiveConcept() {
+    //     var checkBox = document.getElementById("myCheck");
+    //     var text = document.getElementById("text");
+    //     if (checkBox.checked === false){
+    //       text.style.display = "block";
+    //     } else {
+    //        text.style.display = "none";
+    //     }
+    // }
 
     handleWeekChange(e,id){
         this.setState(prevState => 
                 ({concepts: prevState.concepts.map(concept => 
                     concept.concept.id===id? 
-                    {...concept, concept: {...concept.concept, week: e.target.value }}
+                    {...concept, week: e.target.value }
                     :concept)
                 })
         );
+
     }
 
     createReviewIdJSON() {
         return {
             id: this.state.reviewId
         };
+    }
+
+    handleCheckboxChange(e,id){
+        this.setState(prevState => 
+            ({concepts: prevState.concepts.map(concept => 
+                concept.concept.id===id? 
+                {...concept, active: (!concept.active)}
+                :concept)
+            })
+        );
+        //need to change the state of concept active attribute here, depending on new concept json
+        this.changeConceptActive(id);
+    };
+
+    changeConceptActive(id) {
+        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: id}})
+        .then(response => {
+            
+        })
+        .catch((error) => {
+            console.log("an error occurred " + error);
+        });
     }
 
     getWeekBlock(week) {
@@ -365,7 +364,7 @@ class docentAddReview extends React.Component {
 
         const ConceptDisplay = ({selectionFunction,}) => (
             <div className="table-responsive col-md-10">
-                    <table className="addReviewTable table">
+                    <table className="addReviewTable">
                         <thead>
                             <tr>
                                 <th className="active">
@@ -388,64 +387,64 @@ class docentAddReview extends React.Component {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="tableBody">
-        {this.state.concepts.map((concept, index) => {
-            if (selectionFunction(concept)){
-                return (
-                <tr>
-                    <td className="active">
-                    <Checkbox
-                        onChange={(e)=>this.handleCheckboxChange(e,concept)}
-                        key={"active_"+concept.concept.id}
-                        defaultChecked={true}
-                        color="default"
-                        // label={option}
-                        // isSelected={this.state.checkboxes.}
-                        // onCheckboxChange={this.handleCheckboxChange}
-                        //  defaultChecked={concept.active}
-                        />                   
-                    </td>
-                    <td className="week" id="text">
-                        <Select  name={"weeks"+concept.concept.id} id={"weeks"+concept.concept.id}
-                            value={concept.week}
-                            renderValue={(value) => this.getWeekBlock(value)}
-                            onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
-                            >
-                            {weekoptions}
-                        </Select>                    
-                    </td>
-                    <td className="theme" id="text">
-                        <span className="theme-text"> {concept.concept.theme.abbreviation}
-                        <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
-                        </span>
-                    </td>
-                    <td className="concept" id="text">
-                        <span className="concept-text">
-                        {concept.concept.name}
-                        <span className="displayMessage"> {concept.concept.name} </span>
-                        </span>
-                    </td>                  
-                    <td className="rating" id="text">
-                    <div>
-                            <Rating className="rating-star"
-                                value={concept.rating}
-                                name={"rating" +  index}
-                                onChange={(event) => {
-                                this.setRating(event);
-                                }}
-                            />
-                        <div className="rating-text"> {this.getRating(concept.rating)} </div>
-                        </div>
-                    </td>
-                    <td className="comment" id="text">
-                        <TextareaAutosize className="comment-text"
-                            aria-label="minimum height"
-                            name={"comment" + index} onBlur={(event) => {
-                            this.setComment(event); }}
-                            value={concept.comment} />
-                    </td>
-                </tr>
-            )}
+
+            <tbody className="tableBody table">
+            
+                {this.state.concepts.map((concept, index) => {                   
+                    if (selectionFunction(concept)){
+                        return (
+                        <tr className={"searchResult " + (concept.active ? 'text-black' : 'text-muted')}>
+                            <td className="active">
+                            <Checkbox className=""
+                                id={"concept"+concept.id}
+                                onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
+                                checked={concept.active}
+                                />                   
+                            </td>
+                            <td className="week" id="text">
+                                <Select name={"weeks"+concept.concept.id} 
+                                    id={"weeks"+concept.concept.id}
+                                    value={concept.week}
+                                    renderValue={(value) => this.getWeekBlock(value)}
+                                    onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
+                                    required
+                                    disabled={!concept.active}>
+                                    {weekoptions}
+                                </Select>                    
+                            </td>
+                            <td className="theme" id="text">
+                                <span className="theme-text"> {concept.concept.theme.abbreviation}
+                                <span className="displayMessage"> {concept.concept.theme.name + ", " + concept.concept.theme.description} </span>
+                                </span>
+                            </td>
+                            <td className="concept" id="text">
+                                <span className="concept-text">
+                                {concept.concept.name}
+                                <span className="displayMessage"> {concept.concept.name} </span>
+                                </span>
+                            </td>                  
+                            <td className="rating" id="text">
+                            <div>
+                                    <Rating className="rating-star"
+                                        value={concept.rating}
+                                        name={"rating" +  index}
+                                        onChange={(event) => {
+                                        this.setRating(event);
+                                        }}
+                                    />
+                                <div className="rating-text"> {this.getRating(concept.rating)} </div>
+                                </div>
+                            </td>
+                            <td className="comment" id="text">
+                                <TextareaAutosize className="comment-text"
+                                    aria-label="minimum height"
+                                    name={"comment" + index} onBlur={(event) => {
+                                    this.setComment(event); }}
+                                    value={concept.comment} />
+                            </td>
+                        </tr>
+                        )
+                    }
         })}
         </tbody>
         </table>
@@ -453,7 +452,7 @@ class docentAddReview extends React.Component {
         );
 
         return (
-                <div className="container">
+            <div className="container">
                 <div className="pt-4 row">
                     {/* <div className="col"> Disabled change date function for now because it clashes with DateTime for reviewDate
                         <h3>
@@ -486,47 +485,44 @@ class docentAddReview extends React.Component {
                                 </select>
                         </h3>
                     </div>
+
                     <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
                 </div>
-                    <div >
-                        <ul className="errors">{this.state.errors}</ul>
-                    </div >
-                    <SelectionTable
-                    fields={["active","stars","weeks","themes"]}
-                    starsSelected={[0,5]}
-                            >
-                                {paramFunction=>(
-                                    <ConceptDisplay selectionFunction={paramFunction} />
-                                )}
-                        </SelectionTable>
 
-                    <div className="float-right mr-1">
-                        <p>{this.state.message}</p>
-                    </div>
-                    <div className="review-bottom-bar container d-flex">
-                        <div>
-                            <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                            <textarea value={traineeFeedback} rows="2" name="traineeFeedback" onBlur={(event) => {
-                                this.setReviewData(event);
-                            }}/>
-                        </div>
-                        <div>
-                            <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                            <textarea value={officeFeedback} rows="2" name="officeFeedback" onBlur={(event) => {
-                                this.setReviewData(event);
-                            }}/>
+                <div >
+                    <ul className="errors">{this.state.errors}</ul>
+                </div >
 
-                        
-                        </div>
-                        <div>
-                            {(this.state.loading) ? <button className="btn btn-danger" type="submit" disabled> Laden...</button>:
-                            <button onClick={this.submit} className="btn btn-danger" type="submit">Bevestig</button>}
-                            {(this.state.loading) ? <button className="btn btn-danger mr-1" type="submit" disabled> Laden...</button>:
-                            <button onClick={this.cancel} className="btn btn-danger mr-1" type="submit">Annuleer</button>}
-                        </div>
-                    </div>
+                <SelectionTable fields={["active","stars","weeks","themes"]} starsSelected={[0,5]}>
+                    {paramFunction=>(<ConceptDisplay selectionFunction={paramFunction}/>)}
+                </SelectionTable>
 
+                <div className="float-right mr-1">
+                    <p>{this.state.message}</p>
                 </div>
+
+                <div className="review-bottom-bar container d-flex">
+                    <div>
+                        <h4 >{"Terugkoppeling naar Trainee:"}</h4>
+                        <textarea value={traineeFeedback} rows="2" name="traineeFeedback" onBlur={(event) => {
+                            this.setReviewData(event);
+                        }}/>
+                    </div>
+                    <div>
+                        <h4 >{"Terugkoppeling naar kantoor:"}</h4>
+                        <textarea value={officeFeedback} rows="2" name="officeFeedback" onBlur={(event) => {
+                            this.setReviewData(event);
+                        }}/>
+                    </div>
+                    <div>
+                        {(this.state.loading) ? <button className="btn btn-danger" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.submit} className="btn btn-danger" type="submit">Bevestig</button>}
+                        {(this.state.loading) ? <button className="btn btn-danger mr-1" type="submit" disabled> Laden...</button>:
+                        <button onClick={this.cancel} className="btn btn-danger mr-1" type="submit">Annuleer</button>}
+                    </div>
+                </div>
+
+            </div>
         )
     }
 

@@ -23,7 +23,7 @@ import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
-import nu.educom.rvt.repositories.TraineeMutationRepository;
+//import nu.educom.rvt.repositories.TraineeMutationRepository;
 import one.util.streamex.StreamEx;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
@@ -36,7 +36,7 @@ public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
 	private ThemeRepository themeRepo;
 	private TraineeActiveRepository traineeActiveRepo;
-	private TraineeMutationRepository traineeMutationRepo;
+//	private TraineeMutationRepository traineeMutationRepo;
 	private BundleTraineeRepository bundleTraineeRepo;  
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleRepository bundleRepo;
@@ -45,7 +45,7 @@ public class ThemeConceptService {
 		this.conceptRepo = new ConceptRepository();
 		this.themeRepo = new ThemeRepository();
 		this.traineeActiveRepo = new TraineeActiveRepository();
-		this.traineeMutationRepo = new TraineeMutationRepository();
+//		this.traineeMutationRepo = new TraineeMutationRepository();
 		this.bundleTraineeRepo = new BundleTraineeRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
 		this.bundleRepo = new BundleRepository();
@@ -138,7 +138,7 @@ public class ThemeConceptService {
 
 		newMutation.setUser(activeChange.getUser());
 		newMutation.setConcept(activeChange.getConcept());
-		newMutation.setActive(activeChange.isActive());
+		newMutation.setActive(activeChange.getActive());
 		newMutation.setStartDate(LocalDate.now());
 		
 		traineeActiveRepo.create(newMutation);

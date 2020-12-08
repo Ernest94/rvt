@@ -11,14 +11,9 @@ import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ActiveChangeForUser;
-import nu.educom.rvt.models.view.BundleCheck;
-import nu.educom.rvt.models.view.BundleCheckJson;
-import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.Concept;
-
 import nu.educom.rvt.services.ThemeConceptService;
-import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/theme_concept")
 public class ThemeConceptResource {
@@ -90,11 +85,12 @@ public class ThemeConceptResource {
 	public Response setActive(ActiveChangeForUser activeChange){
 		User user = activeChange.getUser();
 		Concept concept = activeChange.getConcept();
+		
 		TraineeActive currentMutation = themeConceptServ.getCurrentMutationForUserAndConcept(user, concept);
 		
 		if(currentMutation==null) {
 			boolean inBundel = themeConceptServ.isConceptInBundleUser(user, concept);
-			activeChange.setActive(inBundel);
+			activeChange.setActive(!inBundel);
 			themeConceptServ.createNewMutation(activeChange);
 			return Response.status(201).build();
 		}
@@ -102,7 +98,5 @@ public class ThemeConceptResource {
 			themeConceptServ.endMutation(currentMutation);
 			return Response.status(200).build();
 		}
-		
 	}
-
 }

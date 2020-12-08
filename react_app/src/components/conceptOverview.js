@@ -219,7 +219,7 @@ class conceptOverview extends React.Component {
                     <div className="col-8">
 
                         <span>
-                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
                                 <FaPlus/>
                             </Link>
                         </span>
@@ -247,7 +247,7 @@ class conceptOverview extends React.Component {
                                 </tr>
                             </thead>
                             <tbody className="tableBody table">
-                            {conceptDisplay}
+                                {conceptDisplay}
                             </tbody>
                         </table>
                     </div >
