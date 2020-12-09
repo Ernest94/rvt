@@ -1,13 +1,17 @@
 package nu.educom.rvt.models.view;
 
+
 public class BundleTraineeView  {
 	
 	private int startWeek;
 	private BaseBundleView bundle;
 	
+	public BundleTraineeView() {
+		
+	}
 	public BundleTraineeView(int startWeek, BaseBundleView bundle) {
-		this.setStartWeek(startWeek);
-		this.setBundle(bundle);
+		this.startWeek = startWeek;
+		this.bundle = bundle;
 		
 	}
 
@@ -26,4 +30,6 @@ public class BundleTraineeView  {
 	public void setBundle(BaseBundleView bundle) {
 		this.bundle = bundle;
 	}
+
+
 }

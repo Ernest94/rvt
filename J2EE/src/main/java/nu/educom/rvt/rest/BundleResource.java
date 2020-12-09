@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -87,4 +88,16 @@ public class BundleResource {
         return Response.status(200).entity(bundlesTrainee).build();
 	}
 	
+	@PUT
+	@Path("/user/{userId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+    public Response updateTraineeBundle(@PathParam("userId") int userId, List<BundleTraineeView> bundlesTrainee) {
+
+		User user = new User();
+		user.setId(userId);
+		
+        bundleServ.setBundlesForUser(user, bundlesTrainee);
+        
+        return Response.status(200).build();
+	}	
 }

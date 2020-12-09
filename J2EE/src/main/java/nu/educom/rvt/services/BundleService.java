@@ -131,7 +131,8 @@ public class BundleService {
 		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
 	}
 	 
-	public List<BundleTraineeView> getAllBundlesFromUser(User user){
+	public List<BundleTraineeView> getAllBundlesFromUser(User user)
+	{
 		Session session = HibernateSession.getSessionFactory().openSession();
 		List<BundleTraineeView> bunTs = bundleTraineeRepo.readAll().stream()
 								.filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
@@ -146,6 +147,58 @@ public class BundleService {
 		return bunTs;
 	}
 	
+	public void setBundlesForUser(User user, List<BundleTraineeView> bundles) 
+	{
+		List<BundleTrainee> records = bundleTraineeRepo.readByUserId(user.getId());
+		
+		List<BundleTrainee> updated = new ArrayList<BundleTrainee>();
+
+		for(BundleTrainee record : records) {
+			boolean found=false;
+			for(BundleTraineeView btv: bundles) {
+				if(record.getBundle().getId() == btv.getBundle().getId()) {
+					found=true;
+				}
+			}
+			if(!found) {
+				record.setEndDate(LocalDate.now());
+				updated.add(record);
+			}
+		}
+		
+		for(BundleTraineeView btv: bundles) {
+			if(!(btv.getBundle()==null || btv.getStartWeek() <= 0)) {
+				
+				boolean found=false;
+				
+				for(BundleTrainee record : records) {
+					if(record.getBundle().getId() == btv.getBundle().getId()) {
+						;
+						//end the old record
+						record.setEndDate(LocalDate.now());
+						updated.add(record);
+						
+						//create new record with same bundle but different startweek
+						BundleTrainee newRecord = new BundleTrainee(user, record.getBundle(), btv.getStartWeek(), LocalDate.now());
+						updated.add(newRecord);
+						found = true;
+					}
+				}
+				if(!found) {
+					BundleTrainee newRecord = new BundleTrainee(user, bundleRepo.readById(btv.getBundle().getId()), btv.getStartWeek(), LocalDate.now());
+					updated.add(newRecord);
+				}
+
+			}
+		}
+		System.out.println("Ik ga deze records in de BundleTrainee tabel zetten:");
+		for(BundleTrainee bt : updated) {
+			System.out.println("Id: " + bt.getId() + " Bundle: " + bt.getBundle().getName() + " met startweek: "+ bt.getStartWeek());
+			bundleTraineeRepo.update(bt);
+		}
+
+	    
+	}
 //	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
 //		
 //		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();

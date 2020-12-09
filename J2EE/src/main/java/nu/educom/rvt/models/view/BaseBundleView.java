@@ -10,7 +10,11 @@ public class BaseBundleView {
 	protected String creator_name;
 	protected String creator_location;
 	
-
+	public BaseBundleView()
+	{
+		
+	}
+	
 	public BaseBundleView(Bundle bundle)
 	{
 		this(bundle.getId(), bundle.getName(), bundle.getCreator().getName(), bundle.getCreator().getLocation().getName());
