@@ -419,7 +419,7 @@ class docentAddReview extends React.Component {
                             onChange={(e)=>this.handleWeekChange(e,concept.concept.id)}
                             >
                             {weekoptions}
-                        </Select>                    
+                        </Select>
                     </td>
                     <td className="theme" id="text">
                         <span className="theme-text"> {concept.concept.theme.abbreviation}

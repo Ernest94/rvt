@@ -61,7 +61,7 @@ public class BundleService {
 		}
 	}
 	
-	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) {
+	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) {	
 		Session session = HibernateSession.getSessionFactory().openSession();
 	    session.beginTransaction();
 	    

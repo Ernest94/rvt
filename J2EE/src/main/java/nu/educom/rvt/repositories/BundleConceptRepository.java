@@ -38,7 +38,7 @@ public class BundleConceptRepository {
 		return crs;
 		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
 			return null;
-		} finally {		   
+		} finally {
 			if (session != null) {
 				session.close();
 			}

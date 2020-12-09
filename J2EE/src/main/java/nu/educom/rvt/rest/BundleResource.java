@@ -70,9 +70,13 @@ public class BundleResource {
 	@Path("/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
+		try {
 		List<Bundle> bundles = bundleServ.getAllBundles();
 //		BundleJson bundleJson = new BundleJson(bundles);
 		return Response.status(200).entity(bundles).build();
+		} catch (Exception e) {
+			return Response.status(400).build();
+		}
 	}
 	
 	@GET

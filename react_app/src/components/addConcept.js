@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Select, MenuItem } from '@material-ui/core';
 
 import {config} from './constants';
 import Permissions from './permissions.js'
@@ -156,6 +157,7 @@ class addConcept extends React.Component {
     }
 
     handleBundleResponse(data) {
+        console.log(data);
         this.setState({
             bundles: data,
         });
@@ -172,7 +174,7 @@ class addConcept extends React.Component {
 
     add = (e) => {
         let chosenBundles = this.state.chosenBundles;
-        chosenBundles.push({ id: null, name: "Leeg" });
+        chosenBundles.push({ id: null, name: "", week: 0 });
         console.log(chosenBundles);
 
         this.setState({
@@ -188,6 +190,17 @@ class addConcept extends React.Component {
             chosenBundles: chosenBundles,
         })     
     }
+
+    // handleWeekChange(e,id){
+    //     this.setState(prevState => 
+    //             ({concepts: prevState.concepts.map(concept => 
+    //                 concept.concept.id===id? 
+    //                 {...concept, concept: {...concept.concept, week: e.target.value }}
+    //                 :concept)
+    //             })
+    //     );
+    // }
+
     
     render() {
 
@@ -199,20 +212,42 @@ class addConcept extends React.Component {
             )
         });
 
+        console.log(this.state.bundles);
         const bundleOptions = this.state.bundles.map((bundle) => {
             return (    
-                <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
+                <MenuItem key={bundle.id} value={bundle.id}>{"hallo " + bundle.name}</MenuItem>
             )
         });
 
         console.log(chosenBundles);
 
+        const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+        const weekoptions = weeks.map((week) =>(
+                            <MenuItem key={"week_"+week} value={week}>
+                                {"week " + week}
+                            </MenuItem>))
+
         const bundleContent = chosenBundles.map((bundle, index) => {
             console.log(this.state.bundleCount);
             return (
                 <tr>
-                    <td>{index}</td>
-                    <td>{bundle.name} </td>
+                    <td>
+                        <Select  name={"weeks" + index} id={"weeks" + index}
+                            value={bundle.week}
+                            renderValue={bundle.week}
+                            // onChange={(e)=>this.handleWeekChange(e, )}
+                            >
+                            {weekoptions}
+                        </Select></td>
+                    <td>
+                        <Select  name={"bundles" + index} id={"bundles" + index}
+                            value={bundle.name}
+                            renderValue={bundle.week}
+                            // onChange={(e)=>this.handleWeekChange(e, )}
+                            >
+                            {bundleOptions}
+                        </Select>
+                    </td>
                 </tr>
             )
         });
@@ -223,10 +258,10 @@ class addConcept extends React.Component {
                     <tr>
                         <th>
                             Week
-                            </th>
+                        </th>
                         <th>
                             Bundle
-                            </th>
+                        </th>
                     </tr>
                     {bundleContent}
                 </thead>
@@ -259,13 +294,13 @@ class addConcept extends React.Component {
                         <div className="row m-2 justify-content-center">
                             <label className="col-2" htmlFor="theme">Thema:</label>
                             <div className="col-3">
-                            <select name="theme" id="theme"
-                                value={this.themeDisplayName}
-                                onChange={this.onChangeTheme}
-                                required>
-                                <option hidden value=''>Thema</option>
-                                    {themeOptions}
-                            </select>
+                                <select name="theme" id="theme"
+                                    value={this.themeDisplayName}
+                                    onChange={this.onChangeTheme}
+                                    required>
+                                    <option hidden value=''>Thema</option>
+                                        {themeOptions}
+                                </select>
                             </div>
                         </div>
 
