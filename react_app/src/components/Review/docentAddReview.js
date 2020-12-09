@@ -114,7 +114,7 @@ class docentAddReview extends React.Component {
     }
 
     handleCurriculumReponse(data){
-        console.log(data);
+        console.log(data.conceptsPlusRatings);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
@@ -406,7 +406,9 @@ class docentAddReview extends React.Component {
 
             <tbody className="tableBody table">
             
-                {this.state.concepts.map((concept, index) => {                   
+                {this.state.concepts.map((concept, index) => {    
+                    var checkboxDisabled = (concept.comment!=""&&concept.rating!=0)
+                    
                     if (selectionFunction(concept)){
                         return (
                         <tr className={"searchResult " + (concept.active ? 'text-black' : 'text-muted')}>
@@ -415,6 +417,7 @@ class docentAddReview extends React.Component {
                                 id={"concept"+concept.id}
                                 onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
                                 checked={concept.active}
+                                disabled={checkboxDisabled}
                                 />                   
                             </td>
                             <td className="week" id="text">
