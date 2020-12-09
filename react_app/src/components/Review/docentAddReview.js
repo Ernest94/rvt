@@ -153,6 +153,10 @@ class docentAddReview extends React.Component {
 
         let concepts = this.state.concepts;
         let concept = concepts[index];
+        if (value === concept.rating) {
+            console.log("equal");
+            return;
+        }
         concept.rating = value;
         concepts[index] = concept;
         await this.setState({
@@ -168,8 +172,14 @@ class docentAddReview extends React.Component {
         const index = event.target.name.substring(7);
         const value = event.target.value;
 
+        
+
         let concepts = this.state.concepts;
         let concept = concepts[index];
+        if (value === concept.comment) {
+            console.log("equal");
+            return;
+        }
         concept.comment = value;
         concepts[index] = concept;
         await this.setState({
@@ -191,7 +201,8 @@ class docentAddReview extends React.Component {
     // }
     async setReviewData(event) {
         const { name, value } = event.target;
-        console.log(name, value);
+
+        if (value === "") return;
         await this.setState({
             [name]: value
         });
