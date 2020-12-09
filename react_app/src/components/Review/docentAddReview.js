@@ -296,10 +296,8 @@ class docentAddReview extends React.Component {
         axios.post(config.url.API_URL + "/webapi/theme_concept/week", 
                         {
                         user: {id:this.state.userId}, 
-                        concept:{
-                            id: changedConceptId, 
-                            week: newWeek 
-                            }
+                        concept:{id: changedConceptId},
+                        week: newWeek
                         })
         .then(response => {
         })
@@ -326,7 +324,9 @@ class docentAddReview extends React.Component {
     };
 
     changeConceptActive(changedConceptId) {
-        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: changedConceptId}})
+        axios.post(config.url.API_URL + "/webapi/theme_concept/active", 
+                {user: {id:this.state.userId}, 
+                concept: {id: changedConceptId}})
         .then(response => {
             
         })
