@@ -191,6 +191,7 @@ class docentAddReview extends React.Component {
     // }
     async setReviewData(event) {
         const { name, value } = event.target;
+        console.log(name, value);
         await this.setState({
             [name]: value
         });
