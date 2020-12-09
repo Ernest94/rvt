@@ -280,15 +280,32 @@ class docentAddReview extends React.Component {
     //     }
     // }
 
-    handleWeekChange(e,id){
+    handleWeekChange(e,changedConceptId){
         this.setState(prevState => 
                 ({concepts: prevState.concepts.map(concept => 
-                    concept.concept.id===id? 
+                    concept.concept.id===changedConceptId? 
                     {...concept, week: e.target.value }
                     :concept)
                 })
         );
+        this.changeConceptWeek(changedConceptId,e.target.value);
 
+    }
+
+    changeConceptWeek(changedConceptId,newWeek) {
+        axios.post(config.url.API_URL + "/webapi/theme_concept/week", 
+                        {
+                        user: {id:this.state.userId}, 
+                        concept:{
+                            id: changedConceptId, 
+                            week: newWeek 
+                            }
+                        })
+        .then(response => {
+        })
+        .catch((error) => {
+            console.log("an error occurred " + error);
+        });
     }
 
     createReviewIdJSON() {
@@ -297,20 +314,19 @@ class docentAddReview extends React.Component {
         };
     }
 
-    handleCheckboxChange(e,id){
+    handleCheckboxChange(e,changedConceptId){
         this.setState(prevState => 
             ({concepts: prevState.concepts.map(concept => 
-                concept.concept.id===id? 
+                concept.concept.id===changedConceptId? 
                 {...concept, active: (!concept.active)}
                 :concept)
             })
         );
-        //need to change the state of concept active attribute here, depending on new concept json
-        this.changeConceptActive(id);
+        this.changeConceptActive(changedConceptId);
     };
 
-    changeConceptActive(id) {
-        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: id}})
+    changeConceptActive(changedConceptId) {
+        axios.post(config.url.API_URL + "/webapi/theme_concept/active", {user: {id:this.state.userId}, concept:{id: changedConceptId}})
         .then(response => {
             
         })
