@@ -153,7 +153,7 @@ class docentAddReview extends React.Component {
 
         let concepts = this.state.concepts;
         let concept = concepts[index];
-        if (value === concept.rating) {
+        if (value == concept.rating) {
             console.log("equal");
             return;
         }
