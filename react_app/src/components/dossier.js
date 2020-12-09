@@ -332,8 +332,16 @@ class Dossier extends React.Component {
                             {/* ))} */}
                         </Select>
                     </div>
-                    {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
-
+                    <div className="row">
+                        <div className="">
+                            {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button> : <span></span>}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="my-1">
+                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger">Annuleer</Link> : <span></span>}
+                        </div>
+                    </div>
                 </form>
                 {(editDisabled) ?
                 <div className="buttons">
