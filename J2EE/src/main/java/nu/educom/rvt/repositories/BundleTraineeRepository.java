@@ -55,9 +55,9 @@ public class BundleTraineeRepository {
 			return null;
 		}
 		finally {
-			if (session != null) {
-				session.close();
-			}
+//			if (session != null) {
+//				session.close();
+//			}
 		}
 	}
 	

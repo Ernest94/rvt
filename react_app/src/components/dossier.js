@@ -35,7 +35,8 @@ class Dossier extends React.Component {
             pageLoading: true,
             buttonDisabled: false,
             serverFail: false,
-            bundleCheck: [],
+            bundlesTrainee: [],
+            bundles: [],
             selected: [0, 1],
         };
     }
@@ -111,10 +112,12 @@ class Dossier extends React.Component {
 
         const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier',  {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
-        
-        axios.all([userRequest, roleLocRequest]).then(axios.spread((...responses) => {
+        const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
+
+        axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
            const userResponse = responses[0]
            const roleLocResponse = responses[1]
+           const bundleResponse = responses[2]
            this.setState({
                 userId: userId,
 
@@ -126,6 +129,8 @@ class Dossier extends React.Component {
 
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
+
+                bundles: bundleResponse.data,
 
                 pageLoading: false,
            });
@@ -145,12 +150,11 @@ class Dossier extends React.Component {
             return;
         }
 
-        axios.get(config.url.API_URL + "/webapi/bundle/bundleTrainee/" + this.state.userId)
+        axios.get(config.url.API_URL + "/webapi/bundle/user/" + this.state.userId)
             .then(response => {
                 this.setState({
-                    bundleCheck: response.data.bundleCheck
+                    bundlesTrainee: response.data,
                 });
-                console.log(this.state.bundleCheck);
             })
             .catch((error) => {
                 console.log(error);
@@ -197,7 +201,6 @@ class Dossier extends React.Component {
     }
     
     onChangeRole = (e) => {
-        console.log("check");
         var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
         
         this.setState({
@@ -213,9 +216,29 @@ class Dossier extends React.Component {
         });
     }
 
-    handleSelectChange = (e) => {
-        const {value} = e.target;
-        console.log(value);
+    handleBundleChange = (e,index) => {
+
+        const value = +e.target.value;
+
+
+
+        if(e.target.name==="startWeek"){
+            let bundlesTrainee = [...this.state.bundlesTrainee];
+            let modBundle = {...bundlesTrainee[index], startWeek: value};
+            bundlesTrainee[index]=modBundle;
+            this.setState({bundlesTrainee});
+        }
+        else{
+            var selectedBundleIndex = this.state.bundles.findIndex(bundle=>bundle.id === value);
+            const newBundle = this.state.bundles[selectedBundleIndex]
+            var localBundlesTrainee = this.state.bundlesTrainee.slice();
+            localBundlesTrainee[index].bundle = newBundle;
+            this.setState({bundlesTrainee: localBundlesTrainee});
+        }
+    }
+
+    addBundle(){
+        this.setState((prevState)=>({bundlesTrainee: prevState.bundlesTrainee.push()}))
     }
 
     onChangeLocation = (e) => {
@@ -225,18 +248,9 @@ class Dossier extends React.Component {
         });
     }
 
-    setSelected = (s) => {
-        // const{selected} = this.state.selected;
-        // this.state({
-        //     [selected]: selected
-        // })
-        console.log(s);
-    }
-
     render() {
-
         const {location, role, name, email, roleName, startDate, userId, pageLoading, errors, blocked,
-               serverFail, locations, roles, roleDisplayName, locationDisplayName, bundleCheck, 
+               serverFail, locations, roles, roleDisplayName, locationDisplayName,  
                allowedToView, allowedToEdit, allowedToEditFields} = this.state;
 
         const {editDisabled} = this.props;
@@ -256,12 +270,17 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
+        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weekOptions = weeks.map((week) =>(
+                            <option key={"week_"+week} value={week}>
+                                {"week " + week}
+                            </option>))
 
-        const bundleOptions = bundleCheck.map((bundleCheck) => {
-            return (
-                <option key = {bundleCheck.bundle.id} value={bundleCheck.bundle.id}> {bundleCheck.bundle.name} </option>  
-            )
-        });    
+        const bundleOptions = 
+        this.state.bundles.map((bundle,index) => (
+                            <option key={"bundleChoice" + index} value={bundle.id}>
+                                {bundle.name}
+                            </option>))
 
         return (
             <div>
@@ -312,26 +331,58 @@ class Dossier extends React.Component {
                             disabled={editDisabled || !allowedToEditFields.includes("startDate")}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row">
+                    <div className="input row" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                        {/* <InputLabel id="demo-mutiple-name-label">Bundels</InputLabel> */}
-                            <Select className="form-control col-sm-9"
-                            // labelId="demo-mutiple-name-label"
-                            id="demo-mutiple-name"
-                            multiple
-                            name="bundle"
-                            value={bundleOptions}
-                            placeholder
-                            onChange={this.handleSelectChange}
-                            // input={<Input />}
-                            // MenuProps={MenuProps}
-                            >
-                            {bundleCheck.map((bundleCheck) => (
-                                <MenuItem key={bundleCheck.bundle.id} value={bundleCheck.bundle.id} /*style={getStyles()}*/>
-                                {bundleCheck.bundle.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                        {editDisabled?
+                        <div>
+                            <table  className="bundleTable table dossier">
+                                <tbody>
+                                    {this.state.bundlesTrainee.map((bundleTrainee, index)=> 
+                                    <tr key={"bundleSelect_" + index}>
+                                        <td>  
+                                            {bundleTrainee.bundle.name}                        
+                                        </td>
+                                        <td>
+                                            Week {bundleTrainee.startWeek}
+                                        </td>
+                                    </tr>)
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        :
+                        <div>
+                        <table  className="bundleTable table dossier">
+                                <tbody>
+                                    {this.state.bundlesTrainee.map((bundleTrainee, index)=> 
+                                    <tr key={"bundleSelect_" + index}>
+                                        <td>                          
+                                            <select className="form-control"
+                                                id={"bundle_" + index}
+                                                name="bundle"
+                                                value={bundleTrainee.bundle.id}
+                                                onChange={(e) => this.handleBundleChange(e,index)}
+                                            >
+                                                {bundleOptions}
+                                            </select> 
+                                        </td>
+                                        <td>                                    
+                                            <select className="form-control"
+                                                id={"week_" + index}
+                                                name="startWeek"
+                                                value={bundleTrainee.startWeek}
+                                                onChange={(e)=> this.handleBundleChange(e,index)}
+                                            >
+                                                {weekOptions}
+                                            </select> 
+                                        </td>
+                                    </tr>)
+                                    }
+                                </tbody>
+                            </table>
+                            </div>
+                        }
+
                     </div>
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 

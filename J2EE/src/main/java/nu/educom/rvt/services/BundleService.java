@@ -9,10 +9,14 @@ import org.hibernate.Session;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
+import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
+import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
@@ -28,6 +32,7 @@ public class BundleService {
 	public BundleService() {
 		this.bundleRepo = new BundleRepository();
 		this.bundleConceptRepo = new BundleConceptRepository();
+		this.bundleTraineeRepo = new BundleTraineeRepository();
 	}
 	
 	public Bundle findBundleByName(String name) {
@@ -120,26 +125,41 @@ public class BundleService {
 	{
 		return bundleRepo.readAll();
 	}
+	
+	public List<BaseBundleView> getAllBundleViews()
+	{
+		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
+	}
 	 
-	public List<Bundle> getAllBundlesFromUser(User user){
-		return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
-												   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
+	public List<BundleTraineeView> getAllBundlesFromUser(User user){
+		Session session = HibernateSession.getSessionFactory().openSession();
+		List<BundleTraineeView> bunTs = bundleTraineeRepo.readAll().stream()
+								.filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
+								.map(bundleTrainee -> new BundleTraineeView(bundleTrainee.getStartWeek(), new BaseBundleView(bundleTrainee.getBundle())))
+								.collect(Collectors.toList());
+		
+		
+		
+		session.close();
+		//return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
+		//										   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
+		return bunTs;
 	}
 	
-	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
-		
-		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();
-		
-		for(Bundle bundle : bundleTrainee) {
-			bundleCheck.add(new BundleCheck(bundle, true));
-		}
-		for(Bundle bundle : bundleAll) {
-			bundleCheck.add(new BundleCheck(bundle, false));
-		}
-		
-		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
-		return bundleCheck;		
-	}
+//	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
+//		
+//		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();
+//		
+//		for(Bundle bundle : bundleTrainee) {
+//			bundleCheck.add(new BundleCheck(bundle, true));
+//		}
+//		for(Bundle bundle : bundleAll) {
+//			bundleCheck.add(new BundleCheck(bundle, false));
+//		}
+//		
+//		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
+//		return bundleCheck;		
+//	}
 	
 }
 
