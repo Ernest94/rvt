@@ -25,7 +25,8 @@ class addConcept extends React.Component {
             bundleCount: 3,
             chosenBundles: []
         };
-    }
+        this.onChangeTheme= this.onChangeTheme.bind(this);
+        }
 
     static hasAccess() {
         return Permissions.canAddConcept();
@@ -90,12 +91,14 @@ class addConcept extends React.Component {
     }
 
     succesfullAdd(){
-        this.setState({ name:"",
-                        description: "",
+        this.setState({ 
+                        themeDisplayName:"",
+                        name:"",
+                        description:"",
                         message:"Concept toegevoegd",
                         startDate:"",
-                        week:"",
-                        themeDisplayName: ""});
+                        week:""
+                        });
     }
 
     onChangeTheme = (e) => {
@@ -160,15 +163,6 @@ class addConcept extends React.Component {
             bundles: data,
         });
     }
-    
-    // setErrors = (errors) => {
-    //     const foundErrors = Object.keys(errors).map((key) =>
-    //         <li key={key}>{errors[key][0]}</li>
-    //     );
-    //     this.setState({
-    //        errors: foundErrors 
-    //     });
-    // }
 
     add = (e) => {
         let chosenBundles = this.state.chosenBundles;
@@ -199,11 +193,11 @@ class addConcept extends React.Component {
             )
         });
 
-        const bundleOptions = this.state.bundles.map((bundle) => {
-            return (    
-                <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
-            )
-        });
+        // const bundleOptions = this.state.bundles.map((bundle) => {
+        //     return (    
+        //         <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
+        //     )
+        // });
 
         console.log(chosenBundles);
 
@@ -259,13 +253,13 @@ class addConcept extends React.Component {
                         <div className="row m-2 justify-content-center">
                             <label className="col-2" htmlFor="theme">Thema:</label>
                             <div className="col-3">
-                            <select name="theme" id="theme"
-                                value={this.themeDisplayName}
-                                onChange={this.onChangeTheme}
-                                required>
-                                <option hidden value=''>Thema</option>
+                                <select name="theme" id="theme"
+                                    value={this.state.themeDisplayName}
+                                    onChange={this.onChangeTheme}
+                                    required>
+                                    <option hidden value=''></option>
                                     {themeOptions}
-                            </select>
+                                </select>
                             </div>
                         </div>
 
