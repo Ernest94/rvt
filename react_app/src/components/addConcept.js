@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import {Select, MenuItem } from '@material-ui/core';
-
 import {config} from './constants';
 import Permissions from './permissions.js'
 import './form.css'
@@ -24,7 +23,8 @@ class addConcept extends React.Component {
             userId: null,
             bundles: [],
             bundleCount: 3,
-            chosenBundles: []
+            chosenBundles: [],
+            counter: 0
         };
     }
 
@@ -50,7 +50,7 @@ class addConcept extends React.Component {
         });
     }
     validate() {
-        if(!this.state.name.trim() || !this.state.description.trim() || this.state.themeDisplayName=="")
+        if(!this.state.name.trim() || !this.state.description.trim() || this.state.themeDisplayName==="")
         {
             return {input: ["Alle velden moeten worden ingevuld"]};
         }        
@@ -134,7 +134,7 @@ class addConcept extends React.Component {
         if (Permissions.isUserAdmin()) {
             axios.get(config.url.API_URL + '/webapi/bundle/bundles')
                 .then(response => {
-                    console.log("Repsponse:", response);
+                    console.log("Response:", response);
                     this.handleBundleResponse(response.data);
                 })
                 .catch(() => {
@@ -157,10 +157,23 @@ class addConcept extends React.Component {
     }
 
     handleBundleResponse(data) {
-        console.log(data);
+        if (data === "") {
+            this.upCounter();
+            this.getYourBundles();
+            return;
+        }
+        
         this.setState({
             bundles: data,
         });
+    }
+
+    upCounter() {
+        let counter = this.state.counter + 1;
+        this.setState({
+            counter: counter,
+        });
+        console.log(this.state.counter);
     }
     
     // setErrors = (errors) => {
@@ -174,7 +187,7 @@ class addConcept extends React.Component {
 
     add = (e) => {
         let chosenBundles = this.state.chosenBundles;
-        chosenBundles.push({ id: null, name: "", week: 0 });
+        chosenBundles.push({ bundle: this.state.bundles[0], week: 0 });
         console.log(chosenBundles);
 
         this.setState({
@@ -191,15 +204,39 @@ class addConcept extends React.Component {
         })     
     }
 
-    // handleWeekChange(e,id){
-    //     this.setState(prevState => 
-    //             ({concepts: prevState.concepts.map(concept => 
-    //                 concept.concept.id===id? 
-    //                 {...concept, concept: {...concept.concept, week: e.target.value }}
-    //                 :concept)
-    //             })
-    //     );
-    // }
+    handleBundleChange(e) {
+
+        const index = e.target.name.substring(7);
+        const value = e.target.value;
+        console.log(index);
+        console.log(value);
+
+        let bundles = this.state.chosenBundles;
+        let bundle = bundles[index];
+        bundle.bundle = value;
+        bundles[index] = bundle;
+        this.setState({
+            chosenBundles: bundles
+        });
+        console.log(this.state.chosenBundles);
+    }
+
+    handleBundleWeekChange(e) {
+
+        const index = e.target.name.substring(5);
+        const value = e.target.value;
+        console.log(index);
+        console.log(value);
+
+        let bundles = this.state.chosenBundles;
+        let bundle = bundles[index];
+        bundle.week = value;
+        bundles[index] = bundle;
+        this.setState({
+            chosenBundles: bundles
+        });
+        console.log(this.state.chosenBundles);
+     }
 
     
     render() {
@@ -212,14 +249,11 @@ class addConcept extends React.Component {
             )
         });
 
-        console.log(this.state.bundles);
-        const bundleOptions = this.state.bundles.map((bundle) => {
-            return (    
-                <MenuItem key={bundle.id} value={bundle.id}>{"hallo " + bundle.name}</MenuItem>
-            )
-        });
-
-        console.log(chosenBundles);
+        const bundleOptions = this.state.bundles.map((bundle) =>(
+            <MenuItem key={bundle.id} value={bundle}>
+                {bundle.name}
+            </MenuItem>
+        ))
 
         const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
         const weekoptions = weeks.map((week) =>(
@@ -227,23 +261,21 @@ class addConcept extends React.Component {
                                 {"week " + week}
                             </MenuItem>))
 
-        const bundleContent = chosenBundles.map((bundle, index) => {
-            console.log(this.state.bundleCount);
+        const bundleContent = chosenBundles.map((bundle, index) => {    
             return (
                 <tr>
                     <td>
                         <Select  name={"weeks" + index} id={"weeks" + index}
                             value={bundle.week}
-                            renderValue={bundle.week}
-                            // onChange={(e)=>this.handleWeekChange(e, )}
+                            onChange={(e)=>this.handleBundleWeekChange(e)}
                             >
                             {weekoptions}
                         </Select></td>
                     <td>
                         <Select  name={"bundles" + index} id={"bundles" + index}
-                            value={bundle.name}
-                            renderValue={bundle.week}
-                            // onChange={(e)=>this.handleWeekChange(e, )}
+                            value={bundle.bundle}
+                            onChange={(e) => this.handleBundleChange(e)}
+                            displayEmpty
                             >
                             {bundleOptions}
                         </Select>
