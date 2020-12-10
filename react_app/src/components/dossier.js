@@ -327,16 +327,17 @@ class Dossier extends React.Component {
     }
 
     render() {
-        const {location, role, name, email, roleName, startDate, userId, pageLoading, errors, blocked,
-               serverFail, locations, roles, roleDisplayName, locationDisplayName,  
-               allowedToView, allowedToEdit, allowedToEditFields} = this.state;
+
+
+        const {location, role, name, email,startDate, userId, pageLoading, errors,
+            serverFail, locations, roles,allowedToView, allowedToEdit, allowedToEditFields} = this.state;
 
         const {editDisabled} = this.props;
         const traineeDossier = role.name === "Trainee";
 
-        if (pageLoading) return <span className="center"> Laden... </span>
-        if (serverFail) return <span className="center"> Mislukt om de gegevens op te halen. </span> 
-        if (!allowedToView) return <span className="center"> Het is niet mogelijk om deze pagina te bekijken. </span>
+        if (pageLoading) return <span className="error-message-center"> Laden... </span>
+        if (serverFail) return <span className="error-message-center"> Mislukt om de gegevens op te halen. </span> 
+        if (!allowedToView) return <span className="error-message-center"> Het is niet mogelijk om deze pagina te bekijken. </span>
         
         const rolesOptions = roles.map((role) => {
             return (

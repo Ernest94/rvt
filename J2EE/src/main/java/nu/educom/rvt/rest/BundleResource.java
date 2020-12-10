@@ -86,9 +86,8 @@ public class BundleResource {
 		UserService userServ = new UserService();
 		User user = userServ.getUserById(userId);
 		List<Bundle> bundles = bundleServ.getAllCreatorBundles(user);
-		BundleJson bundleJson = new BundleJson(bundles);
 		
-		return Response.status(200).entity(bundleJson).build();
+		return Response.status(200).entity(bundles).build();
 	}
 	
 	@GET
