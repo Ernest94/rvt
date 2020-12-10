@@ -128,7 +128,7 @@ public class BundleResource extends BaseResource {
 	@Path("/user/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
     public Response updateTraineeBundle(@PathParam("userId") int userId, List<BundleTraineeView> bundlesTrainee) {
-		LOG.debug("getTraineeBundles for user {} called", userId);
+		LOG.debug("updateTraineeBundle for user {} called with {}", userId, bundlesTrainee);
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
 			User user = new User();
