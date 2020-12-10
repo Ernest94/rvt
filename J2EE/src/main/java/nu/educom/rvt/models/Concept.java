@@ -1,6 +1,7 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -22,8 +23,6 @@ public class Concept {
 	private String name;
 	@Column(name="description")
 	private String description;
-	@Column(name="week")
-	private Integer week;
 	@Column(name="startdate")
 	private LocalDate startDate;
 	@Column(name="enddate")
@@ -34,12 +33,11 @@ public class Concept {
 		super();
 	}
 	
-	public Concept(Theme theme, String name, String description, int week, LocalDate startDate, LocalDate endDate) {
+	public Concept(Theme theme, String name, String description, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.theme = theme;
 		this.name = name;
 		this.description = description;
-		this.week = week;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -72,14 +70,6 @@ public class Concept {
 		this.description = description;
 	}
 
-	public Integer getWeek() {
-		return week;
-	}
-	public void setWeek(int week) {
-		this.week = week;
-	}
-	
-	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getStartDate() {
 		return startDate;
 	}
@@ -94,5 +84,21 @@ public class Concept {
 	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Concept)) {
+			return false;
+		}
+		Concept other = (Concept) obj;
+		Integer Zero = Integer.valueOf(0);
+		if (Zero.compareTo(getId()) < 0 && Zero.compareTo(other.getId()) < 0) {
+			return getId().equals(other.getId());
+		} 
+		return Objects.equals(getName(), other.getName()) &&
+			   Objects.equals(getDescription(), other.getDescription()) &&
+			   Objects.equals(getStartDate(), other.getStartDate()) &&
+			   Objects.equals(getEndDate(), other.getEndDate());
 	}
 }

@@ -20,6 +20,7 @@ class conceptOverview extends React.Component {
             pageLoading: true,
             errors: "",
             selectedBundle: "",
+            selectedBundleCreator: "",
             activeConcepts:[],
             activeConceptsWeekOffset:[],
         };
@@ -55,11 +56,30 @@ class conceptOverview extends React.Component {
 
     onChangeBundle = (e) => {
         var bundleKeyId = parseInt(e.target.value);
+        var bundleCreatorName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.creator_name)[0];
+
         this.setState({
             selectedBundle: bundleKeyId,
+            selectedBundleCreator: bundleCreatorName
         });
         this.selectActiveConcepts(bundleKeyId)
     } 
+
+    getThemes() {
+        axios.get(config.url.API_URL + '/webapi/user/themes')
+            .then(response => {
+                this.setState({
+                    themes: response.data.themes,
+                    pageLoading: false
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
+                    pageLoading: false
+                });
+            })
+    }
 
     selectActiveConcepts(bundleKeyId) {
         var activeBundleConceptsAndWeekOffsets = this.bundles.find(bundle => bundle.id === parseInt(bundleKeyId)).bundleConceptWeekOffset;       
@@ -200,7 +220,7 @@ class conceptOverview extends React.Component {
                                 {bundleOptions}
                             </select>
                     </div>
-                    <div className="col-8">
+                    <div className="col-2">
 
                         <span>
                             <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
@@ -208,6 +228,12 @@ class conceptOverview extends React.Component {
                             </Link>
                         </span>
                    </div>
+                   <div className="col-7">
+                    {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                        Bundel opslaan
+                    </button>: <span></span>}
+                    </div>
+
                 </div>
 
                 <div className="container mt-4">
@@ -235,11 +261,7 @@ class conceptOverview extends React.Component {
                             </tbody>
                         </table>
                     </div >
-                    <div className="col-3">
-                    <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}>
-                        Bundel opslaan
-                    </button>
-                    </div>
+
                 </div>
                 </div>
             </div>

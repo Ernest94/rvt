@@ -27,10 +27,10 @@ public class ReviewService {
 		return activeConcepts;
 	}
 	
-	public List<User> getAllUsersWithPendingReviews(){
+	public List<User> getAllUsersWithPendingReviews(int locationId){
 		ReviewRepository reviewRepo = new ReviewRepository();
 //		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
-		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).collect(Collectors.toList());
+		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->u.getLocation().getId() == locationId).collect(Collectors.toList());
 		
 		return users;
 	}
@@ -74,12 +74,15 @@ public class ReviewService {
 	 * 
 	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
 	 */
-	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews){
+	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, User user){
+		
+		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+		List<ConceptRating> allConceptRatings = conceptRatingRepo.readAll();
 		
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
 		if(reviews.size() == 0) {
 			for(Concept concept: concepts) {
-				conceptPlusRating.add(new ConceptPlusRating(concept, 0, ""));
+				conceptPlusRating.add(new ConceptPlusRating(concept, 0, "", 0));
 			}
 			return conceptPlusRating;
 		}
@@ -90,24 +93,26 @@ public class ReviewService {
 		
 		
 		
-		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview);
+		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview, allConceptRatings);
 		
 		List<ConceptPlusRating> CPRother = new ArrayList<>();
 		
 		for(Review review : otherReviews) {
-			CPRother.addAll(this.getCPRFromReview(review));
+			CPRother.addAll(this.getCPRFromReview(review, allConceptRatings));
 		}
 		List<Concept> removedDuplicates = removeAllDuplicates(concepts, CPRother);
 		
 		for(Concept concept: removedDuplicates) {
-			CPRother.add(new ConceptPlusRating(concept, 0, ""));
+			CPRother.add(new ConceptPlusRating(concept, 0, "", 0));
 		}
-//		Comparator<ConceptPlusRating> weekCompare = (o1, o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek());
-//		Comparator<ConceptPlusRating> ratingCompare = Comparator.comparing(ConceptPlusRating::getRating);
 		
-//		Comparator<ConceptPlusRating> ratingThenWeek = weekCompare.thenComparing(ratingCompare)
-	
-		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek())).collect(Collectors.toList());		
+		BundleService bundleServ = new BundleService();
+		
+		CPRother = bundleServ.getWeekForCPR(CPRother, user);
+		CPRMostRecent = bundleServ.getWeekForCPR(CPRMostRecent, user);
+		
+		CPRMostRecent = CPRMostRecent.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
+		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
 		
 		conceptPlusRating.addAll(CPRMostRecent);
 		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() != 0).collect(Collectors.toList()));
@@ -117,13 +122,11 @@ public class ReviewService {
 		return conceptPlusRating;
 	}
 	
-	private List<ConceptPlusRating> getCPRFromReview(Review review)
+	private List<ConceptPlusRating> getCPRFromReview(Review review, List<ConceptRating> allConceptRatings)
 	{
 		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
-		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
-		List<ConceptRating> conceptRatings =  conceptRatingRepo.readAll().stream()
+		List<ConceptRating> conceptRatings =  allConceptRatings.stream()
 															   .filter(c -> c.getReview().getId() == review.getId())
-															   .sorted((o1,o2) -> o1.getConcept().getWeek().compareTo(o2.getConcept().getWeek()))
 															   .collect(Collectors.toList());
 		
 		for(ConceptRating conceptRating : conceptRatings)
@@ -132,7 +135,8 @@ public class ReviewService {
 					new ConceptPlusRating(
 					conceptRating.getConcept(), 
 					conceptRating.getRating(),
-					conceptRating.getComment())
+					conceptRating.getComment(),
+					0)
 					);
 		}
 		
@@ -246,5 +250,10 @@ public class ReviewService {
 		crRepo.update(updated);
 		
 		return this.getReviewById(updated.getReview().getId());
+	}
+	
+	public List<ConceptRating> getAllConceptRatings(){
+		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+		return crRepo.readAll();
 	}
 }

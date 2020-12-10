@@ -111,7 +111,6 @@ class Dossier extends React.Component {
     componentDidMount(props) {
         Utils.dateValidation();
         this.setState({ pageLoading: true, userId: this.props.match.params.userId });    
-        console.log(this.state.role);
         this.getAllInfo();             
     }
     
@@ -222,6 +221,7 @@ class Dossier extends React.Component {
                 this.setState({
                     bundlesTrainee: response.data,
                 });
+                console.log(response.data.bundleCheck);
             })
             .catch((error) => {
                 console.log(error);
@@ -408,9 +408,16 @@ class Dossier extends React.Component {
                         handleBundleChange={this.handleBundleChange.bind(this)} 
                         addBundle ={this.addBundle.bind(this)} />
                     </div>
-
-                    {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
-
+                    <div className="row">
+                        <div className="">
+                            {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button> : <span></span>}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="my-1">
+                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger">Annuleer</Link> : <span></span>}
+                        </div>
+                    </div>
                 </form>
                 {(editDisabled) ?
                 <div className="buttons">
