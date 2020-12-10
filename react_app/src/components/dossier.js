@@ -12,6 +12,71 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+class BundleTable extends React.Component {
+
+    render(){
+        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
+        const weekOptions = weeks.map((week) =>(
+                            <option key={"week_"+week} value={week}>
+                                {"week " + week}
+                            </option>))
+
+        const bundleOptions = 
+        this.props.bundles.map((bundle,index) => (
+                            <option key={"bundleChoice" + index} value={bundle.id}>
+                                {bundle.name}
+                            </option>))
+        
+    return(
+    <div className="col-sm-9">
+        <table  className="bundleTable dossier">
+            <tbody>
+                {this.props.bundlesTrainee.map((bundleTrainee, index)=> 
+                    (this.props.editDisabled?
+                    <tr key={"bundleSelect_" + index}>
+                        <td>{bundleTrainee.bundle.name}</td>
+                        <td>Start: week {bundleTrainee.startWeek}</td>
+                        <td></td>
+                    </tr>
+                    :
+                    <tr className="row" key={"bundleSelect_" + index}>
+                        <td>  
+                            <select className="form-control"
+                            id={"bundle_" + index}
+                            name="bundle"
+                            value={bundleTrainee.bundle.id? bundleTrainee.bundle.id : -1}
+                            onChange={(e) => this.props.handleBundleChange(e,index)}
+                            >
+                                <option value="-1" hidden>Kies een bundel</option>
+                                {bundleOptions}
+                            </select>                     
+                        </td>
+                        <td>              
+                            <select className="form-control"
+                                id={"week_" + index}
+                                name="startWeek"
+                                value={bundleTrainee.startWeek}
+                                onChange={(e)=> this.props.handleBundleChange(e,index)}
+                            >
+                                <option value="-1" hidden>Kies een startweek</option>
+                                {weekOptions}
+                            </select>
+                        </td>
+                        <td>
+                            <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e,index)}>
+                                <FaTimes /> 
+                            </button>
+                        </td>
+                    </tr>))}
+            </tbody>
+        </table>
+        {!this.props.editDisabled?
+            <button className="btn btn-danger btn-sm" name="add" type="button" onClick={this.props.addBundle}>
+                    <FaPlus />
+                </button>:""}
+    </div>)
+    }
+}
 
 class Dossier extends React.Component {
     
@@ -247,7 +312,7 @@ class Dossier extends React.Component {
     }
 
     addBundle(){
-        this.setState((prevState)=>({bundlesTrainee: [...prevState.bundlesTrainee, {bundle:{id:-4},startWeek:0}]}));
+        this.setState((prevState)=>({bundlesTrainee: [...prevState.bundlesTrainee, {bundle:{id:-1},startWeek:0}]}));
     }
 
     removeBundle(e,index){
@@ -283,17 +348,6 @@ class Dossier extends React.Component {
                 <option key={location.id} value={location.id}>{location.name}</option>
             )
         });
-        const weeks = [1,2,3,4,5,6,7,8,9,10,11,12];
-        const weekOptions = weeks.map((week) =>(
-                            <option key={"week_"+week} value={week}>
-                                {"week " + week}
-                            </option>))
-
-        const bundleOptions = 
-        this.state.bundles.map((bundle,index) => (
-                            <option key={"bundleChoice" + index} value={bundle.id}>
-                                {bundle.name}
-                            </option>))
 
         return (
             <div>
@@ -325,7 +379,7 @@ class Dossier extends React.Component {
                             {rolesOptions}
                         </select>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
                             value={location.id}
@@ -337,78 +391,24 @@ class Dossier extends React.Component {
                             {locationOptions}
                         </select>
                     </div>
-                    <div className="input row" >
+                    <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             value={startDate} 
                             disabled={editDisabled || !allowedToEditFields.includes("startDate")}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row" hidden={!traineeDossier}>
+                    <div className="input row dossier" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                        {editDisabled?
-                        <div>
-                            <table  className="bundleTable dossier">
-                                <tbody>
-                                    {this.state.bundlesTrainee.map((bundleTrainee, index)=> 
-                                    <tr key={"bundleSelect_" + index}>
-                                        <td>  
-                                            {bundleTrainee.bundle.name}                        
-                                        </td>
-                                        <td>
-                                            Start: week {bundleTrainee.startWeek}
-                                        </td>
-                                    </tr>)
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                        :
-                        <div>
-                        <table  className="bundleTable dossier">
-                                <tbody>
-                                    {this.state.bundlesTrainee.map((bundleTrainee, index)=> 
-                                    <tr key={"bundleSelect_" + index}>
-                                        <td>                          
-                                            <select className="form-control"
-                                                id={"bundle_" + index}
-                                                name="bundle"
-                                                value={bundleTrainee.bundle.id? bundleTrainee.bundle.id : -1}
-                                                onChange={(e) => this.handleBundleChange(e,index)}
-                                            >
-                                                <option value="-1" hidden>Kies een bundel</option>
-                                                {bundleOptions}
-                                            </select> 
-                                        </td>
-                                        <td className="row">     
-                                            <label className="label col col-form-label" htmlFor={"week_" + index}>Start: </label>                
-                                            <select className="form-control col"
-                                                id={"week_" + index}
-                                                name="startWeek"
-                                                value={bundleTrainee.startWeek}
-                                                onChange={(e)=> this.handleBundleChange(e,index)}
-                                            >
-                                                <option value="-1" hidden>Kies een startweek</option>
-                                                {weekOptions}
-                                            </select> 
-                                        </td>
-                                        <td>
-                                            <Button onClick={(e) => this.removeBundle(e,index)}>
-                                                <FaTimes />
-                                            </Button>
-                                        </td>
-                                    </tr>)
-                                    }
-
-                                </tbody>
-                                <Button className="btn btn-danger" onClick={this.addBundle.bind(this)} aria-label="Add bundle"> 
-                                        <FaPlus />
-                                    </Button>
-                            </table>
-                            </div>
-                        }
-
+                       <BundleTable 
+                       bundlesTrainee={this.state.bundlesTrainee} 
+                       bundles={this.state.bundles}
+                       editDisabled={editDisabled} 
+                        removeBundle={this.removeBundle.bind(this)}
+                        handleBundleChange={this.handleBundleChange.bind(this)} 
+                        addBundle ={this.addBundle.bind(this)} />
                     </div>
+
                     {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button>: <span></span>}
 
                 </form>
