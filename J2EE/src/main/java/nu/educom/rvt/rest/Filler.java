@@ -264,18 +264,17 @@ public class Filler {
             conceptsRatings.add(new ConceptRating(review4,concepts.get(3),4));
             conceptsRatings.add(new ConceptRating(review4,concepts.get(4),4));
             conceptsRatings.add(new ConceptRating(review4,concepts.get(5),4));
-            
-            
             ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository(session);
             for (ConceptRating conceptRating : conceptsRatings) {
                 conceptRatingRepo.create(conceptRating);
             }    
-            review1.setReviewStatus(Status.COMPLETED);
-            reviewRepo.update(review1);
-            review2.setReviewStatus(Status.COMPLETED);
-            reviewRepo.update(review2);
-            review4.setReviewStatus(Status.COMPLETED);
-            reviewRepo.update(review4);
+            
+//            review1.setReviewStatus(Status.COMPLETED);
+//            reviewRepo.update(review1);
+//            review2.setReviewStatus(Status.COMPLETED);
+//            reviewRepo.update(review2);
+//            review4.setReviewStatus(Status.COMPLETED);
+//            reviewRepo.update(review4);
             
             //FILL THE BUNDLE TABLE
             BundleRepository bundleRepo = new BundleRepository(session);
