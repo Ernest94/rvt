@@ -1,3 +1,70 @@
+<<<<<<< HEAD
+package nu.educom.rvt.repositories;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import nu.educom.rvt.models.BundleTrainee;
+
+public class BundleTraineeRepository {
+
+	private final Session session;
+	
+	public BundleTraineeRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public void create(BundleTrainee bundleTrainee) throws DatabaseException {
+		session.save(bundleTrainee); 
+	}
+	
+	public List<BundleTrainee> createMulti(List<BundleTrainee> crs) throws DatabaseException {
+		for ( int i=0; i<crs.size(); i++ ) {
+			  int bundleId = (int)session.save(crs.get(i));
+			  session.save(crs.get(i));
+	          crs.get(i).setId(bundleId);
+		      if ( i % 20 == 0 ) { 
+		        //flush a batch of inserts and release memory:
+		        session.flush();
+		        session.clear();
+		    }
+		}
+		return crs;
+	}
+	
+	public List<BundleTrainee> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(BundleTrainee.class, session);
+	}
+	
+	public BundleTrainee readById(int id) throws DatabaseException {
+		return session.get(BundleTrainee.class, id);
+	}
+	
+//	public List<BundleConcept> readByConceptId(int concept_id) throws DatabaseException {
+//		return (List<BundleConcept>) session
+//					.createQuery("from bundle_concept where concept_id =:concept_id", BundleConcept.class)
+//					.setParameter("concept_id", concept_id)
+//					.getResultList();
+//		
+//	} This function isn't necessary yet, but I believe it will be in the future so it's already built. 
+	
+	protected void update(BundleTrainee bundleTrainee) throws DatabaseException {
+		// TODO fix this met record based
+		session.saveOrUpdate(bundleTrainee);
+	}
+	
+	
+	protected void delete() throws DatabaseException {
+		
+	}
+	
+}
+	
+	
+
+=======
 package nu.educom.rvt.repositories;
 
 import java.util.List;
@@ -146,3 +213,4 @@ public class BundleTraineeRepository {
 	
 	
 
+>>>>>>> origin/development

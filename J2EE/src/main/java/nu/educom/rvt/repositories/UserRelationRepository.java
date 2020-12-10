@@ -3,55 +3,35 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.UserRelation;
 
 /* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class UserRelationRepository {
-	protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public void create(UserRelation relation) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
+	public UserRelationRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public void create(UserRelation relation) throws DatabaseException {
 	    session.save(relation); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
 	}
 	
-	public UserRelation readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(UserRelation.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public UserRelation readById(int id) throws DatabaseException {
+		return session.get(UserRelation.class, id);
 	}
 	
-	public List<UserRelation> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(UserRelation.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<UserRelation> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(UserRelation.class, session);
 	}
 	
-	protected void update() {
+	protected void update() throws DatabaseException {
 		
 	}
 	
-	protected void delete() {
+	protected void delete() throws DatabaseException {
 		
 	}
 }

@@ -8,49 +8,36 @@ import org.hibernate.SessionFactory;
 import nu.educom.rvt.models.Role;
 
 public class RoleRepository {
-	protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public void create(Role role) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.save(role); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	public RoleRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public void create(Role role) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
+		}
+		session.save(role); 
 	}
 	
-	public Role readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(Role.class, id);
+	public Role readById(int id) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("ReadById called on an DB transaction that is not open");
 		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+		return session.get(Role.class, id);
 	}
 	
-	public List<Role> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(Role.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<Role> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(Role.class, session);
 	}
 	
-	protected void update() {
+	protected void update() throws DatabaseException {
 		
 	}
 	
-	protected void delete() {
+	protected void delete() throws DatabaseException {
 		
 	}
 	

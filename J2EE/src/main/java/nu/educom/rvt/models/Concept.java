@@ -70,6 +70,7 @@ public class Concept {
 		this.description = description;
 	}
 
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getStartDate() {
 		return startDate;
 	}
@@ -101,4 +102,9 @@ public class Concept {
 			   Objects.equals(getStartDate(), other.getStartDate()) &&
 			   Objects.equals(getEndDate(), other.getEndDate());
 	}
+	@Override
+	public String toString() {
+		return String.format("Concept(%s)", getName());
+	}
+
 }
