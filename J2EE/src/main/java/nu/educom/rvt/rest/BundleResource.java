@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,8 +16,10 @@ import javax.ws.rs.core.Response;
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
-import nu.educom.rvt.models.view.BundleJson;
+import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.UserService;
 
@@ -70,8 +73,8 @@ public class BundleResource {
 	@Path("/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
-		List<Bundle> bundles = bundleServ.getAllBundles();
-//		BundleJson bundleJson = new BundleJson(bundles);
+		List<BaseBundleView> bundles = bundleServ.getAllBundleViews();
+		
 		return Response.status(200).entity(bundles).build();
 	}
 	
@@ -83,23 +86,34 @@ public class BundleResource {
 		UserService userServ = new UserService();
 		User user = userServ.getUserById(userId);
 		List<Bundle> bundles = bundleServ.getAllCreatorBundles(user);
-		BundleJson bundleJson = new BundleJson(bundles);
 		
-		return Response.status(200).entity(bundleJson).build();
+		return Response.status(200).entity(bundles).build();
 	}
 	
 	@GET
-	@Path("/bundleTrainee/{userId}")
+	@Path("/user/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTraineeBundles(User user) {
-		List<Bundle> bundles = bundleServ.getAllBundles();
-//		List<Bundle> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
-		
-		
-		BundleJson bundleJson = new BundleJson(bundles);
-		
-		return Response.status(200).entity(bundleJson).build();
+    public Response getTraineeBundles(@PathParam("userId") int userId) {
+		User user = new User();
+		user.setId(userId);
+
+        List<BundleTraineeView> bundlesTrainee = bundleServ.getAllBundlesFromUser(user);
+        
+        return Response.status(200).entity(bundlesTrainee).build();
 	}
+	
+	@PUT
+	@Path("/user/{userId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+    public Response updateTraineeBundle(@PathParam("userId") int userId, List<BundleTraineeView> bundlesTrainee) {
+
+		User user = new User();
+		user.setId(userId);
+		
+        bundleServ.setBundlesForUser(user, bundlesTrainee);
+        
+        return Response.status(200).build();
+	}	
 	
 	@GET
 	@Path("/conceptsBundle/{bundleId}")

@@ -9,7 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.Theme;
 
 public class ConceptRepository {
 
@@ -59,6 +58,32 @@ protected SessionFactory sessionFactory;
 				session.close();
 			}
 		}
+	}
+	public boolean isConceptInUserBundle(int id, int userId) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			Object result = session
+			.createNativeQuery("SELECT name FROM concepts c "
+					+ "LEFT JOIN bundle_concept AS bc "
+					+ "ON c.id = bc.concept_id "
+					+ "LEFT JOIN bundle_trainee AS btr "
+					+ "ON bc.bundle_id = btr.bundle_id "
+					+ "WHERE bc.concept_id =:conceptId "
+					+ "AND btr.user_id =:userId")
+			.setParameter("userId", userId)
+			.setParameter("conceptId", id)
+			.getSingleResult();
+			return result!=null;
+		}
+		catch (Exception e) {
+			return false;
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}				
 	}
 	
 	public Concept readByName(String name) {

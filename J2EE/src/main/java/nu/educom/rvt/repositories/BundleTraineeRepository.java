@@ -55,9 +55,9 @@ public class BundleTraineeRepository {
 			return null;
 		}
 		finally {
-			if (session != null) {
-				session.close();
-			}
+//			if (session != null) {
+//				session.close();
+//			}
 		}
 	}
 	
@@ -72,6 +72,22 @@ public class BundleTraineeRepository {
 				session.close();
 			}
 		}
+	}
+	
+	public List<BundleTrainee> readByUserId(int userId) {
+		Session session = null;
+		try {
+			session = HibernateSession.getSessionFactory().openSession();
+			return (List<BundleTrainee>) session
+			.createQuery("from BundleTrainee BT where BT.user.id =:user_id", BundleTrainee.class)
+			.setParameter("user_id", userId)
+			.getResultList();
+		}
+		finally {
+			if (session != null) {
+				session.close();
+			}
+		}		
 	}
 	
 //	public List<BundleConcept> readByConceptId(int concept_id) {
@@ -91,7 +107,21 @@ public class BundleTraineeRepository {
 //		}
 //	} This function isn't necessary yet, but I believe it will be in the future so it's already built. 
 	
-	protected void update(BundleTrainee bundleTrainee) {
+//=======
+//					.createQuery("from bundle_trainee where user_id =:userId", BundleTrainee.class)
+//					.setParameter("userId", userId)
+//					.getResultList();
+//		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
+//			return null;
+//		} finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+//	} 
+//>>>>>>> dbe9b30caaf93afe00897c6326269369b0f8ed6f
+	
+	public void update(BundleTrainee bundleTrainee) {
 		Session session = null;
 		try {
 			session = HibernateSession.getSessionFactory().openSession();

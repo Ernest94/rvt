@@ -221,7 +221,7 @@ class AddUser extends React.Component {
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
-        if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
+        if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
 
         return (
             <div className="container">
