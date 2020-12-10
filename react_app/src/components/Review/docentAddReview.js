@@ -411,7 +411,7 @@ class docentAddReview extends React.Component {
                     
                     if (selectionFunction(concept)){
                         return (
-                        <tr className={"searchResult " + (concept.active ? 'text-black' : 'text-muted')}>
+                        <tr className={(concept.active ? 'text-black' : 'text-muted')}>
                             <td className="active">
                             <Checkbox className=""
                                 id={"concept"+concept.id}
@@ -512,7 +512,7 @@ class docentAddReview extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
                 </div >
 
-                <SelectionTable fields={["active","stars","weeks","themes"]} starsSelected={[0,5]}>
+                <SelectionTable fields={["inactive","stars","weeks","themes"]} starsSelected={[0,5]}>
                     {paramFunction=>(<ConceptDisplay selectionFunction={paramFunction}/>)}
                 </SelectionTable>
 
