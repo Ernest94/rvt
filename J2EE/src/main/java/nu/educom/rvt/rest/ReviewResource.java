@@ -68,6 +68,9 @@ public class ReviewResource extends BaseResource {
 					conceptsRatingsJSON.setReviewDate(reviewDate);
 				}
 				conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+				conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
+				conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
+
 	
 				return Response.status(200).entity(conceptsRatingsJSON).build();
 		    }

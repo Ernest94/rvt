@@ -151,10 +151,10 @@ class Search extends React.Component {
 
     render() {
         const {roles, locations, users, pageLoading, loading} = this.state;
-        if (pageLoading) return (<span className="center">Laden...</span>)
+        if (pageLoading) return (<span className="error-message-center">Laden...</span>)
 
         if (roles === null || locations === null) {
-            return (<span className="center">Mislukt om pagina te laden.</span>)
+            return (<span className="error-message-center">Mislukt om pagina te laden.</span>)
         }
         const rolesOptions = roles.map((role) => {
             return (

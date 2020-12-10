@@ -121,6 +121,59 @@ public class ThemeConceptService {
 		
 		return traineeActiveConcepts;
 	}
+
+	public boolean isConceptInBundleUser(User user, Concept concept) {
+		return conceptRepo.isConceptInUserBundle(concept.getId(),user.getId());
+		
+	}
+
+	public TraineeActive getCurrentMutationForUserAndConcept(User user, Concept concept) {
+		TraineeActive mutation = traineeActiveRepo.findActiveByUserIdAndConceptId(user.getId(), concept.getId());
+		return mutation;
+	}
+	
+	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) {
+		TraineeMutation weekMutation = traineeMutationRepo.findWeekMutationByUserIdAndConceptId(user.getId(), concept.getId());
+		return weekMutation;
+	}
+
+	public void createNewMutation(ActiveChangeForUser activeChange) {
+
+		TraineeActive newMutation = new TraineeActive();
+
+		newMutation.setUser(activeChange.getUser());
+		newMutation.setConcept(activeChange.getConcept());
+		newMutation.setActive(activeChange.getActive());
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeActiveRepo.create(newMutation);
+		
+	}
+	
+	public void endMutation(TraineeActive currentMutation) {
+		currentMutation.setEndDate(LocalDate.now());
+		traineeActiveRepo.update(currentMutation);
+	}
+	
+	public void createNewWeekMutation(WeekChangeForUser weekChange) {
+
+		TraineeMutation newMutation = new TraineeMutation();
+
+		newMutation.setUser(weekChange.getUser());
+		newMutation.setConcept(weekChange.getConcept());
+		newMutation.setWeek(weekChange.getWeek());
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeMutationRepo.create(newMutation);
+		
+	}
+	
+	public void endWeekMutation(TraineeMutation currentMutation) {
+		currentMutation.setEndDate(LocalDate.now());
+		traineeMutationRepo.update(currentMutation);
+	}
+
+
 	
 	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs) throws DatabaseException {
 		
