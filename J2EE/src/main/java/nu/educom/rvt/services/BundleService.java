@@ -185,25 +185,35 @@ public class BundleService {
 		
 		for(BundleTraineeView btv: bundles) {
 			if(!(btv.getBundle()==null || btv.getStartWeek() <= 0)) {
-				
-				boolean found=false;
-				
-				for(BundleTrainee record : records) {
-					if(record.getBundle().getId() == btv.getBundle().getId()) {
-						;
-						//end the old record
-						record.setEndDate(LocalDate.now());
-						updated.add(record);
-						
-						//create new record with same bundle but different startweek
-						BundleTrainee newRecord = new BundleTrainee(user, record.getBundle(), btv.getStartWeek(), LocalDate.now());
-						updated.add(newRecord);
-						found = true;
+				boolean alreadyMutated = false;
+				for(BundleTrainee bt: updated) {
+					if(bt.getBundle().getId()==btv.getBundle().getId() && bt.getEndDate() != null) {
+						alreadyMutated = true;
 					}
 				}
-				if(!found) {
-					BundleTrainee newRecord = new BundleTrainee(user, bundleRepo.readById(btv.getBundle().getId()), btv.getStartWeek(), LocalDate.now());
-					updated.add(newRecord);
+				if(!alreadyMutated) {
+					boolean found=false;
+					
+					for(BundleTrainee record : records) {
+						if(record.getBundle().getId() == btv.getBundle().getId()) {
+							
+							found = true;
+							if(record.getStartWeek() == btv.getStartWeek()) {
+								continue;
+							}
+							//end the old record
+							record.setEndDate(LocalDate.now());
+							updated.add(record);
+							
+							//create new record with same bundle but different startweek
+							BundleTrainee newRecord = new BundleTrainee(user, record.getBundle(), btv.getStartWeek(), LocalDate.now());
+							updated.add(newRecord);
+						}
+					}
+					if(!found) {
+						BundleTrainee newRecord = new BundleTrainee(user, bundleRepo.readById(btv.getBundle().getId()), btv.getStartWeek(), LocalDate.now());
+						updated.add(newRecord);
+					}
 				}
 
 			}
