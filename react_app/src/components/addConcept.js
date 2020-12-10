@@ -84,7 +84,8 @@ class addConcept extends React.Component {
         return {
             name: this.state.name,
             description: this.state.description,
-            theme: {id: this.state.theme.id},
+            theme: { id: this.state.theme.id },
+            //bundleConcept: this.state.chosenBundles,
             // week: this.state.week,
             // startDate: this.state.startDate
         }

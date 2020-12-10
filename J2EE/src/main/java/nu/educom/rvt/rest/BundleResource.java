@@ -67,7 +67,7 @@ public class BundleResource {
 	}
 	
 	@GET
-	@Path("/bundles")
+	@Path("/bundles")	
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBundles() {
 		try {

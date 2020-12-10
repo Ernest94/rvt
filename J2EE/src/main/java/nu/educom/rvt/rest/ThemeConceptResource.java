@@ -13,6 +13,7 @@ import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleCheckJson;
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusBundles;
 import nu.educom.rvt.models.Concept;
 
 import nu.educom.rvt.services.ThemeConceptService;
