@@ -36,6 +36,7 @@ public class Location {
 		this.name = name;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if(!(obj instanceof Location) || obj == null) {
 			return false;
@@ -50,5 +51,9 @@ public class Location {
 				return (this.name == toCompare.getName());
 			}
 		}
+	}
+	@Override
+	public String toString() {
+		return String.format("Location(%s)", getName());
 	}
 }

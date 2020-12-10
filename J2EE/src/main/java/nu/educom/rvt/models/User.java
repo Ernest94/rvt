@@ -123,4 +123,8 @@ public class User {
 	public void setDateInactive(LocalDate dateInactive) {
 		this.dateInactive = dateInactive;
 	}	
+	@Override
+	public String toString() {
+		return String.format("User(%s)", getName() == null ? getEmail() : getName());
+	}
 }
