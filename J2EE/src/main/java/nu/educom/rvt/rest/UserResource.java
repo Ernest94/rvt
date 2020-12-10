@@ -63,9 +63,9 @@ public class UserResource extends BaseResource {
 			UserService userServ = new UserService(session);
 			User foundUser = userServ.checkUserPasswordById(change.getUserId(), change.getCurrentPassword());
 			if (foundUser != null) { /* JH TIP: Invert the if */
-				userServ.changePassword(foundUser, change.getNewPassword());
-				LOG.info("Password changed for user {}.", foundUser);
-				return Response.status(200).entity(foundUser).build();
+				User changedUser = userServ.changePassword(foundUser, change.getNewPassword());
+				LOG.info("Password changed for user {}.", changedUser);
+				return Response.status(200).entity(changedUser).build();
 			}
 			return Response.status(401).build();
 		});

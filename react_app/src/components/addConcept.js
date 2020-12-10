@@ -17,23 +17,29 @@ class addConcept extends React.Component {
             theme: null,
             themes: [],
             startDate: null,
-            week: 1,
             loading: false,
             message:"",
             themeDisplayName: "",
-            userId: null
+            userId: null,
+            bundles: [],
+            bundleCount: 3,
+            chosenBundles: []
         };
-    }
+        this.onChangeTheme= this.onChangeTheme.bind(this);
+        }
 
     static hasAccess() {
         return Permissions.canAddConcept();
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getThemes()
+        
         this.setState({
             userId: sessionStorage.getItem("userId")
         });
+        this.getYourBundles()
+        console.log("State:", this.state)
     }
 
     handleFormChange = (e) => {
@@ -85,12 +91,14 @@ class addConcept extends React.Component {
     }
 
     succesfullAdd(){
-        this.setState({ name:"",
-                        description: "",
+        this.setState({ 
+                        themeDisplayName:"",
+                        name:"",
+                        description:"",
                         message:"Concept toegevoegd",
                         startDate:"",
-                        week:"",
-                        themeDisplayName: ""});
+                        week:""
+                        });
     }
 
     onChangeTheme = (e) => {
@@ -126,32 +134,98 @@ class addConcept extends React.Component {
     getYourBundles() {
 
         if (Permissions.isUserAdmin()) {
-            axios.get(config.url.API_URL + '/webapi/bundle/getAllBundles')
+            axios.get(config.url.API_URL + '/webapi/bundle/bundles')
+                .then(response => {
+                    console.log("Repsponse:", response);
+                    this.handleBundleResponse(response.data);
+                })
+                .catch(() => {
+                    console.log("error");
+                })
         }
         else {
-            axios.get(config.url.API_URL + '/webapi/bundle/getMyBundles/' + this.state.userId)
+            axios.get(config.url.API_URL + '/webapi/bundle/getCreatorBundles/' + this.state.userId)
                 .then(response => {
-                    this.setState({
-                        themes: response.data,
-                        pageLoading: false
-                    });
+                    console.log("Repsponse:", response);
+                    this.handleBundleResponse(response.data);
                 })
                 .catch(() => {
                     this.setState({
                         pageLoading: false
                     });
+                    console.log("error");
                 })
         }
+    }
 
+    handleBundleResponse(data) {
+        this.setState({
+            bundles: data,
+        });
+    }
+
+    add = (e) => {
+        let chosenBundles = this.state.chosenBundles;
+        chosenBundles.push({ id: null, name: "Leeg" });
+        console.log(chosenBundles);
+
+        this.setState({
+            chosenBundles: chosenBundles,
+        }) 
+    }
+
+    remove = (e) => {
+        let chosenBundles = this.state.chosenBundles.slice(0, -1)
+        console.log(chosenBundles);
+
+        this.setState({
+            chosenBundles: chosenBundles,
+        })     
     }
     
     render() {
+
+        const chosenBundles = this.state.chosenBundles
 
         const themeOptions = this.state.themes.map((theme) => {
             return (
                 <option key={theme.id} value={theme.id}>{theme.name}</option>
             )
         });
+
+        // const bundleOptions = this.state.bundles.map((bundle) => {
+        //     return (    
+        //         <option key={bundle.id} value={bundle.id}>{bundle.name}</option>
+        //     )
+        // });
+
+        console.log(chosenBundles);
+
+        const bundleContent = chosenBundles.map((bundle, index) => {
+            console.log(this.state.bundleCount);
+            return (
+                <tr>
+                    <td>{index}</td>
+                    <td>{bundle.name} </td>
+                </tr>
+            )
+        });
+
+        const bundleTable = (
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Week
+                            </th>
+                        <th>
+                            Bundle
+                            </th>
+                    </tr>
+                    {bundleContent}
+                </thead>
+            </table>
+        );
 
         return (
             <div> 
@@ -179,13 +253,13 @@ class addConcept extends React.Component {
                         <div className="row m-2 justify-content-center">
                             <label className="col-2" htmlFor="theme">Thema:</label>
                             <div className="col-3">
-                            <select name="theme" id="theme"
-                                value={this.themeDisplayName}
-                                onChange={this.onChangeTheme}
-                                required>
-                                <option hidden value=''>Thema</option>
-                                {themeOptions}
-                            </select>
+                                <select name="theme" id="theme"
+                                    value={this.state.themeDisplayName}
+                                    onChange={this.onChangeTheme}
+                                    required>
+                                    <option hidden value=''></option>
+                                    {themeOptions}
+                                </select>
                             </div>
                         </div>
 
@@ -202,6 +276,13 @@ class addConcept extends React.Component {
                                 <input className="col-9" id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
                             </div>
                         </div> */}
+
+                        <div>
+                            <button type="button" onClick={this.add}>add</button>
+                            <button type="button" onClick={this.remove}>remove</button>
+                        </div>
+
+                        {bundleTable}
 
                         <div className="row justify-content-center">
                             <div className="col-6 m">

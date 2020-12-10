@@ -60,7 +60,7 @@ class TestConceptRepository {
 		LocalDate endDate = null;
 		ThemeRepository tr = new ThemeRepository(session);
 		Theme theme = tr.readByName("API");
-		Concept concept = new Concept(theme, "testConcept", "Description of test concept", 3, startDate, endDate);
+		Concept concept = new Concept(theme, "testConcept", "Description of test concept", startDate, endDate);
 		
 		// Run
 		Concept result = cr.create(concept);

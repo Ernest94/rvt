@@ -7,6 +7,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -15,10 +17,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleJson;
 import nu.educom.rvt.services.BundleService;
+import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/bundle")
 public class BundleResource extends BaseResource {
@@ -89,13 +94,27 @@ public class BundleResource extends BaseResource {
 			return Response.status(200).entity(bundles).build();
 		});
 	}
-
-	@GET /* JH: Als dit een GET is kan je geen body data meegeven zoals een POST dat kan alleen pathdata, en dan had ik eerder userId verwacht */
-	@Path("/bundleTrainee") 
-	@Consumes(MediaType.APPLICATION_JSON)
+	
+	@GET
+	@Path("/bundleCreator/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCreatorBundles(@PathParam("userId") int userId) {
+		return wrapInSession(session -> {
+			UserService userService = new UserService(session);
+			BundleService bundleService = new BundleService(session);
+			User user = userService.getUserById(userId);
+			List<Bundle> bundles = bundleService.getAllCreatorBundles(user);
+			BundleJson bundleJson = new BundleJson(bundles);
+			
+			return Response.status(200).entity(bundleJson).build();
+		});
+	}
+	
+	@GET 
+	@Path("/bundleTrainee/{userId}") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(User user) {
-		LOG.debug("getTraineeBundles for user {} called", user);
+		LOG.debug("getTraineeBundles for user {} called", user.getId());
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
 			List<Bundle> bundles = bundleService.getAllBundles();
@@ -106,5 +125,20 @@ public class BundleResource extends BaseResource {
 			return Response.status(200).entity(bundleJson).build();
 		});
 	}
+	
+	@GET
+	@Path("/conceptsBundle/{bundleId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
+		return wrapInSession(session -> {
+			BundleService bundleService = new BundleService(session);
+				
+			Bundle bundle = bundleService.getBundleById(bundleId);
+			List<Concept> concepts = bundleService.getAllConceptsFromBundle(bundle);		
+		
+			return Response.status(200).entity(concepts).build();
+		});
+	}
+
 	
 }

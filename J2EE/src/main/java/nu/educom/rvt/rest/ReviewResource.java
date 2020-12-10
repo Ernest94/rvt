@@ -55,7 +55,7 @@ public class ReviewResource extends BaseResource {
 				
 				List<Review> allReviews = reviewServ.getAllCompletedReviewsForUser(userOutput);
 				List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
-				List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+				List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
 				
 				/* JH: Move this to a logic function or to conceptRatingJSON's constructor */
 				ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
@@ -92,9 +92,10 @@ public class ReviewResource extends BaseResource {
 			List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
 			List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 			//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
-			List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews);
+			List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
 		    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
-	
+			List<ConceptPlusRating> CPRActive = conceptServ.converToCPRActive(conceptsPlusRatings);
+			
 			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 			String traineeName = userOutput.getName();
 			String traineeLocation = userOutput.getLocation().getName();
@@ -106,9 +107,11 @@ public class ReviewResource extends BaseResource {
 			conceptsRatingsJSON.setTraineeName(traineeName);
 			conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 			conceptsRatingsJSON.setReviewDate(reviewDate);
-			conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+			conceptsRatingsJSON.setConceptPlusRating(CPRActive);
 			conceptsRatingsJSON.setReviewId(reviewId);
-	
+			conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
+			conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
+
 			return Response.status(200).entity(conceptsRatingsJSON).build();
 		});
       }
@@ -148,14 +151,14 @@ public class ReviewResource extends BaseResource {
     }
 	
 	@GET
-	@Path("/pendingUsers")
+	@Path("/pending/location/{locationId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUsersWithPendingReviews() {
+	public Response getAllUsersWithPendingReviews(@PathParam("locationId") int locationId) {
 		LOG.debug("getAllUsersWithPendingReviews called");
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session); /* JH: Should be a UserLogic class */
 			ReviewService reviewServ = new ReviewService(session);
-			List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews();
+			List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(locationId);
 			UserSearchJson USJ = userServ.convertToUSJ(foundUsers); 
 		
 			return Response.status(200).entity(USJ).build();

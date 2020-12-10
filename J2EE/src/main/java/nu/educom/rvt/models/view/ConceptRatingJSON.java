@@ -1,5 +1,5 @@
 package nu.educom.rvt.models.view;
-
+	
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +17,8 @@ public class ConceptRatingJSON implements Serializable{
 		private List<ConceptPlusRating> conceptsPlusRatings;
 		private String traineeName;
 		private String traineeLocation;
+		private String commentOffice;
+		private String commentStudent;
 		private LocalDateTime reviewDate;
 		private int reviewId;
 		
@@ -56,6 +58,18 @@ public class ConceptRatingJSON implements Serializable{
 		}
 		public void setReviewId(int reviewId) {
 			this.reviewId = reviewId;
+		}
+		public String getCommentOffice() {
+			return commentOffice;
+		}
+		public void setCommentOffice(String commentOffice) {
+			this.commentOffice = commentOffice;
+		}
+		public String getCommentStudent() {
+			return commentStudent;
+		}
+		public void setCommentStudent(String commentStudent) {
+			this.commentStudent = commentStudent;
 		}
 
 }
