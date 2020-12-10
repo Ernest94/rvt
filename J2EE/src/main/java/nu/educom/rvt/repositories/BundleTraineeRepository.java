@@ -107,6 +107,20 @@ public class BundleTraineeRepository {
 //		}
 //	} This function isn't necessary yet, but I believe it will be in the future so it's already built. 
 	
+//=======
+//					.createQuery("from bundle_trainee where user_id =:userId", BundleTrainee.class)
+//					.setParameter("userId", userId)
+//					.getResultList();
+//		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
+//			return null;
+//		} finally {
+//			if (session != null) {
+//				session.close();
+//			}
+//		}
+//	} 
+//>>>>>>> dbe9b30caaf93afe00897c6326269369b0f8ed6f
+	
 	public void update(BundleTrainee bundleTrainee) {
 		Session session = null;
 		try {

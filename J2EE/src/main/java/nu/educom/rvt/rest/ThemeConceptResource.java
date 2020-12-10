@@ -8,9 +8,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.TraineeActive;
+import nu.educom.rvt.models.TraineeMutation;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.WeekChangeForUser;
 import nu.educom.rvt.models.Concept;
-
 import nu.educom.rvt.services.ThemeConceptService;
 
 @Path("/webapi/theme_concept")
@@ -77,4 +81,50 @@ public class ThemeConceptResource {
 			Response.status(200).entity(allConceptsAndAllBundles).build());
 	}
 	
+	@POST
+	@Path("/active")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setActive(ActiveChangeForUser activeChange){
+		User user = activeChange.getUser();
+		Concept concept = activeChange.getConcept();
+		
+		TraineeActive currentMutation = themeConceptServ.getCurrentMutationForUserAndConcept(user, concept);
+		
+		if(currentMutation==null) {
+			boolean inBundel = themeConceptServ.isConceptInBundleUser(user, concept);
+			activeChange.setActive(!inBundel);
+			themeConceptServ.createNewMutation(activeChange);
+			return Response.status(201).build();
+		}
+		else {
+			themeConceptServ.endMutation(currentMutation);
+			return Response.status(200).build();
+		}
+	}
+	@POST
+	@Path("/week")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response setWeek(WeekChangeForUser weekChange){
+		
+		System.out.print("\n" + weekChange.getUser().getId() + "  " 
+				+  weekChange.getConcept().getId() + "  " 
+				+  weekChange.getWeek() + "\n");
+		
+		User user = weekChange.getUser();
+		Concept concept = weekChange.getConcept();
+		
+		TraineeMutation currentMutation = themeConceptServ.getCurrentWeekMutationForUserAndConcept(user, concept);
+		
+		if(currentMutation==null) {
+			System.out.print("\n" +  "currentMutation is null" + "\n" );
+			themeConceptServ.createNewWeekMutation(weekChange);
+			return Response.status(201).build();
+		}
+		else {
+			System.out.print("\n" +  "currentMutation is not null" + "\n" );
+			themeConceptServ.endWeekMutation(currentMutation);
+			themeConceptServ.createNewWeekMutation(weekChange);
+			return Response.status(200).build();
+		}
+	}
 }

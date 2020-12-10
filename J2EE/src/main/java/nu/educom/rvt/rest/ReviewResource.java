@@ -169,7 +169,6 @@ public class ReviewResource {
 			reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
 	  	    return Response.status(404).build();
 		}
-
     }
 	
 	@POST

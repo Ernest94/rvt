@@ -1,25 +1,32 @@
 package nu.educom.rvt.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import nu.educom.rvt.models.Bundle;
+
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.TraineeActive;
+import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptView;
 import nu.educom.rvt.models.view.ConceptWeekOffset;
+import nu.educom.rvt.models.view.WeekChangeForUser;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
+//import nu.educom.rvt.repositories.TraineeMutationRepository;
 import one.util.streamex.StreamEx;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
@@ -118,6 +125,55 @@ public class ThemeConceptService {
 		//verwijdert alle duplicaten door de .distinct()
 		
 		return traineeActiveConcepts;
+	}
+	public boolean isConceptInBundleUser(User user, Concept concept) {
+		return conceptRepo.isConceptInUserBundle(concept.getId(),user.getId());
+		
+	}
+	public TraineeActive getCurrentMutationForUserAndConcept(User user, Concept concept) {
+		TraineeActive mutation = traineeActiveRepo.findActiveByUserIdAndConceptId(user.getId(), concept.getId());
+		return mutation;
+	}
+	
+	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) {
+		TraineeMutation weekMutation = traineeMutationRepo.findWeekMutationByUserIdAndConceptId(user.getId(), concept.getId());
+		return weekMutation;
+	}
+
+	public void createNewMutation(ActiveChangeForUser activeChange) {
+
+		TraineeActive newMutation = new TraineeActive();
+
+		newMutation.setUser(activeChange.getUser());
+		newMutation.setConcept(activeChange.getConcept());
+		newMutation.setActive(activeChange.getActive());
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeActiveRepo.create(newMutation);
+		
+	}
+	
+	public void endMutation(TraineeActive currentMutation) {
+		currentMutation.setEndDate(LocalDate.now());
+		traineeActiveRepo.update(currentMutation);
+	}
+	
+	public void createNewWeekMutation(WeekChangeForUser weekChange) {
+
+		TraineeMutation newMutation = new TraineeMutation();
+
+		newMutation.setUser(weekChange.getUser());
+		newMutation.setConcept(weekChange.getConcept());
+		newMutation.setWeek(weekChange.getWeek());
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeMutationRepo.create(newMutation);
+		
+	}
+	
+	public void endWeekMutation(TraineeMutation currentMutation) {
+		currentMutation.setEndDate(LocalDate.now());
+		traineeMutationRepo.update(currentMutation);
 	}
 	
 	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs){
