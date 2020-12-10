@@ -105,7 +105,7 @@ public class HibernateSession {
 		    criteria.from(type);
 		    List<T> data = session.createQuery(criteria).getResultList();
 		    return data;
-		} catch (IllegalStateException e) {
+		} catch (Exception e) {
 		    throw new DatabaseException(e);
 		}
     }

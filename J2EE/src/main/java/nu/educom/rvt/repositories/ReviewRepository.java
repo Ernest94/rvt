@@ -41,11 +41,14 @@ public class ReviewRepository {
 	
 	public Review updateStatus(int reviewId, Status newStatus) throws DatabaseException {
 		Review review = readById(reviewId);
+		if (review.getReviewStatus() != Status.PENDING) {
+			throw new DatabaseException("Modifying an existing Review");
+		}
 		if (newStatus != Status.COMPLETED && newStatus != Status.CANCELLED) {
 			throw new DatabaseException("Cannot modify review status");
 		}
-		if (review.getReviewStatus() != Status.PENDING) {
-			throw new DatabaseException("Modifying an existing Review");
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
 		review.setReviewStatus(newStatus);
 		return review;

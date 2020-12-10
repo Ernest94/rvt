@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
@@ -195,9 +196,13 @@ public class ReviewService {
     	return toUpdate;
     }
 	
+    /* TODO Move to reviewLogic class */
 	public Review getMostRecentReview(List<Review> allReviews) {
-		LocalDateTime mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();;
-		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
+		Optional<LocalDateTime> mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo);
+		if (mostRecentDate.isEmpty()) {
+			return null;
+		}
+		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate.get()).findFirst().orElse(null);
 	}
 	
 	public String convertDateTimeToString(LocalDate date)

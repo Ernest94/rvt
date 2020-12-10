@@ -99,8 +99,6 @@ public class BundleService {
 
 		
 		if (bundleConceptsToAddToDB.isEmpty()) {
-		    session.getTransaction().commit();
-			session.close();
 			return 1;
 		} else {
 			for (BundleConceptWeekOffset bundleConceptToAddToDB : bundleConceptsToAddToDB) {
@@ -110,8 +108,6 @@ public class BundleService {
 								    		bundleConceptToAddToDB.getWeekOffset(),
 								    		LocalDate.now()));
 				}
-		    session.getTransaction().commit();
-		    session.close();
 		    return 1;
 		}	
 	}
@@ -143,6 +139,10 @@ public class BundleService {
 		
 		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
 		return bundleCheck;		
+	}
+
+	public boolean doesBundleExists(int bundleId) throws DatabaseException {
+		return bundleRepo.readById(bundleId) != null;
 	}
 	
 }
