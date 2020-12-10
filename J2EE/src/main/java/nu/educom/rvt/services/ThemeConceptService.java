@@ -1,5 +1,6 @@
 package nu.educom.rvt.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,12 +13,16 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.TraineeActive;
+import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.view.ConceptPlusRating;
+import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptView;
 import nu.educom.rvt.models.view.ConceptWeekOffset;
+import nu.educom.rvt.models.view.WeekChangeForUser;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
@@ -26,11 +31,7 @@ import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
-import nu.educom.rvt.repositories.BundleConceptRepository;
-import nu.educom.rvt.repositories.BundleRepository;
-import nu.educom.rvt.repositories.BundleTraineeRepository;
 import one.util.streamex.StreamEx;
-
 
 public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
@@ -122,7 +123,7 @@ public class ThemeConceptService {
 		return traineeActiveConcepts;
 	}
 
-	public boolean isConceptInBundleUser(User user, Concept concept) {
+	public boolean isConceptInBundleUser(User user, Concept concept) throws DatabaseException {
 		return conceptRepo.isConceptInUserBundle(concept.getId(),user.getId());
 		
 	}
@@ -132,12 +133,12 @@ public class ThemeConceptService {
 		return mutation;
 	}
 	
-	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) {
+	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) throws DatabaseException {
 		TraineeMutation weekMutation = traineeMutationRepo.findWeekMutationByUserIdAndConceptId(user.getId(), concept.getId());
 		return weekMutation;
 	}
 
-	public void createNewMutation(ActiveChangeForUser activeChange) {
+	public void createNewMutation(ActiveChangeForUser activeChange) throws DatabaseException {
 
 		TraineeActive newMutation = new TraineeActive();
 
@@ -150,12 +151,12 @@ public class ThemeConceptService {
 		
 	}
 	
-	public void endMutation(TraineeActive currentMutation) {
+	public void endMutation(TraineeActive currentMutation) throws DatabaseException {
 		currentMutation.setEndDate(LocalDate.now());
 		traineeActiveRepo.update(currentMutation);
 	}
 	
-	public void createNewWeekMutation(WeekChangeForUser weekChange) {
+	public void createNewWeekMutation(WeekChangeForUser weekChange) throws DatabaseException {
 
 		TraineeMutation newMutation = new TraineeMutation();
 
@@ -168,7 +169,7 @@ public class ThemeConceptService {
 		
 	}
 	
-	public void endWeekMutation(TraineeMutation currentMutation) {
+	public void endWeekMutation(TraineeMutation currentMutation) throws DatabaseException {
 		currentMutation.setEndDate(LocalDate.now());
 		traineeMutationRepo.update(currentMutation);
 	}

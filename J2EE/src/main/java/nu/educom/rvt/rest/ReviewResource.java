@@ -64,12 +64,13 @@ public class ReviewResource extends BaseResource {
 				conceptsRatingsJSON.setTraineeName(traineeName);
 				conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 				if (!allReviews.isEmpty()) {
-					LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
+					Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
+					LocalDateTime reviewDate = mostRecentReview.getDate();
 					conceptsRatingsJSON.setReviewDate(reviewDate);
+					conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
+					conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
 				}
 				conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
-				conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
-				conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
 
 	
 				return Response.status(200).entity(conceptsRatingsJSON).build();

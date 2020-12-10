@@ -13,23 +13,19 @@ import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
-import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
-import nu.educom.rvt.models.view.BundleView;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.HibernateSession;
-import nu.educom.rvt.models.BundleTrainee;
-import nu.educom.rvt.models.TraineeMutation;
-import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
-import one.util.streamex.StreamEx;
 
 public class BundleService {
 	private static final Logger LOG = LogManager.getLogger();
@@ -137,52 +133,29 @@ public class BundleService {
 	public List<Bundle> getAllBundles() throws DatabaseException {
 		return bundleRepo.readAll();
 	}
+	public List<BaseBundleView> getAllBundleViews() throws DatabaseException {
+		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
+	}
 	
-<<<<<<< HEAD
 	public List<Bundle> getAllCreatorBundles(User user) throws DatabaseException{
 		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
 	}
 	 
-	public List<Bundle> getAllBundlesFromUser(User user) throws DatabaseException{
-		// TODO Change to return new UserRepository().readById(user.getId()).Bundels();
-		return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
-												   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
-	}
-	// TODO move to a BundelLogic class
-	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
-=======
-	public List<BaseBundleView> getAllBundleViews()
-	{
-		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
-	}
-	
-	public List<Bundle> getAllCreatorBundles(User user){
-		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
-	}
 	 
-	public List<BundleTraineeView> getAllBundlesFromUser(User user)
+	public List<BundleTraineeView> getAllBundlesFromUser(User user) throws DatabaseException
 	{
-		Session session = HibernateSession.getSessionFactory().openSession();
 		List<BundleTraineeView> bunTs = bundleTraineeRepo.readAll().stream()
 								.filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 								.map(bundleTrainee -> new BundleTraineeView(bundleTrainee.getStartWeek(), new BaseBundleView(bundleTrainee.getBundle())))
 								.collect(Collectors.toList());
-		
-		
-		
-		session.close();
-		//return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
-		//										   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
 		return bunTs;
 	}
-	
-	public void setBundlesForUser(User user, List<BundleTraineeView> bundles) 
+
+	public void setBundlesForUser(User user, List<BundleTraineeView> bundles) throws DatabaseException 
 	{
 		List<BundleTrainee> records = bundleTraineeRepo.readByUserId(user.getId());
->>>>>>> origin/development
-		
 		List<BundleTrainee> updated = new ArrayList<BundleTrainee>();
-
+		
 		for(BundleTrainee record : records) {
 			boolean found=false;
 			for(BundleTraineeView btv: bundles) {
@@ -239,27 +212,10 @@ public class BundleService {
 
 	    
 	}
-<<<<<<< HEAD
 
 	public boolean doesBundleExists(int bundleId) throws DatabaseException {
 		return bundleRepo.readById(bundleId) != null;
 	}
-=======
-//	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
-//		
-//		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();
-//		
-//		for(Bundle bundle : bundleTrainee) {
-//			bundleCheck.add(new BundleCheck(bundle, true));
-//		}
-//		for(Bundle bundle : bundleAll) {
-//			bundleCheck.add(new BundleCheck(bundle, false));
-//		}
-//		
-//		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
-//		return bundleCheck;		
-//	}
->>>>>>> origin/development
 	
 	public List<Concept> getAllConceptsFromBundle(Bundle bundle) throws DatabaseException{
 		return bundleConceptRepo.readAll().stream().filter(conceptBundle -> conceptBundle.getBundle().getId() == bundle.getId())
@@ -316,27 +272,5 @@ public class BundleService {
 		
 		CPRWeek.setWeek(week);
 		return CPRWeek;
-	}
-	
-	
-	
+	}	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

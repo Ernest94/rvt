@@ -94,4 +94,8 @@ public class TraineeMutation {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
+	@Override
+	public String toString() {
+		return String.format("TraineeMutation: %s %s week %d endDate %s", user, concept, week, endDate);
+	}
 }

@@ -96,5 +96,10 @@ public class TraineeActive {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
+	@Override
+	public String toString() {
+		return String.format("TraineeActive: %s %s active %s endDate %s", user, concept, active, endDate);
+	}
+
 }
 	

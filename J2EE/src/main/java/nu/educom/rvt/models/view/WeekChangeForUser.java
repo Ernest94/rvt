@@ -37,5 +37,8 @@ public class WeekChangeForUser implements Serializable {
 	public void setWeek(int week) {
 		this.week = week;
 	}
-
+	@Override
+	public String toString() {
+		return String.format("WeekChange: %s %s week %d endDate %s", user, concept, week);
+	}
 }
