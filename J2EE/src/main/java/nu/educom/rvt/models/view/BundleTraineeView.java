@@ -30,6 +30,12 @@ public class BundleTraineeView  {
 	public void setBundle(BaseBundleView bundle) {
 		this.bundle = bundle;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return String.format("(%s, %d)", bundle.getName(), startWeek);
+	}
 
 
 }
