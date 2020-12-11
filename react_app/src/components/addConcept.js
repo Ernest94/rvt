@@ -1,11 +1,77 @@
 import React from 'react';
 import axios from 'axios';
-import {Select, MenuItem } from '@material-ui/core';
 import {config} from './constants';
 import Permissions from './permissions.js'
 import './form.css'
 import Utils from './Utils.js'
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FaPlus, FaTimes } from "react-icons/fa";
+
+class BundleConceptTable extends React.Component {
+
+    render() {
+        const weeks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        const weekOptions = weeks.map((week) => (
+            <option key={"week_" + week} value={week}>
+                {"startweeek + " + week}
+            </option>))
+
+        const bundleOptions =
+            this.props.bundles.map((bundle, index) => (
+                <option key={"bundleChoice" + index} value={bundle.id}>
+                    {bundle.name}
+                </option>))
+
+        return (
+            <div className="col-sm-9">
+                <table className="bundleTable dossier">
+                    <tbody>
+                        {this.props.chosenBundles.map((chosenBundle, index) =>
+                            (this.props.editDisabled ?
+                                <tr key={"bundleSelect_" + index}>
+                                    <td>{chosenBundle.bundle.name}</td>
+                                    <td>Start: week {chosenBundle.week}</td>
+                                    <td></td>
+                                </tr>
+                                :
+                                <tr className="row" key={"bundleSelect_" + index}>
+                                    <td>
+                                        <select className="form-control"
+                                            id={"week_" + index}
+                                            name="startWeek"
+                                            value={chosenBundle.week}
+                                            onChange={(e) => this.props.handleBundleWeekChange(e)}
+                                        >
+                                            <option value="-1" hidden>Kies een startweek</option>
+                                            {weekOptions}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select className="form-control"
+                                            id={"bundle_" + index}
+                                            name="bundle"
+                                            value={chosenBundle.bundle.id ? chosenBundle.bundle.id : -1}
+                                            onChange={(e) => this.props.handleBundleChange(e)}
+                                        >
+                                            <option value="-1" hidden>Kies een bundel</option>
+                                            {bundleOptions}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
+                                            <FaTimes />
+                                        </button>
+                                    </td>
+                                </tr>))}
+                    </tbody>
+                </table>
+                {!this.props.editDisabled ?
+                    <button className="btn btn-danger btn-sm" name="add" type="button" onClick={this.props.addBundle}>
+                        <FaPlus />
+                    </button> : ""}
+            </div>)
+    }
+}
 
 class addConcept extends React.Component {
     
@@ -189,35 +255,25 @@ class addConcept extends React.Component {
     //     });
     // }
 
-    add = (e) => {
-        let chosenBundles = this.state.chosenBundles;
-        chosenBundles.push({ bundle: this.state.bundles[0], week: 0 });
-        console.log(chosenBundles);
-
-        this.setState({
-            chosenBundles: chosenBundles,
-        }) 
+    addBundle() {
+        this.setState((prevState) => ({ chosenBundles: [...prevState.chosenBundles, { bundle: { id: -1 }, week: 0 }] }));
     }
 
-    remove = (e) => {
-        let chosenBundles = this.state.chosenBundles.slice(0, -1)
-        console.log(chosenBundles);
-
-        this.setState({
-            chosenBundles: chosenBundles,
-        })     
+    removeBundle(e, index) {
+        this.setState((prevState) => ({ chosenBundles: [...prevState.chosenBundles.slice(0, index), ...prevState.chosenBundles.slice(index + 1)] }));
     }
 
     handleBundleChange(e) {
 
-        const index = e.target.name.substring(7);
-        const value = e.target.value;
-        console.log(index);
-        console.log(value);
+        let allBundles = this.state.bundles;
+        const index = e.target.id.substring(7);
+        const value = +e.target.value;
+
+        var selectedBundleIndex = allBundles.findIndex(bundle => bundle.id === value);
 
         let bundles = this.state.chosenBundles;
         let bundle = bundles[index];
-        bundle.bundle = value;
+        bundle.bundle = allBundles[selectedBundleIndex];
         bundles[index] = bundle;
         this.setState({
             chosenBundles: bundles
@@ -227,7 +283,7 @@ class addConcept extends React.Component {
 
     handleBundleWeekChange(e) {
 
-        const index = e.target.name.substring(5);
+        const index = e.target.id.substring(5);
         const value = e.target.value;
         console.log(index);
         console.log(value);
@@ -245,64 +301,11 @@ class addConcept extends React.Component {
     
     render() {
 
-        const chosenBundles = this.state.chosenBundles
-
         const themeOptions = this.state.themes.map((theme) => {
             return (
                 <option key={theme.id} value={theme.id}>{theme.name}</option>
             )
         });
-
-        const bundleOptions = this.state.bundles.map((bundle) =>(
-            <MenuItem key={bundle.id} value={bundle}>
-                {bundle.name}
-            </MenuItem>
-        ))
-
-        const weeks = [0,1,2,3,4,5,6,7,8,9,10,11,12];
-        const weekoptions = weeks.map((week) =>(
-                            <MenuItem key={"week_"+week} value={week}>
-                                {"week " + week}
-                            </MenuItem>))
-
-        const bundleContent = chosenBundles.map((bundle, index) => {    
-            return (
-                <tr>
-                    <td>
-                        <Select  name={"weeks" + index} id={"weeks" + index}
-                            value={bundle.week}
-                            onChange={(e)=>this.handleBundleWeekChange(e)}
-                            >
-                            {weekoptions}
-                        </Select></td>
-                    <td>
-                        <Select  name={"bundles" + index} id={"bundles" + index}
-                            value={bundle.bundle}
-                            onChange={(e) => this.handleBundleChange(e)}
-                            displayEmpty
-                            >
-                            {bundleOptions}
-                        </Select>
-                    </td>
-                </tr>
-            )
-        });
-
-        const bundleTable = (
-            <table>
-                <thead>
-                    <tr>
-                        <th>
-                            Week
-                        </th>
-                        <th>
-                            Bundle
-                        </th>
-                    </tr>
-                    {bundleContent}
-                </thead>
-            </table>
-        );
 
         return (
             <div> 
@@ -340,28 +343,16 @@ class addConcept extends React.Component {
                                 </select>
                             </div>
                         </div>
-
-                        {/* <div className="row m-2 justify-content-center">
-                            <label className="col-2" htmlFor="week">Week:</label>
-                            <div className="col-3">
-                                <input className="col-4" id="week" type="number" name="week" min="1" value={this.state.week} onChange={this.handleFormChange} />
-                            </div>
-                        </div> */}
-
-                        {/* <div className="row m-2 mb-4 justify-content-center">
-                            <label className="col-2" htmlFor="date">Startdatum:</label>
-                            <div className="col-3">
-                                <input className="col-9" id="date" type="date" name="date" value={this.state.startDate} onChange={this.handleChangeDate} />
-                            </div>
-                        </div> */}
-
-                        <div>
-                            <button type="button" onClick={this.add}>add</button>
-                            <button type="button" onClick={this.remove}>remove</button>
+                        <div className="row m-2 justify-content-center">
+                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                            <BundleConceptTable
+                                chosenBundles={this.state.chosenBundles}
+                                bundles={this.state.bundles}
+                                removeBundle={this.removeBundle.bind(this)}
+                                handleBundleChange={this.handleBundleChange.bind(this)}
+                                handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
+                                addBundle={this.addBundle.bind(this)} />
                         </div>
-
-                        {bundleTable}
-
                         <div className="row justify-content-center">
                             <div className="col-6 m">
                                 <div className="float-right">
