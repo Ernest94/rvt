@@ -10,67 +10,37 @@ import org.hibernate.SessionFactory;
 import nu.educom.rvt.models.Location;
 
 public class LocationRepository {
-	protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public int create(Location location) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    int generated = (int) session.save(location); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
-	    
-	    return generated;
+	public LocationRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public int create(Location location) throws DatabaseException {
+		int generated = (int) session.save(location); 
+		return generated;
 	}
 	
-	public Location readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(Location.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public Location readById(int id) throws DatabaseException {
+		return session.get(Location.class, id);
 	}
-	public Location readByName(String name) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return (Location) session
+	public Location readByName(String name) throws DatabaseException {
+		return (Location) session
 					.createQuery("from Location where name =:name", Location.class)
 					.setParameter("name", name)
-					.getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+					.uniqueResultOptional().orElse(null);		
 	}	
 	
-	public List<Location> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(Location.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<Location> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(Location.class, session);
 	}
 	
-	protected void update() {
+	protected void update() throws DatabaseException {
 		
 	}
 	
-	protected void delete() {
+	protected void delete() throws DatabaseException {
 		
 	}
 	

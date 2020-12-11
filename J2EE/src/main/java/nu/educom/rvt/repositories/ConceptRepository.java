@@ -1,66 +1,69 @@
 package nu.educom.rvt.repositories;
 
-
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Concept;
 
 public class ConceptRepository {
 
-protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public Concept create(Concept concept) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-		    session.beginTransaction();
-		    int conceptId = (int)session.save(concept);
-		    session.getTransaction().commit();
-		    concept.setId(conceptId);
-			return concept;
-		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
-			return null;
-		} finally {		   
-			if (session != null) {
-				session.close();
-			}
+	public ConceptRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public Concept create(Concept concept) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
+	    int conceptId = (int)session.save(concept);
+	    concept.setId(conceptId);
+		return concept;
 	}
 	
-	public List<Concept> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(Concept.class, session);
-		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
-			return null;
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<Concept> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(Concept.class, session);
 	}
 	
-	public Concept readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(Concept.class, id);
+	public Concept readById(int id) throws DatabaseException {
+		if (!session.isOpen()) {
+			throw new DatabaseException("Create called on an session that is not open");
 		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+		return session.get(Concept.class, id);
 	}
 	
-	protected void update() {
+	public Concept readByName(String name) throws DatabaseException {
+		if (!session.isOpen()) {
+			throw new DatabaseException("Create called on an session that is not open");
+		}
+		return (Concept) session
+				.createQuery("from Concept where name =:name", Concept.class)
+				.setParameter("name", name)
+				.uniqueResultOptional().orElse(null);
 	}
 	
-	protected void delete() {
+	public boolean isConceptInUserBundle(int id, int userId)  throws DatabaseException {
+		Optional result = session.createNativeQuery("SELECT name FROM concepts c "
+												+ "LEFT JOIN bundle_concept AS bc "
+												+ "ON c.id = bc.concept_id "
+												+ "LEFT JOIN bundle_trainee AS btr "
+												+ "ON bc.bundle_id = btr.bundle_id "
+												+ "WHERE bc.concept_id =:conceptId "
+												+ "AND btr.user_id =:userId")
+					.setParameter("userId", userId)
+					.setParameter("conceptId", id)
+					.uniqueResultOptional();
+		
+		return result.isPresent();
+	}
+	
+	protected void update() throws DatabaseException {
+	}
+	
+	protected void delete() throws DatabaseException {
 	}
 }

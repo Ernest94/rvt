@@ -3,7 +3,7 @@ import axios from 'axios';
 import { validate } from 'validate.js';
 import RoleAndLocation from './roleAndLocation.js';
 import UserInfo from './userInfo.js';
-import { withRouter } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
@@ -134,20 +134,20 @@ class AddUser extends React.Component {
         this.setState({currentStep: 1, errors: null});
     }
 
-    get previousButton() {
-        let currentStep = this.state.currentStep;
+    // get previousButton() {
+    //     let currentStep = this.state.currentStep;
 
-        if (currentStep > 1 /*&&  !this.state.isDocent*/) {
-            return (
-                <button
-                    className="btn btn-primary m-3"
-                    type="button" onClick={this._prev}>
-                    Vorige
-                </button>
-            )
-        }
-        return null;
-    }
+    //     if (currentStep > 1 /*&&  !this.state.isDocent*/) {
+    //         return (
+    //             <button
+    //                 className="btn btn-primary float-right"
+    //                 type="button" onClick={this._prev}>
+    //                 Vorige
+    //             </button>
+    //         )
+    //     }
+    //     return null;
+    // }
 
     get nextButton() {
         let currentStep = this.state.currentStep;
@@ -155,7 +155,7 @@ class AddUser extends React.Component {
         if (currentStep <= 1 ) {
             return (
                 <button
-                    className="btn btn-primary m-3"
+                    className="btn btn-primary float-right"
                     type="button" onClick={this._next}>
                     Volgende
                 </button>
@@ -169,7 +169,7 @@ class AddUser extends React.Component {
 
         if (currentStep === 2) {
             return (
-                    <button className="btn btn-primary m-3"
+                    <button className="btn btn-primary float-right"
                         disabled={submitButtonDisabled}
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
@@ -221,7 +221,7 @@ class AddUser extends React.Component {
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
-        if (pageLoading) return <div className="container center"><span> Laden...</span></div>;
+        if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
 
         return (
             <div className="container">
@@ -258,20 +258,30 @@ class AddUser extends React.Component {
                                 role={this.state.role}
                                 location={this.state.location}
                                 password={this.state.password}
-                                // dateValidation={Utils.dateValidation}
                                 handleFormChange={this.handleFormChange}
                             />
                             </div>
                         </div>
 
-                            <div className="row">
-                                <div className="col text-center">
+                            <div className="row justify-content-center">
+                                <div className="col-3 m-1">
                                     {this.nextButton}
-                                    {this.previousButton}
                                     {this.submitButton}
                                 </div>
                             </div>
                     </form>
+
+                    <div className="row justify-content-center">
+                        <div className="col-3">
+                            {(this.state.currentStep <= 1 ) ? 
+                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
+                                <button
+                                    className="btn btn-primary float-right"
+                                    type="button" onClick={this._prev}>
+                                    Vorige
+                                </button>}
+                        </div>
+                    </div> 
 
             </div>
         )

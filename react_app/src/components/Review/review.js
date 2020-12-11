@@ -17,7 +17,7 @@ class ConceptSelection extends React.Component {
         super(props);
         this.state ={
             stars: [1,5],
-            weeks: [1,10],
+            weeks: [0,10],
         }
 
     }
@@ -58,7 +58,7 @@ class ConceptSelection extends React.Component {
             value={this.state.weeks}
             handleChange={this.handleSliderChange.bind(this)}
             handleChangeCommit={this.props.handleChange.bind(this)}
-            min={1}
+            min={0}
             max={10}
             name = "weeks"
             />
@@ -180,6 +180,7 @@ class review extends React.Component {
             userLocation: data.traineeLocation,
             reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
+            traineeFeedback: data.commentOffice,
         });
         console.log(this.state);
     }
@@ -209,16 +210,6 @@ class review extends React.Component {
             case 5: return ("Uitstekend");
             default: return ("");
         }
-    }
-    inSelection(concept) {
-        let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
-        return(
-            this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1]
-            &&
-            this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1]
-            &&
-            (this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
-        )
     }
 
     getWeekBlock(week) {
@@ -268,7 +259,7 @@ class review extends React.Component {
                         return (
                             <tr key={"concept_" + concept.concept.id}>
                                 <td className="week">
-                                    {this.getWeekBlock(concept.concept.week)}
+                                    {this.getWeekBlock(concept.week)}
                                 </td>
                                 <td className="theme">
                                     <span className="theme-text"> {concept.concept.theme.abbreviation}

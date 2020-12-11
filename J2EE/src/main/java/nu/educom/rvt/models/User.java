@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
-@Table(name="users")
+@Table(name="user")
 public class User {
 
 	@Id
@@ -123,4 +123,8 @@ public class User {
 	public void setDateInactive(LocalDate dateInactive) {
 		this.dateInactive = dateInactive;
 	}	
+	@Override
+	public String toString() {
+		return String.format("User(%s)", getName() == null ? getEmail() : getName());
+	}
 }

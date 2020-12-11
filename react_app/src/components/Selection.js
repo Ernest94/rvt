@@ -37,7 +37,8 @@ class SwitchSelection extends React.Component {
                     track: 'switchTrack',
                     thumb: 'switchThumb',
                     checked: 'switchChecked',
-                }} />
+                }}
+                onChange={(e,newValue) => this.props.handleChange(newValue, this.props.name)} />
             Ja
         </div>)}
 }
@@ -88,25 +89,31 @@ class ConceptSelection extends React.Component {
     constructor(props) {
         super(props);
         this.state ={
-            stars: [0,5],
-            weeks: [1,10],
+            stars: [1,5],
+            weeks: [0,10],
         }
 
     }
-    
+    componentDidMount(){
+        console.log(this.props.starsSelected);
+        this.setState({stars: this.props.starsSelected});
+    }
     handleSliderChange(newValue, name){
         this.setState({[name]: newValue})
     }
     render()
     {
         let fieldoptions = {};
-        const active = 
+        const inactive = 
             <Selector
             title="Inactieven"
-            name="active"
+            name="inactive"
             allButton={false}
            >
-               <SwitchSelection />
+               <SwitchSelection 
+               name="inactive"
+               handleChange={this.props.handleChange.bind(this)}
+                />
            </Selector>
         const weeks = 
             <Selector
@@ -122,7 +129,7 @@ class ConceptSelection extends React.Component {
                 value={this.state.weeks} 
                 handleChange={this.handleSliderChange.bind(this)}
                 handleChangeCommit={this.props.handleChange.bind(this)}
-                min={1}
+                min={0}
                 max={10} 
             />
             </Selector>
@@ -160,7 +167,7 @@ class ConceptSelection extends React.Component {
         
         fieldoptions["stars"]=stars;
         fieldoptions["weeks"]=weeks;
-        fieldoptions["active"]=active;
+        fieldoptions["inactive"]=inactive;
         fieldoptions["themes"]=themes;
 
     return (
@@ -177,9 +184,9 @@ class SelectionTable extends React.Component {
         super(props);
         this.state={
             starsSelected: [1,5], //starting selection
-            weeksSelected: [1,10],
+            weeksSelected: [0,10],
             themesSelected: [], 
-            activeSelected: false,
+            inactiveSelected: false,
             themes: [],
 
         }
@@ -222,14 +229,12 @@ class SelectionTable extends React.Component {
     }
     inSelection(concept,selector){
         switch(selector){
-            case "active":
-                //Dependent on new concept implementation
-                return true;
+            case "inactive":
+                return this.state.inactiveSelected? true : concept.active;
             case "stars":
                 return this.state.starsSelected[0] <= concept.rating && concept.rating <= this.state.starsSelected[1];
             case "weeks":
-                //This will probably have to change dependent on new concept implementation
-                return this.state.weeksSelected[0] <= concept.concept.week && concept.concept.week <= this.state.weeksSelected[1];
+                return concept.week===0? true : this.state.weeksSelected[0] <= concept.week && concept.week <= this.state.weeksSelected[1];
             case "themes":
                 let index = this.state.themesSelected.findIndex((obj) => obj.id === concept.concept.theme.id);
                 return(this.state.themesSelected[index]===undefined? true : this.state.themesSelected[index].checked === true)
@@ -258,6 +263,7 @@ class SelectionTable extends React.Component {
                 themes={this.state.themes} 
                 handleChange={this.handleSelectionChange.bind(this)}
                 handleCheckChange={this.handleCheckChange.bind(this)}
+                starsSelected={this.props.starsSelected}
                 />
                 {this.props.children(this.inSelectionTotal.bind(this))}
             </div>

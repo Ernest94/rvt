@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity @XmlRootElement
-@Table(name="roles")
+@Table(name="role")
 public class Role {
 
 	@Id
@@ -35,5 +35,9 @@ public class Role {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Override
+	public String toString() {
+		return String.format("Role(%s)", getName());
 	}
 }

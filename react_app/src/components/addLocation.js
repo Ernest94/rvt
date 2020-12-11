@@ -5,6 +5,7 @@ import axios from 'axios';
 import {config} from './constants';
 import Permissions from './permissions.js';
 import Utils from './Utils.js';
+import {Link} from 'react-router-dom';
 
 class addLocation extends React.Component {
     
@@ -88,14 +89,24 @@ class addLocation extends React.Component {
                             <label htmlFor="name">Naam van locatie:</label>
                             <input className="form-control" id="locationName" type="text" name="locationName" value={this.state.locationName} onChange={this.handleFormChange}/>
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-8 m-1">
+                            <button className="btn btn-primary float-right" type="submit">Locatie toevoegen</button>
                         </div>
-                        <div className="row">
-                            <div className="col-8">
-                                <button className="btn btn-primary float-right" type="submit">Locatie toevoegen</button>
-                            </div>
-                        </div >
+                    </div >
 
                     </form>
+
+                    <div className="row">
+                        <div className="col-8 ">
+                            {(this.state.loading) ? 
+                                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
+                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>}
+                        </div>
+                    </div> 
+
+
                 <div className="row justify-content-center m-3">
                     <h4 className="text-center text-success">{this.state.message}</h4>
                 </div>

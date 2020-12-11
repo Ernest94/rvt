@@ -20,6 +20,7 @@ class conceptOverview extends React.Component {
             pageLoading: true,
             errors: "",
             selectedBundle: "",
+            selectedBundleCreator: "",
             activeConcepts:[],
             activeConceptsWeekOffset:[],
         };
@@ -55,11 +56,30 @@ class conceptOverview extends React.Component {
 
     onChangeBundle = (e) => {
         var bundleKeyId = parseInt(e.target.value);
+        var bundleCreatorName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.creator_name)[0];
+
         this.setState({
             selectedBundle: bundleKeyId,
+            selectedBundleCreator: bundleCreatorName
         });
         this.selectActiveConcepts(bundleKeyId)
     } 
+
+    getThemes() {
+        axios.get(config.url.API_URL + '/webapi/user/themes')
+            .then(response => {
+                this.setState({
+                    themes: response.data.themes,
+                    pageLoading: false
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
+                    pageLoading: false
+                });
+            })
+    }
 
     selectActiveConcepts(bundleKeyId) {
         var activeBundleConceptsAndWeekOffsets = this.bundles.find(bundle => bundle.id === parseInt(bundleKeyId)).bundleConceptWeekOffset;       
@@ -100,24 +120,23 @@ class conceptOverview extends React.Component {
         for (activeConcept of this.state.activeConcepts) {
             var indexChangedConceptInActiveConceptIds = this.state.activeConcepts.indexOf(activeConcept);
             activeConceptsAndWeekOffset.push({
+                bundleId:this.state.selectedBundle,
                 conceptId:activeConcept,
                 weekOffset:this.state.activeConceptsWeekOffset[indexChangedConceptInActiveConceptIds]});
         }
-        return ({
-            bundleConceptWeekOffset:activeConceptsAndWeekOffset,
-            bundleId:this.state.selectedBundle
-        })
+        return activeConceptsAndWeekOffset
     }
 
     saveBundle() {
-        console.log(this.bundleJSON());
-        axios.post(config.url.API_URL + "/webapi/bundle", this.bundleJSON())
+        axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
         .then(response => {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"
             });
+            this.props.history.push('/settings');
         })
         .catch((error) => {
+            this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
             console.log("an error occorured " + error);
         });
     }
@@ -186,26 +205,35 @@ class conceptOverview extends React.Component {
 
                 <h2 className="text-center">Concepten overzicht</h2>
                 
-                <div className="row"> 
-                    <ul className="errors">{this.state.errors}</ul>
+                <div className="row justify-content-center">
+                        <ul className="errors">{this.state.errors}</ul>
                 </div>
 
                 <div className="row">
-                    <div className="col-4">
-                        Bundel:
+                    <div className="col-3">
+                        Selecteer een bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
-                                <option hidden value=''>Bundel</option>
+                                <option hidden value=''></option>
                                 {bundleOptions}
                             </select>
                     </div>
-                    <div className="col-8">
-                        <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
-                            <FaPlus/>
-                        </Link>
+                    <div className="col-2">
+
+                        <span>
+                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
+                                <FaPlus/>
+                            </Link>
+                        </span>
                    </div>
+                   <div className="col-7">
+                    {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                        Bundel opslaan
+                    </button>: <span></span>}
+                    </div>
+
                 </div>
 
                 <div className="container mt-4">
@@ -229,15 +257,11 @@ class conceptOverview extends React.Component {
                                 </tr>
                             </thead>
                             <tbody className="tableBody table">
-                            {conceptDisplay}
+                                {conceptDisplay}
                             </tbody>
                         </table>
                     </div >
-                    <div className="col-3">
-                    <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}>
-                        Bundel opslaan
-                    </button>
-                    </div>
+
                 </div>
                 </div>
             </div>

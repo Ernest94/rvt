@@ -5,48 +5,46 @@ import org.hibernate.Session;
 import nu.educom.rvt.models.TraineeActive;
 
 public class TraineeActiveRepository {
-	public TraineeActiveRepository() {
+	private final Session session;
+	
+	public TraineeActiveRepository(Session session) {
+		super();
+		this.session = session;
 	}
 
-	public void create(TraineeActive traineeActive) {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
-	 
-	    session.save(traineeActive); 
-	 
-	    session.getTransaction().commit();
-	    session.close();
+	public void create(TraineeActive traineeActive) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
+		}
+		session.save(traineeActive); 
 	}
 	
-	public TraineeActive readById(int id) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return session.get(TraineeActive.class, id);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	public List<TraineeActive> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(TraineeActive.class, session);
 	}
 	
-	protected void update() {
+	public TraineeActive readById(int id) throws DatabaseException {
+		return session.get(TraineeActive.class, id);
+	}
+
+	public TraineeActive findActiveByUserIdAndConceptId(int userId, int conceptId) {
+		TraineeActive result = session
+			.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeActive.class)
+			.setParameter("userId", userId)
+			.setParameter("conceptId", conceptId)
+			.getSingleResult();
+		return result;
 	}
 	
-	protected void delete() {	
+	public void update(TraineeActive traineeActive) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
+		}
+		// TODO use this with records
+	    session.saveOrUpdate(traineeActive);
 	}
+
 	
-	public List<TraineeActive> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(TraineeActive.class, session);
-		}
-		finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
+	protected void delete() throws DatabaseException {	
+	}	
 }

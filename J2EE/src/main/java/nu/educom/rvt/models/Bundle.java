@@ -1,8 +1,13 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="bundle")
@@ -21,6 +26,9 @@ public class Bundle {
 	private LocalDate startDate;
 	@Column(name="enddate")
 	private LocalDate endDate;
+	@JsonManagedReference
+ 	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)
+	private List<BundleConcept> allConcepts = new ArrayList<BundleConcept>();
 	
 	//needed for Hibernate
 	public Bundle() {
@@ -81,4 +89,19 @@ public class Bundle {
 		this.endDate = endDate;
 	}
 
+	public List<BundleConcept> getAllConcepts() {
+		return allConcepts;
+	}
+
+	public void addConcept(BundleConcept bc) {
+		allConcepts.add(bc);
+	}
+
+//	public List<BundleConcept> getCurrentConcepts() {
+//		return allConcepts.stream().filter(item-> item.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList());
+//	}
+	@Override
+	public String toString() {
+		return String.format("Bundle(%s)", getName());
+	}
 }
