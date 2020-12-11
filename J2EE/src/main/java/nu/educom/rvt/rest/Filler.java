@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import nu.educom.rvt.models.*;
-import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.repositories.*;
 import nu.educom.rvt.services.UserService;
 
@@ -270,12 +269,6 @@ public class Filler {
             for (ConceptRating conceptRating : conceptsRatings) {
                 conceptRatingRepo.create(conceptRating);
             }    
-//            review1.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review1);
-//            review2.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review2);
-//            review4.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review4);
             
             //FILL THE BUNDLE TABLE
             BundleRepository bundleRepo = new BundleRepository(session);

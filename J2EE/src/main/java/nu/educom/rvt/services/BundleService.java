@@ -24,7 +24,7 @@ import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.HibernateSession;
-import nu.educom.rvt.repositories.TraineeActiveRepository;
+//import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
 
 public class BundleService {
@@ -33,7 +33,7 @@ public class BundleService {
 	private BundleRepository bundleRepo;
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleTraineeRepository bundleTraineeRepo;
-	private TraineeActiveRepository traineeActiveRepo; /* JH: wordt nog niet gebruikt */
+//	private TraineeActiveRepository traineeActiveRepo; /* JH: wordt nog niet gebruikt */
 	private TraineeMutationRepository traineeMutationRepo;
 	
 	public BundleService(Session session) {
@@ -41,7 +41,7 @@ public class BundleService {
 		this.bundleConceptRepo = new BundleConceptRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
-		this.traineeActiveRepo = new TraineeActiveRepository(session);
+//		this.traineeActiveRepo = new TraineeActiveRepository(session);
 		this.traineeMutationRepo = new TraineeMutationRepository(session);
 	}
 	
