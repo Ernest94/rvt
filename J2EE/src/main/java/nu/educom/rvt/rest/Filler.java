@@ -67,9 +67,20 @@ public class Filler {
             
             
             //FILL THE USER TABLE
-            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
-            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
-            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
+            List<Location> locationTrainees = new ArrayList<Location>();
+            locationTrainees.add(locations.get(0));
+            List<Location> locationOffice = new ArrayList<Location>();
+            locationOffice.add(locations.get(0));
+            locationOffice.add(locations.get(1));
+            List<Location> locationSales = new ArrayList<Location>();
+            locationSales.add(locations.get(0));
+            locationSales.add(locations.get(1));
+            locationSales.add(locations.get(2));
+            locationSales.add(locations.get(3));
+            
+            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locationTrainees,nowLD, endDateLD);
+            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locationTrainees,nowLD, endDateLD);
+            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locationTrainees,nowLD, endDateLD);
     
             User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),nowLD,endDateLD);
     

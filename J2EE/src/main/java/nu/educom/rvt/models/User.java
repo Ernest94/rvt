@@ -1,8 +1,13 @@
 package nu.educom.rvt.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import nu.educom.rvt.models.view.LocalDateAdapter;
 
@@ -23,14 +28,17 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
-	@ManyToOne
-	@JoinColumn(name="location_id")
-	private Location location;
+//	@ManyToOne
+//	@JoinColumn(name="location_id")
+//	private Location location;
 	@Column(name="dateActive")
 	private LocalDate dateActive;
 	@Column(name="dateInactive")
 	private LocalDate dateInactive;
-
+	@JsonManagedReference
+ 	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+	private List<UserLocation> allUserLocations = new ArrayList<UserLocation>();
+	
 	public User() {}
 	
 	public User(int id, String name, String email, String password, Role role, Location location, LocalDate dateActive,
@@ -41,7 +49,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.location = location;
+//		this.location = location;
 		this.dateActive = dateActive;
 		this.dateInactive = dateInactive;
 	}
@@ -52,7 +60,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.location = location;
+//		this.location = location;
 	}
 
 	public User(int id, String password) {
@@ -61,14 +69,14 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role, Location location, LocalDate dateActive,
-			LocalDate dateInactive) {
+	public User(String name, String email, String password, Role role,List<UserLocation> allUserLocations, 
+			LocalDate dateActive, LocalDate dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.location = location;
+		this.allUserLocations = allUserLocations;
 		this.dateActive = dateActive;
 		this.dateInactive = dateInactive;
 	}
@@ -103,12 +111,12 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public Location getLocation() {
-		return location;
-	}
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+//	public Location getLocation() {
+//		return location;
+//	}
+//	public void setLocation(Location location) {
+//		this.location = location;
+//	}
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public LocalDate getDateActive() {
 		return dateActive;
@@ -123,6 +131,13 @@ public class User {
 	public void setDateInactive(LocalDate dateInactive) {
 		this.dateInactive = dateInactive;
 	}	
+	public List<UserLocation> getAllUserLocations() {
+		return allUserLocations;
+	}
+	public void setAllUserLocations(List<UserLocation> allUserLocations) {
+		this.allUserLocations = allUserLocations;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("User(%s)", getName() == null ? getEmail() : getName());
