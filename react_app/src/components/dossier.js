@@ -232,6 +232,11 @@ class Dossier extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
+        if(this.isOwnUserId()){
+            sessionStorage.setItem("userName", this.state.name);
+            sessionStorage.setItem("userLocation", this.state.location.name);
+            sessionStorage.setItem("userLocationId", this.state.location.id);
+        }
 
         const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
         const bundleUpdate = axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson());

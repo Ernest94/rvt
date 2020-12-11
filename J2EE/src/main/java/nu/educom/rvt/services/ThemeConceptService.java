@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import nu.educom.rvt.models.Bundle;
+import org.hibernate.Session;
 
+import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
@@ -16,24 +17,21 @@ import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ActiveChangeForUser;
-import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptView;
 import nu.educom.rvt.models.view.ConceptWeekOffset;
 import nu.educom.rvt.models.view.WeekChangeForUser;
-import nu.educom.rvt.repositories.ConceptRepository;
-import nu.educom.rvt.repositories.ThemeRepository;
-import nu.educom.rvt.repositories.TraineeActiveRepository;
-import nu.educom.rvt.repositories.TraineeMutationRepository;
-//import nu.educom.rvt.repositories.TraineeMutationRepository;
-import one.util.streamex.StreamEx;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
-
-
-
+import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.ThemeRepository;
+import nu.educom.rvt.repositories.TraineeActiveRepository;
+import nu.educom.rvt.repositories.TraineeMutationRepository;
+import one.util.streamex.StreamEx;
 
 public class ThemeConceptService {
 	private ConceptRepository conceptRepo;
@@ -43,33 +41,33 @@ public class ThemeConceptService {
 	private BundleTraineeRepository bundleTraineeRepo;  
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleRepository bundleRepo;
+	private ReviewService reviewServ;
 
-	public ThemeConceptService() {
-		this.conceptRepo = new ConceptRepository();
-		this.themeRepo = new ThemeRepository();
-		this.traineeActiveRepo = new TraineeActiveRepository();
-		this.traineeMutationRepo = new TraineeMutationRepository();
-		this.bundleTraineeRepo = new BundleTraineeRepository();
-		this.bundleConceptRepo = new BundleConceptRepository();
-		this.bundleRepo = new BundleRepository();
+	public ThemeConceptService(Session session) {
+		this.conceptRepo = new ConceptRepository(session);
+		this.themeRepo = new ThemeRepository(session);
+		this.traineeActiveRepo = new TraineeActiveRepository(session);
+		this.traineeMutationRepo = new TraineeMutationRepository(session);
+		this.bundleTraineeRepo = new BundleTraineeRepository(session);
+		this.bundleConceptRepo = new BundleConceptRepository(session);
+		this.bundleRepo = new BundleRepository(session);
+		this.reviewServ = new ReviewService(session);
 	}
   
-	public Theme addTheme(Theme theme) {
+	public Theme addTheme(Theme theme) throws DatabaseException {
 		Theme createdTheme = this.themeRepo.create(theme);
 		return createdTheme;
 	}
-	public List<Theme> getAllThemes() {
+	public List<Theme> getAllThemes() throws DatabaseException {
 		List<Theme> themes = this.themeRepo.readAll();
 		return themes;
 	}
 	
-	public Concept addConcept(Concept concept) {
-		
-		
+	public Concept addConcept(Concept concept) throws DatabaseException {
 		Concept createdConcept = this.conceptRepo.create(concept);
 		return createdConcept;
 	}
-	public List<Concept> getAllConcepts() {
+	public List<Concept> getAllConcepts() throws DatabaseException {
 		List<Concept> concepts = this.conceptRepo.readAll();
 		return concepts;
 	}
@@ -78,9 +76,7 @@ public class ThemeConceptService {
 //		return this.conceptRepo.readAll();// hier moeten de filters over gezet worden of hij in de actieve bundel zit oftewel dat hij specifiek voor die user op actief is gezet in de TraineeActive tabel
 //	}
 	
-	public List<Concept> getAllActiveConceptsFromUser(User user) {
-		
-		ReviewService reviewServ = new ReviewService();
+	public List<Concept> getAllActiveConceptsFromUser(User user) throws DatabaseException {
 		List<Review> reviews = reviewServ.getAllCompletedReviewsForUser(user);
 		List<ConceptRating> conceptRatings = reviewServ.getAllConceptRatings();
 		List<Concept> traineeActiveConcepts = new ArrayList<>();
@@ -93,7 +89,7 @@ public class ThemeConceptService {
 																				       .filter(traineeActiveConcept -> traineeActiveConcept.getActive() == true)
 																				       .map(traineeActiveConcept -> traineeActiveConcept.getConcept())
 																				       .collect(Collectors.toList()));
-		
+
 		List<Bundle> bundleTrainees = this.bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
 																			   .map(bundleTrainee -> bundleTrainee.getBundle())
 																			   .collect(Collectors.toList());
@@ -103,8 +99,8 @@ public class ThemeConceptService {
 		
 		for(Bundle bundle : bundleTrainees) {
 			conceptsInBundle.addAll(this.bundleConceptRepo.readAll().stream().filter(conceptsBundle -> conceptsBundle.getBundle().getId() == bundle.getId())
-																			 .map(conceptsBundle -> conceptsBundle.getConcept())
-																			 .collect(Collectors.toList()));
+					                                                         .map(conceptsBundle -> conceptsBundle.getConcept())
+					                                                         .collect(Collectors.toList()));
 		}
 		//Hierin gekeken welke concepten in de bundel zaten en deze aan de lijst toegevoegd.
 		
@@ -126,21 +122,23 @@ public class ThemeConceptService {
 		
 		return traineeActiveConcepts;
 	}
-	public boolean isConceptInBundleUser(User user, Concept concept) {
+
+	public boolean isConceptInBundleUser(User user, Concept concept) throws DatabaseException {
 		return conceptRepo.isConceptInUserBundle(concept.getId(),user.getId());
 		
 	}
+
 	public TraineeActive getCurrentMutationForUserAndConcept(User user, Concept concept) {
 		TraineeActive mutation = traineeActiveRepo.findActiveByUserIdAndConceptId(user.getId(), concept.getId());
 		return mutation;
 	}
 	
-	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) {
+	public TraineeMutation getCurrentWeekMutationForUserAndConcept(User user, Concept concept) throws DatabaseException {
 		TraineeMutation weekMutation = traineeMutationRepo.findWeekMutationByUserIdAndConceptId(user.getId(), concept.getId());
 		return weekMutation;
 	}
 
-	public void createNewMutation(ActiveChangeForUser activeChange) {
+	public void createNewMutation(ActiveChangeForUser activeChange) throws DatabaseException {
 
 		TraineeActive newMutation = new TraineeActive();
 
@@ -153,12 +151,12 @@ public class ThemeConceptService {
 		
 	}
 	
-	public void endMutation(TraineeActive currentMutation) {
+	public void endMutation(TraineeActive currentMutation) throws DatabaseException {
 		currentMutation.setEndDate(LocalDate.now());
 		traineeActiveRepo.update(currentMutation);
 	}
 	
-	public void createNewWeekMutation(WeekChangeForUser weekChange) {
+	public void createNewWeekMutation(WeekChangeForUser weekChange) throws DatabaseException {
 
 		TraineeMutation newMutation = new TraineeMutation();
 
@@ -171,12 +169,14 @@ public class ThemeConceptService {
 		
 	}
 	
-	public void endWeekMutation(TraineeMutation currentMutation) {
+	public void endWeekMutation(TraineeMutation currentMutation) throws DatabaseException {
 		currentMutation.setEndDate(LocalDate.now());
 		traineeMutationRepo.update(currentMutation);
 	}
+
+
 	
-	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs){
+	public List<ConceptPlusRating> converToCPRActive (List<ConceptPlusRating> CPRs) throws DatabaseException {
 		
 		List<ConceptPlusRating> CPRAs = new ArrayList<>();
 		for(ConceptPlusRating CPR: CPRs) {
@@ -193,8 +193,9 @@ public class ThemeConceptService {
 		
 		return CPRAs;		
 	}
+
 	
-	public ConceptBundleJSON getAllConceptsAndAllBundles() {
+	public ConceptBundleJSON getAllConceptsAndAllBundles() throws DatabaseException {
 		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
 		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
 		
@@ -224,30 +225,27 @@ public class ThemeConceptService {
 		return conceptBundleJSON;
     }
     
-	public boolean doesThemeExist(Theme theme) {
-		ThemeRepository themeRepo = new ThemeRepository();
+	public boolean doesThemeExist(Theme theme) throws DatabaseException {
 		Theme duplicate = themeRepo.readByName(theme.getName());		
-		return duplicate==null;
+		return duplicate == null;
     }
     
-	public boolean validateTheme(Theme theme) {
-		if(theme.getName().trim().isEmpty() 
-		|| theme.getDescription().trim().isEmpty()
-		|| theme.getAbbreviation().trim().isEmpty()) {
+	public boolean validateTheme(Theme theme) throws DatabaseException {
+		if (theme.getName().trim().isEmpty() || 
+		    theme.getDescription().trim().isEmpty() ||
+		    theme.getAbbreviation().trim().isEmpty()) {
 			return false;
 		}
 		else {
 			return this.doesThemeExist(theme);
 		}		
 	}
-	
-	public boolean doesConceptExist(Concept concept) {
-		ConceptRepository conceptRepo = new ConceptRepository();
+	public boolean doesConceptExist(Concept concept) throws DatabaseException {
 		Concept duplicate = conceptRepo.readByName(concept.getName());		
 		return duplicate==null;
     }
     
-	public boolean validateConcept(Concept concept) {
+	public boolean validateConcept(Concept concept) throws DatabaseException {
 		if(concept.getName().trim().isEmpty() 
 		|| concept.getDescription().trim().isEmpty()
 		|| concept.getTheme()==null) {
@@ -257,5 +255,4 @@ public class ThemeConceptService {
 			return this.doesConceptExist(concept);
 		}		
 	}
-
 }

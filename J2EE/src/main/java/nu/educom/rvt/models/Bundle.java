@@ -100,5 +100,8 @@ public class Bundle {
 //	public List<BundleConcept> getCurrentConcepts() {
 //		return allConcepts.stream().filter(item-> item.getEndDate().isAfter(LocalDate.now())).collect(Collectors.toList());
 //	}
-	
+	@Override
+	public String toString() {
+		return String.format("Bundle(%s)", getName());
+	}
 }

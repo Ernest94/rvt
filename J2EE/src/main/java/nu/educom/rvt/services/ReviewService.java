@@ -1,3 +1,264 @@
+//<<<<<<< HEAD
+//package nu.educom.rvt.services;
+//
+//import java.time.LocalDate;
+//import java.time.LocalDateTime;
+//import java.time.format.DateTimeFormatter;
+//import java.util.ArrayList;
+//import java.util.Comparator;
+//import java.util.List;
+//import java.util.stream.Collectors;
+//
+//import nu.educom.rvt.models.Concept;
+//import nu.educom.rvt.models.ConceptRating;
+//import nu.educom.rvt.models.Review;
+//import nu.educom.rvt.models.User;
+//import nu.educom.rvt.models.view.ConceptPlusRating;
+//import nu.educom.rvt.repositories.ConceptRatingRepository;
+//import nu.educom.rvt.repositories.ConceptRepository;
+//import nu.educom.rvt.repositories.ReviewRepository;
+//import one.util.streamex.StreamEx;
+//
+//public class ReviewService {
+//	
+//	public List<Concept> getallConcepts() {
+//		List<Concept> activeConcepts = new ArrayList<Concept>();
+//		
+//        ConceptRepository conceptRepo = new ConceptRepository();	
+//		activeConcepts = conceptRepo.readAll();		
+//		return activeConcepts;
+//	}
+//	
+//	public List<User> getAllUsersWithPendingReviews(int locationId){
+//		ReviewRepository reviewRepo = new ReviewRepository();
+////		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
+//		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->u.getLocation().getId() == locationId).collect(Collectors.toList());
+//		
+//		return users;
+//	}
+//	
+//	public void makeNewReviewIfNoPending(User user)
+//	{
+//		ReviewRepository reviewRepo = new ReviewRepository();
+//		List<Review> pendingReviews = reviewRepo.readAll().stream()
+//														  .filter(r -> r.getUser().getId() == user.getId())
+//														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
+//														  .collect(Collectors.toList());
+//		if(pendingReviews.size() == 0) {
+//			reviewRepo.create(new Review(LocalDateTime.now(), "", "", Review.Status.PENDING, user));
+//		}
+//	}
+//	
+//	public List<Review> getAllReviewsForUser(User user){
+//		
+//		ReviewRepository reviewRepo = new ReviewRepository();
+//		List<Review> reviews = reviewRepo.readAll();
+//		return	reviews.stream().filter(review -> review.getUser().getId() == user.getId())
+//								.collect(Collectors.toList());
+//		
+//	}
+//	
+//	public List<Review> getAllCompletedReviewsForUser(User user){
+//		
+//		ReviewRepository reviewRepo = new ReviewRepository();
+//		List<Review> reviews = reviewRepo.readAll();
+//		return	reviews.stream().filter(r -> r.getUser().getId() == user.getId())
+//								.filter(r -> r.getReviewStatus() == Review.Status.COMPLETED)
+//								.collect(Collectors.toList());
+//		
+//	}
+//	
+//	/*
+//	 * JH: Use English comment!
+//	 * 
+//	 * Functie ontvangt: een lijst van reviews waar de conceptRatings van gebruikt moeten worden, Een lijst van alle concepten.
+//	 * Functie geeft terug: een lijst van alle concepten met de meest recente rating bij elk concept, gesorteerd op de concepten van de meest recente review en daarna de rest op week.
+//	 * 
+//	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
+//	 */
+//	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, User user){
+//		
+//		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+//		List<ConceptRating> allConceptRatings = conceptRatingRepo.readAll();
+//		
+//		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
+//		if(reviews.size() == 0) {
+//			for(Concept concept: concepts) {
+//				conceptPlusRating.add(new ConceptPlusRating(concept, 0, "", 0));
+//			}
+//			return conceptPlusRating;
+//		}
+//		
+//		LocalDateTime mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();
+//		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
+//		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).sorted(Comparator.comparing(Review::getDate).reversed()).collect(Collectors.toList());
+//		
+//		
+//		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview, allConceptRatings);
+//		
+//		List<ConceptPlusRating> CPRother = new ArrayList<>();
+//		
+//		for(Review review : otherReviews) {
+//			CPRother.addAll(this.getCPRFromReview(review, allConceptRatings));
+//		}
+//		List<Concept> removedDuplicates = removeAllDuplicates(concepts, CPRother);
+//		
+//		for(Concept concept: removedDuplicates) {
+//			CPRother.add(new ConceptPlusRating(concept, 0, "", 0));
+//		}
+//		
+//		BundleService bundleServ = new BundleService();
+//		
+//		CPRother = bundleServ.getWeekForCPR(CPRother, user);
+//		CPRMostRecent = bundleServ.getWeekForCPR(CPRMostRecent, user);
+//		
+//		CPRMostRecent = CPRMostRecent.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
+//		CPRother = CPRother.stream().sorted((o1,o2) -> o1.getWeek().compareTo(o2.getWeek())).collect(Collectors.toList());		
+//		
+//		conceptPlusRating.addAll(CPRMostRecent);
+//		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() != 0).collect(Collectors.toList()));
+//		conceptPlusRating.addAll(CPRother.stream().filter(c -> c.getRating() == 0).collect(Collectors.toList()));
+//		conceptPlusRating = StreamEx.of(conceptPlusRating).distinct(foo -> foo.getConcept().getId()).toList();
+//		
+//		return conceptPlusRating;
+//	}
+//	
+//	private List<ConceptPlusRating> getCPRFromReview(Review review, List<ConceptRating> allConceptRatings)
+//	{
+//		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
+//		List<ConceptRating> conceptRatings =  allConceptRatings.stream()
+//															   .filter(c -> c.getReview().getId() == review.getId())
+//															   .collect(Collectors.toList());
+//		
+//		for(ConceptRating conceptRating : conceptRatings)
+//		{
+//			conceptPlusRatings.add(
+//					new ConceptPlusRating(
+//					conceptRating.getConcept(), 
+//					conceptRating.getRating(),
+//					conceptRating.getComment(),
+//					0)
+//					);
+//		}
+//		
+//		return conceptPlusRatings;
+//	}
+//	
+//	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
+//		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+//		List<ConceptRating> ratingList = convertConceptPlusRatings(conceptRatings, reviewId);
+//		crRepo.createMulti(ratingList);
+//		Review review = getReviewById(reviewId);
+//
+//		return review;
+//	}
+//	
+//	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
+//	{
+//		List<Concept> removedDuplicates = new ArrayList<>();
+//		List<Concept> conceptsWithRatings = CPRs.stream().map(c ->c.getConcept()).collect(Collectors.toList());
+//		removedDuplicates.addAll(concepts);
+//		removedDuplicates.removeAll(conceptsWithRatings);
+//		return removedDuplicates;
+//    }
+//    
+//    public Review getReviewById(int reviewId) {
+//        ReviewRepository reviewRepo = new ReviewRepository();
+//        return reviewRepo.readById(reviewId);
+//    }
+//    
+//    public ConceptRating getConceptRatingById(int id) {
+//    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+//    	return conceptRatingRepo.readById(id);
+//    }
+//    
+//    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) {
+//    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+//    	return conceptRatingRepo.readAll().stream()
+//    							.filter(c -> c.getReview().getId() == reviewId)
+//    							.filter(c -> c.getConcept().getId() == conceptId)
+//    							.findFirst().orElse(null);
+//    }
+//
+//    public Review completedReview(Review review) {
+//        Review completedReview = review;
+//        completedReview.setReviewStatus(Review.Status.COMPLETED);
+//        return completedReview;
+//    }
+//    
+//    public Review cancelledReview(Review review) {
+//    	Review cancelledReview = review;
+//    	cancelledReview.setReviewStatus(Review.Status.CANCELLED);
+//		return cancelledReview;
+//    }
+//    
+//    public int replaceReview(Review review) {
+//    	Review toUpdate = this.getReviewById(review.getId());
+//    	toUpdate = this.updateReview(review, toUpdate);
+//        ReviewRepository reviewRepo = new ReviewRepository();
+//        reviewRepo.update(toUpdate);
+//        return review.getId();
+//    }
+//    
+//    public Review updateReview(Review review, Review toUpdate) {
+//    	toUpdate.setDate(review.getDate());
+//    	toUpdate.setCommentOffice(review.getCommentOffice());
+//    	toUpdate.setCommentStudent(review.getCommentStudent());   
+//    	toUpdate.setReviewStatus(review.getReviewStatus());
+//    	return toUpdate;
+//    }
+//	
+//	public Review getMostRecentReview(List<Review> allReviews) {
+//		LocalDateTime mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();;
+//		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
+//	}
+//	
+//	public String convertDateTimeToString(LocalDate date)
+//	{
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		return date.format(formatter);
+//	}
+//	
+//	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId){
+//		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
+//		for(int i = 0; i<cpr.size(); i++) {
+//			ratings.add(this.convertConceptPlusRating(cpr.get(i), reviewId));
+//		}
+//		return ratings;
+//	}
+//	
+//	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) {
+//		return new ConceptRating(this.getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
+//	}
+//
+//	public void addReview(Review review) {
+//		ReviewRepository reviewRepo = new ReviewRepository();
+//		reviewRepo.update(review);		
+//	}
+//
+//	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) {
+//		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+//		crRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
+//		
+//		return this.getReviewById(reviewId);
+//	}
+//	
+//	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) {
+//		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+//		ConceptRating updated = old;
+//		updated.setComment(conceptPlusRating.getComment());
+//		updated.setRating(conceptPlusRating.getRating());
+//		crRepo.update(updated);
+//		
+//		return this.getReviewById(updated.getReview().getId());
+//	}
+//	
+//	public List<ConceptRating> getAllConceptRatings(){
+//		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+//		return crRepo.readAll();
+//	}
+//}
+//=======
 package nu.educom.rvt.services;
 
 import java.time.LocalDate;
@@ -6,7 +267,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.hibernate.Session;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
@@ -15,30 +279,38 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.ReviewRepository;
 import one.util.streamex.StreamEx;
 
 public class ReviewService {
+	private final ReviewRepository reviewRepo;
+	private final ConceptRepository conceptRepo;
+	private final ConceptRatingRepository conceptRatingRepo;
+	private final BundleService bundleServ;
 	
-	public List<Concept> getallConcepts() {
-		List<Concept> activeConcepts = new ArrayList<Concept>();
-		
-        ConceptRepository conceptRepo = new ConceptRepository();	
-		activeConcepts = conceptRepo.readAll();		
+	public ReviewService(Session session) {
+		super();
+		reviewRepo = new ReviewRepository(session);
+		conceptRepo = new ConceptRepository(session);
+		conceptRatingRepo = new ConceptRatingRepository(session);
+		bundleServ = new BundleService(session);
+	}
+
+	public List<Concept> getallConcepts() throws DatabaseException {
+		List<Concept> activeConcepts = conceptRepo.readAll();		
 		return activeConcepts;
 	}
 	
-	public List<User> getAllUsersWithPendingReviews(int locationId){
-		ReviewRepository reviewRepo = new ReviewRepository();
-//		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
+	public List<User> getAllUsersWithPendingReviews(int locationId) throws DatabaseException {
+		//		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
 		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->u.getLocation().getId() == locationId).collect(Collectors.toList());
 		
 		return users;
 	}
 	
-	public void makeNewReviewIfNoPending(User user)
+	public void makeNewReviewIfNoPending(User user) throws DatabaseException
 	{
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> pendingReviews = reviewRepo.readAll().stream()
 														  .filter(r -> r.getUser().getId() == user.getId())
 														  .filter(r -> r.getReviewStatus() == Review.Status.PENDING)
@@ -48,18 +320,16 @@ public class ReviewService {
 		}
 	}
 	
-	public List<Review> getAllReviewsForUser(User user){
+	public List<Review> getAllReviewsForUser(User user) throws DatabaseException{
 		
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> reviews = reviewRepo.readAll();
 		return	reviews.stream().filter(review -> review.getUser().getId() == user.getId())
 								.collect(Collectors.toList());
 		
 	}
 	
-	public List<Review> getAllCompletedReviewsForUser(User user){
+	public List<Review> getAllCompletedReviewsForUser(User user) throws DatabaseException{
 		
-		ReviewRepository reviewRepo = new ReviewRepository();
 		List<Review> reviews = reviewRepo.readAll();
 		return	reviews.stream().filter(r -> r.getUser().getId() == user.getId())
 								.filter(r -> r.getReviewStatus() == Review.Status.COMPLETED)
@@ -75,11 +345,10 @@ public class ReviewService {
 	 * 
 	 * Hier zit expliciet nog geen functionaliteit om ook de mutations mee te nemen in of niet de recentste 
 	 */
-	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, User user){
+	public List<ConceptPlusRating> createActiveConceptsPlusRatingsList (List<Concept> concepts, List<Review> reviews, User user) throws DatabaseException{
 		
-		ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
 		List<ConceptRating> allConceptRatings = conceptRatingRepo.readAll();
-		
+
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
 		if(reviews.size() == 0) {
 			for(Concept concept: concepts) {
@@ -90,7 +359,9 @@ public class ReviewService {
 		
 		LocalDateTime mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();
 		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
+//		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).collect(Collectors.toList());
 		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).sorted(Comparator.comparing(Review::getDate).reversed()).collect(Collectors.toList());
+
 		
 		
 		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview, allConceptRatings);
@@ -105,9 +376,6 @@ public class ReviewService {
 		for(Concept concept: removedDuplicates) {
 			CPRother.add(new ConceptPlusRating(concept, 0, "", 0));
 		}
-		
-		BundleService bundleServ = new BundleService();
-		
 		CPRother = bundleServ.getWeekForCPR(CPRother, user);
 		CPRMostRecent = bundleServ.getWeekForCPR(CPRMostRecent, user);
 		
@@ -122,7 +390,7 @@ public class ReviewService {
 		return conceptPlusRating;
 	}
 	
-	private List<ConceptPlusRating> getCPRFromReview(Review review, List<ConceptRating> allConceptRatings)
+	private List<ConceptPlusRating> getCPRFromReview(Review review, List<ConceptRating> allConceptRatings) throws DatabaseException
 	{
 		List<ConceptPlusRating> conceptPlusRatings = new ArrayList<>();
 		List<ConceptRating> conceptRatings =  allConceptRatings.stream()
@@ -143,13 +411,10 @@ public class ReviewService {
 		return conceptPlusRatings;
 	}
 	
-	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
+	public Review addConceptRatings(List <ConceptPlusRating> conceptRatings, int reviewId) throws DatabaseException {
 		List<ConceptRating> ratingList = convertConceptPlusRatings(conceptRatings, reviewId);
-		crRepo.createMulti(ratingList);
-		Review review = getReviewById(reviewId);
-
-		return review;
+		conceptRatingRepo.createMulti(ratingList);
+		return getReviewById(reviewId);
 	}
 	
 	private List<Concept> removeAllDuplicates(List<Concept> concepts,List<ConceptPlusRating> CPRs)
@@ -161,41 +426,31 @@ public class ReviewService {
 		return removedDuplicates;
     }
     
-    public Review getReviewById(int reviewId) {
-        ReviewRepository reviewRepo = new ReviewRepository();
+    public Review getReviewById(int reviewId) throws DatabaseException {
         return reviewRepo.readById(reviewId);
     }
     
-    public ConceptRating getConceptRatingById(int id) {
-    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    public ConceptRating getConceptRatingById(int id) throws DatabaseException {
     	return conceptRatingRepo.readById(id);
     }
     
-    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) {
-    	ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository();
+    public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) throws DatabaseException {
     	return conceptRatingRepo.readAll().stream()
     							.filter(c -> c.getReview().getId() == reviewId)
     							.filter(c -> c.getConcept().getId() == conceptId)
     							.findFirst().orElse(null);
     }
 
-    public Review completedReview(Review review) {
-        Review completedReview = review;
-        completedReview.setReviewStatus(Review.Status.COMPLETED);
-        return completedReview;
+    public Review completedReview(int reviewId) throws DatabaseException {
+    	return reviewRepo.updateStatus(reviewId, Review.Status.COMPLETED);
     }
     
-    public Review cancelledReview(Review review) {
-    	Review cancelledReview = review;
-    	cancelledReview.setReviewStatus(Review.Status.CANCELLED);
-		return cancelledReview;
+    public Review cancelledReview(int reviewId) throws DatabaseException {
+    	return reviewRepo.updateStatus(reviewId, Review.Status.CANCELLED);
     }
     
-    public int replaceReview(Review review) {
-    	Review toUpdate = this.getReviewById(review.getId());
-    	toUpdate = this.updateReview(review, toUpdate);
-        ReviewRepository reviewRepo = new ReviewRepository();
-        reviewRepo.update(toUpdate);
+    public int replaceReview(Review review) throws DatabaseException {
+        reviewRepo.update(review);
         return review.getId();
     }
     
@@ -207,9 +462,13 @@ public class ReviewService {
     	return toUpdate;
     }
 	
+    /* TODO Move to reviewLogic class */
 	public Review getMostRecentReview(List<Review> allReviews) {
-		LocalDateTime mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();;
-		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
+		Optional<LocalDateTime> mostRecentDate = allReviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo);
+		if (mostRecentDate.isEmpty()) {
+			return null;
+		}
+		return allReviews.stream().filter(r -> r.getDate() == mostRecentDate.get()).findFirst().orElse(null);
 	}
 	
 	public String convertDateTimeToString(LocalDate date)
@@ -218,7 +477,7 @@ public class ReviewService {
 		return date.format(formatter);
 	}
 	
-	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId){
+	private List<ConceptRating> convertConceptPlusRatings(List<ConceptPlusRating> cpr, int reviewId) throws DatabaseException{
 		List<ConceptRating> ratings = new ArrayList<ConceptRating>();
 		for(int i = 0; i<cpr.size(); i++) {
 			ratings.add(this.convertConceptPlusRating(cpr.get(i), reviewId));
@@ -226,34 +485,29 @@ public class ReviewService {
 		return ratings;
 	}
 	
-	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) {
-		return new ConceptRating(this.getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
+	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) throws DatabaseException {
+		return new ConceptRating(getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
 	}
 
-	public void addReview(Review review) {
-		ReviewRepository reviewRepo = new ReviewRepository();
+	public void addReview(Review review) throws DatabaseException {
 		reviewRepo.update(review);		
 	}
 
-	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		crRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
-		
-		return this.getReviewById(reviewId);
+	public Review addConceptRating(ConceptPlusRating conceptPlusRating, int reviewId) throws DatabaseException {
+		conceptRatingRepo.create(this.convertConceptPlusRating(conceptPlusRating, reviewId));
+		return getReviewById(reviewId);
 	}
 	
-	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) {
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		ConceptRating updated = old;
+	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) throws DatabaseException {
+		ConceptRating updated = conceptRatingRepo.readById(old.getId());
 		updated.setComment(conceptPlusRating.getComment());
-		updated.setRating(conceptPlusRating.getRating());
-		crRepo.update(updated);
-		
-		return this.getReviewById(updated.getReview().getId());
+		updated.setRating(conceptPlusRating.getRating());		
+		return updated.getReview();
 	}
 	
-	public List<ConceptRating> getAllConceptRatings(){
-		ConceptRatingRepository crRepo = new ConceptRatingRepository();
-		return crRepo.readAll();
+	public List<ConceptRating> getAllConceptRatings() throws DatabaseException {
+		return conceptRatingRepo.readAll();
 	}
+
 }
+//>>>>>>> origin/development
