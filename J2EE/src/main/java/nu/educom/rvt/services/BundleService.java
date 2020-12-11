@@ -5,7 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.hibernate.Session;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
@@ -17,6 +26,7 @@ import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
 import nu.educom.rvt.models.view.BundleView;
+import nu.educom.rvt.models.view.BundleViewWeek;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
@@ -288,8 +298,17 @@ public class BundleService {
 		return CPRWeek;
 	}
 	
-	
-	
+	public void addBundlesToConcept(Concept concept, List<BundleViewWeek> bundles) {
+		
+		List<BundleConcept> bundleConcepts = new ArrayList<>();
+		
+		for(BundleViewWeek bundle: bundles) {
+			Bundle actualBundle = bundleRepo.readById(bundle.getBundle().getId());
+			bundleConcepts.add(new BundleConcept(actualBundle, concept, bundle.getWeek(), LocalDate.now()));
+		}
+		
+		bundleConceptRepo.createMulti(bundleConcepts);
+	}	
 }
 
 

@@ -13,8 +13,10 @@ import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusBundles;
 import nu.educom.rvt.models.view.WeekChangeForUser;
 import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.ThemeConceptService;
 
 @Path("/webapi/theme_concept")
@@ -51,15 +53,17 @@ public class ThemeConceptResource {
 	@POST
 	@Path("/saveConcept")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveConcept(Concept concept) {
-		concept.setStartDate(LocalDate.now());
-		boolean valid = themeConceptServ.validateConcept(concept);
+	public Response saveConcept(ConceptPlusBundles concept) {
+		BundleService bundleServ = new BundleService();
+		concept.getConcept().setStartDate(LocalDate.now());
+		boolean valid = themeConceptServ.validateConcept(concept.getConcept());
 		if(valid) {
-			Concept createdConcept = this.themeConceptServ.addConcept(concept);
-			return Response.status(201).entity(createdConcept).build();
+			Concept createdConcept = this.themeConceptServ.addConcept(concept.getConcept());
+			bundleServ.addBundlesToConcept(concept.getConcept(), concept.getBundles());
+			return Response.status(201).build();
 		}
 		else {
-			return Response.status(400).build();
+			return Response.status(402).build();
 		}
 	}
 	

@@ -13,7 +13,7 @@ class BundleConceptTable extends React.Component {
         const weeks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         const weekOptions = weeks.map((week) => (
             <option key={"week_" + week} value={week}>
-                {"startweeek + " + week}
+                {"startweek + " + week}
             </option>))
 
         const bundleOptions =
@@ -149,12 +149,8 @@ class addConcept extends React.Component {
     
     createConceptJson() {
         return {
-            name: this.state.name,
-            description: this.state.description,
-            theme: { id: this.state.theme.id },
-            //bundleConcept: this.state.chosenBundles,
-            // week: this.state.week,
-            // startDate: this.state.startDate
+            concept:{ name: this.state.name, description: this.state.description, theme: { id: this.state.theme.id }},
+            bundles: this.state.chosenBundles,
         }
     }
 
@@ -166,8 +162,9 @@ class addConcept extends React.Component {
                         message:"Concept toegevoegd",
                         startDate:"",
                         week:""
-                        });
+        });
     }
+
 
     onChangeTheme = (e) => {
         var selectedTheme = this.state.themes.find(theme=> theme.id === parseInt(e.target.value));
@@ -345,13 +342,16 @@ class addConcept extends React.Component {
                         </div>
                         <div className="row m-2 justify-content-center">
                             <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                            <BundleConceptTable
-                                chosenBundles={this.state.chosenBundles}
-                                bundles={this.state.bundles}
-                                removeBundle={this.removeBundle.bind(this)}
-                                handleBundleChange={this.handleBundleChange.bind(this)}
-                                handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
-                                addBundle={this.addBundle.bind(this)} />
+                            <div>
+                                <BundleConceptTable
+                                    chosenBundles={this.state.chosenBundles}
+                                    bundles={this.state.bundles}
+                                    removeBundle={this.removeBundle.bind(this)}
+                                    handleBundleChange={this.handleBundleChange.bind(this)}
+                                    handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
+                                    addBundle={this.addBundle.bind(this)}
+                                />
+                            </div>
                         </div>
                         <div className="row justify-content-center">
                             <div className="col-6 m">

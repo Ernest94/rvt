@@ -1,29 +1,37 @@
 package nu.educom.rvt.models.view;
 
 import nu.educom.rvt.models.Concept;
-import nu.educom.rvt.models.Theme;
-
-import java.time.LocalDate;
 import java.util.List;
 
-public class ConceptPlusBundles extends Concept {
+public class ConceptPlusBundles {
 	
-	private List<BundleConceptData> bundleConcept;
+	
+	private static Concept concept;
+	private static List<BundleViewWeek> bundles;
 
-	public ConceptPlusBundles(Theme theme, String name, String description, LocalDate startDate, List<BundleConceptData> bundleConcept) {
+	public ConceptPlusBundles(List<BundleViewWeek> bundles, Concept concept) {
 		super();
-		this.setTheme(theme);
-		this.setName(name);
-		this.setDescription(description);
-		this.setStartDate(startDate);
-		this.bundleConcept = bundleConcept;
+		ConceptPlusBundles.concept = concept;
+		ConceptPlusBundles.bundles = bundles;
 	}
 	
-	public List<BundleConceptData> getBundleConcept() {
-		return bundleConcept;
+	public ConceptPlusBundles() {
+		super();
+	}
+	
+	public List<BundleViewWeek> getBundles() {
+		return bundles;
 	}
 
-	public void setBundleConcept(List<BundleConceptData> bundleConcept) {
-		this.bundleConcept = bundleConcept;
+	public void setBundles(List<BundleViewWeek> bundle) {
+		ConceptPlusBundles.bundles = bundle;
+	}
+
+	public Concept getConcept() {
+		return concept;
+	}
+
+	public void setConcept(Concept concept) {
+		ConceptPlusBundles.concept = concept;
 	}
 }
