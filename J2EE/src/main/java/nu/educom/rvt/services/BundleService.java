@@ -170,7 +170,7 @@ public class BundleService {
 		}
 		
 		for(BundleTraineeView btv: bundles) {
-			if(!(btv.getBundle()==null || btv.getStartWeek() <= 0)) {
+			if(!(btv.getBundle()==null || btv.getBundle().getId()< 0 || btv.getStartWeek() <= 0)) {
 				boolean alreadyMutated = false;
 				for(BundleTrainee bt: updated) {
 					if(bt.getBundle().getId()==btv.getBundle().getId() && bt.getEndDate() != null) {

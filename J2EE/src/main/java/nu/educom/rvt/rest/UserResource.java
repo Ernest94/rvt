@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import nu.educom.rvt.models.LinkedUsers;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
@@ -25,7 +24,6 @@ import nu.educom.rvt.models.Search;
 //import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.view.LinkJson;
 import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.services.UserService;
@@ -108,29 +106,6 @@ public class UserResource extends BaseResource {
 			return Response.status(201).build();
 		});
 	}
-
-	@GET
-	@Path("/linking")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllRelations(@HeaderParam("userId") int userId){ /* JH: Had hier @PathParam verwacht */
-		LOG.trace("getAllReleations of {} called", userId);
-		return wrapInSession(session -> {
-			UserService userServ = new UserService(session);//load injectables
-	        User user = userServ.getUserById(userId);
-	        List<User> connectedUsers = userServ.getConnectedUsers(user);
-	        List<User> possibleRelatedUsers = userServ.getPossibleRelations(user);
-	        List<LinkedUsers> linkedUsers = userServ.combineUsers(user, connectedUsers, possibleRelatedUsers);
-	        LinkJson linkJson = new LinkJson(user, linkedUsers);
-	        
-	        boolean valid = true;
-	        
-	        if(valid) {
-	            return Response.status(200).entity(linkJson).build();
-	        } else {
-	            return Response.status(404).build();	    
-	        }
-		});
-	}
 	
 	@POST
 	@Path("/search")
@@ -160,26 +135,6 @@ public class UserResource extends BaseResource {
 		  return Response.status(200).entity(users).build();
 		});
 	}
-	
-	@GET
-    @Path("/UserRelations")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllRelations(){
-//		LOG.trace("getAllRelations called");
-//		return wrapInSession(session -> {
-//			UserService userServ = new UserService(session);//load injectables
-//			User user = userServ.getUserById(1);
-//      
-//		    boolean valid = true;
-//		      
-//		    if(valid) {
-//		       return Response.status(200).entity(user).build();
-//		    } else {
-//		       return Response.status(400).build();        
-//		    }
-//		});
-		return Response.status(410).build();
-    }
 		
 	@GET
     @Path("/dossier")
