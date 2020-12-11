@@ -13,27 +13,22 @@ import org.mindrot.jbcrypt.BCrypt;
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.UserRelation;
-import nu.educom.rvt.models.LinkedUsers;
 import nu.educom.rvt.models.view.UserSearch;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
-import nu.educom.rvt.repositories.UserRelationRepository;
 import nu.educom.rvt.repositories.UserRepository;
 
 public class UserService {
 	private final UserRepository userRepo;
 	private LocationRepository locationRepo;
 	private RoleRepository roleRepo;
-	private UserRelationRepository relaRepo;
 
 	public UserService(Session session) {
 		userRepo = new UserRepository(session);
 		roleRepo = new RoleRepository(session);
 		locationRepo = new LocationRepository(session);
-		relaRepo = new UserRelationRepository(session);
 	}
 
 	public User checkUser(User user) throws DatabaseException {
@@ -190,87 +185,7 @@ public class UserService {
 		return new UserSearchJson(userSearch);
 	}
 	
-	public List<User> getConnectedUsers(User user) throws DatabaseException
-	{
-		List<UserRelation> userRelation = relaRepo.readAll();
-		List<User> returnedUsers = new ArrayList<>();		
-		
-		returnedUsers.addAll(userRelation.stream().filter(r -> r.getUser().getId() == user.getId())
-												  .map(r -> r.getLinked()).collect(Collectors.toList()));
-		returnedUsers.addAll(userRelation.stream().filter(r -> r.getLinked().getId() == user.getId())
-				  								  .map(r -> r.getUser()).collect(Collectors.toList()));
-		return returnedUsers;
-	}
 	
-	public List<User> getPossibleRelations(User user) throws DatabaseException 
-	{
-		List<User> allUsers = userRepo.readAll();
-		List<User> filteredUsers = new ArrayList<User>();
-		String userRole = user.getRole().getName();
-		
-		switch (userRole) {
-			case "Admin":
-				filteredUsers.addAll(allUsers);
-				break;
-			case "Docent":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> u.getRole().getName().equals("Trainee"))
-						.collect(Collectors.toList()));
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> u.getRole().getName().equals("Docent"))
-						.collect(Collectors.toList()));
-				break;
-			case "Sales":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> !(u.getRole().getName().equals("Admin")))
-						.collect(Collectors.toList()));
-				break;
-			case "Office":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> !(u.getRole().getName().equals("Admin")))
-						.collect(Collectors.toList()));
-				break;
-			case "Trainee":
-				break;
-		}
-		
-		return filteredUsers;
-	}
-	
-	// TODO move to a UserLogic class
-	public List<LinkedUsers> combineUsers(User currentUser, List<User> connectedUsers, List<User> possibleRelatedUsers)
-	{
-		List<LinkedUsers> linkedUsers = new ArrayList<LinkedUsers>();
-		
-		connectedUsers.forEach((user) -> {
-			linkedUsers.add(new LinkedUsers(
-					user.getId(),
-					user.getName(),
-					user.getRole(),
-					user.getLocation(),
-					true));
-		});
-		
-		possibleRelatedUsers.forEach(user -> {
-			boolean hasAlreadyRelation = connectedUsers.stream().anyMatch(u -> u.getId() == (user.getId()));
-			if (user.getId() != currentUser.getId() && !hasAlreadyRelation) {
-				linkedUsers.add(new LinkedUsers(
-						user.getId(),
-						user.getName(),
-						user.getRole(),
-						user.getLocation(),
-						false));
-			}
-		});
-		
-		return linkedUsers;
-	}
-	
-	public void addConnection(User base, User link) throws DatabaseException
-	{
-		UserRelation userRelation = new UserRelation(base, link);
-		relaRepo.create(userRelation);
-	}
 
     public User getUserById(int userId) throws DatabaseException {
       User user = userRepo.readById(userId);
