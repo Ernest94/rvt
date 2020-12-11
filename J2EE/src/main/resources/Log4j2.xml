@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="30">
+ 
+    <!-- Logging Properties -->
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%t] %-5level %logger{-2} - %m%n</Property>
+        <Property name="APP_LOG_ROOT">./log/</Property> <!-- Change to reflect the location of the log file(s) -->
+    </Properties>
+     
+    <Appenders>
+     
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+         
+        <!-- File Appenders on need basis -->      
+        <RollingFile name="errorLog" fileName="${APP_LOG_ROOT}/rvt-error.log"
+            filePattern="${APP_LOG_ROOT}/rvt-error-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        
+        <RollingFile name="infoLog" fileName="${APP_LOG_ROOT}/rvt-info.log"
+            filePattern="${APP_LOG_ROOT}/rvt-info-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="INFO" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="d ${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        
+        <RollingFile name="debugLog" fileName="${APP_LOG_ROOT}/rvt-debug.log"
+            filePattern="${APP_LOG_ROOT}/rvt-debug-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="DEBUG" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="d ${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        
+        <RollingFile name="traceLog" fileName="${APP_LOG_ROOT}/rvt-trace.log"
+            filePattern="${APP_LOG_ROOT}/rvt-debug-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="TRACE" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile> 
+    </Appenders>
+ 
+    <Loggers>
+        <Logger name="nu.educom.rvt.rest" additivity="false" level="debug">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+        
+        <Logger name="nu.educom.rvt" additivity="false" level="trace">
+            <AppenderRef ref="traceLog" />
+             <!--    <AppenderRef ref="Console" /> -->
+        </Logger>
+                
+        <Root level="info">
+           <!--  <AppenderRef ref="Console"/> -->
+        </Root>
+ 
+    </Loggers>
+ 
+</Configuration>

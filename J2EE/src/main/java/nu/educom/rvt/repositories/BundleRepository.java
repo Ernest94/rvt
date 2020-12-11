@@ -4,79 +4,46 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import nu.educom.rvt.models.Bundle;
-import nu.educom.rvt.models.ConceptRating;
 
 public class BundleRepository {
 
-protected SessionFactory sessionFactory;
+	protected Session session;
 	
-	public Bundle create(Bundle bundle) {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-		    session.beginTransaction();
-		    int bundleId = (int)session.save(bundle);
-		    session.getTransaction().commit();
-		    bundle.setId(bundleId);
-			return bundle;
-		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
-			return null;
-		} finally {		   
-			if (session != null) {
-				session.close();
-			}
+	public BundleRepository(Session session) {
+		super();
+		this.session = session;
+	}
+
+	public Bundle create(Bundle bundle) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
+	    int bundleId = (int)session.save(bundle);
+	    bundle.setId(bundleId);
+		return bundle;
 	}
 	
-	public List<Bundle> readAll() {
-		Session session = null;
-		try {
-			session = HibernateSession.getSessionFactory().openSession();
-			return HibernateSession.loadAllData(Bundle.class, session);
-			
-		} catch (Exception e) {//TO DO: catch all the different exceptions: {f.e. HibernateException} 
-			return null;
-		}
-		finally {
-//			if (session != null) {
-//				session.close();
-//			}
-		}
+	public List<Bundle> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(Bundle.class, session);
 	}
 	
-	public Bundle readById(int id) {
-		Session session = null;
-//		try {
-			session = HibernateSession.getSessionFactory().openSession();
-//			session.createQuery("FROM Bundle WHERE id=:id ").parameter
-			return session.get(Bundle.class, id);
-//		}
-//		finally {
-//			if (session != null) {
-//				session.close();
-//			}
-//		}
+	public Bundle readById(int id) throws DatabaseException {
+		if (!session.isOpen()) {
+			throw new DatabaseException("Create called on an session that is not open");
+		}
+		return session.get(Bundle.class, id);
 	}
 	
-	protected void update(Bundle bundle) {
-		Session session = null;
+	protected void update(Bundle bundle) throws DatabaseException {
+		if (!session.isOpen() || !session.getTransaction().isActive()) {
+			throw new DatabaseException("Create called on an DB transaction that is not open");
+		}
 		try {
-			session = HibernateSession.getSessionFactory().openSession();
-		    session.beginTransaction();
-		    
+			// TODO fix records structure here
 		    session.saveOrUpdate(bundle);
-		    
-		    session.getTransaction().commit();
-		} catch (Exception e) {
-			session.getTransaction().rollback();
-			//TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
-			
-		} finally {		   
-			if (session != null) {
-				session.close();
-			}
+		} catch (Exception e) { //TO DO: catch all the different exceptions: {f.e. HibernateException,RollbackException} 
+			throw new DatabaseException(e);
 		}
 	}
 	

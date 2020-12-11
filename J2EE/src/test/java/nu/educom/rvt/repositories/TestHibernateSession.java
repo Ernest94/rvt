@@ -5,6 +5,8 @@ import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.cfg.Environment;
 
+import org.junit.jupiter.api.Assertions;
+
 public class TestHibernateSession extends HibernateSession {
 
 	public static void switchToTestDatabase() {
@@ -31,9 +33,11 @@ public class TestHibernateSession extends HibernateSession {
         connectToHibernate(settings);
     }
 
-	public static void closeSession() {
-		Session session = sessionFactory.getCurrentSession();
+	public static void closeSession(Session session) {
 		if (session.isOpen()) {
+			if (session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
 			session.close();
 		}
 	}
