@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 import nu.educom.rvt.models.*;
-import nu.educom.rvt.models.Review.Status;
 import nu.educom.rvt.repositories.*;
 import nu.educom.rvt.services.UserService;
 
@@ -228,10 +227,10 @@ public class Filler {
             
             //FILL THE REVIEW TABLE
             ReviewRepository reviewRepo = new ReviewRepository(session);
-            Review review1 = new Review(weekAgo, "Matig bezig trainee1", "Deze trainee is meh bezig", Review.Status.PENDING, trainee1);
-            Review review2 = new Review(dayAgo, "Redelijk bezig trainee1", "Deze trainee is voldoende bezig", Review.Status.PENDING, trainee1);
+            Review review1 = new Review(weekAgo, "Matig bezig trainee1", "Deze trainee is meh bezig", Review.Status.COMPLETED, trainee1);
+            Review review2 = new Review(dayAgo, "Redelijk bezig trainee1", "Deze trainee is voldoende bezig", Review.Status.COMPLETED, trainee1);
             Review review3 = new Review(nowLDT, "Goed bezig trainee1", "Deze trainee is prima bezig", Review.Status.PENDING, trainee1);
-            Review review4 = new Review(dayAgo, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.PENDING, trainee2);
+            Review review4 = new Review(dayAgo, "Goed bezig trainee", "Deze trainee is prima bezig", Review.Status.COMPLETED, trainee2);
             reviewRepo.create(review1);
             reviewRepo.create(review2);
             reviewRepo.create(review3);
@@ -268,13 +267,6 @@ public class Filler {
             for (ConceptRating conceptRating : conceptsRatings) {
                 conceptRatingRepo.create(conceptRating);
             }    
-            
-//            review1.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review1);
-//            review2.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review2);
-//            review4.setReviewStatus(Status.COMPLETED);
-//            reviewRepo.update(review4);
             
             //FILL THE BUNDLE TABLE
             BundleRepository bundleRepo = new BundleRepository(session);

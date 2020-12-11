@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -97,8 +98,8 @@ public class ReviewService {
 		
 		LocalDateTime mostRecentDate = reviews.stream().map(r -> r.getDate()).max(LocalDateTime::compareTo).get();
 		Review mostRecentReview = reviews.stream().filter(r -> r.getDate() == mostRecentDate).findFirst().orElse(null);
-		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).collect(Collectors.toList());
-		
+		List<Review> otherReviews = reviews.stream().filter(r -> r.getDate().isBefore(mostRecentDate)).sorted(Comparator.comparing(Review::getDate).reversed()).collect(Collectors.toList());
+
 		
 		
 		List<ConceptPlusRating> CPRMostRecent = getCPRFromReview(mostRecentReview, allConceptRatings);

@@ -109,7 +109,7 @@ public class BundleResource extends BaseResource {
 	}
 	
 	@GET 
-	@Path("/bundleTrainee/{userId}") 
+	@Path("/user/{userId}") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(@PathParam("userId") int userId) {
 		LOG.debug("getTraineeBundles for user {} called", userId);
