@@ -314,36 +314,29 @@ class addConcept extends React.Component {
                 <h2 className="text-center ">Concept toevoegen</h2>
                 <div className="text-danger" >{this.state.errors}</div>
 
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit} className="container col-lg-8">
                         
-                        <div className="row m-2 mt-4 justify-content-center">
-                            <label className="col-2" htmlFor="name">Naam:</label>
-                            <div className="col-3">
-                                <input id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                            </div>
+                        <div className="input row dossier">
+                            <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                                <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                         </div>
 
-                        <div className="row m-2 justify-content-center">
-                            <label className="col-2" htmlFor="description">Beschrijving:</label>
-                            <div className="col-3">
-                                <input id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                            </div>
+                        <div className="input row dossier">
+                            <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
+                                <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
                         </div>
 
-                        <div className="row m-2 justify-content-center">
-                            <label className="col-2" htmlFor="theme">Thema:</label>
-                            <div className="col-3">
-                                <select name="theme" id="theme"
-
+                        <div className="input row dossier">
+                            <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
+                                <select name="theme" id="theme" className="form-control col-sm-9"
                                     value={this.state.themeDisplayName}
                                     onChange={this.onChangeTheme}
                                     required>
                                     <option hidden value=''></option>
                                     {themeOptions}
                                 </select>
-                            </div>
                         </div>
-                        <div className="row m-2 justify-content-center">
+                        <div className="input row dossier">
                             <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
                             <BundleConceptTable
                                 chosenBundles={this.state.chosenBundles}
@@ -353,24 +346,26 @@ class addConcept extends React.Component {
                                 handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
                                 addBundle={this.addBundle.bind(this)} />
                         </div>
-                        <div className="row justify-content-center">
-                            <div className="col-6 m">
-                                <div className="float-right">
-                                    {(this.state.loading) ? <button className="btn btn-primary" type="submit" disabled> Laden...</button>:
-                                    <button className="btn btn-primary" type="submit">Concept toevoegen</button>}
-                                </div>
+                        <div className="buttons">
+                        <div>
+                                <button 
+                                    className="btn btn-danger btn-block" 
+                                    type="submit"
+                                    >                        
+                                    Concept toevoegen
+                                </button>
+                            </div>
+                            <div>
+                                <Link 
+                                    className="btn btn-danger btn-block" 
+                                    to={"/settings/"}
+                                    role="button"
+                                    >                        
+                                    Annuleren
+                                </Link>
                             </div>
                         </div>
-                        </form>
-
-                        <div className="row justify-content-center">
-                            <div className="col-6">
-                                <div className="float-right m-1">
-                                    {(this.state.loading) ? <button className="btn btn-primary" disabled> Laden...</button>:
-                                    <Link to={"/settings"} className="btn btn-primary">Annuleren</Link>}
-                                </div>
-                            </div>
-                        </div>
+                    </form>
                         
                     <h4 className="text-center text-success">{this.state.message}</h4>
                 </div >
