@@ -108,4 +108,9 @@ public class Review {
 	public void setReviewStatus(Status reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
+	@Override
+	public String toString() {
+		return String.format("Review(%d, %s)[%s]", getId(), getUser(), getReviewStatus());
+	}
+
 }

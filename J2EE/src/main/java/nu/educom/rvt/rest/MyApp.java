@@ -5,9 +5,13 @@ import java.util.*;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @ApplicationPath("")
 public class MyApp extends Application {
-    
+	private static final Logger LOG = LogManager.getLogger();
+	
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> set = new HashSet<>();
@@ -18,6 +22,7 @@ public class MyApp extends Application {
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
 		set.add(BundleResource.class);
+		LOG.info("classes: {}", set);
 		return set;
 	}
 	

@@ -7,24 +7,31 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
 
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.UserRelation;
-import nu.educom.rvt.models.LinkedUsers;
 import nu.educom.rvt.models.view.UserSearch;
 import nu.educom.rvt.models.view.UserSearchJson;
+import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
-import nu.educom.rvt.repositories.UserRelationRepository;
 import nu.educom.rvt.repositories.UserRepository;
 
 public class UserService {
+	private final UserRepository userRepo;
+	private LocationRepository locationRepo;
+	private RoleRepository roleRepo;
 
-	public User checkUser(User user) {
-		UserRepository userRepo = new UserRepository();
+	public UserService(Session session) {
+		userRepo = new UserRepository(session);
+		roleRepo = new RoleRepository(session);
+		locationRepo = new LocationRepository(session);
+	}
+
+	public User checkUser(User user) throws DatabaseException {
 		User dbUser = userRepo.readByEmail(user.getEmail());
 		
 		if (dbUser != null && BCrypt.checkpw(user.getPassword(), dbUser.getPassword())) {
@@ -34,8 +41,7 @@ public class UserService {
 		return null;
 	}
 	
-	public User checkUserPasswordById(int id, String password) {
-		UserRepository userRepo = new UserRepository();
+	public User checkUserPasswordById(int id, String password) throws DatabaseException {
 		User dbUser = userRepo.readById(id);
 		
 		if (dbUser != null && BCrypt.checkpw(password, dbUser.getPassword())) {
@@ -45,9 +51,8 @@ public class UserService {
 		return null;
 	}
 	
-	public User changePassword(User user, String password) {
+	public User changePassword(User user, String password) throws DatabaseException {
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-		UserRepository userRepo = new UserRepository();
 		User changedUser = userRepo.updatePassword(user, hashedPassword);
 		if (changedUser != null) {
 			return changedUser;
@@ -55,63 +60,55 @@ public class UserService {
 		return null;
 	}
 	
-	public Location getLocationById(int id) {
-		LocationRepository locationRepo = new LocationRepository();
-	    Location location = locationRepo.readById(id);
+	public Location getLocationById(int id) throws DatabaseException {
+		Location location = locationRepo.readById(id);
 		return location;
 	}
 	
-	public Role getRoleById(int id) {
-		RoleRepository roleRepo = new RoleRepository();
+	public Role getRoleById(int id) throws DatabaseException {
 	    Role role = roleRepo.readById(id);
 		return role;
 		
 	}
 	
-	public boolean validateUser(User user) {
-		UserRepository userRepo = new UserRepository();
+	public boolean validateUser(User user) throws DatabaseException {
 		User foundUser = userRepo.readByEmail(user.getEmail());
 		if (foundUser == null) return true; 
 		else return false;
 	}
 	
+	// TODO move to a UserLogic class om beter te kunnen testen
 	public User makeUser(String name, String email, String password, Role role, Location location, LocalDate dateActive)
 	{
-		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt()); /* JH QUESTION: Lijkt of het password 2x wordt gehashed */
 		User user = new User(name, email, hashedPassword, role, location, dateActive, null);
 		return user;
 	}
 	
-	public void addUser(User user)
+	public void addUser(User user) throws DatabaseException
 	{
-		UserRepository userRepo = new UserRepository();
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
 	}
-	public void updateUser(User user)
+	public void updateUser(User user) throws DatabaseException
 	{
-		UserRepository userRepo = new UserRepository();		
 		userRepo.update(user);
 	}
 	
-	public List<Role> getRoles() {
-		RoleRepository roleRepo = new RoleRepository();
+	public List<Role> getRoles() throws DatabaseException {
 		return roleRepo.readAll(); 
 	}
 	
-	public List<Location> getLocations()
+	public List<Location> getLocations() throws DatabaseException
 	{
-		LocationRepository locRepo = new LocationRepository();
-		return locRepo.readAll();
+		return locationRepo.readAll();
 	}
 	
-	public int addLocation(Location location) {
-		LocationRepository locationRepo = new LocationRepository();
+	public int addLocation(Location location) throws DatabaseException {
 		int success = locationRepo.create(location);
 		return success;
 	}
-	
-	public boolean validateLocation(Location location) {	
+	public boolean validateLocation(Location location) throws DatabaseException {	
 		
 		if(location.getName().trim().isEmpty() || !Pattern.matches("^.*\\p{L}.*$", location.getName())) {
 			return false;
@@ -120,13 +117,12 @@ public class UserService {
 			return this.doesLocationExist(location);
 		}
 	}
-	public boolean doesLocationExist(Location location) {
-		LocationRepository locationRepo = new LocationRepository();
+	public boolean doesLocationExist(Location location) throws DatabaseException {
 		Location duplicate = locationRepo.readByName(location.getName());		
 		return duplicate==null;
 	}
 	
-	public List<User> getFilteredUsers(String criteria, Role role, List<Location> locations)
+	public List<User> getFilteredUsers(String criteria, Role role, List<Location> locations) throws DatabaseException
 	{
 		String[] words = criteria.split(" ");
 		List<User> foundUsers = new ArrayList<>();	
@@ -149,9 +145,8 @@ public class UserService {
 	}
 	
 	
-	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations)
+	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations) throws DatabaseException
 	{
-		UserRepository userRepo = new UserRepository();
 		List<User> allUsers = userRepo.readAll();
 		List<User> filterdUsers = new ArrayList<User>();
 		
@@ -159,11 +154,9 @@ public class UserService {
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
 				.collect(Collectors.toList()));
 		
-
 		filterdUsers = filterdUsers.stream()
 				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
-				.collect(Collectors.toList());			
-	
+				.collect(Collectors.toList());	
 		
 		if (criteria != null) {
 			filterdUsers = filterdUsers.stream()
@@ -180,7 +173,7 @@ public class UserService {
 		
 		return filterdUsers;
 	}
-	
+	// TODO move to a UserLogic class
 	public UserSearchJson convertToUSJ(List<User> users)
 	{
 		List<UserSearch> userSearch = new ArrayList<>();
@@ -192,99 +185,15 @@ public class UserService {
 		return new UserSearchJson(userSearch);
 	}
 	
-	public List<User> getConnectedUsers(User user)
-	{
-		UserRelationRepository relaRepo = new UserRelationRepository();
-		List<UserRelation> userRelation = relaRepo.readAll();
-		List<User> returnedUsers = new ArrayList<>();		
-		
-		returnedUsers.addAll(userRelation.stream().filter(r -> r.getUser().getId() == user.getId())
-												  .map(r -> r.getLinked()).collect(Collectors.toList()));
-		returnedUsers.addAll(userRelation.stream().filter(r -> r.getLinked().getId() == user.getId())
-				  								  .map(r -> r.getUser()).collect(Collectors.toList()));
-		return returnedUsers;
-	}
 	
-	public List<User> getPossibleRelations(User user) 
-	{
-		UserRepository userRepo = new UserRepository();
-		List<User> allUsers = userRepo.readAll();
-		List<User> filteredUsers = new ArrayList<User>();
-		String userRole = user.getRole().getName();
-		
-		switch (userRole) {
-			case "Admin":
-				filteredUsers.addAll(allUsers);
-				break;
-			case "Docent":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> u.getRole().getName().equals("Trainee"))
-						.collect(Collectors.toList()));
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> u.getRole().getName().equals("Docent"))
-						.collect(Collectors.toList()));
-				break;
-			case "Sales":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> !(u.getRole().getName().equals("Admin")))
-						.collect(Collectors.toList()));
-				break;
-			case "Office":
-				filteredUsers.addAll(allUsers.stream()
-						.filter(u -> !(u.getRole().getName().equals("Admin")))
-						.collect(Collectors.toList()));
-				break;
-			case "Trainee":
-				break;
-		}
-		
-		return filteredUsers;
-	}
-	
-	public List<LinkedUsers> combineUsers(User currentUser, List<User> connectedUsers, List<User> possibleRelatedUsers)
-	{
-		List<LinkedUsers> linkedUsers = new ArrayList<LinkedUsers>();
-		
-		connectedUsers.forEach((user) -> {
-			linkedUsers.add(new LinkedUsers(
-					user.getId(),
-					user.getName(),
-					user.getRole(),
-					user.getLocation(),
-					true));
-		});
-		
-		possibleRelatedUsers.forEach(user -> {
-			boolean hasAlreadyRelation = connectedUsers.stream().anyMatch(u -> u.getId() == (user.getId()));
-			if (user.getId() != currentUser.getId() && !hasAlreadyRelation) {
-				linkedUsers.add(new LinkedUsers(
-						user.getId(),
-						user.getName(),
-						user.getRole(),
-						user.getLocation(),
-						false));
-			}
-		});
-		
-		return linkedUsers;
-	}
-	
-	public void addConnection(User base, User link)
-	{
-		UserRelationRepository relaRepo = new UserRelationRepository();
-		UserRelation userRelation = new UserRelation(base, link);
-		relaRepo.create(userRelation);
-	}
 
-    public User getUserById(int userId) {
-      UserRepository userRepo = new UserRepository();
+    public User getUserById(int userId) throws DatabaseException {
       User user = userRepo.readById(userId);
     
       return user;
     }
 
-    public List<User> getAllUsers() {
-      UserRepository userRepo= new UserRepository();
+    public List<User> getAllUsers() throws DatabaseException {
       List<User> users = userRepo.readAll();
       return users;
     }
