@@ -416,13 +416,13 @@ class Dossier extends React.Component {
                         addBundle ={this.addBundle.bind(this)} />
                     </div>
                     <div className="row">
-                        <div className="">
-                            {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button> : <span></span>}
+                        <div className="buttons">
+                            {(!editDisabled) ? <button type="submit" className="btn btn-danger btn-block">Opslaan</button> : <span></span>}
                         </div>
                     </div>
                     <div className="row">
-                        <div className="my-1">
-                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger">Annuleer</Link> : <span></span>}
+                        <div className="buttons">
+                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger btn-block">Annuleer</Link> : <span></span>}
                         </div>
                     </div>
                 </form>
