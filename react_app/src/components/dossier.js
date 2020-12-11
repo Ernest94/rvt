@@ -7,10 +7,8 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
-import {Button} from '@material-ui/core'
 import { FaPlus, FaTimes } from "react-icons/fa";
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+
 
 class BundleTable extends React.Component {
 
@@ -149,24 +147,25 @@ class Dossier extends React.Component {
     canEditUserDossier(){
         const userRole = sessionStorage.getItem("userRole");
         const dossierRole = this.state.role.name;
+        const dossierLocation = this.state.location.name;
 
-        var isAllowedToEdit= {name:false, email:false, role: false, location: false, startDate: false};
+        var isAllowedToEdit;
         var fields = [];
         switch (userRole) {
-            case "Sales":
-            case "Trainee":
-                isAllowedToEdit = this.isOwnUserId();
-                fields= ["name", "email"];
-                break;
-            case "Docent":
             case "Office":
-                isAllowedToEdit = dossierRole==="Trainee" || this.isOwnUserId();
-                fields = ["name", "email", "location", "startDate"];
+            case "Docent":
+                isAllowedToEdit = dossierRole==="Trainee" 
+                    && dossierLocation===sessionStorage.getItem("userLocation") 
+                    || this.isOwnUserId();
+                fields = ["name", "email","location", "bundle"];
                 break;
             case "Admin":
                 isAllowedToEdit = true;
-                fields = ["name", "email", "location", "role", "startDate"];
+                fields = ["name", "email", "location", "role", "startDate","bundle"];
                 break;
+            case "Sales":
+            case "Trainee":
+            
             default:
                 isAllowedToEdit = false;
                 break;
@@ -176,7 +175,8 @@ class Dossier extends React.Component {
     getAllInfo() {
         const userId =  this.props.match.params.userId;
 
-        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier',  {headers: {"userId": userId}} );
+        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier', 
+        {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
 
@@ -202,7 +202,8 @@ class Dossier extends React.Component {
            });
             this.getTraineeBundles();
             this.canViewUserDossier();
-            if (!this.props.editDisabled) {this.canEditUserDossier()};
+            this.canEditUserDossier();
+            // if (!this.props.editDisabled) {this.canEditUserDossier()};
            
         })).catch(errors => {
             console.log("errors occured " + errors); 
@@ -363,13 +364,13 @@ class Dossier extends React.Component {
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
                         <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
-                            disabled={editDisabled || !allowedToEditFields.includes("name")}
+                            disabled={editDisabled || !allowedToEditFields.includes("name") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
                     <div className="input row">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
-                        disabled={editDisabled || !allowedToEditFields.includes("email")}
+                        disabled={editDisabled || !allowedToEditFields.includes("email") || !allowedToEdit}
                         onChange={this.handleFormChange}/>
                     </div>
 
@@ -379,7 +380,7 @@ class Dossier extends React.Component {
                             value={role.id}
                             onChange={this.onChangeRole}
                             required
-                            disabled={editDisabled || !allowedToEditFields.includes("role")}>
+                            disabled={editDisabled || !allowedToEditFields.includes("role") || !allowedToEdit}>
 
                             <option hidden value=''>Rol</option>
                             {rolesOptions}
@@ -391,7 +392,7 @@ class Dossier extends React.Component {
                             value={location.id}
                             onChange={this.onChangeLocation}
                             required
-                            disabled={editDisabled || !allowedToEditFields.includes("location")}>
+                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}>
 
                             <option hidden value=''>Locatie</option>
                             {locationOptions}
@@ -401,7 +402,7 @@ class Dossier extends React.Component {
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             value={startDate} 
-                            disabled={editDisabled || !allowedToEditFields.includes("startDate")}
+                            disabled={editDisabled || !allowedToEditFields.includes("startDate") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
                     <div className="input row dossier" hidden={!traineeDossier}>
@@ -409,19 +410,19 @@ class Dossier extends React.Component {
                        <BundleTable 
                        bundlesTrainee={this.state.bundlesTrainee} 
                        bundles={this.state.bundles}
-                       editDisabled={editDisabled} 
+                       editDisabled={editDisabled || !allowedToEditFields.includes("bundle") || !allowedToEdit} 
                         removeBundle={this.removeBundle.bind(this)}
                         handleBundleChange={this.handleBundleChange.bind(this)} 
                         addBundle ={this.addBundle.bind(this)} />
                     </div>
                     <div className="row">
-                        <div className="">
-                            {(!editDisabled) ? <button type="submit" className="btn btn-danger">Opslaan</button> : <span></span>}
+                        <div className="buttons">
+                            {(!editDisabled) ? <button type="submit" className="btn btn-danger btn-block">Opslaan</button> : <span></span>}
                         </div>
                     </div>
                     <div className="row">
-                        <div className="my-1">
-                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger">Annuleer</Link> : <span></span>}
+                        <div className="buttons">
+                            {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger btn-block">Annuleer</Link> : <span></span>}
                         </div>
                     </div>
                 </form>
@@ -431,7 +432,7 @@ class Dossier extends React.Component {
                         <Link 
                             className="btn btn-danger btn-block" 
                             to={"/dossier/" + userId + "/edit"}
-                            hidden={allowedToEdit}
+                            hidden={!allowedToEdit}
                             role="button"
                             >                        
                             Gegevens aanpassen

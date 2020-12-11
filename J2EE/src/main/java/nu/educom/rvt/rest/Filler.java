@@ -263,8 +263,6 @@ public class Filler {
             conceptsRatings.add(new ConceptRating(review4,concepts.get(3),4));
             conceptsRatings.add(new ConceptRating(review4,concepts.get(4),4));
             conceptsRatings.add(new ConceptRating(review4,concepts.get(5),4));
-            
-            
             ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository(session);
             for (ConceptRating conceptRating : conceptsRatings) {
                 conceptRatingRepo.create(conceptRating);
