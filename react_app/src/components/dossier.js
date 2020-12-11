@@ -7,10 +7,8 @@ import './form.css';
 import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
-import {Button} from '@material-ui/core'
 import { FaPlus, FaTimes } from "react-icons/fa";
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+
 
 class BundleTable extends React.Component {
 
@@ -149,30 +147,25 @@ class Dossier extends React.Component {
     canEditUserDossier(){
         const userRole = sessionStorage.getItem("userRole");
         const dossierRole = this.state.role.name;
+        const dossierLocation = this.state.location.name;
 
         var isAllowedToEdit;
         var fields = [];
         switch (userRole) {
-            case "Sales":
-                isAllowedToEdit = this.isOwnUserId();
-                fields = ["name", "email"];
-                break;
-            case "Trainee":
-                isAllowedToEdit = this.isOwnUserId();
-                fields = ["name", "email"];
-                break;
-            case "Docent":
-                isAllowedToEdit = this.isOwnUserId();
-                fields = ["name", "email"];
-                break;
             case "Office":
-                isAllowedToEdit = dossierRole==="Trainee" || this.isOwnUserId();
-                fields = ["name", "email", "location", "startDate"];
+            case "Docent":
+                isAllowedToEdit = dossierRole==="Trainee" 
+                    && dossierLocation===sessionStorage.getItem("userLocation") 
+                    || this.isOwnUserId();
+                fields = ["name", "email","location", "bundle"];
                 break;
             case "Admin":
                 isAllowedToEdit = true;
                 fields = ["name", "email", "location", "role", "startDate","bundle"];
                 break;
+            case "Sales":
+            case "Trainee":
+            
             default:
                 isAllowedToEdit = false;
                 break;
