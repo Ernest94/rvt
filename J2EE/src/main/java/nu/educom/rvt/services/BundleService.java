@@ -9,10 +9,14 @@ import org.hibernate.Session;
 
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
+import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleCheck;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
+import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.models.view.BundleView;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
@@ -135,29 +139,97 @@ public class BundleService {
 		return bundleRepo.readAll();
 	}
 	
+	public List<BaseBundleView> getAllBundleViews()
+	{
+		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
+	}
+	
 	public List<Bundle> getAllCreatorBundles(User user){
 		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
 	}
 	 
-	public List<Bundle> getAllBundlesFromUser(User user){
-		return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
-												   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
+	public List<BundleTraineeView> getAllBundlesFromUser(User user)
+	{
+		Session session = HibernateSession.getSessionFactory().openSession();
+		List<BundleTraineeView> bunTs = bundleTraineeRepo.readAll().stream()
+								.filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
+								.map(bundleTrainee -> new BundleTraineeView(bundleTrainee.getStartWeek(), new BaseBundleView(bundleTrainee.getBundle())))
+								.collect(Collectors.toList());
+		
+		
+		
+		session.close();
+		//return bundleTraineeRepo.readAll().stream().filter(bundleTrainee -> bundleTrainee.getUser().getId() == user.getId())
+		//										   .map(bundleTrainee -> bundleTrainee.getBundle()).collect(Collectors.toList());
+		return bunTs;
 	}
 	
-	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
+	public void setBundlesForUser(User user, List<BundleTraineeView> bundles) 
+	{
+		List<BundleTrainee> records = bundleTraineeRepo.readByUserId(user.getId());
 		
-		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();
-		
-		for(Bundle bundle : bundleTrainee) {
-			bundleCheck.add(new BundleCheck(bundle, true));
+		List<BundleTrainee> updated = new ArrayList<BundleTrainee>();
+
+		for(BundleTrainee record : records) {
+			boolean found=false;
+			for(BundleTraineeView btv: bundles) {
+				if(record.getBundle().getId() == btv.getBundle().getId()) {
+					found=true;
+				}
+			}
+			if(!found) {
+				record.setEndDate(LocalDate.now());
+				updated.add(record);
+			}
 		}
-		for(Bundle bundle : bundleAll) {
-			bundleCheck.add(new BundleCheck(bundle, false));
-		}
 		
-		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
-		return bundleCheck;		
+		for(BundleTraineeView btv: bundles) {
+			if(!(btv.getBundle()==null || btv.getStartWeek() <= 0)) {
+				
+				boolean found=false;
+				
+				for(BundleTrainee record : records) {
+					if(record.getBundle().getId() == btv.getBundle().getId()) {
+						;
+						//end the old record
+						record.setEndDate(LocalDate.now());
+						updated.add(record);
+						
+						//create new record with same bundle but different startweek
+						BundleTrainee newRecord = new BundleTrainee(user, record.getBundle(), btv.getStartWeek(), LocalDate.now());
+						updated.add(newRecord);
+						found = true;
+					}
+				}
+				if(!found) {
+					BundleTrainee newRecord = new BundleTrainee(user, bundleRepo.readById(btv.getBundle().getId()), btv.getStartWeek(), LocalDate.now());
+					updated.add(newRecord);
+				}
+
+			}
+		}
+		System.out.println("Ik ga deze records in de BundleTrainee tabel zetten:");
+		for(BundleTrainee bt : updated) {
+			System.out.println("Id: " + bt.getId() + " Bundle: " + bt.getBundle().getName() + " met startweek: "+ bt.getStartWeek());
+			bundleTraineeRepo.update(bt);
+		}
+
+	    
 	}
+//	public List<BundleCheck> convertToBundleCheck(List<Bundle> bundleAll, List<Bundle> bundleTrainee){
+//		
+//		List<BundleCheck> bundleCheck = new ArrayList<BundleCheck>();
+//		
+//		for(Bundle bundle : bundleTrainee) {
+//			bundleCheck.add(new BundleCheck(bundle, true));
+//		}
+//		for(Bundle bundle : bundleAll) {
+//			bundleCheck.add(new BundleCheck(bundle, false));
+//		}
+//		
+//		bundleCheck = StreamEx.of(bundleCheck).distinct(bundleC -> bundleC.getBundle().getId()).toList();
+//		return bundleCheck;		
+//	}
 	
 	public List<Concept> getAllConceptsFromBundle(Bundle bundle){
 		return bundleConceptRepo.readAll().stream().filter(conceptBundle -> conceptBundle.getBundle().getId() == bundle.getId())

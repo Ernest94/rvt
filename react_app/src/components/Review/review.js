@@ -180,6 +180,7 @@ class review extends React.Component {
             userLocation: data.traineeLocation,
             reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
+            traineeFeedback: data.commentOffice,
         });
         console.log(this.state);
     }

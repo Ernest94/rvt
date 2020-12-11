@@ -63,3 +63,9 @@ h2 {
     color: white;
 }
 
+.error-message-center {
+	min-height: 100px;
+	display: inline-flex;
+	align-items: center;
+  }
+  

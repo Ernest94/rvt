@@ -20,6 +20,7 @@ class conceptOverview extends React.Component {
             pageLoading: true,
             errors: "",
             selectedBundle: "",
+            selectedBundleCreator: "",
             activeConcepts:[],
             activeConceptsWeekOffset:[],
         };
@@ -55,8 +56,11 @@ class conceptOverview extends React.Component {
 
     onChangeBundle = (e) => {
         var bundleKeyId = parseInt(e.target.value);
+        var bundleCreatorName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.creator_name)[0];
+
         this.setState({
             selectedBundle: bundleKeyId,
+            selectedBundleCreator: bundleCreatorName
         });
         this.selectActiveConcepts(bundleKeyId)
     } 
@@ -216,14 +220,20 @@ class conceptOverview extends React.Component {
                                 {bundleOptions}
                             </select>
                     </div>
-                    <div className="col-8">
+                    <div className="col-2">
 
                         <span>
-                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>  {/* hidden={} */}
+                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
                                 <FaPlus/>
                             </Link>
                         </span>
                    </div>
+                   <div className="col-7">
+                    {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                        Bundel opslaan
+                    </button>: <span></span>}
+                    </div>
+
                 </div>
 
                 <div className="container mt-4">
@@ -247,15 +257,11 @@ class conceptOverview extends React.Component {
                                 </tr>
                             </thead>
                             <tbody className="tableBody table">
-                            {conceptDisplay}
+                                {conceptDisplay}
                             </tbody>
                         </table>
                     </div >
-                    <div className="col-3">
-                    <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}>
-                        Bundel opslaan
-                    </button>
-                    </div>
+
                 </div>
                 </div>
             </div>

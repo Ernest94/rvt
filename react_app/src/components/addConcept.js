@@ -26,7 +26,8 @@ class addConcept extends React.Component {
             chosenBundles: [],
             counter: 0
         };
-    }
+        this.onChangeTheme= this.onChangeTheme.bind(this);
+        }
 
     static hasAccess() {
         return Permissions.canAddConcept();
@@ -92,12 +93,14 @@ class addConcept extends React.Component {
     }
 
     succesfullAdd(){
-        this.setState({ name:"",
-                        description: "",
+        this.setState({ 
+                        themeDisplayName:"",
+                        name:"",
+                        description:"",
                         message:"Concept toegevoegd",
                         startDate:"",
-                        week:"",
-                        themeDisplayName: ""});
+                        week:""
+                        });
     }
 
     onChangeTheme = (e) => {
@@ -328,11 +331,12 @@ class addConcept extends React.Component {
                             <label className="col-2" htmlFor="theme">Thema:</label>
                             <div className="col-3">
                                 <select name="theme" id="theme"
-                                    value={this.themeDisplayName}
+
+                                    value={this.state.themeDisplayName}
                                     onChange={this.onChangeTheme}
                                     required>
-                                    <option hidden value=''>Thema</option>
-                                        {themeOptions}
+                                    <option hidden value=''></option>
+                                    {themeOptions}
                                 </select>
                             </div>
                         </div>

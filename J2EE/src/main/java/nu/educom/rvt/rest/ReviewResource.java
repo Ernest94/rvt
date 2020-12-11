@@ -57,11 +57,15 @@ public class ReviewResource {
 			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 			String traineeName = userOutput.getName();
 			String traineeLocation = userOutput.getLocation().getName();
-			LocalDateTime reviewDate = reviewServ.getMostRecentReview(allReviews).getDate();
+			Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);
+			LocalDateTime reviewDate = mostRecentReview.getDate();
+			
 			conceptsRatingsJSON.setTraineeName(traineeName);
 			conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 			conceptsRatingsJSON.setReviewDate(reviewDate);
 			conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
+			conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
+			conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
 
 			return Response.status(200).entity(conceptsRatingsJSON).build();
 	    }
@@ -80,11 +84,9 @@ public class ReviewResource {
 			    
 	    reviewServ.makeNewReviewIfNoPending(userOutput);
 
-		List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
+		List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput);
 		List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
-		//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
 		List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
-	    //extra functie om de week te bepalen nadat de ratings eraan zijn gegeven
 		
 		List<ConceptPlusRating> CPRActive = conceptServ.converToCPRActive(conceptsPlusRatings);
 		
@@ -102,6 +104,8 @@ public class ReviewResource {
 		conceptsRatingsJSON.setReviewDate(reviewDate);
 		conceptsRatingsJSON.setConceptPlusRating(CPRActive);
 		conceptsRatingsJSON.setReviewId(reviewId);
+		conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
+		conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
 
 		return Response.status(200).entity(conceptsRatingsJSON).build();
       }
@@ -131,11 +135,11 @@ public class ReviewResource {
     }
 	
 	@GET
-	@Path("/pendingUsers")
+	@Path("/pending/location/{locationId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUsersWithPendingReviews() {
+	public Response getAllUsersWithPendingReviews(@PathParam("locationId") int locationId) {
 		UserService userServ = new UserService();
-		List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews();
+		List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(locationId);
 		UserSearchJson USJ = userServ.convertToUSJ(foundUsers);
 		
 		return Response.status(200).entity(USJ).build();
@@ -165,7 +169,6 @@ public class ReviewResource {
 			reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
 	  	    return Response.status(404).build();
 		}
-
     }
 	
 	@POST
@@ -174,7 +177,6 @@ public class ReviewResource {
 	public Response updateReview(Review review) {
 		boolean exists = reviewServ.getReviewById(review.getId())!=null;
 		if(exists) {
-			review.setReviewStatus(Review.Status.PENDING);
 			reviewServ.replaceReview(review);
 		  return Response.status(202).build();
 		} 
