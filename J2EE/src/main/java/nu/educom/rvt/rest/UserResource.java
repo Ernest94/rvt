@@ -39,9 +39,14 @@ public class UserResource extends BaseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
 		LOG.debug("login {} called", user);
+		System.out.print("\n" + "login is called" + "\n");
+
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
+
 			User foundUser = userServ.checkUser(user);
+			
+			
 			if (foundUser != null) {
 				return Response.status(200).entity(foundUser).build();
 			}

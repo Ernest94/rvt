@@ -165,7 +165,7 @@ public class UserService {
 		
 		
 		filterdUsers = filterdUsers.stream()
-				.filter(u -> locations.contains(u.getAllUserLocations()) || locations.size()==0)
+				.filter(u -> locations.contains(u.getCurrentLocations().get(0)) || locations.size()==0)
 				.collect(Collectors.toList());	
 //		filterdUsers = filterdUsers.stream()
 //				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
@@ -194,7 +194,7 @@ public class UserService {
 		for(User user : users)
 		{
 //			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getAllUserLocations(), user.getDateActive().format(formatter)));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getCurrentLocations(), user.getDateActive().format(formatter)));
 		}		
 		return new UserSearchJson(userSearch);
 	}

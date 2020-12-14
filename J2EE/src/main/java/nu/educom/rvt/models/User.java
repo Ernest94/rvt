@@ -43,9 +43,6 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
-//	@ManyToOne
-//	@JoinColumn(name="location_id")
-//	private Location location;
 	@Column(name="dateActive")
 	private LocalDate dateActive;
 	@Column(name="dateInactive")
@@ -55,10 +52,9 @@ public class User {
  	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserLocation> allUserLocations = new ArrayList<UserLocation>();
 	
-	@JsonManagedReference
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "User_Location", 
+        name = "user_location", 
         joinColumns = { @JoinColumn(name = "user_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "location_id"),}
     )
@@ -75,7 +71,6 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-//		this.location = location;
 		this.dateActive = dateActive;
 		this.dateInactive = dateInactive;
 	}
@@ -86,7 +81,6 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.role = role;
-//		this.location = location;
 	}
 
 	public User(int id, String password) {

@@ -60,7 +60,7 @@ public class ReviewResource extends BaseResource {
 				/* JH: Move this to a logic function or to conceptRatingJSON's constructor */
 				ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 				String traineeName = userOutput.getName();
-				String traineeLocation = userOutput.getLocation().getName();
+				String traineeLocation = userOutput.getCurrentLocations().get(0).getName();
 				conceptsRatingsJSON.setTraineeName(traineeName);
 				conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 				if (!allReviews.isEmpty()) {
@@ -102,7 +102,7 @@ public class ReviewResource extends BaseResource {
 			
 			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 			String traineeName = userOutput.getName();
-			String traineeLocation = userOutput.getLocation().getName();
+			String traineeLocation = userOutput.getCurrentLocations().get(0).getName();
 			
 			Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
 			LocalDateTime reviewDate = mostRecentReview.getDate();
