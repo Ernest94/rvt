@@ -228,7 +228,8 @@ class conceptOverview extends React.Component {
                         </span>
                     </div>
                     <div className="col col-lg-2">
-                        {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? 
+                        {(this.state.selectedBundle!=""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName")) 
+                        || ("Admin"=== sessionStorage.getItem("userName"))) ? 
                         <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
