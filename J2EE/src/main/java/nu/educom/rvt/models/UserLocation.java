@@ -21,13 +21,13 @@ public class UserLocation {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	@ManyToOne
-	@JoinColumn(name="location_id")
-	private Location location;
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
+	@ManyToOne
+	@JoinColumn(name="location_id")
+	private Location location;
 	@Column(name="startdate")
 	private LocalDate startDate;
 	@Column(name="enddate")
@@ -38,9 +38,17 @@ public class UserLocation {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserLocation(int id, Location location, User user, LocalDate startDate, LocalDate endDate) {
+	public UserLocation(int id, User user, Location location, LocalDate startDate, LocalDate endDate) {
 		super();
 		this.id = id;
+		this.location = location;
+		this.user = user;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	public UserLocation(User user, Location location, LocalDate startDate, LocalDate endDate) {
+		super();
 		this.location = location;
 		this.user = user;
 		this.startDate = startDate;

@@ -41,7 +41,7 @@ public class User {
 	
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, Location location, LocalDate dateActive,
+	public User(int id, String name, String email, String password, Role role, LocalDate dateActive,
 			LocalDate dateInactive) {
 		super();
 		this.id = id;
@@ -54,7 +54,7 @@ public class User {
 		this.dateInactive = dateInactive;
 	}
 	
-	public User(String name, String email, String password, Role role, Location location) {
+	public User(String name, String email, String password, Role role) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -69,14 +69,13 @@ public class User {
 		this.password = password;
 	}
 
-	public User(String name, String email, String password, Role role,List<UserLocation> allUserLocations, 
+	public User(String name, String email, String password, Role role, 
 			LocalDate dateActive, LocalDate dateInactive) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.allUserLocations = allUserLocations;
 		this.dateActive = dateActive;
 		this.dateInactive = dateInactive;
 	}
@@ -134,9 +133,9 @@ public class User {
 	public List<UserLocation> getAllUserLocations() {
 		return allUserLocations;
 	}
-	public void setAllUserLocations(List<UserLocation> allUserLocations) {
-		this.allUserLocations = allUserLocations;
-	}
+//	public void setAllUserLocations(List<UserLocation> allUserLocations) {
+//		this.allUserLocations = allUserLocations;
+//	}
 
 	@Override
 	public String toString() {

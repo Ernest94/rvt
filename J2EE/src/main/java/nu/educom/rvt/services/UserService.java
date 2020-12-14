@@ -13,22 +13,26 @@ import org.mindrot.jbcrypt.BCrypt;
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.UserLocation;
 import nu.educom.rvt.models.view.UserSearch;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
+import nu.educom.rvt.repositories.UserLocationRepository;
 import nu.educom.rvt.repositories.UserRepository;
 
 public class UserService {
 	private final UserRepository userRepo;
 	private LocationRepository locationRepo;
+	private UserLocationRepository userLocationRepo;
 	private RoleRepository roleRepo;
 
 	public UserService(Session session) {
 		userRepo = new UserRepository(session);
 		roleRepo = new RoleRepository(session);
 		locationRepo = new LocationRepository(session);
+		userLocationRepo = new UserLocationRepository(session);
 	}
 
 	public User checkUser(User user) throws DatabaseException {
@@ -89,6 +93,10 @@ public class UserService {
 	{
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
+	}	
+	public void addUserLocation(UserLocation userLocation) throws DatabaseException
+	{
+		userLocationRepo.create(userLocation);
 	}
 	public void updateUser(User user) throws DatabaseException
 	{
