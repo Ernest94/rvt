@@ -367,14 +367,14 @@ class Dossier extends React.Component {
                             disabled={editDisabled || !allowedToEditFields.includes("name") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled || !allowedToEditFields.includes("email") || !allowedToEdit}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={role.id}
@@ -408,7 +408,7 @@ class Dossier extends React.Component {
                     <div className="input row dossier" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
                        <BundleTable 
-                       bundlesTrainee={this.state.bundlesTrainee} 
+                       bundlesTrainee={this.state.bundlesTrainee}
                        bundles={this.state.bundles}
                        editDisabled={editDisabled || !allowedToEditFields.includes("bundle") || !allowedToEdit} 
                         removeBundle={this.removeBundle.bind(this)}

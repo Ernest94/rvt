@@ -209,8 +209,8 @@ class conceptOverview extends React.Component {
                         <ul className="errors">{this.state.errors}</ul>
                 </div>
 
-                <div className="row">
-                    <div className="col-3">
+                <div className="row justify-content-lg-center">
+                    <div className="col col-lg-6">
                         Selecteer een bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
@@ -220,18 +220,18 @@ class conceptOverview extends React.Component {
                                 {bundleOptions}
                             </select>
                     </div>
-                    <div className="col-2">
-
+                    <div className="col-md-auto">
                         <span>
                             <Link className="btn btn-primary float-left" to={"/addBundle/"}>
                                 <FaPlus/>
                             </Link>
                         </span>
-                   </div>
-                   <div className="col-7">
-                    {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
-                        Bundel opslaan
-                    </button>: <span></span>}
+                    </div>
+                    <div className="col col-lg-2">
+                        {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? 
+                        <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                            Bundel opslaan
+                        </button>: <span></span>}
                     </div>
 
                 </div>

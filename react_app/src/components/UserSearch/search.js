@@ -7,7 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
+import {Select, Input, MenuItem, FormControl, InputLabel, TextField} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -192,24 +192,21 @@ class Search extends React.Component {
                 <div className="row"> 
                     <ul className="errors">{this.state.errors}</ul>
                 </div>
-
-                    <form onSubmit={this.handleSubmit}>
-
-                        <div className="search-bar row d-flex">
-
-                          <div className="m-auto col-2">
-                            <label className="m-1" htmlFor="role">Rol:</label>
-                            <select name="role" id="role"
+                <form onSubmit={this.handleSubmit}>
+                    <div className="search-bar row d-flex">
+                        <div className="m-auto col-2">
+                        <label className="m-1" htmlFor="role">Rol:</label>
+                            <Select name="role" id="role"
 
                                 value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
                                 >
                                 {rolesOptions}
-                            </select>
-                          </div>
-                          <div className="m-auto col-4">
-                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
-                                <Select
+                            </Select>
+                        </div>
+                        <div className="m-auto col-4">
+                            <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
+                            <Select
                                 className="m-1 text-black"
                                 labelId="location-label"
                                 id="location"
@@ -229,13 +226,13 @@ class Search extends React.Component {
                                         {location.name}
                                     </MenuItem>
                                 ))}
-                                </Select>
-                                </InputLabel>
-                          </div> 
-                          <div className="m-auto col-4">
-                            <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
-                            <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
-                          </div>
+                            </Select>
+                            </InputLabel>
+                        </div> 
+                        <div className="m-auto col-4">
+                            <label className="m-1" htmlFor="criteria">Zoek criteria:</label>
+                            <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                        </div>
                         <div className="m-auto col-2">
                             <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
@@ -243,9 +240,9 @@ class Search extends React.Component {
                                 {(loading)?"Laden...": "Zoek"}
                             </button>
                         </div>
-                        </div>
+                    </div>
 
-                    </form>
+                </form>
 
                 <div className="text-center">
                     <table className="w-100 mx-auto">

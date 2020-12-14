@@ -92,7 +92,7 @@ class Password extends React.Component {
                         <input className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
                     </div>
                     
-                    <button className="btn btn-primary float-right" 
+                    <button className="btn btn-danger btn-block" 
                         disabled={buttonDisabled} 
                         type="submit">
                         {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
