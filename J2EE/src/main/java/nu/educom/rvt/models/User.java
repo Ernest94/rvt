@@ -3,10 +3,25 @@ package nu.educom.rvt.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.hibernate.annotations.WhereJoinTable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import nu.educom.rvt.models.view.LocalDateAdapter;
@@ -35,9 +50,20 @@ public class User {
 	private LocalDate dateActive;
 	@Column(name="dateInactive")
 	private LocalDate dateInactive;
-	@JsonManagedReference
+	
+	@JsonIgnore
  	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserLocation> allUserLocations = new ArrayList<UserLocation>();
+	
+	@JsonManagedReference
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "User_Location", 
+        joinColumns = { @JoinColumn(name = "user_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "location_id"),}
+    )
+	@WhereJoinTable(clause = "endDate IS NULL")
+	private List<Location> currentLocations = new ArrayList<Location>();
 	
 	public User() {}
 	
@@ -133,12 +159,27 @@ public class User {
 	public List<UserLocation> getAllUserLocations() {
 		return allUserLocations;
 	}
-//	public void setAllUserLocations(List<UserLocation> allUserLocations) {
-//		this.allUserLocations = allUserLocations;
-//	}
+	public List<Location> getCurrentLocations() {
+		return currentLocations;
+	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof User)) {
+			return false;
+		}
+		User other = (User) obj;
+		Integer Zero = Integer.valueOf(0);
+		if (Zero.compareTo(getId()) < 0 && Zero.compareTo(other.getId()) < 0) {
+			return getId() == other.getId();
+		} 
+		return Objects.equals(getName(), other.getName()) &&
+			   Objects.equals(getEmail(), other.getEmail()) &&
+			   Objects.equals(getDateActive(), other.getDateActive()) &&
+			   Objects.equals(getDateInactive(), other.getDateInactive());
+	}
+	@Override
 	public String toString() {
-		return String.format("User(%s)", getName() == null ? getEmail() : getName());
+		return String.format("User(%d: %s)", getId(), getName() == null ? getEmail() : getName());
 	}
 }

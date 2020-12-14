@@ -10,8 +10,28 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-import nu.educom.rvt.models.*;
-import nu.educom.rvt.repositories.*;
+import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleConcept;
+import nu.educom.rvt.models.BundleTrainee;
+import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Location;
+import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.UserLocation;
+import nu.educom.rvt.repositories.BundleConceptRepository;
+import nu.educom.rvt.repositories.BundleRepository;
+import nu.educom.rvt.repositories.BundleTraineeRepository;
+import nu.educom.rvt.repositories.ConceptRatingRepository;
+import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.HibernateSession;
+import nu.educom.rvt.repositories.LocationRepository;
+import nu.educom.rvt.repositories.ReviewRepository;
+import nu.educom.rvt.repositories.RoleRepository;
+import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.services.UserService;
 
 public class Filler {
@@ -35,6 +55,7 @@ public class Filler {
             
         	
         	//INITIALIZE DATES AND TIMES
+        	LocalDate lastWeekLd = LocalDate.now().minus(1, ChronoUnit.WEEKS);
             LocalDate nowLD = LocalDate.now();
             LocalDate endDateLD = null;
             LocalDateTime weekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
@@ -101,6 +122,8 @@ public class Filler {
         	//FILL THE USER-LOCATION TABLE            
 			List<UserLocation> userLocations = new ArrayList<UserLocation>();
 			
+			UserLocation trainee1ArnhemOld = new UserLocation(trainee1, arnhem, lastWeekLd, nowLD);
+			userLocations.add(trainee1ArnhemOld);		
 			UserLocation trainee1Utrecht = new UserLocation(trainee1, utrecht, nowLD, endDateLD);
 			userLocations.add(trainee1Utrecht);			
 			UserLocation trainee2Utrecht = new UserLocation(trainee2, utrecht, nowLD, endDateLD);
