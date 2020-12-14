@@ -19,12 +19,16 @@ class Login extends React.Component {
     }
 
     handleSuccessfulAuth(data) {
+        sessionStorage.setItem("token", data);
         sessionStorage.setItem("isUserLoggedIn", true);
-        sessionStorage.setItem("userId", data.id);
-        sessionStorage.setItem("userName", data.name);
-        sessionStorage.setItem("userRole", data.role.name);
-        sessionStorage.setItem("userLocation", data.location.name);
-        sessionStorage.setItem("userLocationId", data.location.id);
+        var tokens = data.split(".");
+        var responseData = JSON.parse(atob(tokens[1]));
+        console.log(responseData);
+        sessionStorage.setItem("userId", responseData.id);
+        sessionStorage.setItem("userName", responseData.name);
+        sessionStorage.setItem("userRole", responseData.Role.name);
+        sessionStorage.setItem("userLocation", responseData.Location.name);
+        sessionStorage.setItem("userLocationId", responseData.Location.id);
         this.props.handleLoginState();
         this.props.history.push('/settings');
     }
@@ -50,7 +54,7 @@ class Login extends React.Component {
                 .catch((error) => {
                     // use this line to log in without use of database
                     // this.props.handleSuccessfulAuth({id: 1, name: "Admin", role: {name: "Admin"}, location: {id: 1, name: "Utrecht"}}); 
-                    console.log("an error occorured " + error); 
+                    console.log("an error occurred " + error); 
                     const custErr = {login: ["Mislukt om in te loggen."]};
                     this.setState({
                         buttonDisabled: false,

@@ -2,7 +2,11 @@ package nu.educom.rvt.rest;
 
 import java.io.IOException;
 import java.net.URI;
+
 import javax.ws.rs.core.UriBuilder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.ssl.SSLContextConfigurator;
@@ -12,7 +16,9 @@ import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+
 public class Main {
+	private static final Logger LOG = LogManager.getLogger();
 
   private static URI getBaseURI() {
     return UriBuilder.fromUri("http://0.0.0.0").port(8081).build();
@@ -38,12 +44,13 @@ public class Main {
     ResourceConfig rc = ResourceConfig.forApplication(new MyApp());
 //	ResourceConfig rc = new ResourceConfig().packages("nu.educom.rvt.rest");
     
+
     if(SECURED) {
       SSLContextConfigurator sslCon = setUpSSLCon();
       if (sslCon.validateConfiguration(true)) {
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI_SECURED, rc, true, new SSLEngineConfigurator(sslCon).setClientMode(false).setNeedClientAuth(false));
       } else {
-        System.out.println("Context is not valid");        
+    	  LOG.error("sslContext not valid");   
       }
     }
     return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc, locator);

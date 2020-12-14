@@ -2,6 +2,7 @@ package nu.educom.rvt.rest;
 
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -40,12 +41,13 @@ public class UserResource extends BaseResource {
 	public Response login(User user) {
 		LOG.debug("login {} called", user);
 		return wrapInSession(session -> {
-			UserService userServ = new UserService(session);
-			User foundUser = userServ.checkUser(user);
-			if (foundUser != null) {
-				return Response.status(200).entity(foundUser).build();
+			try {
+				UserService userServ = new UserService(session);
+				User foundUser = userServ.checkUser(user);
+				String token = userServ.issueToken(foundUser);
+				return Response.status(200).entity(token).build();
 			}
-			else {
+			catch (LoginException lge){
 				return Response.status(401).build();
 			}
 		});
