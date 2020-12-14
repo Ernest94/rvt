@@ -7,7 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
+import {Select, Input, MenuItem, InputLabel} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -37,6 +37,7 @@ class Search extends React.Component {
 
     handleFormChange = (e) => {
         const {name, value} = e.target;
+        console.log(value)
         this.setState({
            [name]: value
         });
@@ -45,15 +46,19 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
-        const locationName = sessionStorage.getItem("userLocation");
+        let locationName = JSON.parse(sessionStorage.getItem("userLocation"));
+        console.log(locationName);
+        console.log(this.state.locations);
+
         const roleName = "Trainee";
 
         let role = this.state.roles.find(element => element.name === roleName);
-        let location = this.state.locations.find(element => element.name === locationName)
-
+        let location = this.state.locations.find(element => element.name === locationName[0].name);
+        // console.log(location)
         this.setState({
             loading: true,
             selectedLocations: [location],
+            // selectedLocations: [location],
             role: role,
             roleDisplayName: role.id
         });
@@ -110,6 +115,7 @@ class Search extends React.Component {
     getLocationsAndRoles() {
         axios.get(config.url.API_URL + '/webapi/user/roles')
             .then(response => {
+                console.log(response.data)
                 this.setState({
                     roles: response.data.roles,
                     locations: response.data.locations,
@@ -164,7 +170,7 @@ class Search extends React.Component {
         var userDisplay = users.map((user) => {
             return (
                 <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >
-                    <td className="p-2 col-sm text-nowrap align-middle">
+                    {/* <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
                     <td className="p-2 col-sm text-nowrap align-middle">
@@ -178,7 +184,7 @@ class Search extends React.Component {
                     </td>
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.dateActive}
-                    </td>
+                    </td> */}
                 </tr >
             )
         });
@@ -210,25 +216,25 @@ class Search extends React.Component {
                           <div className="m-auto col-4">
                                 <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
                                 <Select
-                                className="m-1 text-black"
-                                labelId="location-label"
-                                id="location"
-                                name="selectedLocations" 
-                                multiple
-                                value={this.state.selectedLocations}
-                                onChange={this.handleFormChange}
-                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
-                                MenuProps={{
-                                    variant: "menu",
-                                    getContentAnchorEl: null}
-                                }
-                                input={<Input id="select-location" />}
-                                >
-                                {locations.map((location) => (
-                                    <MenuItem key={location.id} value={location}>
-                                        {location.name}
-                                    </MenuItem>
-                                ))}
+                                    className="m-1 text-black"
+                                    labelId="location-label"
+                                    id="location"
+                                    name="selectedLocations" 
+                                    multiple
+                                    value={this.state.selectedLocations}
+                                    onChange={this.handleFormChange}
+                                    //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                                    MenuProps={{
+                                        variant: "menu",
+                                        getContentAnchorEl: null}
+                                    }
+                                    input={<Input id="select-location" />}
+                                    >
+                                    {locations.map((location) => (
+                                        <MenuItem key={location.id} value={location}>
+                                            {location.name}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                                 </InputLabel>
                           </div> 

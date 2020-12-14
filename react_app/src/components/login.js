@@ -24,7 +24,7 @@ class Login extends React.Component {
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
-        sessionStorage.setItem("userLocation", data.currentLocations);
+        sessionStorage.setItem("userLocation", JSON.stringify(data.currentLocations));
         this.props.handleLoginState();
         this.props.history.push('/settings');
     }

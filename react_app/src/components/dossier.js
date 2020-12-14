@@ -8,6 +8,7 @@ import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
+import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
 
 
 class BundleTable extends React.Component {
@@ -179,18 +180,19 @@ class Dossier extends React.Component {
         {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
-
         axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
            const userResponse = responses[0]
            const roleLocResponse = responses[1]
            const bundleResponse = responses[2]
+           console.log(userResponse)
+
            this.setState({
                 userId: userId,
 
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
-                location: userResponse.data.location,
+                currentLocations: userResponse.data.currentLocations,
                 startDate: userResponse.data.dateActive,
 
                 roles: roleLocResponse.data.roles,
@@ -335,7 +337,7 @@ class Dossier extends React.Component {
     render() {
 
 
-        const {location, role, name, email,startDate, userId, pageLoading, errors,
+        const {role, name, email,startDate, userId, pageLoading, errors,
             serverFail, locations, roles,allowedToView, allowedToEdit, allowedToEditFields} = this.state;
 
         const {editDisabled} = this.props;
@@ -350,12 +352,20 @@ class Dossier extends React.Component {
                 <option key={role.id} value={role.id}>{role.name}</option>
             )
         });
+        // const locationOptions = locations.map((location) => {
+        //     return (
+        //         <option key={location.id} value={location.id}>{location.name}</option>
+        //     )
+        // });
+
         const locationOptions = locations.map((location) => {
             return (
-                <option key={location.id} value={location.id}>{location.name}</option>
-            )
-        });
 
+                <MenuItem key={location.id} value={location}>
+                    {location.name}
+                </MenuItem>
+                )
+            });
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
@@ -387,7 +397,29 @@ class Dossier extends React.Component {
                         </select>
                     </div>
                     <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                    {/* <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie:  */}
+                    <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                    <Select
+                        className="m-1 text-black"
+                        labelId="location-label"
+                        id="location"
+                        name="currentLocations" 
+                        multiple
+                        value={this.state.currentLocations}
+                        onChange={this.handleFormChange}
+                        //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                        MenuProps={{
+                            variant: "menu",
+                            getContentAnchorEl: null}
+                        }
+                        input={<Input id="current-location" />}
+                        disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
+                        >
+                        {locationOptions}
+
+                    </Select>
+                                {/* </InputLabel> */}
+                        {/* <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <select className="form-control col-sm-9" name="location" id="location"
                             value={location.id}
                             onChange={this.onChangeLocation}
@@ -396,7 +428,7 @@ class Dossier extends React.Component {
 
                             <option hidden value=''>Locatie</option>
                             {locationOptions}
-                        </select>
+                        </select> */}
                     </div>
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
