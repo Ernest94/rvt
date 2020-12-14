@@ -128,6 +128,7 @@ class conceptOverview extends React.Component {
     }
 
     saveBundle() {
+        console.log(this.bundleJSON());
         axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
         .then(response => {
             this.setState({
@@ -227,13 +228,14 @@ class conceptOverview extends React.Component {
                                 <FaPlus/>
                             </Link>
                         </span>
-                   </div>
-                   <div className="col-7">
-                    {(this.state.selectedBundle!=""&&this.state.selectedBundleCreator===sessionStorage.getItem("userName")) ? <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
-                        Bundel opslaan
-                    </button>: <span></span>}
                     </div>
-
+                    <div className="col-7">
+                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
+                        || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                            Bundel opslaan
+                        </button>: <span></span>}
+                    </div>
                 </div>
 
                 <div className="container mt-4">
