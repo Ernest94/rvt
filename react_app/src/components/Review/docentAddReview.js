@@ -419,7 +419,7 @@ class docentAddReview extends React.Component {
             <tbody className="tableBody table">
             
                 {this.state.concepts.map((concept, index) => {    
-                    var checkboxDisabled = (concept.comment!=""&&concept.rating!=0)
+                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0)
                     
                     if (selectionFunction(concept)){
                         return (
@@ -471,7 +471,9 @@ class docentAddReview extends React.Component {
                                     aria-label="minimum height"
                                     name={"comment" + index} onBlur={(event) => {
                                     this.setComment(event); }}
-                                    value={concept.comment} />
+                                    >
+                                    {concept.comment}
+                                    </TextareaAutosize>
                             </td>
                         </tr>
                         )
@@ -535,15 +537,17 @@ class docentAddReview extends React.Component {
                 <div className="review-bottom-bar container d-flex">
                     <div>
                         <h4 >{"Terugkoppeling naar Trainee:"}</h4>
-                        <textarea value={traineeFeedback} rows="2" name="traineeFeedback" onBlur={(event) => {
+                        <textarea rows="2" name="traineeFeedback" onBlur={(event) => {
                             this.setReviewData(event);
-                        }}/>
+                        }}>{traineeFeedback}</textarea>
                     </div>
                     <div>
                         <h4 >{"Terugkoppeling naar kantoor:"}</h4>
-                        <textarea value={officeFeedback} rows="2" name="officeFeedback" onBlur={(event) => {
+                        <textarea rows="2" name="officeFeedback" onBlur={(event) => {
                             this.setReviewData(event);
-                        }}/>
+                        }}>
+                        {officeFeedback}
+                        </textarea>
                     </div>
                     <div>
                         {(this.state.loading) ? <button className="btn btn-danger" type="submit" disabled> Laden...</button>:

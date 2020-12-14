@@ -358,7 +358,7 @@ class Dossier extends React.Component {
 
         return (
             <div>
-                <h2 className="text-center">Gebruikersaccount</h2>
+                <h2 className="txt-centere">Gebruikersaccount</h2>
                 <ul className="errors text-center">{errors}</ul>
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
                     <div className="input row dossier">
