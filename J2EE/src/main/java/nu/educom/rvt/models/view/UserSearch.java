@@ -3,8 +3,8 @@ package nu.educom.rvt.models.view;
 import java.time.LocalDate;
 import java.util.List;
 
-import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.UserLocation;
 
 public class UserSearch {
 
@@ -12,16 +12,16 @@ public class UserSearch {
 	private String name;
 	private String email;
 	private Role role;
-	private Location location;
+	private List<UserLocation> userLocations;
 	private String dateActive;
 	
-	public UserSearch(int id, String name, String email, Role role, Location location, String dateActive)
+	public UserSearch(int id, String name, String email, Role role, List<UserLocation> userLocations, String dateActive)
 	{
         this.id = id;
 		this.name = name;
 		this.email = email;
 		this.role = role;
-		this.location = location;
+		this.userLocations = userLocations;
 		this.dateActive = dateActive;
 	}
     
@@ -49,12 +49,15 @@ public class UserSearch {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public Location getLocation() {
-		return location;
+
+	public List<UserLocation> getUserLocations() {
+		return userLocations;
 	}
-	public void setLocation(Location location) {
-		this.location = location;
+
+	public void setUserLocations(List<UserLocation> userLocations) {
+		this.userLocations = userLocations;
 	}
+
 	public String getDateActive() {
 		return dateActive;
 	}

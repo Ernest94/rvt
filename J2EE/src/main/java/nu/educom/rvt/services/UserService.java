@@ -85,7 +85,8 @@ public class UserService {
 	public User makeUser(String name, String email, String password, Role role, Location location, LocalDate dateActive)
 	{
 		String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt()); /* JH QUESTION: Lijkt of het password 2x wordt gehashed */
-		User user = new User(name, email, hashedPassword, role, location, dateActive, null);
+//		User user = new User(name, email, hashedPassword, role, location, dateActive, null);
+		User user = new User(name, email, hashedPassword, role, dateActive, null);
 		return user;
 	}
 	
@@ -162,9 +163,13 @@ public class UserService {
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
 				.collect(Collectors.toList()));
 		
+		
 		filterdUsers = filterdUsers.stream()
-				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
+				.filter(u -> locations.contains(u.getAllUserLocations()) || locations.size()==0)
 				.collect(Collectors.toList());	
+//		filterdUsers = filterdUsers.stream()
+//				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
+//				.collect(Collectors.toList());	
 		
 		if (criteria != null) {
 			filterdUsers = filterdUsers.stream()
@@ -188,7 +193,8 @@ public class UserService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		for(User user : users)
 		{
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
+//			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getAllUserLocations(), user.getDateActive().format(formatter)));
 		}		
 		return new UserSearchJson(userSearch);
 	}
