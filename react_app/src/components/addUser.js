@@ -1,47 +1,177 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
-import RoleAndLocation from './roleAndLocation.js';
-import UserInfo from './userInfo.js';
 import { Link,withRouter } from 'react-router-dom';
+import {Select, Input, MenuItem} from '@material-ui/core'
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
 import Utils from './Utils.js';
 import Permissions from './permissions.js'
+
+// class LocationSelection extends React.Component {
+    
+//     constructor(props) {
+//         super(props);
+//         console.log(this.props.roleDisplayName);
+//     }
+
+//     render() {
+//         const roleDisplayName = this.props.roleDisplayName;
+//         const locations = this.props.locations;
+//         const locationsOptions = locations.map((loc) => {
+//            return (
+//                 <option key={loc.id} value={loc.id}>{loc.name}</option>
+//            ) 
+//         });
+        
+//         if (this.props.isTrainee === null) {
+//             return null;
+//         }
+//             return (
+//                 <div className="my-2">
+//                     <label htmlFor="location">Locatie:</label>
+//                     <div>
+//                     <select className="m-1" name="location" id="location" 
+//                         value={this.props.locationDisplayName} 
+//                         onChange={this.props.onChangeLocation}
+//                         required>
+                        
+//                         <option hidden value=''>Locatie</option>
+//                         {locationsOptions}
+//                     </select>
+//                     </div>
+//                 </div>
+//         )        
+//     }
+// }
+
+
+// // export default RoleAndLocation;
+
+
+// class RoleAndLocation extends React.Component {
+    
+//     render() {
+        
+//         const roles = this.props.roles;
+//         const locations = this.props.locations;
+//         if (roles === null) return <span> Problemen met laden van de pagina. </span>;
+//         if (locations === null) return <span> Problemen met laden van de pagina. </span>;
+
+//         const rolesOptions = roles.map((role) => {
+//            return (
+//                 <option key={role.id} value={role.id}>{role.name}</option>
+//            ) 
+//         });
+        
+        
+//         if (this.props.currentStep !== 1) {
+//             return null;
+//         }
+        
+//         return (
+//             <div className="m-3 p-2">
+
+//                 <div className="">
+//                     <label htmlFor="role">Rol:</label>
+//                     <div>
+//                     <select className="m-1" name="role" id="role" 
+//                         value={this.props.roleDisplayName} 
+//                         onChange={this.props.onChangeRole}
+//                         required>
+                        
+//                         <option hidden value=''></option>
+//                         {rolesOptions}
+//                     </select>
+//                     </div>
+//                 </div>
+                
+//                 <LocationSelection 
+//                     locations={this.props.locations}
+//                     isTrainee={this.props.isTrainee}
+//                     locationDisplayName= {this.props.locationDisplayName}
+//                     roleDisplayName = {this.props.roleDisplayName}
+//                     onChangeLocation={this.props.onChangeLocation}
+//                 /> 
+                
+//             </div>
+//         )
+//     }
+// }
+
+// class UserInfo extends React.Component {
+    
+//     componentDidMount() {
+//         Utils.dateValidation();
+//     }
+    
+//     render() {
+        
+//         if (this.props.currentStep !== 2) {
+//             return null;
+//         }
+        
+        
+//         return (
+//             <div className="row">
+//                 <div className="col-6 ">
+//                     <div className="float-right">
+//                         <label className="form-label" htmlFor="name">Naam:</label>
+//                         <input className="form-control small-form" id="name" type="text" name="name" value={this.props.name} onChange={this.props.handleFormChange}/>
+                        
+//                         <label htmlFor="email">Email:</label>
+//                         <input className="form-control" id="email" type="email" name="email" value={this.props.email} onChange={this.props.handleFormChange}/>
+                    
+//                         <label htmlFor="password">Wachtwoord:</label>
+//                         <input className="form-control" id="password" type="password" name="password"  value={this.props.password} onChange={this.props.handleFormChange}/>
+//                     </div>
+//                 </div>
+                
+//                 <div className="col-6">
+//                     <div className="float-left">
+
+//                         <label htmlFor="date">Datum actief:</label>
+//                         <input className="form-control" id="date" type="date" name="dateActive" value={this.props.date} onChange={this.props.handleFormChange}/>
+                    
+//                         <label htmlFor="role">Rol:</label>
+//                         <input className="form-control" id="role" type="text" name="role" value={this.props.role.name} disabled/>
+                    
+//                         <label htmlFor="date">Locatie:</label>
+//                         <input className="form-control" id="location" type="text" name="location" value={this.props.location.name} disabled/>
+//                     </div>
+//                 </div>
+
+                
+//             </div>
+//         )
+//     }
+// }
+
 class AddUser extends React.Component {
+
+    static hasAccess() {
+        return Permissions.canAddUser();
+    }
 
     constructor(props) {
         super(props);
         this.state = {
 
-            currentStep: 1,
+            role: null,
+            selectedLocations:[],
             name: "",
             email: "",
             password: "",
             dateActive: "",
-            role: null,
-            location: null,
-            // teacher: null,
-            roleDisplayName: "",
-            locationDisplayName: "",
-            // teacherDisplayName: "",
             isTrainee: null,
+
             roles : [],
             locations: [],
-            // teachers: [{id:1 , name: "Pieter"}],
             errors: null,
-            pageLoading: false,
-            submitButtonDisabled: false,
+            pageLoading: true,
             isDocent: sessionStorage.getItem("userRole") === "docent",
         };
-
-        this.handleFormChange = this.handleFormChange.bind(this);
-        this.onChangeRole = this.onChangeRole.bind(this);
-        this.onChangeLocation = this.onChangeLocation.bind(this);
-        // this.onChangeTeacher = this.onChangeTeacher.bind(this);
-        this._next = this._next.bind(this);
-        this._prev = this._prev.bind(this);
     }
 
     componentDidMount() {
@@ -49,12 +179,7 @@ class AddUser extends React.Component {
         this.getLocationsAndRoles()
     }
 
-    static hasAccess() {
-        return Permissions.canAddUser();
-    }
-
     getLocationsAndRoles() {
-
         axios.get(config.url.API_URL + '/webapi/user/roles')
             .then( response => {
                     this.setState({
@@ -62,150 +187,19 @@ class AddUser extends React.Component {
                         locations: response.data.locations,
                         pageLoading: false
                     });
-                console.log("api_call succesfull");
                 })
-        .catch(() => {
-            this.setState({
-                roles: null, //[{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
-                locations: null, // [{id: 1, name: "Utrecht"}],
-                pageLoading: false
-            });
-        })
-        .finally(() => {
-            if (this.state.isLocation) {
+            .catch(() => {
                 this.setState({
-                    currentStep: 2,
-                    role: this.state.roles.find(role => role.name === "Trainee"),
-                    location: {id: sessionStorage.getItem("userLocationId"),
-                               name: sessionStorage.getItem("userLocation")}
+                    errors: Utils.setErrors({connection: ["Momenteel kan er geen gebruiker worden toegevoegd."]}),
+                    pageLoading: false
                 });
-            }
         })
+
     }
 
-    handleFormChange = (e) => {
-        const {name, value} = e.target;
-        this.setState({
-           [name]: value
-        });
-    }
 
-    onChangeRole= (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-        var isTrainee = selectedRole.name === "Trainee";
 
-        this.setState({
-           isTrainee: isTrainee,
-           role: selectedRole,
-           roleDisplayName: e.target.value
-        });
-    }
-
-    onChangeLocation= (e) => {
-        this.setState({
-           location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-           locationDisplayName: e.target.value
-        });
-    }
-
-    // onChangeTeacher= (e) => {
-    //     this.setState({
-    //        teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
-    //        teacherDisplayName: e.target.value
-    //     });
-    // }
-
-    _next() {
-    //     console.log(this.state.currentStep);
-    //     if (!this.state.isTrainee) {
-    //         this.setState({teacher: null, teacherDisplayName: ""});
-    // }
-
-        if ((this.state.location != null /*|| this.state.teacher*/) && this.state.role != null) {
-            this.setState({currentStep: 2, errors: null});
-        }
-        else {
-            Utils.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
-        }
-        console.log(this.state.currentStep);
-    }
-
-    _prev() {
-        this.setState({currentStep: 1, errors: null});
-    }
-
-    // get previousButton() {
-    //     let currentStep = this.state.currentStep;
-
-    //     if (currentStep > 1 /*&&  !this.state.isDocent*/) {
-    //         return (
-    //             <button
-    //                 className="btn btn-primary float-right"
-    //                 type="button" onClick={this._prev}>
-    //                 Vorige
-    //             </button>
-    //         )
-    //     }
-    //     return null;
-    // }
-
-    get nextButton() {
-        let currentStep = this.state.currentStep;
-
-        if (currentStep <= 1 ) {
-            return (
-                <button
-                    className="btn btn-primary float-right"
-                    type="button" onClick={this._next}>
-                    Volgende
-                </button>
-            )
-        }
-        return null;
-    }
-
-    get submitButton() {
-        const {currentStep, submitButtonDisabled} = this.state;
-
-        if (currentStep === 2) {
-            return (
-                    <button className="btn btn-primary float-right"
-                        disabled={submitButtonDisabled}
-                        type="submit">
-                        {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
-                    </button>
-            )
-        }
-        return null;
-    }
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        this.setState({submitButtonDisabled: true});
-        var errors = validate(this.state, constraints);
-        console.log(this.createUserJson());
-        if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
-                .then(response => {
-                    this.setState({submitButtonDisabled: false, errors: null});
-                    this.props.history.push('/settings');
-                })
-                .catch((error) => {
-                    console.log("an error occorured " + error);
-                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
-                    this.setState({
-                        submitButtonDisabled: false,
-                        errors: Utils.setErrors(custErr)
-                    });
-                });
-        }
-        else {
-            this.setState({
-                submitButtonDisabled: false,
-                errors: Utils.setErrors(errors)
-            });
-        }
-    }
+   
 
     createUserJson() {
         return {
@@ -218,10 +212,55 @@ class AddUser extends React.Component {
         }
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        var errors = validate(this.state, constraints);
+        console.log(this.createUserJson());
+        if (!errors) {
+            axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
+                .then(response => {
+                    this.props.history.push('/settings');
+                })
+                .catch((error) => {
+                    console.log("an error occorured " + error);
+                    this.setState({
+                        errors: Utils.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen."]})
+                    });
+                });
+        }
+        else {
+            this.setState({
+                submitButtonDisabled: false,
+                errors: Utils.setErrors(errors)
+            });
+        }
+    }
+    
+    handleFormChange = (e) => {
+        const {name, value} = e.target;
+        this.setState({
+           [name]: value
+        });
+    }
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
+
+        const {locations,roles,selectedLocations} = this.state
+
+        const locationsOptions = locations.map((loc) => {
+            return (
+                 <option key={loc.id} value={loc.id}>{loc.name}</option>
+            ) 
+         });
+
+         const rolesOptions = roles.map((role) => {
+            return (
+                 <option key={role.id} value={role.id}>{role.name}</option>
+            ) 
+         });
+
 
         return (
             <div className="container">
@@ -231,7 +270,90 @@ class AddUser extends React.Component {
                         {errorsList}
                     </div>
                     
+                    <form onSubmit={this.handleSubmit} className="col-lg-8">
+
+                        <div className="">
+                            <label className="" htmlFor="role">Rol:</label>
+                            <select className="" name="role" id="role"
+                                onChange={this.onChangeRole}
+                                required>
+                                <option hidden value=''></option>
+                                {rolesOptions}
+                            </select>
+                        </div>
+
+                        <div className="">
+                            <label className="" htmlFor="location">Locatie:</label>
+                            <Select
+                                className="m-1 text-black"
+                                id="selectedLocations"
+                                name="selectedLocations" 
+                                multiple
+                                value={selectedLocations}
+                                onChange={this.handleFormChange}
+                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                                MenuProps={{
+                                    variant: "menu",
+                                    getContentAnchorEl: null}
+                                }
+                                input={<Input id="selectedLocations" />}
+                                >
+                                {locationsOptions}
+                            </Select>
+                        </div>
+                
+                        <div className="">
+                            <label className="" htmlFor="name">Naam:</label>
+                            <input className="" id="name" type="name" name="name"
+                                onChange={this.handleFormChange}/>
+                        </div>
+
+                        <div className="">
+                            <label className="" htmlFor="email">Email:</label>
+                            <input className="" id="email" type="email" name="email"
+                            onChange={this.handleFormChange}/>
+                        </div>
+
+                        <div className="">
+                            <label className="" htmlFor="password">Wachtwoord:</label>
+                            <input className="" id="password" type="password" name="password"
+                            onChange={this.handleFormChange}/>
+                        </div>
+
+                        <div className="" >
+                            <label className="" htmlFor="startDate">Startdatum:</label>
+                            <input className="" id="startDate" type="date" name="startDate" 
+                                onChange={this.handleFormChange}/>
+                        </div>
+{/* 
+                        <div className="input row dossier" hidden={!traineeDossier}>
+                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                            <BundleTable 
+                                bundlesTrainee={this.state.bundlesTrainee} 
+                                bundles={this.state.bundles}
+                                removeBundle={this.removeBundle.bind(this)}
+                                handleBundleChange={this.handleBundleChange.bind(this)} 
+                                addBundle ={this.addBundle.bind(this)} />
+                        </div> */}
+
+                        <div className="row">
+                            <div className="buttons">
+                                <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="buttons">
+                                <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
+                            </div>
+                        </div>
+
+                    </form>
+
+
+{/* 
                     <form onSubmit={this.handleSubmit}>
+
                         <div className="row justify-content-center">
 
                             <div className="col-4">
@@ -269,9 +391,9 @@ class AddUser extends React.Component {
                                     {this.submitButton}
                                 </div>
                             </div>
-                    </form>
+                    </form>*/}
 
-                    <div className="row justify-content-center">
+                    {/* <div className="row justify-content-center">
                         <div className="col-3">
                             {(this.state.currentStep <= 1 ) ? 
                                 <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
@@ -281,9 +403,9 @@ class AddUser extends React.Component {
                                     Vorige
                                 </button>}
                         </div>
-                    </div> 
+                    </div>  */}
 
-            </div>
+             </div> 
         )
     }
 }

@@ -8,6 +8,7 @@ import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
+import {Select, Input, MenuItem} from '@material-ui/core'
 
 
 class BundleTable extends React.Component {
@@ -180,18 +181,21 @@ class Dossier extends React.Component {
         {headers: {"userId": userId}} );
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
-
         axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
-           const userResponse = responses[0]
-           const roleLocResponse = responses[1]
-           const bundleResponse = responses[2]
+            const userResponse = responses[0]
+            const roleLocResponse = responses[1]
+            const bundleResponse = responses[2]
+            console.log(userResponse.data)
+            
+           var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
            this.setState({
                 userId: userId,
 
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
-                location: userResponse.data.location,
+                currentLocations: userResponse.data.currentLocations,
+                currentLocationsIds: currentLocationsIds,
                 startDate: userResponse.data.dateActive,
 
                 roles: roleLocResponse.data.roles,
@@ -234,16 +238,17 @@ class Dossier extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
+        var newUserLocations = this.state.locations.filter(element => this.state.currentLocationsIds.includes(element.id))       
+ 
         if(this.isOwnUserId()){
             sessionStorage.setItem("userName", this.state.name);
-            sessionStorage.setItem("userLocation", this.state.location.name);
-            sessionStorage.setItem("userLocationId", this.state.location.id);
+            sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
-
+        console.log(this.createUserJson())
         const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
         const bundleUpdate = axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson());
         if (!errors) {
-            axios.all([userUpdate, bundleUpdate])
+            axios.all([userUpdate, ]) //bundleUpdate
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     this.props.history.push('/dossier/' + this.state.userId);
@@ -266,13 +271,13 @@ class Dossier extends React.Component {
     }
     
     createUserJson() {
-        const {name, email, role, location, startDate, userId } = this.state;
+        const {name, email, role, currentLocations, startDate, userId } = this.state;
         return {
             id: userId,
             name: name,
             email: email,
             role: role,
-            location: location,
+            allUserLocations: currentLocations,
             dateActive: startDate,
         }
     }
@@ -299,6 +304,14 @@ class Dossier extends React.Component {
         });
     }
 
+    handleLocationChange = (e) => {
+        this.handleFormChange(e);
+        var newUserLocations = this.state.locations.filter(element => e.target.value.includes(element.id))       
+
+        this.setState({
+            currentLocations:newUserLocations
+        })
+    }
     handleBundleChange = (e,index) => {
 
         const value = +e.target.value;
@@ -326,18 +339,12 @@ class Dossier extends React.Component {
         this.setState((prevState) => ({bundlesTrainee: [...prevState.bundlesTrainee.slice(0,index), ...prevState.bundlesTrainee.slice(index+1)]}));
     }
 
-    onChangeLocation = (e) => {
-        this.setState({
-            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value
-        });
-    }
-
     render() {
 
 
-        const {location, role, name, email,startDate, userId, pageLoading, errors,
-            serverFail, locations, roles,allowedToView, allowedToEdit, allowedToEditFields} = this.state;
+        const {role, name, email,startDate, userId, pageLoading, errors,
+            serverFail, locations, roles,allowedToView, allowedToEdit, 
+            allowedToEditFields,currentLocationsIds} = this.state;
 
         const {editDisabled} = this.props;
         const traineeDossier = role.name === "Trainee";
@@ -351,12 +358,14 @@ class Dossier extends React.Component {
                 <option key={role.id} value={role.id}>{role.name}</option>
             )
         });
+
         const locationOptions = locations.map((location) => {
             return (
-                <option key={location.id} value={location.id}>{location.name}</option>
-            )
-        });
-
+                <MenuItem key={location.id} value={location.id}>
+                    {location.name}
+                </MenuItem>
+                )
+            });
         return (
             <div>
                 <h2 className="txt-centere">Gebruikersaccount</h2>
@@ -388,16 +397,25 @@ class Dossier extends React.Component {
                         </select>
                     </div>
                     <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
-                        <select className="form-control col-sm-9" name="location" id="location"
-                            value={location.id}
-                            onChange={this.onChangeLocation}
-                            required
-                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}>
+                    <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                    <Select
+                        className="m-1 text-black"
+                        id="currentLocationsIds"
+                        name="currentLocationsIds" 
+                        multiple
+                        value={currentLocationsIds}
+                        onChange={this.handleLocationChange.bind(this)}
+                        //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                        MenuProps={{
+                            variant: "menu",
+                            getContentAnchorEl: null}
+                        }
+                        input={<Input id="currentLocationsIds" />}
+                        disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
+                        >
+                        {locationOptions}
 
-                            <option hidden value=''>Locatie</option>
-                            {locationOptions}
-                        </select>
+                    </Select>
                     </div>
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
@@ -427,6 +445,7 @@ class Dossier extends React.Component {
                         </div>
                     </div>
                 </form>
+
                 {(editDisabled) ?
                 <div className="buttons">
                     <div>

@@ -10,8 +10,28 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-import nu.educom.rvt.models.*;
-import nu.educom.rvt.repositories.*;
+import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleConcept;
+import nu.educom.rvt.models.BundleTrainee;
+import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.ConceptRating;
+import nu.educom.rvt.models.Location;
+import nu.educom.rvt.models.Review;
+import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.Theme;
+import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.UserLocation;
+import nu.educom.rvt.repositories.BundleConceptRepository;
+import nu.educom.rvt.repositories.BundleRepository;
+import nu.educom.rvt.repositories.BundleTraineeRepository;
+import nu.educom.rvt.repositories.ConceptRatingRepository;
+import nu.educom.rvt.repositories.ConceptRepository;
+import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.HibernateSession;
+import nu.educom.rvt.repositories.LocationRepository;
+import nu.educom.rvt.repositories.ReviewRepository;
+import nu.educom.rvt.repositories.RoleRepository;
+import nu.educom.rvt.repositories.ThemeRepository;
 import nu.educom.rvt.services.UserService;
 
 public class Filler {
@@ -33,21 +53,27 @@ public class Filler {
     public static void fillDatabase() {
         try (Session session = HibernateSession.openSessionAndTransaction()) {
             
-            LocalDateTime weekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
-            LocalDateTime dayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
-            LocalDateTime nowLDT = LocalDateTime.now();
-    //        LocalDateTime endDate = null;
-            
+        	
+        	//INITIALIZE DATES AND TIMES
+        	LocalDate lastWeekLd = LocalDate.now().minus(1, ChronoUnit.WEEKS);
             LocalDate nowLD = LocalDate.now();
             LocalDate endDateLD = null;
+            LocalDateTime weekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
+            LocalDateTime dayAgo = LocalDateTime.now().minus(1, ChronoUnit.DAYS);
+            LocalDateTime nowLDT = LocalDateTime.now();    
             
-            //FILL THE USER TABLE
+            //FILL THE ROLE TABLE
             List<Role> roles = new ArrayList<Role>();
-            roles.add(new Role("Admin"));
-            roles.add(new Role("Docent"));
-            roles.add(new Role("Trainee"));
-            roles.add(new Role("Sales"));
-            roles.add(new Role("Office"));
+            Role admin = new Role("Admin");
+            roles.add(admin);
+            Role docent = new Role("Docent");
+            roles.add(docent);
+            Role trainee = new Role("Trainee");
+            roles.add(trainee);
+            Role sales = new Role("Sales");
+            roles.add(sales);
+        	Role office = new Role("Office");
+            roles.add(office);
             RoleRepository roleRepo = new RoleRepository(session);
             for (Role role : roles) {
                 roleRepo.create(role);
@@ -55,41 +81,86 @@ public class Filler {
             
             //FILL THE LOCATION TABLE
             List<Location> locations = new ArrayList<Location>();
-            locations.add(new Location("Utrecht"));
-            locations.add(new Location("Arnhem"));
-            locations.add(new Location("Sittard"));
-            locations.add(new Location("Eindhoven"));
+            Location utrecht = new Location("Utrecht"); 
+            locations.add(utrecht);
+            Location arnhem = new Location("Arnhem"); 
+            locations.add(arnhem);
+            Location sittard = new Location("Sittard"); 
+            locations.add(sittard);
+            Location eindhoven = new Location("Eindhoven"); 
+            locations.add(eindhoven);
             LocationRepository locationRepo = new LocationRepository(session);
             for (Location location : locations) {
                 locationRepo.create(location);
-            }
+            }      
             
-            
-            
-            //FILL THE USER TABLE
-            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
-            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
-            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", roles.get(2), locations.get(0),nowLD, endDateLD);
-    
-            User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),nowLD,endDateLD);
-    
+            //FILL THE USER TABLE   
             List<User> users = new ArrayList<User>();
-            users.add(new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", roles.get(0), locations.get(0),nowLD, endDateLD));
-            users.add(new User("Jeffrey Manders", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", roles.get(0), locations.get(0),nowLD, endDateLD));
-            users.add(new User("Docent", "docent@educom.nu", "5^mBejfdV0Rt509x$n", roles.get(1), locations.get(0),nowLD,endDateLD));
-            users.add(new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", roles.get(3), locations.get(0),nowLD, endDateLD));
-            users.add(new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", roles.get(4), locations.get(0),nowLD, endDateLD));
-            
-            
+            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
             users.add(trainee1);
+            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
             users.add(trainee2);
+            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
             users.add(trainee3);
+            User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", docent,nowLD,endDateLD);
             users.add(docent1);
+            User docent2 = new User("Docent2", "docent2@educom.nu", "5^mBejfdV0Rt509x$n", docent, nowLD,endDateLD);
+            users.add(docent2);
+            User userAdmin = new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", admin, nowLD, endDateLD);
+            users.add(userAdmin);
+            User adminJeffrey = new User("Jeffrey Manders", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", admin, nowLD, endDateLD);
+            users.add(adminJeffrey);
+            User userSales = new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", sales, nowLD, endDateLD);
+            users.add(userSales);
+            User userOffice = new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", office, nowLD, endDateLD);
+            users.add(userOffice);    
             UserService userService = new UserService(session);
             for (User user : users) {
                 userService.addUser(user);
-            }        
+            }       
             
+        	//FILL THE USER-LOCATION TABLE            
+			List<UserLocation> userLocations = new ArrayList<UserLocation>();
+			
+			UserLocation trainee1ArnhemOld = new UserLocation(trainee1, arnhem, lastWeekLd, nowLD);
+			userLocations.add(trainee1ArnhemOld);		
+			UserLocation trainee1Utrecht = new UserLocation(trainee1, utrecht, nowLD, endDateLD);
+			userLocations.add(trainee1Utrecht);			
+			UserLocation trainee2Utrecht = new UserLocation(trainee2, utrecht, nowLD, endDateLD);
+			userLocations.add(trainee2Utrecht);			
+			UserLocation trainee3Utrecht = new UserLocation(trainee3, utrecht, nowLD, endDateLD);
+			userLocations.add(trainee3Utrecht);			
+			UserLocation docent1Utrecht = new UserLocation(docent1, utrecht, nowLD, endDateLD);
+			userLocations.add(docent1Utrecht);			
+			UserLocation docent2Utrecht = new UserLocation(docent2, sittard, nowLD, endDateLD);
+			userLocations.add(docent2Utrecht);			
+			UserLocation adminUtrecht = new UserLocation(userAdmin, utrecht, nowLD, endDateLD);
+			userLocations.add(adminUtrecht);			
+			UserLocation adminArnhem = new UserLocation(userAdmin, arnhem, nowLD, endDateLD);
+			userLocations.add(adminArnhem);			
+			UserLocation adminSittard = new UserLocation(userAdmin, sittard, nowLD, endDateLD);
+			userLocations.add(adminSittard);			
+			UserLocation adminEindhoven = new UserLocation(userAdmin, eindhoven, nowLD, endDateLD);
+			userLocations.add(adminEindhoven);				
+			UserLocation jeffreyUtrecht = new UserLocation(adminJeffrey, utrecht, nowLD, endDateLD);
+			userLocations.add(jeffreyUtrecht);			
+			UserLocation jeffreyArnhem = new UserLocation(adminJeffrey, arnhem, nowLD, endDateLD);
+			userLocations.add(jeffreyArnhem);			
+			UserLocation jeffreySittard = new UserLocation(adminJeffrey, sittard, nowLD, endDateLD);
+			userLocations.add(jeffreySittard);			
+			UserLocation jeffreyEindhoven = new UserLocation(adminJeffrey, eindhoven, nowLD, endDateLD);
+			userLocations.add(jeffreyEindhoven);			
+			UserLocation salesUtrecht = new UserLocation(userSales, utrecht, nowLD, endDateLD);
+			userLocations.add(salesUtrecht);			
+			UserLocation officeUtrecht = new UserLocation(userOffice, utrecht, nowLD, endDateLD);
+			userLocations.add(officeUtrecht);    
+			UserLocation officeArnhem = new UserLocation(userOffice, arnhem, nowLD, endDateLD);
+			userLocations.add(officeArnhem);    
+            for (UserLocation userLocation : userLocations) {
+            	userService.addUserLocation(userLocation);
+            }       
+            
+    
             //FILL THE THEME TABLE
             List<Theme> themes = new ArrayList<Theme>();
             themes.add(new Theme("Webserver","WS","werking en configuratie van een HTTP server opzetten, Request - response principe, HTTP en HTTPS en limitaties op ongeoorloofde toegang."));

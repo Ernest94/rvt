@@ -30,7 +30,7 @@ public class UserRepository {
 		toUpdate.setEmail(user.getEmail());
 		toUpdate.setRole(user.getRole());
 		//TODO Fix location met record structure
-		toUpdate.setLocation(user.getLocation());
+//		toUpdate.setLocation(user.getLocation());
 		toUpdate.setDateActive(user.getDateActive());
 	}
 	

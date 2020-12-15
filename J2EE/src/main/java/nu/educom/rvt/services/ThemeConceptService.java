@@ -211,7 +211,7 @@ public class ThemeConceptService {
 			Integer bundleId =  bundle.getId();
 			String bundleName = bundle.getName();
 			String bundleCreatorName = bundle.getCreator().getName();
-			String bundleCreatorLocation = bundle.getCreator().getLocation().getName();
+			String bundleCreatorLocation = bundle.getCreator().getCurrentLocations().get(0).getName();
 			List<ConceptWeekOffset> bundleConceptWeekOffset = new ArrayList<ConceptWeekOffset>();
 			for (BundleConcept bundleConcept : bundlesConceptsModel) {
 				if (bundleConcept.getBundle().getId()==bundle.getId()) {

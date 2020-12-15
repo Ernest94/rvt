@@ -1,6 +1,5 @@
 package nu.educom.rvt.models.view;
 
-import nu.educom.rvt.models.Concept;
 
 public class CPRActive extends ConceptPlusRating{
 	

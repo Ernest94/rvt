@@ -17,7 +17,7 @@ public class BaseBundleView {
 	
 	public BaseBundleView(Bundle bundle)
 	{
-		this(bundle.getId(), bundle.getName(), bundle.getCreator().getName(), bundle.getCreator().getLocation().getName());
+		this(bundle.getId(), bundle.getName(), bundle.getCreator().getName(), bundle.getCreator().getCurrentLocations().get(0).getName());
 	}
 
 	public BaseBundleView(Integer id, String name, String creator_name, String creator_location) {

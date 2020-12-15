@@ -58,6 +58,7 @@ public class HibernateSession {
 		    
 		    configuration.addAnnotatedClass(Role.class);
 		    configuration.addAnnotatedClass(User.class);
+		    configuration.addAnnotatedClass(UserLocation.class);
 		    configuration.addAnnotatedClass(Location.class);
 		    configuration.addAnnotatedClass(Theme.class);
 		    configuration.addAnnotatedClass(Concept.class);                

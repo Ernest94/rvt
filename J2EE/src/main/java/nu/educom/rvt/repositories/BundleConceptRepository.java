@@ -3,7 +3,6 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import nu.educom.rvt.models.BundleConcept;
 
 public class BundleConceptRepository {
