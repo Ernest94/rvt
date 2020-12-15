@@ -15,6 +15,7 @@ class Search extends React.Component {
         super(props);
         this.state = {
             locations: [],
+            selectedLocationsIds:[],
             selectedLocations: [],
             roles: [],
             role: "",
@@ -35,34 +36,43 @@ class Search extends React.Component {
         this.getLocationsAndRoles()
     }
 
-    handleFormChange = (e) => {
-        const {name, value} = e.target;
-        console.log(value)
-        this.setState({
-           [name]: value
-        });
+    getLocationsAndRoles() {
+        axios.get(config.url.API_URL + '/webapi/user/roles')
+            .then(response => {
+                console.log(response.data)
+                this.setState({
+                    roles: response.data.roles,
+                    locations: response.data.locations,
+                    pageLoading: false
+                });
+                this.setLocationAndRole();
+            })
+            .catch(() => {
+                this.setState({
+                    pageLoading: false
+                });
+            })
     }
-
-
     setLocationAndRole()
     {
         let userLocations = JSON.parse(sessionStorage.getItem("userLocation"));
-        userLocations = userLocations.map(element => element.id)
+        var userLocationsIds = userLocations.map(element => element.id)
         const roleName = "Trainee";
         let role = this.state.roles.find(element => element.name === roleName);
 
         this.setState({
             loading: true,
-            selectedLocations: userLocations,
+            selectedLocations:userLocations,
+            selectedLocationsIds: userLocationsIds,
             role: role,
             roleDisplayName: role.id
         });
 
+        console.log(this.createSearchJson());
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
             .then(response => {
                 this.setState({ loading: false, errors: null });
-
                 this.handleSearchReponse(response.data);
                 this.render();
             })
@@ -72,6 +82,30 @@ class Search extends React.Component {
             });
     }
 
+    handleSearchReponse(data)
+    {
+        console.log(data.userSearch)
+        this.setState({
+            users: data.userSearch
+        });
+    }
+
+    handleFormChange = (e) => {
+        const {name, value} = e.target;
+        console.log(value)
+        this.setState({
+           [name]: value
+        });
+    }
+
+
+    createSearchJson() {
+        return {
+            locations: this.state.selectedLocations,
+            role: this.state.role,
+            criteria: this.state.criteria
+        }
+}
     findlocation(location) {
         return location;
     }
@@ -100,40 +134,7 @@ class Search extends React.Component {
         }
     }
 
-    handleSearchReponse(data)
-    {
-        this.setState({
-            users: data.userSearch
-        });
-    }
 
-    getLocationsAndRoles() {
-        axios.get(config.url.API_URL + '/webapi/user/roles')
-            .then(response => {
-                console.log(response.data)
-                this.setState({
-                    roles: response.data.roles,
-                    locations: response.data.locations,
-                    pageLoading: false
-                });
-                this.setLocationAndRole();
-            })
-            .catch(() => {
-                this.setState({
-                    roles: null,
-                    locations: null,
-                    pageLoading: false
-                });
-            })
-    }
-
-    createSearchJson() {
-        return {
-            locations: this.state.selectedLocations,
-            role: this.state.role,
-            criteria: this.state.criteria
-        }
-}
 
     onChangeRole = (e) => {
         this.setState({
@@ -151,7 +152,7 @@ class Search extends React.Component {
     }
 
     render() {
-        const {roles, locations, users, pageLoading, loading, selectedLocations} = this.state;
+        const {roles, locations, users, pageLoading, loading, selectedLocationsIds} = this.state;
         if (pageLoading) return (<span className="error-message-center">Laden...</span>)
 
         if (roles === null || locations === null) {
@@ -163,6 +164,13 @@ class Search extends React.Component {
             )
         });
         var userDisplay = users.map((user) => {
+            var userLocationsColumn = '';
+            var i;
+            for (i=0;i<user.currentUserLocations.length;i++){
+
+                userLocationsColumn+= user.currentUserLocations[i].name + ((i>=0&&i+1<user.currentUserLocations.length) ? ", ":"")
+                }
+
             return (
                 <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >
                     <td className="p-2 col-sm text-nowrap align-middle">
@@ -174,8 +182,8 @@ class Search extends React.Component {
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.role.name}
                     </td>
-                    <td className="p-2 col-sm text-nowrap align-middle">
-                        {user.location.name}
+                    <td className="p-2 col-sm  align-middle">
+                        {userLocationsColumn}
                     </td>
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.dateActive}
@@ -213,10 +221,10 @@ class Search extends React.Component {
                                 <Select
                                     className="m-1 text-black"
                                     labelId="location-label"
-                                    id="location"
-                                    name="selectedLocations" 
+                                    id="selectedLocationsIds"
+                                    name="selectedLocationsIds" 
                                     multiple
-                                    value={selectedLocations}
+                                    value={selectedLocationsIds}
                                     onChange={this.handleFormChange}
                                     //the MenuProps below are needed to stop the dropdown jumping around when selecting
                                     MenuProps={{
