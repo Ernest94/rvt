@@ -45,6 +45,7 @@ public class UserResource extends BaseResource {
 				UserService userServ = new UserService(session);
 				User foundUser = userServ.checkUser(user);
 				String token = userServ.issueToken(foundUser);
+				//TODO: token is not entity, how to send string, not object?
 				return Response.status(200).entity(token).build();
 			}
 			catch (LoginException lge){
@@ -109,10 +110,12 @@ public class UserResource extends BaseResource {
 		});
 	}
 	
+	
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@Secured
 	public Response getUsers(Search search) {
 		LOG.trace("getUsers {} from {} and criteria '{}'", 
 				   search.getRole(), search.getLocations(), search.getCriteria());

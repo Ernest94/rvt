@@ -30,6 +30,7 @@ public class MyApp extends Application {
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
 		set.add(LogFilter.class);
+		set.add(AuthenticationFilter.class);
 //		LOG.info("classes: {}", set);
 		return set;
 	}

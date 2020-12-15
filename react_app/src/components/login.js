@@ -16,6 +16,7 @@ class Login extends React.Component {
             password: "",
             buttonDisabled: false,
         };
+
     }
 
     handleSuccessfulAuth(data) {
@@ -24,8 +25,8 @@ class Login extends React.Component {
         var tokens = data.split(".");
         var responseData = JSON.parse(atob(tokens[1]));
         console.log(responseData);
-        sessionStorage.setItem("userId", responseData.id);
-        sessionStorage.setItem("userName", responseData.name);
+        sessionStorage.setItem("userId", responseData.UserId);
+        sessionStorage.setItem("userName", responseData.sub);
         sessionStorage.setItem("userRole", responseData.Role.name);
         sessionStorage.setItem("userLocation", responseData.Location.name);
         sessionStorage.setItem("userLocationId", responseData.Location.id);
