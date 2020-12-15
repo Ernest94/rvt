@@ -40,7 +40,16 @@ public class Concept {
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
+    }
+    
+    public Concept(Theme theme, String name, String description, LocalDate startDate) {
+		super();
+		this.theme = theme;
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
 	}
+
 	
 	public Integer getId() {
 		return id;

@@ -47,7 +47,7 @@ public class ConceptRepository {
 	}
 	
 	public boolean isConceptInUserBundle(int id, int userId)  throws DatabaseException {
-		Optional result = session.createNativeQuery("SELECT name FROM concepts c "
+		Optional result = session.createNativeQuery("SELECT name FROM concept c "
 												+ "LEFT JOIN bundle_concept AS bc "
 												+ "ON c.id = bc.concept_id "
 												+ "LEFT JOIN bundle_trainee AS btr "

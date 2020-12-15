@@ -419,7 +419,7 @@ class docentAddReview extends React.Component {
             <tbody className="tableBody table">
             
                 {this.state.concepts.map((concept, index) => {    
-                    var checkboxDisabled = (concept.comment!=""&&concept.rating!=0)
+                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0)
                     
                     if (selectionFunction(concept)){
                         return (

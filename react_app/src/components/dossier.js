@@ -357,7 +357,7 @@ class Dossier extends React.Component {
             });
         return (
             <div>
-                <h2 className="text-center">Gebruikersaccount</h2>
+                <h2 className="txt-centere">Gebruikersaccount</h2>
                 <ul className="errors text-center">{errors}</ul>
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
                     <div className="input row dossier">
@@ -366,14 +366,14 @@ class Dossier extends React.Component {
                             disabled={editDisabled || !allowedToEditFields.includes("name") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled || !allowedToEditFields.includes("email") || !allowedToEdit}
                         onChange={this.handleFormChange}/>
                     </div>
 
-                    <div className="input row">
+                    <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
                         <select className="form-control col-sm-9" name="role" id="role"
                             value={role.id}

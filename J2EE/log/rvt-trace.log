@@ -1,0 +1,19 @@
+2020-12-15T14:23:46.095+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-15T14:23:46.098+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-15T14:23:46.098+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-15T14:24:15.123+0100 [User Name       ] TRACE UserResource         - getRoles called
+2020-12-15T14:24:15.123+0100 [User Name       ] TRACE BundleResource       - getAllBundles called
+2020-12-15T14:24:15.191+0100 [User Name       ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-15T14:24:15.234+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:24:19.793+0100 [User Name       ] TRACE UserResource         - getRoles called
+2020-12-15T14:24:19.790+0100 [User Name       ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-15T14:24:19.801+0100 [User Name       ] TRACE BundleResource       - getAllBundles called
+2020-12-15T14:24:19.831+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:24:23.025+0100 [User Name       ] TRACE BundleResource       - getAllBundles called
+2020-12-15T14:24:23.024+0100 [User Name       ] TRACE UserResource         - getRoles called
+2020-12-15T14:24:23.056+0100 [User Name       ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-15T14:24:23.064+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:24:26.944+0100 [User Name       ] TRACE UserResource         - getRoles called
+2020-12-15T14:24:29.976+0100 [User Name       ] TRACE UserResource         - getRoles called
+2020-12-15T14:24:32.368+0100 [User Name       ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-15T14:24:37.969+0100 [User Name       ] TRACE UserResource         - getRoles called

@@ -12,6 +12,14 @@ import org.apache.logging.log4j.Logger;
 public class MyApp extends Application {
 	private static final Logger LOG = LogManager.getLogger();
 	
+	
+	public MyApp() {
+		super();
+		LOG.info("----------------------------------------------------------");
+		LOG.info("|  Registratie Voortgang Trainees versie 1.0.0 Started   |");
+		LOG.info("----------------------------------------------------------");
+	}
+
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> set = new HashSet<>();
@@ -21,8 +29,8 @@ public class MyApp extends Application {
 		set.add(LocationResource.class);
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
-		set.add(BundleResource.class);
-		LOG.info("classes: {}", set);
+		set.add(LogFilter.class);
+//		LOG.info("classes: {}", set);
 		return set;
 	}
 	

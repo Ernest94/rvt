@@ -21,7 +21,9 @@ import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
+import nu.educom.rvt.models.view.ConceptPlusBundles;
 import nu.educom.rvt.models.view.WeekChangeForUser;
+import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.ThemeConceptService;
 
 
@@ -64,28 +66,30 @@ public class ThemeConceptResource extends BaseResource {
 		});
 	}
 	
-	
 	@POST
 	@Path("/saveConcept")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response saveConcept(Concept concept) {
+	public Response saveConcept(ConceptPlusBundles concept) {
+		
 		LOG.debug("saveConcept {} called", concept);
 		return wrapInSessionWithTransaction(session -> {
 			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
-			
-			concept.setStartDate(LocalDate.now());
-			boolean valid = themeConceptServ.validateConcept(concept);
+			BundleService bundleServ = new BundleService(session);
+			concept.getConcept().setStartDate(LocalDate.now());
+			boolean valid = themeConceptServ.validateConcept(concept.getConcept());
 			if(valid) {
-				Concept createdConcept = themeConceptServ.addConcept(concept);
-				LOG.info("Concept added with name {} and description {}.", 
-					     createdConcept.getName(), createdConcept.getDescription());
-				return Response.status(201).entity(createdConcept).build();
+				Concept createdConcept = themeConceptServ.addConcept(concept.getConcept());
+				LOG.info("Concept added with name {} and description {}.", createdConcept.getName(), createdConcept.getDescription()); 
+				bundleServ.addBundlesToConcept(concept.getConcept(), concept.getBundles());
+				LOG.trace("Concept {} added to bundles {} ", createdConcept.getName(), concept.getBundles());
+				return Response.status(201).build();
 			}
 			else {
-				return Response.status(400).build();
+				return Response.status(402).build();
 			}
 		});
 	}
+	
 	
 	@GET
 	@Path("/concepts")
