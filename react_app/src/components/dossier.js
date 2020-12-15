@@ -8,7 +8,7 @@ import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
-import {Select, Input, MenuItem, FormControl, InputLabel} from '@material-ui/core'
+import {Select, Input, MenuItem} from '@material-ui/core'
 
 
 class BundleTable extends React.Component {
@@ -236,10 +236,10 @@ class Dossier extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
+        var newUserLocations = this.state.locations.filter(element => this.state.currentLocationsIds.includes(element.id))
         if(this.isOwnUserId()){
             sessionStorage.setItem("userName", this.state.name);
-            // sessionStorage.setItem("userLocation", this.state.location.name);
-            // sessionStorage.setItem("userLocationId", this.state.location.id);
+            sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
 
         const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
@@ -434,6 +434,7 @@ class Dossier extends React.Component {
                         </div>
                     </div>
                 </form>
+
                 {(editDisabled) ?
                 <div className="buttons">
                     <div>
