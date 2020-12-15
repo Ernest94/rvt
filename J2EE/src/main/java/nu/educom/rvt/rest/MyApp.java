@@ -7,6 +7,7 @@ import javax.ws.rs.core.Application;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.glassfish.grizzly.utils.LogFilter;
 
 @ApplicationPath("")
 public class MyApp extends Application {

@@ -146,16 +146,17 @@ class Dossier extends React.Component {
     }
     canEditUserDossier(){
         const userRole = sessionStorage.getItem("userRole");
+        const userLocation = sessionStorage.getItem("userLocation");
         const dossierRole = this.state.role.name;
         const dossierLocation = this.state.location.name;
 
         var isAllowedToEdit;
         var fields = [];
         switch (userRole) {
-            case "Office":
+            case "Office": break;
             case "Docent":
-                isAllowedToEdit = dossierRole==="Trainee" 
-                    && dossierLocation===sessionStorage.getItem("userLocation") 
+                isAllowedToEdit = (dossierRole === "Trainee"
+                    && dossierLocation === userLocation)
                     || this.isOwnUserId();
                 fields = ["name", "email","location", "bundle"];
                 break;
@@ -163,8 +164,8 @@ class Dossier extends React.Component {
                 isAllowedToEdit = true;
                 fields = ["name", "email", "location", "role", "startDate","bundle"];
                 break;
-            case "Sales":
-            case "Trainee":
+            case "Sales": break;
+            case "Trainee": break;
             
             default:
                 isAllowedToEdit = false;
