@@ -1,35 +1,3 @@
-2020-12-15T11:03:39.831+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
-2020-12-15T11:03:39.836+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
-2020-12-15T11:03:39.837+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
-2020-12-15T12:56:19.562+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
-2020-12-15T12:56:19.565+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
-2020-12-15T12:56:19.566+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
-2020-12-15T13:39:58.850+0100 [                ] DEBUG UserResource         - login User(admin@educom.nu) called
-2020-12-15T13:40:01.850+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:40:18.270+0100 [                ] DEBUG UserResource         - createUser called for user Sitt
-2020-12-15T13:40:18.397+0100 [                ] INFO  UserResource         - User User(Sitt) has been created.
-2020-12-15T13:40:21.256+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:40:21.303+0100 [                ] TRACE UserResource         - getUsers Role(Trainee) from [Location(Utrecht)] and criteria ''
-2020-12-15T13:40:27.681+0100 [                ] TRACE UserResource         - getUsers Role(Trainee) from [Location(Utrecht), Location(Sittard)] and criteria ''
-2020-12-15T13:40:28.740+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:40:28.742+0100 [                ] TRACE UserResource         - getUserDossier for user with id 10 called
-2020-12-15T13:40:28.742+0100 [                ] TRACE BundleResource       - getAllBundles called
-2020-12-15T13:40:28.776+0100 [                ] DEBUG UserResource         - Dossier of User(Sitt)
-2020-12-15T13:40:28.809+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 10 called
-2020-12-15T13:40:30.229+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:40:30.234+0100 [                ] TRACE UserResource         - getUserDossier for user with id 10 called
-2020-12-15T13:40:30.236+0100 [                ] TRACE BundleResource       - getAllBundles called
-2020-12-15T13:40:30.242+0100 [                ] DEBUG UserResource         - Dossier of User(Sitt)
-2020-12-15T13:40:30.272+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 10 called
-2020-12-15T13:40:52.331+0100 [                ] DEBUG UserResource         - login User(docent@educom.nu) called
-2020-12-15T13:40:59.449+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:40:59.481+0100 [                ] TRACE UserResource         - getUsers Role(Trainee) from [Location(Utrecht)] and criteria ''
-2020-12-15T13:41:03.297+0100 [                ] TRACE UserResource         - getUsers Role(Trainee) from [Location(Utrecht), Location(Sittard)] and criteria ''
-2020-12-15T13:41:04.075+0100 [                ] TRACE UserResource         - getRoles called
-2020-12-15T13:41:04.092+0100 [                ] TRACE BundleResource       - getAllBundles called
-2020-12-15T13:41:04.093+0100 [                ] TRACE UserResource         - getUserDossier for user with id 10 called
-2020-12-15T13:41:04.100+0100 [                ] DEBUG UserResource         - Dossier of User(Sitt)
-2020-12-15T13:41:04.121+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 10 called
-2020-12-15T13:41:13.114+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
-2020-12-15T13:41:13.126+0100 [                ] DEBUG ReviewResource       - getActiveConceptsAndRating User(null) called
-2020-12-15T13:41:13.357+0100 [                ] DEBUG ReviewResource       - getAllUsersWithPendingReviews called
+2020-12-15T17:27:56.918+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-15T17:27:56.920+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-15T17:27:56.920+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
