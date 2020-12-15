@@ -4,3 +4,47 @@
 2020-12-15T14:24:15.234+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
 2020-12-15T14:24:19.831+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
 2020-12-15T14:24:23.064+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:25:26.507+0100 [User Name       ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-15T14:29:45.548+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:29:53.989+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:30:31.676+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:30:33.368+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:35:01.941+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:35:02.340+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:38:54.748+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:39:27.989+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:39:35.620+0100 [User Name       ] DEBUG BundleResource       - updateTraineeBundle for user 6 called with []
+2020-12-15T14:41:12.842+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:41:44.173+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:43:00.496+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:43:33.149+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:43:40.666+0100 [User Name       ] DEBUG BundleResource       - updateTraineeBundle for user 6 called with []
+2020-12-15T14:58:50.648+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T14:59:03.885+0100 [User Name       ] DEBUG BundleResource       - updateTraineeBundle for user 6 called with []
+2020-12-15T15:00:52.146+0100 [User Name       ] DEBUG BundleResource       - updateTraineeBundle for user 6 called with []
+2020-12-15T15:01:59.717+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:02:00.396+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:02:26.618+0100 [User Name       ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-15T15:02:29.173+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:02:30.634+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:06:00.502+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:06:04.699+0100 [User Name       ] DEBUG UserResource         - updateUser called for User(6: Admin)
+2020-12-15T15:06:04.718+0100 [User Name       ] INFO  UserResource         - User(6: Admin) has been updated.
+2020-12-15T15:06:04.927+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:06:07.703+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:06:10.287+0100 [User Name       ] DEBUG UserResource         - updateUser called for User(6: Admin)
+2020-12-15T15:06:10.293+0100 [User Name       ] INFO  UserResource         - User(6: Admin) has been updated.
+2020-12-15T15:06:10.485+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:12:22.982+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:12:29.322+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:12:33.154+0100 [User Name       ] DEBUG UserResource         - updateUser called for User(6: Admin)
+2020-12-15T15:12:33.163+0100 [User Name       ] INFO  UserResource         - User(6: Admin) has been updated.
+2020-12-15T15:12:33.320+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:13:12.529+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:13:15.817+0100 [User Name       ] DEBUG UserResource         - updateUser called for User(6: Admin)
+2020-12-15T15:13:15.833+0100 [User Name       ] INFO  UserResource         - User(6: Admin) has been updated.
+2020-12-15T15:13:15.992+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:13:47.091+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-15T15:13:52.397+0100 [User Name       ] DEBUG UserResource         - updateUser called for User(6: Admin)
+2020-12-15T15:13:52.405+0100 [User Name       ] INFO  UserResource         - User(6: Admin) has been updated.
+2020-12-15T15:13:52.609+0100 [User Name       ] DEBUG UserResource         - Dossier of User(6: Admin)

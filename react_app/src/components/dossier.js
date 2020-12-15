@@ -193,6 +193,7 @@ class Dossier extends React.Component {
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
+                currentLocations: userResponse.data.currentLocations,
                 currentLocationsIds: currentLocationsIds,
                 startDate: userResponse.data.dateActive,
 
@@ -236,16 +237,17 @@ class Dossier extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
-        var newUserLocations = this.state.locations.filter(element => this.state.currentLocationsIds.includes(element.id))
+        var newUserLocations = this.state.locations.filter(element => this.state.currentLocationsIds.includes(element.id))       
+ 
         if(this.isOwnUserId()){
             sessionStorage.setItem("userName", this.state.name);
             sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
-
+        console.log(this.createUserJson())
         const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
         const bundleUpdate = axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson());
         if (!errors) {
-            axios.all([userUpdate, bundleUpdate])
+            axios.all([userUpdate, ]) //bundleUpdate
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     this.props.history.push('/dossier/' + this.state.userId);
@@ -268,13 +270,13 @@ class Dossier extends React.Component {
     }
     
     createUserJson() {
-        const {name, email, role, location, startDate, userId } = this.state;
+        const {name, email, role, currentLocations, startDate, userId } = this.state;
         return {
             id: userId,
             name: name,
             email: email,
             role: role,
-            location: location,
+            allUserLocations: currentLocations,
             dateActive: startDate,
         }
     }
@@ -301,6 +303,14 @@ class Dossier extends React.Component {
         });
     }
 
+    handleLocationChange = (e) => {
+        this.handleFormChange(e);
+        var newUserLocations = this.state.locations.filter(element => e.target.value.includes(element.id))       
+
+        this.setState({
+            currentLocations:newUserLocations
+        })
+    }
     handleBundleChange = (e,index) => {
 
         const value = +e.target.value;
@@ -393,7 +403,7 @@ class Dossier extends React.Component {
                         name="currentLocationsIds" 
                         multiple
                         value={currentLocationsIds}
-                        onChange={this.handleFormChange}
+                        onChange={this.handleLocationChange.bind(this)}
                         //the MenuProps below are needed to stop the dropdown jumping around when selecting
                         MenuProps={{
                             variant: "menu",

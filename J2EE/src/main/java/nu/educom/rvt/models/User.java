@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.hibernate.annotations.WhereJoinTable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import nu.educom.rvt.models.view.LocalDateAdapter;
 
@@ -47,7 +46,7 @@ public class User {
 	private LocalDate dateActive;
 	@Column(name="dateInactive")
 	private LocalDate dateInactive;
-	
+		
 	@JsonIgnore
  	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
 	private List<UserLocation> allUserLocations = new ArrayList<UserLocation>();
@@ -153,6 +152,10 @@ public class User {
 	public List<UserLocation> getAllUserLocations() {
 		return allUserLocations;
 	}
+	public void setAllUserLocations(List<UserLocation> allUserLocations) {
+		this.allUserLocations = allUserLocations;
+	}
+
 	public List<Location> getCurrentLocations() {
 		return currentLocations;
 	}
