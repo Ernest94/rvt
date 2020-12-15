@@ -181,18 +181,19 @@ class Dossier extends React.Component {
         const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
         const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
         axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
-           const userResponse = responses[0]
-           const roleLocResponse = responses[1]
-           const bundleResponse = responses[2]
-           console.log(userResponse)
-
+            const userResponse = responses[0]
+            const roleLocResponse = responses[1]
+            const bundleResponse = responses[2]
+            console.log(userResponse.data)
+            
+           var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
            this.setState({
                 userId: userId,
 
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
-                currentLocations: userResponse.data.currentLocations,
+                currentLocationsIds: currentLocationsIds,
                 startDate: userResponse.data.dateActive,
 
                 roles: roleLocResponse.data.roles,
@@ -237,8 +238,8 @@ class Dossier extends React.Component {
         var errors = validate(this.state, constraints);
         if(this.isOwnUserId()){
             sessionStorage.setItem("userName", this.state.name);
-            sessionStorage.setItem("userLocation", this.state.location.name);
-            sessionStorage.setItem("userLocationId", this.state.location.id);
+            // sessionStorage.setItem("userLocation", this.state.location.name);
+            // sessionStorage.setItem("userLocationId", this.state.location.id);
         }
 
         const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
@@ -327,18 +328,12 @@ class Dossier extends React.Component {
         this.setState((prevState) => ({bundlesTrainee: [...prevState.bundlesTrainee.slice(0,index), ...prevState.bundlesTrainee.slice(index+1)]}));
     }
 
-    onChangeLocation = (e) => {
-        this.setState({
-            location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-            locationDisplayName: e.target.value
-        });
-    }
-
     render() {
 
 
         const {role, name, email,startDate, userId, pageLoading, errors,
-            serverFail, locations, roles,allowedToView, allowedToEdit, allowedToEditFields} = this.state;
+            serverFail, locations, roles,allowedToView, allowedToEdit, 
+            allowedToEditFields,currentLocationsIds} = this.state;
 
         const {editDisabled} = this.props;
         const traineeDossier = role.name === "Trainee";
@@ -352,16 +347,10 @@ class Dossier extends React.Component {
                 <option key={role.id} value={role.id}>{role.name}</option>
             )
         });
-        // const locationOptions = locations.map((location) => {
-        //     return (
-        //         <option key={location.id} value={location.id}>{location.name}</option>
-        //     )
-        // });
 
         const locationOptions = locations.map((location) => {
             return (
-
-                <MenuItem key={location.id} value={location}>
+                <MenuItem key={location.id} value={location.id}>
                     {location.name}
                 </MenuItem>
                 )
@@ -397,38 +386,25 @@ class Dossier extends React.Component {
                         </select>
                     </div>
                     <div className="input row dossier">
-                    {/* <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie:  */}
                     <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                     <Select
                         className="m-1 text-black"
-                        labelId="location-label"
-                        id="location"
-                        name="currentLocations" 
+                        id="currentLocationsIds"
+                        name="currentLocationsIds" 
                         multiple
-                        value={this.state.currentLocations}
+                        value={currentLocationsIds}
                         onChange={this.handleFormChange}
                         //the MenuProps below are needed to stop the dropdown jumping around when selecting
                         MenuProps={{
                             variant: "menu",
                             getContentAnchorEl: null}
                         }
-                        input={<Input id="current-location" />}
+                        input={<Input id="currentLocationsIds" />}
                         disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
                         >
                         {locationOptions}
 
                     </Select>
-                                {/* </InputLabel> */}
-                        {/* <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
-                        <select className="form-control col-sm-9" name="location" id="location"
-                            value={location.id}
-                            onChange={this.onChangeLocation}
-                            required
-                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}>
-
-                            <option hidden value=''>Locatie</option>
-                            {locationOptions}
-                        </select> */}
                     </div>
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>

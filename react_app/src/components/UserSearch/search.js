@@ -46,19 +46,14 @@ class Search extends React.Component {
 
     setLocationAndRole()
     {
-        let locationName = JSON.parse(sessionStorage.getItem("userLocation"));
-        console.log(locationName);
-        console.log(this.state.locations);
-
+        let userLocations = JSON.parse(sessionStorage.getItem("userLocation"));
+        userLocations = userLocations.map(element => element.id)
         const roleName = "Trainee";
-
         let role = this.state.roles.find(element => element.name === roleName);
-        let location = this.state.locations.find(element => element.name === locationName[0].name);
-        // console.log(location)
+
         this.setState({
             loading: true,
-            selectedLocations: [location],
-            // selectedLocations: [location],
+            selectedLocations: userLocations,
             role: role,
             roleDisplayName: role.id
         });
@@ -156,7 +151,7 @@ class Search extends React.Component {
     }
 
     render() {
-        const {roles, locations, users, pageLoading, loading} = this.state;
+        const {roles, locations, users, pageLoading, loading, selectedLocations} = this.state;
         if (pageLoading) return (<span className="error-message-center">Laden...</span>)
 
         if (roles === null || locations === null) {
@@ -221,7 +216,7 @@ class Search extends React.Component {
                                     id="location"
                                     name="selectedLocations" 
                                     multiple
-                                    value={this.state.selectedLocations}
+                                    value={selectedLocations}
                                     onChange={this.handleFormChange}
                                     //the MenuProps below are needed to stop the dropdown jumping around when selecting
                                     MenuProps={{
@@ -231,7 +226,7 @@ class Search extends React.Component {
                                     input={<Input id="select-location" />}
                                     >
                                     {locations.map((location) => (
-                                        <MenuItem key={location.id} value={location}>
+                                        <MenuItem key={location.id} value={location.id}>
                                             {location.name}
                                         </MenuItem>
                                     ))}
