@@ -125,7 +125,9 @@ public class Filler {
 			UserLocation trainee1ArnhemOld = new UserLocation(trainee1, arnhem, lastWeekLd, nowLD);
 			userLocations.add(trainee1ArnhemOld);		
 			UserLocation trainee1Utrecht = new UserLocation(trainee1, utrecht, nowLD, endDateLD);
-			userLocations.add(trainee1Utrecht);			
+			userLocations.add(trainee1Utrecht);
+			UserLocation trainee2ArnhemOld = new UserLocation(trainee2, arnhem, lastWeekLd, nowLD);
+			userLocations.add(trainee2ArnhemOld);
 			UserLocation trainee2Utrecht = new UserLocation(trainee2, utrecht, nowLD, endDateLD);
 			userLocations.add(trainee2Utrecht);			
 			UserLocation trainee3Utrecht = new UserLocation(trainee3, utrecht, nowLD, endDateLD);

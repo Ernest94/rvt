@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stars")
-public class Star {
+public class Star implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,11 +25,12 @@ public class Star {
 		this.description = description;
 		this.amount = amount;
 	}
-	
-	
+
+	@Override
 	public int getId() {
 		return id;
 	}
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}

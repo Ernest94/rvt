@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="weekblocks")
-public class Weekblock {
+public class Weekblock implements BaseEntity {
 
 	
 	@Id
@@ -28,10 +28,11 @@ public class Weekblock {
 		this.sequence = sequence;
 	}
 
-
+	@Override
 	public int getId() {
 		return id;
 	}
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}

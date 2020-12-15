@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="user_concept")
-public class UserConcept {
+public class UserConcept implements ReadOnlyEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,11 +34,13 @@ public class UserConcept {
 	public UserConcept() {
 		super();
 	}
-	
+
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}

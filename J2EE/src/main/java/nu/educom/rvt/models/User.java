@@ -27,7 +27,7 @@ import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

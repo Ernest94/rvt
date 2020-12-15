@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="curriculum_concept")
-public class CurriculumConcept {
+public class CurriculumConcept implements BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,10 +34,12 @@ public class CurriculumConcept {
 		super();
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}

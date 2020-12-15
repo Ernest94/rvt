@@ -9,7 +9,7 @@ import nu.educom.rvt.models.view.LocalDateTimeAdapter;
 
 @Entity
 @Table(name="review")
-public class Review {
+public class Review implements BaseEntity {
 
 	public enum Status {
 		CANCELLED,

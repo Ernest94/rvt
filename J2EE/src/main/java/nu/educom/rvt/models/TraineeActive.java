@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Where(clause = "enddate IS NULL")
 @Table(name="trainee_active")
-public class TraineeActive {
+public class TraineeActive implements ReadOnlyEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

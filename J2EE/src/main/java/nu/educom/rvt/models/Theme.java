@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="theme")
-public class Theme {
+public class Theme implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -36,10 +36,12 @@ public class Theme {
 		this.abbreviation = abbreviation;
 		this.description = description;
 	}
-	
+
+	@Override
 	public int getId() {
 	  return id;
 	}
+	@Override
 	public void setId(int id) {
 	  this.id = id;
 	}

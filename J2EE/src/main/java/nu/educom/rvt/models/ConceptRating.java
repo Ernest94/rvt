@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="concept_rating")
-public class ConceptRating {
+@Table(name="concept_ratings")
+public class ConceptRating implements BaseEntity {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -51,10 +51,12 @@ public class ConceptRating {
 			this.comment = comment;
 		}
 		
+		@Override
 		public int getId() {
 			return id;
 		}
 
+		@Override
 		public void setId(int id) {
 			this.id = id;
 		}

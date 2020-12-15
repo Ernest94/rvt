@@ -10,7 +10,7 @@ import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="concept")
-public class Concept {
+public class Concept implements ReadOnlyEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -51,7 +51,7 @@ public class Concept {
 	}
 
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -104,7 +104,7 @@ public class Concept {
 		Concept other = (Concept) obj;
 		Integer Zero = Integer.valueOf(0);
 		if (Zero.compareTo(getId()) < 0 && Zero.compareTo(other.getId()) < 0) {
-			return getId().equals(other.getId());
+			return getId() == other.getId();
 		} 
 		return Objects.equals(getName(), other.getName()) &&
 			   Objects.equals(getDescription(), other.getDescription()) &&

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity @XmlRootElement
 @Table(name="role")
-public class Role {
+public class Role implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

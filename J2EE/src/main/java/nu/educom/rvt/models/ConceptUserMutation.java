@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="concept_user_mutations")
-public class ConceptUserMutation {
+public class ConceptUserMutation implements BaseEntity {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -59,10 +59,12 @@ public class ConceptUserMutation {
             this.week = week;
 		}
 
+		@Override
 		public int getId() {
 			return id;
 		}
 
+		@Override
 		public void setId(int id) {
 			this.id = id;
 		}

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Where(clause = "enddate IS NULL")
 @Table(name="bundle_concept")
-public class BundleConcept {
+public class BundleConcept implements ReadOnlyEntity {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)

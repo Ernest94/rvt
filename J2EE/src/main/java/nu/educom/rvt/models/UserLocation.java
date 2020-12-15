@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="user_location")
-public class UserLocation {
+public class UserLocation implements ReadOnlyEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
