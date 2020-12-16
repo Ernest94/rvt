@@ -32,7 +32,7 @@ public class Review implements BaseEntity {
 	@Column(name="comment_office")
 	private String commentOffice;
 	
-	@Column(name="datetime")
+	@Column(name="date_time")
 	private LocalDateTime date;
 	
 	@Column(name="status")

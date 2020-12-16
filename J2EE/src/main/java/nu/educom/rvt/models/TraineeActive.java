@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Where(clause = "enddate IS NULL")
+@Where(clause = "end_date IS NULL")
 @Table(name="trainee_active")
 public class TraineeActive implements ReadOnlyEntity {
 
@@ -30,9 +30,9 @@ public class TraineeActive implements ReadOnlyEntity {
 	private Concept concept;
 	@Column(name="active")
 	private Boolean active;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	
 	//needed for Hibernate

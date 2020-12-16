@@ -163,7 +163,7 @@ class AddUser extends React.Component {
             name: "",
             email: "",
             password: "",
-            dateActive: "",
+            startDate: "",
             isTrainee: null,
 
             roles : [],
@@ -197,10 +197,6 @@ class AddUser extends React.Component {
 
     }
 
-
-
-   
-
     createUserJson() {
         return {
             name: this.state.name,
@@ -208,7 +204,7 @@ class AddUser extends React.Component {
             password: this.state.password,
             role: this.state.role,
             location: this.state.location,
-            dateActive: this.state.dateActive
+            startDate: this.state.startDate
         }
     }
 

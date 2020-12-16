@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Where(clause = "enddate IS NULL")
+@Where(clause = "end_date IS NULL")
 @Table(name="bundle_concept")
 public class BundleConcept implements ReadOnlyEntity {
 
@@ -34,13 +34,13 @@ public class BundleConcept implements ReadOnlyEntity {
 		@JoinColumn(name="concept_id")
 		private Concept concept;
 		
-		@Column(name="weekOffset") 
+		@Column(name="week_offset") 
 		private int weekOffset;
 		
-		@Column(name="startdate")
+		@Column(name="start_date")
 		private LocalDate startDate;
 		
-		@Column(name="enddate")
+		@Column(name="end_date")
 		private LocalDate endDate;
 		
 		public BundleConcept() {

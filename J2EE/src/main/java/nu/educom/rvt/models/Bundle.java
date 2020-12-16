@@ -22,9 +22,9 @@ public class Bundle implements ReadOnlyEntity {
 	private User creator;
 	@Column(name="name")
 	private String name;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	@JsonManagedReference
  	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)

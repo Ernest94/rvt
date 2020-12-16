@@ -32,8 +32,8 @@ public class UserRepository {
 		toUpdate.setName(user.getName());
 		toUpdate.setEmail(user.getEmail());
 		toUpdate.setRole(user.getRole());
-		toUpdate.setDateActive(user.getDateActive());
-		toUpdate.setDateInactive(user.getDateInactive());
+		toUpdate.setStartDate(user.getStartDate());
+		toUpdate.setEndDate(user.getEndDate());
 		return toUpdate;
 	}
 	

@@ -25,6 +25,7 @@ import nu.educom.rvt.models.Search;
 
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
+import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.services.UserService;
 
@@ -162,8 +163,11 @@ public class UserResource extends BaseResource {
 	@PUT
 	@Path("/dossier")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUser(User user) {
-		LOG.debug("updateUser called for {}", user);
+	public Response updateUser(UserLocationView userLocationsView) {
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
+		LOG.debug("updateUser called for {}", userLocationsView);
+			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
 			User foundUser = userServ.getUserById(user.getId());
@@ -171,7 +175,7 @@ public class UserResource extends BaseResource {
 				return Response.status(404).build();  
 			}
 			else {
-				userServ.updateUser(user);
+				userServ.updateUser(user,locations);
 				LOG.info("{} has been updated.", foundUser);
 				return Response.status(200).build();
 			}

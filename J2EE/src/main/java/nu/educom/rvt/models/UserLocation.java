@@ -28,9 +28,9 @@ public class UserLocation implements ReadOnlyEntity {
 	@ManyToOne
 	@JoinColumn(name="location_id")
 	private Location location;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	
 	public UserLocation() {

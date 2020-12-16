@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="concept_ratings")
+@Table(name="concept_rating")
 public class ConceptRating implements BaseEntity {
 
 		@Id

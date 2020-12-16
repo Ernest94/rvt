@@ -195,7 +195,7 @@ class Dossier extends React.Component {
                 role: userResponse.data.role,
                 currentLocations: userResponse.data.currentLocations,
                 currentLocationsIds: currentLocationsIds,
-                startDate: userResponse.data.dateActive,
+                startDate: userResponse.data.startDate,
 
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
@@ -270,16 +270,35 @@ class Dossier extends React.Component {
     }
     
     createUserJson() {
-        const {name, email, role, currentLocations, startDate, userId } = this.state;
-        return {
-            id: userId,
-            name: name,
-            email: email,
-            role: role,
-            allUserLocations: currentLocations,
-            dateActive: startDate,
+        const {name, email, role, currentLocationsIds, startDate, userId } = this.state;
+        // var userLocations = [];
+        // var i;
+        // for (i=0;i<currentLocationsIds.length;i++) {
+        //     userLocations.push({
+        //         user: {id:userId},
+        //         location: {id:currentLocationsIds[i]}
+        //     })
+        // } 
+        var locations = [];
+        var i;
+        for (i=0;i<currentLocationsIds.length;i++) {
+            locations.push(
+                {id:currentLocationsIds[i]}
+            )
         }
+        return {
+            user:{
+                id: userId,
+                name: name,
+                email: email,
+                role: role,
+                startDate: startDate
+            },
+            locations: locations
+            // locations: [{id:1}]
+        }  
     }
+
     createBundleJson() {
         const {bundlesTrainee} = this.state;
         return(

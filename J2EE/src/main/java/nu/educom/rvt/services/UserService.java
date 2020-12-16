@@ -99,9 +99,10 @@ public class UserService {
 	{
 		userLocationRepo.create(userLocation);
 	}
-	public void updateUser(User user) throws DatabaseException
+	public void updateUser(User user,List<Location> locations) throws DatabaseException
 	{
 		userRepo.update(user);
+		userRepo.updateLocations(user,locations);
 	}
 	
 	public List<Role> getRoles() throws DatabaseException {
@@ -194,7 +195,7 @@ public class UserService {
 		for(User user : users)
 		{
 //			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getCurrentLocations(), user.getDateActive().format(formatter)));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getCurrentLocations(), user.getStartDate().format(formatter)));
 		}		
 		return new UserSearchJson(userSearch);
 	}

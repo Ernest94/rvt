@@ -15,10 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.Role;
-import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.rest.Filler;
 
@@ -84,8 +82,8 @@ class TestUserRepository {
 		assertEquals(user.getName(), result2.getName());
 		assertEquals(user.getEmail(), result2.getEmail());
 		assertEquals(user.getPassword(), result2.getPassword());
-		assertEquals(user.getDateActive(), result2.getDateActive());
-		assertEquals(user.getDateInactive(), result2.getDateInactive());
+		assertEquals(user.getStartDate(), result2.getStartDate());
+		assertEquals(user.getEndDate(), result2.getEndDate());
 		
 		assertEquals(result, result2); // test the equals() function of user
 	}
@@ -155,8 +153,8 @@ class TestUserRepository {
 		assertEquals("Trainee", result.getRole().getName());
 		assertEquals("test@example.com", result.getEmail());
 		assertNotEquals("22211", result.getPassword()); // Password should not be updated
-		assertEquals(LocalDate.ofYearDay(1999, 24), result.getDateActive());
-		assertEquals(LocalDate.now(), result.getDateInactive());
+		assertEquals(LocalDate.ofYearDay(1999, 24), result.getStartDate());
+		assertEquals(LocalDate.now(), result.getEndDate());
 		assertTrue(result.getCurrentLocations().size() == 1);
 	}
 	

@@ -23,9 +23,9 @@ public class Concept implements ReadOnlyEntity {
 	private String name;
 	@Column(name="description")
 	private String description;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	
 	//needed for Hibernate
