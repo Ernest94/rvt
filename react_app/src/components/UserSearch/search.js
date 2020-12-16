@@ -84,7 +84,6 @@ class Search extends React.Component {
 
     handleSearchReponse(data)
     {
-        console.log(data.userSearch)
         this.setState({
             users: data.userSearch
         });
@@ -92,7 +91,6 @@ class Search extends React.Component {
 
     handleFormChange = (e) => {
         const {name, value} = e.target;
-        console.log(value)
         this.setState({
            [name]: value
         });
@@ -100,8 +98,15 @@ class Search extends React.Component {
 
 
     createSearchJson() {
+        var locations = [];
+        var i;
+        for (i=0;i<this.state.selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:this.state.selectedLocationsIds[i]}
+            )
+        }
         return {
-            locations: this.state.selectedLocations,
+            locations: locations,
             role: this.state.role,
             criteria: this.state.criteria
         }
@@ -113,7 +118,8 @@ class Search extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true});
-        var errors = null
+        var errors = null;
+        console.log(this.createSearchJson());
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {

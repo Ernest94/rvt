@@ -158,34 +158,30 @@ public class UserService {
 	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations) throws DatabaseException
 	{
 		List<User> allUsers = userRepo.readAll();
-		List<User> filterdUsers = new ArrayList<User>();
+		List<User> filteredUsers = new ArrayList<User>();
+		List<Integer> locationsIds = locations.stream().map(l -> l.getId()).collect(Collectors.toList());
 		
-		filterdUsers.addAll(allUsers.stream()
+		for (User user : allUsers) {
+			List<Location> userCurrentLocations = user.getCurrentLocations();
+			for (Location userCurrentLocation : userCurrentLocations) {
+				if (locationsIds.contains(userCurrentLocation.getId()) && locationsIds.size()!=0 ) {
+					filteredUsers.add(user);
+					break;
+				}
+			}
+		}
+		
+		filteredUsers=filteredUsers.stream()
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
-				.collect(Collectors.toList()));
-		
-		
-		filterdUsers = filterdUsers.stream()
-				.filter(u -> locations.contains(u.getCurrentLocations().get(0)) || locations.size()==0)
-				.collect(Collectors.toList());	
-//		filterdUsers = filterdUsers.stream()
-//				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
-//				.collect(Collectors.toList());	
+				.collect(Collectors.toList());
 		
 		if (criteria != null) {
-			filterdUsers = filterdUsers.stream()
+			filteredUsers = filteredUsers.stream()
 					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
 					.collect(Collectors.toList());
 		}
 		
-		
-		
-//		filterdUsers.stream().filter(u -> u.getRole().equals(role) || role == null)
-//							 .filter(u -> u.getLocation().equals(location) || location == null)
-//							 .filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-//							 .collect(Collectors.toList());
-		
-		return filterdUsers;
+		return filteredUsers;
 	}
 	// TODO move to a UserLogic class
 	public UserSearchJson convertToUSJ(List<User> users)

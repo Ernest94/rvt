@@ -271,14 +271,6 @@ class Dossier extends React.Component {
     
     createUserJson() {
         const {name, email, role, currentLocationsIds, startDate, userId } = this.state;
-        // var userLocations = [];
-        // var i;
-        // for (i=0;i<currentLocationsIds.length;i++) {
-        //     userLocations.push({
-        //         user: {id:userId},
-        //         location: {id:currentLocationsIds[i]}
-        //     })
-        // } 
         var locations = [];
         var i;
         for (i=0;i<currentLocationsIds.length;i++) {
@@ -295,7 +287,6 @@ class Dossier extends React.Component {
                 startDate: startDate
             },
             locations: locations
-            // locations: [{id:1}]
         }  
     }
 
