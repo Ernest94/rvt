@@ -159,7 +159,7 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
-            selectedLocations:[],
+            selectedLocationsIds:[],
             name: "",
             email: "",
             password: "",
@@ -175,6 +175,7 @@ class AddUser extends React.Component {
     }
 
     componentDidMount() {
+        Utils.dateValidation();
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
     }
@@ -198,20 +199,32 @@ class AddUser extends React.Component {
     }
 
     createUserJson() {
-        return {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            role: this.state.role,
-            location: this.state.location,
-            startDate: this.state.startDate
+        const {name, email, password, role, selectedLocationsIds, startDate } = this.state;
+        var locations = [];
+        var i;
+        for (i=0;i<selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:selectedLocationsIds[i]}
+            )
         }
-    }
+        return {
+            user:{
+                name: name,
+                email: email,
+                password:password,
+                role: role,
+                startDate: startDate
+            },
+            locations: locations
+        }
+    }  
 
     handleSubmit = (event) => {
         event.preventDefault();
         var errors = validate(this.state, constraints);
         console.log(this.createUserJson());
+        console.log();
+
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
@@ -234,6 +247,8 @@ class AddUser extends React.Component {
     
     handleFormChange = (e) => {
         const {name, value} = e.target;
+        console.log(name, value)
+
         this.setState({
            [name]: value
         });
@@ -243,7 +258,7 @@ class AddUser extends React.Component {
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
 
-        const {locations,roles,selectedLocations} = this.state
+        const {locations,roles,selectedLocationsIds} = this.state
 
         const locationsOptions = locations.map((loc) => {
             return (
@@ -271,7 +286,7 @@ class AddUser extends React.Component {
                         <div className="">
                             <label className="" htmlFor="role">Rol:</label>
                             <select className="" name="role" id="role"
-                                onChange={this.onChangeRole}
+                                onChange={this.handleFormChange}
                                 required>
                                 <option hidden value=''></option>
                                 {rolesOptions}
@@ -282,17 +297,17 @@ class AddUser extends React.Component {
                             <label className="" htmlFor="location">Locatie:</label>
                             <Select
                                 className="m-1 text-black"
-                                id="selectedLocations"
-                                name="selectedLocations" 
+                                id="selectedLocationsIds"
+                                name="selectedLocationsIds" 
                                 multiple
-                                value={selectedLocations}
+                                value={selectedLocationsIds}
                                 onChange={this.handleFormChange}
                                 //the MenuProps below are needed to stop the dropdown jumping around when selecting
                                 MenuProps={{
                                     variant: "menu",
                                     getContentAnchorEl: null}
                                 }
-                                input={<Input id="selectedLocations" />}
+                                input={<Input id="selectedLocationsIds" />}
                                 >
                                 {locationsOptions}
                             </Select>

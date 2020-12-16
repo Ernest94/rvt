@@ -98,16 +98,17 @@ public class UserResource extends BaseResource {
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser (User user) {
-		LOG.debug("createUser called for user {}", user.getName());
+	public Response createUser (UserLocationView userLocationsView) {
+		LOG.debug("createUser called for user {}", userLocationsView.getUser().getName());
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
 			boolean valid = userServ.validateUser(user);
-		
 			if (!valid) {
 				return Response.status(412).build();
 			}
-			userServ.addUser(user);
+			userServ.addUserAndLocations(user,locations);
 			LOG.info("User {} has been created.", user);
 			return Response.status(201).build();
 		});

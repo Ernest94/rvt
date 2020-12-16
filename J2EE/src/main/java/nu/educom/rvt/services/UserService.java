@@ -94,7 +94,15 @@ public class UserService {
 	{
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
-	}	
+	}
+	
+	public void addUserAndLocations(User user,List<Location> locations) throws DatabaseException
+	{
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+		User createdUser = userRepo.create(user);
+		userRepo.updateLocations(createdUser,locations);
+	}
+	
 	public void addUserLocation(UserLocation userLocation) throws DatabaseException
 	{
 		userLocationRepo.create(userLocation);
@@ -164,7 +172,7 @@ public class UserService {
 		for (User user : allUsers) {
 			List<Location> userCurrentLocations = user.getCurrentLocations();
 			for (Location userCurrentLocation : userCurrentLocations) {
-				if (locationsIds.contains(userCurrentLocation.getId()) && locationsIds.size()!=0 ) {
+				if (locationsIds.contains(userCurrentLocation.getId()) && locationsIds.size()!=0) {
 					filteredUsers.add(user);
 					break;
 				}
