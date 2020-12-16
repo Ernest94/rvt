@@ -1,4 +1,4 @@
-package nu.educom.rvt.rest;
+package nu.educom.rvt.rest.filter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

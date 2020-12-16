@@ -1,4 +1,4 @@
-package nu.educom.rvt.rest;
+package nu.educom.rvt.rest.filter;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;

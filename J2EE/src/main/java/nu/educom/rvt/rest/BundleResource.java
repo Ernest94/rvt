@@ -22,10 +22,12 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/bundle")
+@Secured
 public class BundleResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	

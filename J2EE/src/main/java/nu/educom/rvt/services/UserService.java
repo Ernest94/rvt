@@ -25,7 +25,7 @@ import nu.educom.rvt.repositories.DatabaseException;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserRepository;
-import nu.educom.rvt.rest.Token;
+import nu.educom.rvt.rest.filter.Token;
 
 public class UserService {
 	private final UserRepository userRepo;

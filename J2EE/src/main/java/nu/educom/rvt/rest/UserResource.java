@@ -27,9 +27,11 @@ import nu.educom.rvt.models.Search;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserSearchJson;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.UserService;
 
 @Path("webapi/user")
+
 public class UserResource extends BaseResource {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -55,6 +57,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@POST
+	@Secured
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +76,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
@@ -93,6 +97,7 @@ public class UserResource extends BaseResource {
 	}
 		
 	@POST
+	@Secured
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser (User user) {
@@ -112,10 +117,10 @@ public class UserResource extends BaseResource {
 	
 	
 	@POST
+	@Secured
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Secured
 	public Response getUsers(Search search) {
 		LOG.trace("getUsers {} from {} and criteria '{}'", 
 				   search.getRole(), search.getLocations(), search.getCriteria());
@@ -129,6 +134,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
@@ -142,6 +148,7 @@ public class UserResource extends BaseResource {
 	}
 		
 	@GET
+	@Secured
     @Path("/dossier")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserDossier(@HeaderParam("UserId") int userId ){ /* JH: Had hier @PathParam verwacht */
@@ -160,6 +167,7 @@ public class UserResource extends BaseResource {
 	}	
 	
 	@PUT
+	@Secured
 	@Path("/dossier")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateUser(User user) {

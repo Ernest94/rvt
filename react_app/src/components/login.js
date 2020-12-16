@@ -16,7 +16,6 @@ class Login extends React.Component {
             password: "",
             buttonDisabled: false,
         };
-
     }
 
     handleSuccessfulAuth(data) {
@@ -24,7 +23,8 @@ class Login extends React.Component {
         sessionStorage.setItem("isUserLoggedIn", true);
         var tokens = data.split(".");
         var responseData = JSON.parse(atob(tokens[1]));
-        console.log(responseData);
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+ sessionStorage.getItem("token");
+        
         sessionStorage.setItem("userId", responseData.UserId);
         sessionStorage.setItem("userName", responseData.sub);
         sessionStorage.setItem("userRole", responseData.Role.name);

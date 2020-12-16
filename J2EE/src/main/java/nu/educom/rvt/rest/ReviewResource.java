@@ -23,11 +23,13 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
 import nu.educom.rvt.models.view.UserSearchJson;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.ThemeConceptService;
 import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/review")
+@Secured
 public class ReviewResource extends BaseResource {
 
 	private static final Logger LOG = LogManager.getLogger();

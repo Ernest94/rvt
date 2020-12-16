@@ -33,6 +33,7 @@ class Search extends React.Component {
     componentDidMount() {
         this.setState({ pageLoading: true });
         this.getLocationsAndRoles()
+        
     }
 
     handleFormChange = (e) => {
@@ -57,7 +58,7 @@ class Search extends React.Component {
             role: role,
             roleDisplayName: role.id
         });
-        axios.defaults.headers.common['Authorization'] = 'Bearer '+ sessionStorage.getItem("token");
+
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
             .then(response => {

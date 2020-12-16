@@ -22,10 +22,12 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ActiveChangeForUser;
 import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.WeekChangeForUser;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.ThemeConceptService;
 
 
 @Path("/webapi/theme_concept")
+@Secured
 public class ThemeConceptResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	

@@ -8,6 +8,10 @@ import javax.ws.rs.core.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import nu.educom.rvt.rest.filter.AuthenticationFilter;
+import nu.educom.rvt.rest.filter.CORSFilter;
+import nu.educom.rvt.rest.filter.LogFilter;
+
 @ApplicationPath("")
 public class MyApp extends Application {
 	private static final Logger LOG = LogManager.getLogger();

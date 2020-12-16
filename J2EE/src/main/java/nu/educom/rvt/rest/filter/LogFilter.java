@@ -1,7 +1,7 @@
 /**
  * 
  */
-package nu.educom.rvt.rest;
+package nu.educom.rvt.rest.filter;
 
 import java.io.IOException;
 

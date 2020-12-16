@@ -1,4 +1,4 @@
-package nu.educom.rvt.rest;
+package nu.educom.rvt.rest.filter;
 
 import java.io.IOException;
 
@@ -14,17 +14,21 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    private static final String REALM = "test";
+    private static final String REALM = "users";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
+	private static final Logger LOG = LogManager.getLogger();
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-    	System.out.println("Authentication filter called");
+    	LOG.debug("Authentication filter called");
         String authorizationHeader =
                 requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
@@ -69,6 +73,5 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         	    .setSigningKey(Token.getSecretKey())
         	    .build()
         	    .parseClaimsJws(token);
-        System.out.println(jws);
     }
 }
