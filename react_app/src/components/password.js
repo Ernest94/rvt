@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import Util from './Utils.js'
 import constraints from '../constraints/passwordChangeConstraints';
 import {config} from './constants';
+import { TextField } from '@material-ui/core';
 
 class Password extends React.Component {
     
@@ -79,17 +80,17 @@ class Password extends React.Component {
 
                     <div className="form-group">
                         <label htmlFor="current">Huidig wachtwoord:</label>
-                        <input className="form-control" id="current" type="password" name="currentPassword" onChange={this.handleFormChange}/>
+                        <TextField className="form-control" id="current" type="password" name="currentPassword" onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="newPassword">Nieuw wachtwoord:</label>
-                        <input className="form-control" id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
+                        <TextField className="form-control" id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
                     </div>
                     
                     <div className="form-group">
                         <label htmlFor="repeatePassword">Herhaal nieuw wachtwoord:</label>
-                        <input className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
+                        <TextField className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
                     </div>
                     
                     <button className="btn btn-danger btn-block" 
