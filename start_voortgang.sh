@@ -1,0 +1,1 @@
+screen -S voortgang -d -m java -Dlog4j.configurationFile=Log4j2.xml -jar J2EE.jar
