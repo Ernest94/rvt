@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
@@ -18,6 +19,7 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.models.view.BundleViewWeek;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
@@ -272,5 +274,20 @@ public class BundleService {
 		
 		CPRWeek.setWeek(week);
 		return CPRWeek;
+	}
+	
+	public void addBundlesToConcept(Concept concept, List<BundleViewWeek> bundles) throws DatabaseException {
+		
+		List<BundleConcept> bundleConcepts = new ArrayList<>();
+		
+		for(BundleViewWeek bundle: bundles) {
+			if(bundleConcepts.stream().filter(dis -> dis.getBundle().getId() == bundle.getBundle().getId()).findFirst().orElse(null) == null)
+			{
+				Bundle actualBundle = bundleRepo.readById(bundle.getBundle().getId());
+				bundleConcepts.add(new BundleConcept(actualBundle, concept, bundle.getWeek(), LocalDate.now()));
+			}			
+		}
+		
+		bundleConceptRepo.createMulti(bundleConcepts);
 	}	
 }
