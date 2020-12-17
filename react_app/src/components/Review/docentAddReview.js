@@ -282,16 +282,6 @@ class docentAddReview extends React.Component {
         });
     }
 
-    // setActiveConcept() {
-    //     var checkBox = document.getElementById("myCheck");
-    //     var text = document.getElementById("text");
-    //     if (checkBox.checked === false){
-    //       text.style.display = "block";
-    //     } else {
-    //        text.style.display = "none";
-    //     }
-    // }
-
     handleWeekChange(e,changedConceptId){
         this.setState(prevState => 
                 ({concepts: prevState.concepts.map(concept => 

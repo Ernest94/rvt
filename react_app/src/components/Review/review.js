@@ -11,97 +11,7 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Slider from '@material-ui/core/Slider';
 
-class ConceptSelection extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state ={
-            stars: [1,5],
-            weeks: [0,10],
-        }
-
-    }
-
-    handleSliderChange(newValue, name){
-        this.setState({[name]: newValue})
-    }
-    render()
-    {
-    var themeSelection = this.props.themes.map((theme) => {
-        return (
-            <FormControlLabel
-                control = {<Checkbox defaultChecked={true}
-                            name = {"theme_" + theme.id}
-                            onChange = {(e) => this.props.handleCheckChange(e,theme.id)}
-                            className = "themeCheckbox"
-                            />}
-                    label = {theme.abbreviation}
-                    className = "checkboxControl"
-            />
-        )
-    });
-    return (
-    <div class={"conceptSelection " + this.props.className} >
-
-
-        <SliderSelection
-            title="Rating tussen"
-            value={this.state.stars}
-            handleChange={this.handleSliderChange.bind(this)}
-            handleChangeCommit={this.props.handleChange.bind(this)}
-            min={0}
-            max={5}
-            name = "stars"
-        />
-        <SliderSelection
-            title="Weken"
-            value={this.state.weeks}
-            handleChange={this.handleSliderChange.bind(this)}
-            handleChangeCommit={this.props.handleChange.bind(this)}
-            min={0}
-            max={10}
-            name = "weeks"
-            />
-        <div><h5 className="selectionTitle">Thema's</h5></div>
-        {themeSelection}
-    </div>
-    )
-    }
-}
-
-class SliderSelection extends React.Component {
-
-    render (){
-        return (
-            <div >
-                <div><h5 className="selectionTitle" id={this.props.name + "-slider"} >{this.props.title}</h5>
-                    <Button
-                        onClick={()=> {this.props.handleChange([this.props.min,this.props.max],this.props.name);
-                            this.props.handleChangeCommit([this.props.min,this.props.max],this.props.name)}}
-                        size="small"
-                        value="All"
-                        className="lightButton">all
-                    </Button>
-                </div>
-                <Slider
-                    classes={{thumb: 'sliderThumb' ,
-                            valueLabel: 'sliderLabel' }}
-                    name={this.props.name}
-                    value={this.props.value}
-                    step={1}
-                    marks
-                    onChange={(e, newValue) => this.props.handleChange(newValue, this.props.name)}
-                    onChangeCommitted={(e,newValue) => this.props.handleChangeCommit(newValue, this.props.name)}
-                    valueLabelDisplay="auto"
-                    aria-labelledby={this.props.name + "-slider"}
-                    valueLabelDisplay="on"
-                    min={this.props.min}
-                    max={this.props.max}
-                />
-        </div>
-        )
-    }
-}
 
 class review extends React.Component {
 
@@ -180,7 +90,7 @@ class review extends React.Component {
             userLocation: data.traineeLocation,
             reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
-            traineeFeedback: data.commentOffice,
+            traineeFeedback: data.commentStudent,
         });
         console.log(this.state);
     }

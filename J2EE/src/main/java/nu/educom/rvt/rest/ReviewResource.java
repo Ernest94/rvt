@@ -214,6 +214,7 @@ public class ReviewResource extends BaseResource {
 				review.setReviewStatus(Review.Status.PENDING);
 				LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
 						 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
+				reviewServ.updateReview(review, reviewOutput);
 			  return Response.status(202).build();
 			} 
 			return Response.status(404).build();
