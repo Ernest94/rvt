@@ -88,11 +88,13 @@ class Dossier extends React.Component {
             name: "",
             email: "",
             role: {},
-            location: {},
             startDate: "",
 
-            roles: [],
-            locations: [],
+            currentLocations: [],
+            currentLocationsIds: [],
+
+            roles: [], // alle rollen
+            locations: [], //alle locaties.
 
             allowedToView: false,
             allowedToEdit: false,
@@ -121,15 +123,19 @@ class Dossier extends React.Component {
     compareLocations(first, second) {
         console.log(first)
         console.log(second);
-        if (first.length === 0 || second.length === 0) return false;
+        let bool = false;
+        if (first.length === 0 || second.length === 0) return bool;
         Object.values(first).map(o1 => {
             Object.values(second).map(o2 => {
                 console.log(o1);
                 console.log(o2);
-                if(o1.id === o2.id) { return true; }
+                if (o1.id === o2.id) {
+                    console.log("True");
+                    bool = true;
+                }
             });
         });
-        return false;
+        return bool;
     }
     
     isOwnUserId(){
@@ -164,7 +170,7 @@ class Dossier extends React.Component {
         const userRole = sessionStorage.getItem("userRole");
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
         const dossierRole = this.state.role.name;
-        const dossierLocation = this.state.location;
+        const dossierLocation = this.state.currentLocations;
 
         var isAllowedToEdit;
         var fields = [];
@@ -374,7 +380,7 @@ class Dossier extends React.Component {
         const {editDisabled} = this.props;
         const traineeDossier = role.name === "Trainee";
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
-        const dossierLocation = this.state.location;
+        const dossierLocation = this.state.currentLocations;
         console.log(userLocation);
         console.log(dossierLocation);
 
