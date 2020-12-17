@@ -309,7 +309,7 @@ class addConcept extends React.Component {
                 <div className="container main-container">
 
                 <h2 className="text-center ">Concept toevoegen</h2>
-                <div className="text-danger" >{this.state.errors}</div>
+                <div className="text-danger text-center" >{this.state.errors}</div>
 
                     <form onSubmit={this.handleSubmit} className="container col-lg-8">
                         

@@ -155,8 +155,9 @@ class AddUser extends React.Component {
         if (currentStep <= 1 ) {
             return (
                 <button
-                    className="btn btn-primary float-right"
-                    type="button" onClick={this._next}>
+                    className="btn btn-danger btn-block"
+                    type="button" 
+                    onClick={this._next}>
                     Volgende
                 </button>
             )
@@ -169,11 +170,13 @@ class AddUser extends React.Component {
 
         if (currentStep === 2) {
             return (
-                    <button className="btn btn-primary float-right"
+                <div className="">
+                    <button className="btn btn-danger btn-block"
                         disabled={submitButtonDisabled}
                         type="submit">
                         {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
                     </button>
+                </div>
             )
         }
         return null;
@@ -262,27 +265,27 @@ class AddUser extends React.Component {
                             />
                             </div>
                         </div>
-
-                            <div className="row justify-content-center">
-                                <div className="col-3 m-1">
-                                    {this.nextButton}
-                                    {this.submitButton}
-                                </div>
+                    
+                        <div className="row justify-content-center">
+                            <div className="col-4 m-1">
+                                {this.nextButton}
+                                {this.submitButton}
                             </div>
-                    </form>
-
-                    <div className="row justify-content-center">
-                        <div className="col-3">
-                            {(this.state.currentStep <= 1 ) ? 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
-                                <button
-                                    className="btn btn-primary float-right"
-                                    type="button" onClick={this._prev}>
-                                    Vorige
-                                </button>}
                         </div>
-                    </div> 
 
+                        <div className="row justify-content-center">
+                            <div className="col-4">
+                                {(this.state.currentStep <= 1 ) ? 
+                                    <Link className="btn btn-danger btn-block" to={"/settings"}>Annuleren</Link>: 
+                                    <button
+                                        className="btn btn-danger btn-block"
+                                        type="button" onClick={this._prev}>
+                                        Vorige
+                                    </button>}
+                            </div>
+                        </div> 
+
+                    </form>
             </div>
         )
     }

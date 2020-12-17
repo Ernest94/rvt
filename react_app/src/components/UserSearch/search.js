@@ -190,7 +190,7 @@ class Search extends React.Component {
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
                 <div className="row"> 
-                    <ul className="errors">{this.state.errors}</ul>
+                    <ul className="errors text-center">{this.state.errors}</ul>
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">

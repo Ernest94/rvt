@@ -206,7 +206,7 @@ class conceptOverview extends React.Component {
                 <h2 className="text-center">Concepten overzicht</h2>
                 
                 <div className="row justify-content-center">
-                        <ul className="errors">{this.state.errors}</ul>
+                        <ul className="errors text-center">{this.state.errors}</ul>
                 </div>
 
                 <div className="row justify-content-lg-center">

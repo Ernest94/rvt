@@ -1,4 +1,5 @@
 import React from 'react';
+import {Select} from '@material-ui/core'
 
 class LocationSelection extends React.Component {
     
@@ -15,10 +16,10 @@ class LocationSelection extends React.Component {
         }
         
         return (
-                <div className="my-2">
+                <div className="text-center">
                     <label htmlFor="location">Locatie:</label>
                     <div>
-                    <select className="m-1" name="location" id="location" 
+                    <select className="form-control" name="location" id="location" 
                         value={this.props.locationDisplayName} 
                         onChange={this.props.onChangeLocation}
                         required>
