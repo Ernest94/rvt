@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link,withRouter } from 'react-router-dom';
-import {Select, Input, MenuItem} from '@material-ui/core'
+import {Select, Input} from '@material-ui/core'
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
@@ -159,6 +159,7 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
+            roleDisplayName: "",
             selectedLocations:[],
             name: "",
             email: "",
@@ -181,11 +182,15 @@ class AddUser extends React.Component {
 
     getLocationsAndRoles() {
         axios.get(config.url.API_URL + '/webapi/user/roles')
-            .then( response => {
+            .then(response => {
+                    const roleName = "Trainee";
+                    let role = response.data.roles.find(element => element.name === roleName);
                     this.setState({
                         roles: response.data.roles,
                         locations: response.data.locations,
-                        pageLoading: false
+                        pageLoading: false,
+                        role: role,
+                        roleDisplayName: role.id
                     });
                 })
             .catch(() => {
@@ -197,9 +202,14 @@ class AddUser extends React.Component {
 
     }
 
-
-
-   
+    compareLocations(first, second) {
+        first.map(o1 => {
+            second.map(o2 => {
+                if (o1.id === o2.id) { return true; }
+            });
+        });
+        return false;
+    }
 
     createUserJson() {
         return {
@@ -235,32 +245,54 @@ class AddUser extends React.Component {
             });
         }
     }
-    
+
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
            [name]: value
         });
     }
+
+    onChangeRole = (e) => {
+        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
+
+        this.setState({
+            role: selectedRole,
+            roleDisplayName: e.target.value
+        });
+    }
+
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
-
+        const userRole = sessionStorage.getItem("userRole");
+        const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
         const {locations,roles,selectedLocations} = this.state
 
-        const locationsOptions = locations.map((loc) => {
-            return (
-                 <option key={loc.id} value={loc.id}>{loc.name}</option>
-            ) 
-         });
+        let locationsOptions;
 
-         const rolesOptions = roles.map((role) => {
+        const rolesOptions = roles.map((role) => {
             return (
-                 <option key={role.id} value={role.id}>{role.name}</option>
-            ) 
-         });
-
+                <option key={role.id} value={role.id}>{role.name}</option>
+            )
+        });
+            
+        if (userRole === "admin") {
+            locationsOptions = locations.map((loc) => {
+                return (
+                    <option key={loc.id} value={loc.id}>{loc.name}</option>
+                )
+            });
+        }
+        else {
+            console.log(userLocation);
+            locationsOptions = userLocation.map((loc) => {
+                return (
+                    <option key={loc.id} value={loc.id}>{loc.name}</option>
+                )
+            });
+        }
 
         return (
             <div className="container">
@@ -273,11 +305,11 @@ class AddUser extends React.Component {
                     <form onSubmit={this.handleSubmit} className="col-lg-8">
 
                         <div className="">
-                            <label className="" htmlFor="role">Rol:</label>
-                            <select className="" name="role" id="role"
+                        <label className="" htmlFor="role">Rol:</label>
+                        <select className="" name="role" id="role" disabled={!(userRole === "Admin")}
+                                value={this.state.roleDisplayName}
                                 onChange={this.onChangeRole}
                                 required>
-                                <option hidden value=''></option>
                                 {rolesOptions}
                             </select>
                         </div>

@@ -116,6 +116,16 @@ class Dossier extends React.Component {
     static hasAccess(props) {
         return Permissions.canViewDossier(props.match.params.userId);
     }
+
+
+    compareLocations(first, second) {
+        first.map(o1 => {
+            second.map(o2 => {
+                if(o1.id === o2.id) { return true; }
+            });
+        });
+        return false;
+    }
     
     isOwnUserId(){
         const userId = sessionStorage.getItem("userId");
@@ -147,9 +157,9 @@ class Dossier extends React.Component {
     }
     canEditUserDossier(){
         const userRole = sessionStorage.getItem("userRole");
-        const userLocation = sessionStorage.getItem("userLocation");
+        const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
         const dossierRole = this.state.role.name;
-        const dossierLocation = this.state.location.name;
+        const dossierLocation = this.state.location;
 
         var isAllowedToEdit;
         var fields = [];
@@ -157,7 +167,7 @@ class Dossier extends React.Component {
             case "Office": break;
             case "Docent":
                 isAllowedToEdit = (dossierRole === "Trainee"
-                    && dossierLocation === userLocation)
+                    && this.compareLocations(dossierLocation, userLocation))
                     || this.isOwnUserId();
                 fields = ["name", "email","location", "bundle"];
                 break;
@@ -348,6 +358,8 @@ class Dossier extends React.Component {
 
         const {editDisabled} = this.props;
         const traineeDossier = role.name === "Trainee";
+        const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
+        const dossierLocation = this.state.location;
 
         if (pageLoading) return <span className="error-message-center"> Laden... </span>
         if (serverFail) return <span className="error-message-center"> Mislukt om de gegevens op te halen. </span> 
@@ -470,8 +482,8 @@ class Dossier extends React.Component {
                     <div>
                         <Link
                             className="btn btn-danger btn-block"
-                            to={"/docentAddReview/"  + userId}
-                                hidden={!traineeDossier || !Permissions.canAddReview()}
+                                to={"/docentAddReview/" + userId}
+                                hidden={!traineeDossier || !(Permissions.canAddReview() && this.compareLocations(dossierLocation, userLocation))}
                                 >
                                 Review aanmaken/aanpassen
                         </Link>
