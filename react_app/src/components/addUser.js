@@ -158,7 +158,7 @@ class AddUser extends React.Component {
         super(props);
         this.state = {
 
-            role: null,
+            roleId: "",
             selectedLocationsIds:[],
             name: "",
             email: "",
@@ -199,7 +199,7 @@ class AddUser extends React.Component {
     }
 
     createUserJson() {
-        const {name, email, password, role, selectedLocationsIds, startDate } = this.state;
+        const {name, email, password, roleId, selectedLocationsIds, startDate } = this.state;
         var locations = [];
         var i;
         for (i=0;i<selectedLocationsIds.length;i++) {
@@ -212,7 +212,7 @@ class AddUser extends React.Component {
                 name: name,
                 email: email,
                 password:password,
-                role: role,
+                role: {id:parseInt(roleId)},
                 startDate: startDate
             },
             locations: locations
@@ -285,8 +285,8 @@ class AddUser extends React.Component {
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
 
                     <div className="input row dossier mt-2">
-                        <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
-                        <select className="form-control col-sm-9" name="role" id="role"
+                        <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
+                        <select className="form-control col-sm-9" name="roleId" id="roleId"
                             onChange={this.handleFormChange}
                             required>
                             <option hidden value=''></option>

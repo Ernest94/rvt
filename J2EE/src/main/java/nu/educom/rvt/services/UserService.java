@@ -109,8 +109,8 @@ public class UserService {
 	}
 	public void updateUser(User user,List<Location> locations) throws DatabaseException
 	{
-		userRepo.update(user);
-		userRepo.updateLocations(user,locations);
+		User userToUpdate = userRepo.update(user);
+		userRepo.updateLocations(userToUpdate,locations);
 	}
 	
 	public List<Role> getRoles() throws DatabaseException {
