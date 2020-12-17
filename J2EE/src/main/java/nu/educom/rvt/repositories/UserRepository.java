@@ -40,9 +40,15 @@ public class UserRepository {
 	}
 	
 	public void updateLocations(User user, List<Location> newLocations) throws DatabaseException {
-		HibernateSession.updateReadOnlyEntries(user.getAllUserLocations(), newLocations,
+		final User attachedUser;
+		if (!session.contains(user)) {
+			attachedUser = readById(user.getId());
+		} else {
+			attachedUser = user;
+		}
+		HibernateSession.updateReadOnlyEntries(attachedUser.getAllUserLocations(), newLocations,
 				         (ul, l) -> ul.getLocation().equals(l),
-				         l -> new UserLocation(user, l, LocalDate.now(), null),
+				         l -> new UserLocation(attachedUser, l, LocalDate.now(), null),
 				         session);
 	}
 	

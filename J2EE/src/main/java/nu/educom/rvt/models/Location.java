@@ -55,6 +55,6 @@ public class Location implements BaseEntity {
 	
 	@Override
 	public String toString() {
-		return String.format("Location(%s)", getName());
+		return String.format("Location(%d: %s)", getId(), getName());
 	}
 }

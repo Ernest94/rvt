@@ -167,7 +167,7 @@ public class UserResource extends BaseResource {
 	public Response updateUser(UserLocationView userLocationsView) {
 		User user = userLocationsView.getUser();
 		List<Location> locations = userLocationsView.getLocations();
-		LOG.debug("updateUser called for {}", userLocationsView);
+		LOG.debug("updateUser called for {} on [{}]", user, locations);
 			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
