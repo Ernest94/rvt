@@ -19,6 +19,7 @@ class Search extends React.Component {
             selectedLocations: [],
             roles: [],
             role: "",
+            roleId:"",
             criteria: "",
             users: [],
             loading: false,
@@ -64,8 +65,8 @@ class Search extends React.Component {
             loading: true,
             selectedLocations:userLocations,
             selectedLocationsIds: userLocationsIds,
-            role: role,
-            roleDisplayName: role.id
+            roleId: role.id,
+            // roleDisplayName: role.id
         });
 
         console.log(this.createSearchJson());
@@ -107,7 +108,7 @@ class Search extends React.Component {
         }
         return {
             locations: locations,
-            role: this.state.role,
+            role: {id:parseInt(this.state.roleId)},
             criteria: this.state.criteria
         }
 }
@@ -142,20 +143,20 @@ class Search extends React.Component {
 
 
 
-    onChangeRole = (e) => {
-        this.setState({
-            role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
-        });
-    }
+    // onChangeRole = (e) => {
+    //     this.setState({
+    //         role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
+    //     });
+    // }
 
-    onChangeRole = (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
+    // onChangeRole = (e) => {
+    //     var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
 
-        this.setState({
-            role: selectedRole,
-            roleDisplayName: e.target.value
-        });
-    }
+    //     this.setState({
+    //         role: selectedRole,
+    //         roleDisplayName: e.target.value
+    //     });
+    // }
 
     render() {
         const {roles, locations, users, pageLoading, loading, selectedLocationsIds} = this.state;
@@ -213,11 +214,11 @@ class Search extends React.Component {
                         <div className="search-bar row d-flex">
 
                           <div className="m-auto col-2">
-                            <label className="m-1" htmlFor="role">Rol:</label>
-                            <select name="role" id="role"
+                            <label className="m-1" htmlFor="roleId">Rol:</label>
+                            <select name="roleId" id="roleId"
 
-                                value={this.state.roleDisplayName}
-                                onChange={this.onChangeRole}
+                                value={this.state.roleId}
+                                onChange={this.handleFormChange}
                                 >
                                 {rolesOptions}
                             </select>

@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.UserLocation;
 
 public class UserRepository {
@@ -19,7 +20,8 @@ public class UserRepository {
 		if (!session.isOpen() || !session.getTransaction().isActive()) {
 			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
-	    session.save(user); 
+		user.setRole(session.get(Role.class, user.getRole().getId()));
+	    session.save(user);
 	    return user;
 	}
 	
@@ -31,7 +33,7 @@ public class UserRepository {
 		User toUpdate = this.readById(user.getId());
 		toUpdate.setName(user.getName());
 		toUpdate.setEmail(user.getEmail());
-		toUpdate.setRole(user.getRole());
+		toUpdate.setRole(session.get(Role.class, user.getRole().getId()));
 		toUpdate.setStartDate(user.getStartDate());
 		toUpdate.setEndDate(user.getEndDate());
 		return toUpdate;

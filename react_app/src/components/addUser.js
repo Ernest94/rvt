@@ -159,8 +159,7 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
-
-            roleDisplayName: "",
+            roleId: "",
             selectedLocationsIds:[],
             name: "",
             email: "",
@@ -214,7 +213,7 @@ class AddUser extends React.Component {
     }
 
     createUserJson() {
-        const {name, email, password, role, selectedLocationsIds, startDate } = this.state;
+        const {name, email, password, roleId, selectedLocationsIds, startDate } = this.state;
         var locations = [];
         var i;
         for (i=0;i<selectedLocationsIds.length;i++) {
@@ -227,7 +226,7 @@ class AddUser extends React.Component {
                 name: name,
                 email: email,
                 password:password,
-                role: role,
+                role: {id:parseInt(roleId)},
                 startDate: startDate
             },
             locations: locations
@@ -320,7 +319,8 @@ class AddUser extends React.Component {
                     {errorsList}
                 </div>
                     
-                    <form onSubmit={this.handleSubmit} className="col-lg-8">
+
+                    {/* <form onSubmit={this.handleSubmit} className="col-lg-8">
 
                         <div className="">
                         <label className="" htmlFor="role">Rol:</label>
@@ -330,7 +330,20 @@ class AddUser extends React.Component {
                                 required>
                                 {rolesOptions}
                             </select>
-                        </div>              
+                        </div>               */}
+
+                <form onSubmit={this.handleSubmit} className="container col-lg-8">
+
+                    <div className="input row dossier mt-2">
+                        <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
+                        <select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
+                            onChange={this.handleFormChange}
+                            required>
+                            <option hidden value=''></option>
+                            {rolesOptions}
+                        </select>
+                    </div>
+{/* >>>>>>> origin/multiple_locations */}
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>

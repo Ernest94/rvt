@@ -88,6 +88,8 @@ class Dossier extends React.Component {
             name: "",
             email: "",
             role: {},
+            roleId:"",
+            location: {},
             startDate: "",
 
             currentLocations: [],
@@ -215,6 +217,8 @@ class Dossier extends React.Component {
                 name: userResponse.data.name,
                 email: userResponse.data.email,
                 role: userResponse.data.role,
+                roleId: userResponse.data.role.id,
+                
                 currentLocations: userResponse.data.currentLocations,
                 currentLocationsIds: currentLocationsIds,
                 startDate: userResponse.data.startDate,
@@ -292,7 +296,7 @@ class Dossier extends React.Component {
     }
     
     createUserJson() {
-        const {name, email, role, currentLocationsIds, startDate, userId } = this.state;
+        const {name, email, roleId, currentLocationsIds, startDate, userId } = this.state;
         var locations = [];
         var i;
         for (i=0;i<currentLocationsIds.length;i++) {
@@ -305,7 +309,7 @@ class Dossier extends React.Component {
                 id: userId,
                 name: name,
                 email: email,
-                role: role,
+                role: {id:parseInt(roleId)},
                 startDate: startDate
             },
             locations: locations
@@ -319,14 +323,14 @@ class Dossier extends React.Component {
         )
     }
     
-    onChangeRole = (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
+    // onChangeRole = (e) => {
+    //     var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
         
-        this.setState({
-            role: selectedRole,
-            roleDisplayName: e.target.value
-        });
-    }
+    //     this.setState({
+    //         role: selectedRole,
+    //         roleDisplayName: e.target.value
+    //     });
+    // }
     
     handleFormChange = (e) => {
         const {name, value} = e.target;
@@ -373,7 +377,7 @@ class Dossier extends React.Component {
     render() {
 
 
-        const {role, name, email,startDate, userId, pageLoading, errors,
+        const {roleId, role, name, email,startDate, userId, pageLoading, errors,
             serverFail, locations, roles,allowedToView, allowedToEdit, 
             allowedToEditFields,currentLocationsIds} = this.state;
 
@@ -420,10 +424,10 @@ class Dossier extends React.Component {
                     </div>
 
                     <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
-                        <select className="form-control col-sm-9" name="role" id="role"
-                            value={role.id}
-                            onChange={this.onChangeRole}
+                        <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
+                        <select className="form-control col-sm-9" name="roleId" id="roleId"
+                            value={roleId}
+                            onChange={this.handleFormChange}
                             required
                             disabled={editDisabled || !allowedToEditFields.includes("role") || !allowedToEdit}>
 
