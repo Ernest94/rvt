@@ -262,7 +262,7 @@ class AddUser extends React.Component {
 
         const locationsOptions = locations.map((loc) => {
             return (
-                 <option key={loc.id} value={loc.id}>{loc.name}</option>
+                 <MenuItem  key={loc.id} value={loc.id}>{loc.name}</MenuItem >
             ) 
          });
 
@@ -274,92 +274,93 @@ class AddUser extends React.Component {
 
 
         return (
-            <div className="container">
+            <div className="container main-container">
+
                 <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                    <div className="col text-center">
-                        {errorsList}
-                    </div>
+                <div className="row text-center">
+                    {errorsList}
+                </div>
                     
-                    <form onSubmit={this.handleSubmit} className="col-lg-8">
+                <form onSubmit={this.handleSubmit} className="container col-lg-8">
 
-                        <div className="">
-                            <label className="" htmlFor="role">Rol:</label>
-                            <select className="" name="role" id="role"
-                                onChange={this.handleFormChange}
-                                required>
-                                <option hidden value=''></option>
-                                {rolesOptions}
-                            </select>
-                        </div>
+                    <div className="input row dossier mt-2">
+                        <label className="label col-sm col-form-label" htmlFor="role">Rol:</label>
+                        <select className="form-control col-sm-9" name="role" id="role"
+                            onChange={this.handleFormChange}
+                            required>
+                            <option hidden value=''></option>
+                            {rolesOptions}
+                        </select>
+                    </div>
 
-                        <div className="">
-                            <label className="" htmlFor="location">Locatie:</label>
-                            <Select
-                                className="m-1 text-black"
-                                id="selectedLocationsIds"
-                                name="selectedLocationsIds" 
-                                multiple
-                                value={selectedLocationsIds}
-                                onChange={this.handleFormChange}
-                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
-                                MenuProps={{
-                                    variant: "menu",
-                                    getContentAnchorEl: null}
-                                }
-                                input={<Input id="selectedLocationsIds" />}
-                                >
-                                {locationsOptions}
-                            </Select>
-                        </div>
-                
-                        <div className="">
-                            <label className="" htmlFor="name">Naam:</label>
-                            <input className="" id="name" type="name" name="name"
-                                onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="">
-                            <label className="" htmlFor="email">Email:</label>
-                            <input className="" id="email" type="email" name="email"
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        <Select
+                            className="text-black form-control col-sm-9"
+                            id="selectedLocationsIds"
+                            name="selectedLocationsIds" 
+                            multiple
+                            value={selectedLocationsIds}
+                            onChange={this.handleFormChange}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="selectedLocationsIds" />}
+                            >
+                            {locationsOptions}
+                        </Select>
+                    </div>
+            
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                        <input className="form-control col-sm-9" id="name" type="name" name="name"
                             onChange={this.handleFormChange}/>
-                        </div>
+                    </div>
 
-                        <div className="">
-                            <label className="" htmlFor="password">Wachtwoord:</label>
-                            <input className="" id="password" type="password" name="password"
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
+                        <input className="form-control col-sm-9" id="email" type="email" name="email"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="password">Wachtwoord:</label>
+                        <input className="form-control col-sm-9" id="password" type="password" name="password"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier" >
+                        <label className="label col-sm col-form-label" htmlFor="startDate">Startdatum:</label>
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             onChange={this.handleFormChange}/>
-                        </div>
+                    </div>
+                            {/* 
+                                <div className="input row dossier" hidden={!traineeDossier}>
+                                    <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                                    <BundleTable 
+                                        bundlesTrainee={this.state.bundlesTrainee} 
+                                        bundles={this.state.bundles}
+                                        removeBundle={this.removeBundle.bind(this)}
+                                        handleBundleChange={this.handleBundleChange.bind(this)} 
+                                        addBundle ={this.addBundle.bind(this)} />
+                            </div> */}
 
-                        <div className="" >
-                            <label className="" htmlFor="startDate">Startdatum:</label>
-                            <input className="" id="startDate" type="date" name="startDate" 
-                                onChange={this.handleFormChange}/>
+                    <div className="row mt-2">
+                        <div className="buttons">
+                            <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
                         </div>
-{/* 
-                        <div className="input row dossier" hidden={!traineeDossier}>
-                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                            <BundleTable 
-                                bundlesTrainee={this.state.bundlesTrainee} 
-                                bundles={this.state.bundles}
-                                removeBundle={this.removeBundle.bind(this)}
-                                handleBundleChange={this.handleBundleChange.bind(this)} 
-                                addBundle ={this.addBundle.bind(this)} />
-                        </div> */}
+                    </div>
 
-                        <div className="row">
-                            <div className="buttons">
-                                <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
-                            </div>
+                    <div className="row">
+                        <div className="buttons">
+                            <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
                         </div>
+                    </div>
 
-                        <div className="row">
-                            <div className="buttons">
-                                <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
-                            </div>
-                        </div>
-
-                    </form>
+                </form>
 
 
 {/* 
