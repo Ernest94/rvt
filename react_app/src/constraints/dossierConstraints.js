@@ -20,12 +20,12 @@ export const constraints = {
             message: "^Een rol is verplicht."
         }
     },
-    // location: {
-    //     presence: {
-    //         allowEmpty: false,
-    //         message: "^Een locatie is verplicht."
-    //     }
-    // },
+    currentLocationsIds: {
+        presence: {
+            allowEmpty: false,
+            message: "^Een locatie is verplicht."
+        }
+    },
     startDate: {
         presence: {
             allowEmpty: false,

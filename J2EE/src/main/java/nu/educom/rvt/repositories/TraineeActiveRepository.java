@@ -34,7 +34,7 @@ public class TraineeActiveRepository {
 		TraineeActive result;
 		try {
 			result = session
-				.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeActive.class)
+				.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and end_date is null", TraineeActive.class)
 				.setParameter("userId", userId)
 				.setParameter("conceptId", conceptId)
 				.getSingleResult();

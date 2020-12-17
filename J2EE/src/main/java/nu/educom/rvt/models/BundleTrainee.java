@@ -14,9 +14,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Where(clause = "enddate IS NULL")
+@Where(clause = "end_date IS NULL")
 @Table(name="bundle_trainee")
-public class BundleTrainee {
+public class BundleTrainee implements ReadOnlyEntity {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class BundleTrainee {
 		@JoinColumn(name="bundle_id")
 		private Bundle bundle;
 		
-		@Column(name="startWeek") 
+		@Column(name="start_week") 
 		private int startWeek;
 		
-		@Column(name="startdate")
+		@Column(name="start_date")
 		private LocalDate startDate;
 		
-		@Column(name="enddate")
+		@Column(name="end_date")
 		private LocalDate endDate;
 		
 		

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="bundle")
-public class Bundle {
+public class Bundle implements ReadOnlyEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,9 +22,9 @@ public class Bundle {
 	private User creator;
 	@Column(name="name")
 	private String name;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	@JsonManagedReference
  	@OneToMany(mappedBy="bundle", fetch=FetchType.LAZY)

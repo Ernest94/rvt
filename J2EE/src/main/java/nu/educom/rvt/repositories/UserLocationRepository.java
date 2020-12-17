@@ -21,7 +21,19 @@ public class UserLocationRepository {
 		}
 		session.save(userLocation);
 	}
-	
+	public List<UserLocation> createMulti(List<UserLocation> userLocs) throws DatabaseException {
+		for ( int i=0; i<userLocs.size(); i++ ) {
+			int userId = (int)session.save(userLocs.get(i));
+			session.save(userLocs.get(i));
+			userLocs.get(i).setId(userId);
+			if ( i % 20 == 0 ) { 
+				//flush a batch of inserts and release memory:
+				session.flush();
+				session.clear();
+			}
+		}
+		return userLocs;
+	}
 	
 	public List<UserLocationRepository> readAll() throws DatabaseException {
 		return HibernateSession.loadAllData(UserLocationRepository.class, session);

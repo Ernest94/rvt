@@ -119,8 +119,13 @@ class Dossier extends React.Component {
 
 
     compareLocations(first, second) {
-        first.map(o1 => {
-            second.map(o2 => {
+        console.log(first)
+        console.log(second);
+        if (first.length === 0 || second.length === 0) return false;
+        Object.values(first).map(o1 => {
+            Object.values(second).map(o2 => {
+                console.log(o1);
+                console.log(o2);
                 if(o1.id === o2.id) { return true; }
             });
         });
@@ -206,7 +211,7 @@ class Dossier extends React.Component {
                 role: userResponse.data.role,
                 currentLocations: userResponse.data.currentLocations,
                 currentLocationsIds: currentLocationsIds,
-                startDate: userResponse.data.dateActive,
+                startDate: userResponse.data.startDate,
 
                 roles: roleLocResponse.data.roles,
                 locations: roleLocResponse.data.locations,
@@ -281,16 +286,26 @@ class Dossier extends React.Component {
     }
     
     createUserJson() {
-        const {name, email, role, currentLocations, startDate, userId } = this.state;
-        return {
-            id: userId,
-            name: name,
-            email: email,
-            role: role,
-            allUserLocations: currentLocations,
-            dateActive: startDate,
+        const {name, email, role, currentLocationsIds, startDate, userId } = this.state;
+        var locations = [];
+        var i;
+        for (i=0;i<currentLocationsIds.length;i++) {
+            locations.push(
+                {id:currentLocationsIds[i]}
+            )
         }
+        return {
+            user:{
+                id: userId,
+                name: name,
+                email: email,
+                role: role,
+                startDate: startDate
+            },
+            locations: locations
+        }  
     }
+
     createBundleJson() {
         const {bundlesTrainee} = this.state;
         return(
@@ -360,6 +375,8 @@ class Dossier extends React.Component {
         const traineeDossier = role.name === "Trainee";
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
         const dossierLocation = this.state.location;
+        console.log(userLocation);
+        console.log(dossierLocation);
 
         if (pageLoading) return <span className="error-message-center"> Laden... </span>
         if (serverFail) return <span className="error-message-center"> Mislukt om de gegevens op te halen. </span> 

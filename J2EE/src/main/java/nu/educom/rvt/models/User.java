@@ -27,7 +27,7 @@ import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -42,10 +42,10 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;
-	@Column(name="dateActive")
-	private LocalDate dateActive;
-	@Column(name="dateInactive")
-	private LocalDate dateInactive;
+	@Column(name="start_date")
+	private LocalDate startDate;
+	@Column(name="end_date")
+	private LocalDate endDate;
 		
 	@JsonIgnore
  	@OneToMany(mappedBy="user", fetch=FetchType.LAZY)
@@ -57,21 +57,21 @@ public class User {
         joinColumns = { @JoinColumn(name = "user_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "location_id"),}
     )
-	@WhereJoinTable(clause = "endDate IS NULL")
+	@WhereJoinTable(clause = "end_date IS NULL")
 	private List<Location> currentLocations = new ArrayList<Location>();
 	
 	public User() {}
 	
-	public User(int id, String name, String email, String password, Role role, LocalDate dateActive,
-			LocalDate dateInactive) {
+	public User(int id, String name, String email, String password, Role role, LocalDate startDate,
+			LocalDate endDate) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.dateActive = dateActive;
-		this.dateInactive = dateInactive;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 	
 	public User(String name, String email, String password, Role role) {
@@ -89,14 +89,14 @@ public class User {
 	}
 
 	public User(String name, String email, String password, Role role, 
-			LocalDate dateActive, LocalDate dateInactive) {
+			LocalDate startDate, LocalDate endDate) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.dateActive = dateActive;
-		this.dateInactive = dateInactive;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public int getId() {
@@ -136,18 +136,18 @@ public class User {
 //		this.location = location;
 //	}
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-	public LocalDate getDateActive() {
-		return dateActive;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
-	public void setDateActive(LocalDate dateActive) {
-		this.dateActive = dateActive;
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
-	public LocalDate getDateInactive() {
-		return dateInactive;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
-	public void setDateInactive(LocalDate dateInactive) {
-		this.dateInactive = dateInactive;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}	
 	public List<UserLocation> getAllUserLocations() {
 		return allUserLocations;
@@ -172,8 +172,8 @@ public class User {
 		} 
 		return Objects.equals(getName(), other.getName()) &&
 			   Objects.equals(getEmail(), other.getEmail()) &&
-			   Objects.equals(getDateActive(), other.getDateActive()) &&
-			   Objects.equals(getDateInactive(), other.getDateInactive());
+			   Objects.equals(getStartDate(), other.getStartDate()) &&
+			   Objects.equals(getEndDate(), other.getEndDate());
 	}
 	@Override
 	public String toString() {

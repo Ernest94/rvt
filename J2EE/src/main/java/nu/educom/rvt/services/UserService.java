@@ -94,14 +94,23 @@ public class UserService {
 	{
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		userRepo.create(user);
-	}	
+	}
+	
+	public void addUserAndLocations(User user,List<Location> locations) throws DatabaseException
+	{
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+		User createdUser = userRepo.create(user);
+		userRepo.updateLocations(createdUser,locations);
+	}
+	
 	public void addUserLocation(UserLocation userLocation) throws DatabaseException
 	{
 		userLocationRepo.create(userLocation);
 	}
-	public void updateUser(User user) throws DatabaseException
+	public void updateUser(User user,List<Location> locations) throws DatabaseException
 	{
 		userRepo.update(user);
+		userRepo.updateLocations(user,locations);
 	}
 	
 	public List<Role> getRoles() throws DatabaseException {
@@ -157,34 +166,30 @@ public class UserService {
 	public List<User> findUsersByCriteria(String criteria, Role role, List<Location> locations) throws DatabaseException
 	{
 		List<User> allUsers = userRepo.readAll();
-		List<User> filterdUsers = new ArrayList<User>();
+		List<User> filteredUsers = new ArrayList<User>();
+		List<Integer> locationsIds = locations.stream().map(l -> l.getId()).collect(Collectors.toList());
 		
-		filterdUsers.addAll(allUsers.stream()
+		for (User user : allUsers) {
+			List<Location> userCurrentLocations = user.getCurrentLocations();
+			for (Location userCurrentLocation : userCurrentLocations) {
+				if (locationsIds.contains(userCurrentLocation.getId()) && locationsIds.size()!=0) {
+					filteredUsers.add(user);
+					break;
+				}
+			}
+		}
+		
+		filteredUsers=filteredUsers.stream()
 				.filter(u -> u.getRole().getId() == role.getId() || role == null)
-				.collect(Collectors.toList()));
-		
-		
-		filterdUsers = filterdUsers.stream()
-				.filter(u -> locations.contains(u.getCurrentLocations().get(0)) || locations.size()==0)
-				.collect(Collectors.toList());	
-//		filterdUsers = filterdUsers.stream()
-//				.filter(u -> locations.contains(u.getLocation()) || locations.size()==0)
-//				.collect(Collectors.toList());	
+				.collect(Collectors.toList());
 		
 		if (criteria != null) {
-			filterdUsers = filterdUsers.stream()
+			filteredUsers = filteredUsers.stream()
 					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
 					.collect(Collectors.toList());
 		}
 		
-		
-		
-//		filterdUsers.stream().filter(u -> u.getRole().equals(role) || role == null)
-//							 .filter(u -> u.getLocation().equals(location) || location == null)
-//							 .filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
-//							 .collect(Collectors.toList());
-		
-		return filterdUsers;
+		return filteredUsers;
 	}
 	// TODO move to a UserLogic class
 	public UserSearchJson convertToUSJ(List<User> users)
@@ -194,7 +199,7 @@ public class UserService {
 		for(User user : users)
 		{
 //			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getLocation(), user.getDateActive().format(formatter)));
-			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getCurrentLocations(), user.getDateActive().format(formatter)));
+			userSearch.add(new UserSearch(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getCurrentLocations(), user.getStartDate().format(formatter)));
 		}		
 		return new UserSearchJson(userSearch);
 	}

@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link,withRouter } from 'react-router-dom';
-import {Select, Input} from '@material-ui/core'
+import {Select, Input, MenuItem} from '@material-ui/core'
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
@@ -159,12 +159,13 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
+
             roleDisplayName: "",
-            selectedLocations:[],
+            selectedLocationsIds:[],
             name: "",
             email: "",
             password: "",
-            dateActive: "",
+            startDate: "",
             isTrainee: null,
 
             roles : [],
@@ -176,6 +177,7 @@ class AddUser extends React.Component {
     }
 
     componentDidMount() {
+        Utils.dateValidation();
         this.setState({pageLoading: true});
         this.getLocationsAndRoles()
     }
@@ -212,20 +214,32 @@ class AddUser extends React.Component {
     }
 
     createUserJson() {
-        return {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            role: this.state.role,
-            location: this.state.location,
-            dateActive: this.state.dateActive
+        const {name, email, password, role, selectedLocationsIds, startDate } = this.state;
+        var locations = [];
+        var i;
+        for (i=0;i<selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:selectedLocationsIds[i]}
+            )
         }
-    }
+        return {
+            user:{
+                name: name,
+                email: email,
+                password:password,
+                role: role,
+                startDate: startDate
+            },
+            locations: locations
+        }
+    }  
 
     handleSubmit = (event) => {
         event.preventDefault();
         var errors = validate(this.state, constraints);
         console.log(this.createUserJson());
+        console.log();
+
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
@@ -248,6 +262,8 @@ class AddUser extends React.Component {
 
     handleFormChange = (e) => {
         const {name, value} = e.target;
+        console.log(name, value)
+
         this.setState({
            [name]: value
         });
@@ -268,9 +284,10 @@ class AddUser extends React.Component {
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
         const userRole = sessionStorage.getItem("userRole");
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
-        const {locations,roles,selectedLocations} = this.state
+        const {locations,roles,selectedLocationsIds} = this.state
 
         let locationsOptions;
+
 
         const rolesOptions = roles.map((role) => {
             return (
@@ -281,7 +298,7 @@ class AddUser extends React.Component {
         if (userRole === "admin") {
             locationsOptions = locations.map((loc) => {
                 return (
-                    <option key={loc.id} value={loc.id}>{loc.name}</option>
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
                 )
             });
         }
@@ -289,18 +306,19 @@ class AddUser extends React.Component {
             console.log(userLocation);
             locationsOptions = userLocation.map((loc) => {
                 return (
-                    <option key={loc.id} value={loc.id}>{loc.name}</option>
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
                 )
             });
         }
 
         return (
-            <div className="container">
+            <div className="container main-container">
+
                 <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                    <div className="col text-center">
-                        {errorsList}
-                    </div>
+                <div className="row text-center">
+                    {errorsList}
+                </div>
                     
                     <form onSubmit={this.handleSubmit} className="col-lg-8">
 
@@ -312,75 +330,75 @@ class AddUser extends React.Component {
                                 required>
                                 {rolesOptions}
                             </select>
-                        </div>
+                        </div>              
 
-                        <div className="">
-                            <label className="" htmlFor="location">Locatie:</label>
-                            <Select
-                                className="m-1 text-black"
-                                id="selectedLocations"
-                                name="selectedLocations" 
-                                multiple
-                                value={selectedLocations}
-                                onChange={this.handleFormChange}
-                                //the MenuProps below are needed to stop the dropdown jumping around when selecting
-                                MenuProps={{
-                                    variant: "menu",
-                                    getContentAnchorEl: null}
-                                }
-                                input={<Input id="selectedLocations" />}
-                                >
-                                {locationsOptions}
-                            </Select>
-                        </div>
-                
-                        <div className="">
-                            <label className="" htmlFor="name">Naam:</label>
-                            <input className="" id="name" type="name" name="name"
-                                onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="">
-                            <label className="" htmlFor="email">Email:</label>
-                            <input className="" id="email" type="email" name="email"
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        <Select
+                            className="text-black form-control col-sm-9"
+                            id="selectedLocationsIds"
+                            name="selectedLocationsIds" 
+                            multiple
+                            value={selectedLocationsIds}
+                            onChange={this.handleFormChange}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="selectedLocationsIds" />}
+                            >
+                            {locationsOptions}
+                        </Select>
+                    </div>
+            
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                        <input className="form-control col-sm-9" id="name" type="name" name="name"
                             onChange={this.handleFormChange}/>
-                        </div>
+                    </div>
 
-                        <div className="">
-                            <label className="" htmlFor="password">Wachtwoord:</label>
-                            <input className="" id="password" type="password" name="password"
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
+                        <input className="form-control col-sm-9" id="email" type="email" name="email"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="password">Wachtwoord:</label>
+                        <input className="form-control col-sm-9" id="password" type="password" name="password"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier" >
+                        <label className="label col-sm col-form-label" htmlFor="startDate">Startdatum:</label>
+                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             onChange={this.handleFormChange}/>
-                        </div>
+                    </div>
+                            {/* 
+                                <div className="input row dossier" hidden={!traineeDossier}>
+                                    <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                                    <BundleTable 
+                                        bundlesTrainee={this.state.bundlesTrainee} 
+                                        bundles={this.state.bundles}
+                                        removeBundle={this.removeBundle.bind(this)}
+                                        handleBundleChange={this.handleBundleChange.bind(this)} 
+                                        addBundle ={this.addBundle.bind(this)} />
+                            </div> */}
 
-                        <div className="" >
-                            <label className="" htmlFor="startDate">Startdatum:</label>
-                            <input className="" id="startDate" type="date" name="startDate" 
-                                onChange={this.handleFormChange}/>
+                    <div className="row mt-2">
+                        <div className="buttons">
+                            <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
                         </div>
-{/* 
-                        <div className="input row dossier" hidden={!traineeDossier}>
-                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                            <BundleTable 
-                                bundlesTrainee={this.state.bundlesTrainee} 
-                                bundles={this.state.bundles}
-                                removeBundle={this.removeBundle.bind(this)}
-                                handleBundleChange={this.handleBundleChange.bind(this)} 
-                                addBundle ={this.addBundle.bind(this)} />
-                        </div> */}
+                    </div>
 
-                        <div className="row">
-                            <div className="buttons">
-                                <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
-                            </div>
+                    <div className="row">
+                        <div className="buttons">
+                            <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
                         </div>
+                    </div>
 
-                        <div className="row">
-                            <div className="buttons">
-                                <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
-                            </div>
-                        </div>
-
-                    </form>
+                </form>
 
 
 {/* 

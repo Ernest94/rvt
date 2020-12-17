@@ -15,9 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import nu.educom.rvt.models.Concept;
+import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.Role;
-import nu.educom.rvt.models.Theme;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.rest.Filler;
 
@@ -83,8 +82,8 @@ class TestUserRepository {
 		assertEquals(user.getName(), result2.getName());
 		assertEquals(user.getEmail(), result2.getEmail());
 		assertEquals(user.getPassword(), result2.getPassword());
-		assertEquals(user.getDateActive(), result2.getDateActive());
-		assertEquals(user.getDateInactive(), result2.getDateInactive());
+		assertEquals(user.getStartDate(), result2.getStartDate());
+		assertEquals(user.getEndDate(), result2.getEndDate());
 		
 		assertEquals(result, result2); // test the equals() function of user
 	}
@@ -117,7 +116,7 @@ class TestUserRepository {
 		assertEquals(1, result.getId());
 		assertEquals("Trainee1", result.getName());
 		assertEquals("Trainee", result.getRole().getName());
-		assertTrue(result.getCurrentLocations().size() == 1);
+		assertEquals(1, result.getCurrentLocations().size());
 	}
 	@Test
 	void testReadByIdAllLocations() throws DatabaseException {
@@ -132,19 +131,77 @@ class TestUserRepository {
 		assertEquals(1, result.getId());
 		assertEquals("Trainee1", result.getName());
 		assertEquals("Trainee", result.getRole().getName());
-		assertTrue(result.getCurrentLocations().size() == 1);
-		assertTrue(result.getAllUserLocations().size() == 2);
+		assertEquals(1, result.getCurrentLocations().size()); // "Utrecht"
+		assertEquals(2, result.getAllUserLocations().size()); // inactive "Arnhem" 
 	}
 	
 	@Test
-	@Disabled("Update() not implemented")
-	void testUpdate() {
+	void testUpdate() throws DatabaseException {
 		// Prepare
+		UserRepository ur = new UserRepository(session);
+		Role role = new RoleRepository(session).readById(3);
+		User newUser = new User("Test", "test@example.com", "22211", role, LocalDate.ofYearDay(1999, 24), LocalDate.now());
+		newUser.setId(3);
 		
 		// Run
+		User result = ur.update(newUser);
 		
 		// Validate
-		fail("Not implemented");
+		assertNotNull(result);
+		assertEquals(3, result.getId());
+		assertEquals("Test", result.getName());
+		assertEquals("Trainee", result.getRole().getName());
+		assertEquals("test@example.com", result.getEmail());
+		assertNotEquals("22211", result.getPassword()); // Password should not be updated
+		assertEquals(LocalDate.ofYearDay(1999, 24), result.getStartDate());
+		assertEquals(LocalDate.now(), result.getEndDate());
+		assertTrue(result.getCurrentLocations().size() == 1);
+	}
+	
+	@Test
+	void testUpdateLocations() throws DatabaseException {
+		// Prepare
+		UserRepository ur = new UserRepository(session);
+		List<Location> locations = new LocationRepository(session).readAll();
+		User user = ur.readById(2);
+		
+		// Run
+		ur.updateLocations(user, locations);
+		session.getTransaction().commit();
+		
+		// Validate
+		TestHibernateSession.closeSession(session);
+		session = TestHibernateSession.openSessionAndTransaction();		
+		UserRepository ur2 = new UserRepository(session);
+		User result = ur2.readById(2);
+		
+		assertNotNull(result);
+		assertEquals(2, result.getId());
+		assertEquals("Trainee2", result.getName());
+		assertEquals("Trainee", result.getRole().getName());
+		assertEquals(4, result.getCurrentLocations().size()); // Utrecht, Arnhem, Sittard en Eindhoven
+		assertEquals(5, result.getAllUserLocations().size()); // inactive Arnhem + active Utrecht, Arnhem, Sittard en Eindhoven
+		
+		// Follow-up remove 1 location
+		locations.remove(new Location("Sittard"));
+		user = ur2.readById(2);
+		
+		// Run
+		ur2.updateLocations(user, locations);
+		session.getTransaction().commit();
+		
+		// Validate
+		TestHibernateSession.closeSession(session);
+		session = TestHibernateSession.openSession();		
+		UserRepository ur3 = new UserRepository(session);
+		User result2 = ur3.readById(2);
+		
+		assertNotNull(result2);
+		assertEquals(2, result2.getId());
+		assertEquals("Trainee2", result2.getName());
+		assertEquals("Trainee", result2.getRole().getName());
+		assertEquals(3, result2.getCurrentLocations().size()); // Utrecht, Arnhem en Eindhoven
+		assertEquals(5, result2.getAllUserLocations().size()); // inactive Arnhem & Sittard + active Utrecht, Arnhem en Eindhoven
 	}
 	
 	@Test

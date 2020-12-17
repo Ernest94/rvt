@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="location")
-public class Location {
+public class Location implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
