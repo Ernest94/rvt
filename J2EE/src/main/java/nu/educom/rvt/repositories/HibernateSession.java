@@ -25,6 +25,8 @@ public class HibernateSession {
     public static SessionFactory getSessionFactory() {
 
         if (sessionFactory == null) {
+        	
+        	final String hibernatePassword = System.getenv("HIBERNATE_PW") != null? System.getenv("HIBERNATE_PW") : "kh3madF";
 
             // Hibernate settings equivalent to hibernate.cfg.xml's properties
 
@@ -37,7 +39,7 @@ public class HibernateSession {
 
             settings.put(Environment.USER, "usr_voortgang");
             
-            settings.put(Environment.PASS, "?120qhZl");
+            settings.put(Environment.PASS, hibernatePassword);
 
             settings.put(Environment.SHOW_SQL, "true");
 

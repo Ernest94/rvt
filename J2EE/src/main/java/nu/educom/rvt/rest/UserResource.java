@@ -2,7 +2,6 @@ package nu.educom.rvt.rest;
 
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -50,7 +49,8 @@ public class UserResource extends BaseResource {
 				//TODO: token is not entity, how to send string, not object?
 				return Response.status(200).entity(token).build();
 			}
-			catch (LoginException lge){
+			catch (Exception e){
+				LOG.error("Login failed: " + e.getMessage());
 				return Response.status(401).build();
 			}
 		});

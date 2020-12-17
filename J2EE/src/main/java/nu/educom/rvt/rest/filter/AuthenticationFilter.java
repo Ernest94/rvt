@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest.filter;
 
 import java.io.IOException;
+import java.security.KeyStoreException;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -69,9 +70,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void validateToken(String token) throws Exception {
-        Jws<Claims> jws = Jwts.parserBuilder()
-        	    .setSigningKey(Token.getSecretKey())
+        try{Jws<Claims> jws = Jwts.parserBuilder()
+        	    .setSigningKey(Token.getSecretTokenKey())
         	    .build()
         	    .parseClaimsJws(token);
+        }
+        catch (KeyStoreException kse) {
+        	LOG.error("Keystore error: "+ kse.getMessage());
+        	throw kse;
+        }
     }
 }

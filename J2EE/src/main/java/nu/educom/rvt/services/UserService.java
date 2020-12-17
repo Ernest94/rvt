@@ -86,8 +86,8 @@ public class UserService {
 		else return false;
 	}
 	
-	public String issueToken(User user) {
-		Key key = Token.getSecretKey();
+	public String issueToken(User user) throws Exception {
+		Key key = Token.getSecretTokenKey();
 		String jws = Jwts.builder()
 				.setSubject(user.getName())
 				.claim("Location", user.getLocation())
