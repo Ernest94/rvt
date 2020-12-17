@@ -98,7 +98,7 @@ public class HibernateSession {
 	}
 	    
     public static Session openSession() {
-        return sessionFactory.openSession();
+        return getSessionFactory().openSession();
     }
     
     public static Session openSessionAndTransaction() {
