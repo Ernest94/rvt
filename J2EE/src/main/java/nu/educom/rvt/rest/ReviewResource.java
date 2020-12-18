@@ -2,6 +2,7 @@ package nu.educom.rvt.rest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -93,7 +94,7 @@ public class ReviewResource extends BaseResource {
 				    
 		    reviewServ.makeNewReviewIfNoPending(userOutput);
 	
-			List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
+			List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput).stream().filter(rev -> rev.getReviewStatus()!=Review.Status.CANCELLED).collect(Collectors.toList());
 			List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 			//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
 			List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
@@ -193,11 +194,11 @@ public class ReviewResource extends BaseResource {
 				Review reviewOutput = reviewServ.updateConceptRating(conceptRating, cru.getConceptPlusRating());
 				LOG.debug("Review for trainee {} rating for concept {} changed to {} '{}'.", 
 						  reviewOutput.getUser(), conceptRating.getConcept().getName(), conceptRating.getRating(), conceptRating.getComment());
-				return Response.status(201).build();
+				return Response.status(200).build();
 			}
 			else {
 				reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
-		  	    return Response.status(404).build();
+		  	    return Response.status(201).build();
 			}
 		});
     }
