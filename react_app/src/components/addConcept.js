@@ -58,7 +58,7 @@ class BundleConceptTable extends React.Component {
                                         </select>
                                     </td>
                                     <td>
-                                        <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
+                                        <button className="btn btn-primary btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
                                             <FaTimes />
                                         </button>
                                     </td>
@@ -66,7 +66,7 @@ class BundleConceptTable extends React.Component {
                     </tbody>
                 </table>
                 {!this.props.editDisabled ?
-                    <button className="btn btn-danger btn-sm" name="add" type="button" onClick={this.props.addBundle}>
+                    <button className="btn btn-primary btn-sm" name="add" type="button" onClick={this.props.addBundle}>
                         <FaPlus />
                     </button> : ""}
             </div>)
@@ -313,43 +313,43 @@ class addConcept extends React.Component {
 
                     <form onSubmit={this.handleSubmit} className="container col-lg-8">
                         
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
-                                <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
-                                <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
-                                <select name="theme" id="theme" className="form-control col-sm-9"
-                                    value={this.state.themeDisplayName}
-                                    onChange={this.onChangeTheme}
-                                    required>
-                                    <option hidden value=''></option>
-                                    {themeOptions}
-                                </select>
-                        </div>
-                        <div className="input row dossier">
-                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                            <div>
-                                <BundleConceptTable
-                                    chosenBundles={this.state.chosenBundles}
-                                    bundles={this.state.bundles}
-                                    removeBundle={this.removeBundle.bind(this)}
-                                    handleBundleChange={this.handleBundleChange.bind(this)}
-                                    handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
-                                    addBundle={this.addBundle.bind(this)}
-                                />
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                                    <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                             </div>
-                        </div>
-                        <div className="buttons">
-                        <div>
+
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
+                                    <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                            </div>
+
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
+                                    <select name="theme" id="theme" className="form-control col-sm-9"
+                                        value={this.state.themeDisplayName}
+                                        onChange={this.onChangeTheme}
+                                        required>
+                                        <option hidden value=''></option>
+                                        {themeOptions}
+                                    </select>
+                            </div>
+                            <div className="input row dossier">
+                                <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                                <div>
+                                    <BundleConceptTable
+                                        chosenBundles={this.state.chosenBundles}
+                                        bundles={this.state.bundles}
+                                        removeBundle={this.removeBundle.bind(this)}
+                                        handleBundleChange={this.handleBundleChange.bind(this)}
+                                        handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
+                                        addBundle={this.addBundle.bind(this)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="buttons">
+                            <div>
                                 <button 
-                                    className="btn btn-danger btn-block" 
+                                    className="btn btn-primary btn-block" 
                                     type="submit"
                                     >                        
                                     Concept toevoegen
@@ -357,7 +357,7 @@ class addConcept extends React.Component {
                             </div>
                             <div>
                                 <Link 
-                                    className="btn btn-danger btn-block" 
+                                    className="btn btn-primary btn-block" 
                                     to={"/settings/"}
                                     role="button"
                                     >                        

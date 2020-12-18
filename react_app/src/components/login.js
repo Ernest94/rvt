@@ -19,12 +19,12 @@ class Login extends React.Component {
     }
 
     handleSuccessfulAuth(data) {
+
         sessionStorage.setItem("isUserLoggedIn", true);
         sessionStorage.setItem("userId", data.id);
         sessionStorage.setItem("userName", data.name);
         sessionStorage.setItem("userRole", data.role.name);
-        sessionStorage.setItem("userLocation", data.location.name);
-        sessionStorage.setItem("userLocationId", data.location.id);
+        sessionStorage.setItem("userLocation", JSON.stringify(data.currentLocations));
         this.props.handleLoginState();
         this.props.history.push('/settings');
     }
@@ -40,9 +40,11 @@ class Login extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
+        console.log(this.createLoginJson())
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
                 .then(response => {
+                    console.log(response)
                     this.setState({buttonDisabled: false, errors: null});
                     
                     this.handleSuccessfulAuth(response.data);

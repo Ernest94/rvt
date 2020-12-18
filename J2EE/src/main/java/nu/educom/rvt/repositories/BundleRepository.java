@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.Concept;
 
 public class BundleRepository {
 
@@ -33,6 +34,16 @@ public class BundleRepository {
 			throw new DatabaseException("Create called on an session that is not open");
 		}
 		return session.get(Bundle.class, id);
+	}
+	
+	public Bundle readByName(String name) throws DatabaseException {
+		if (!session.isOpen()) {
+			throw new DatabaseException("Create called on an session that is not open");
+		}
+		return (Bundle) session
+				.createQuery("from Bundle where name =:name", Bundle.class)
+				.setParameter("name", name)
+				.uniqueResultOptional().orElse(null);
 	}
 	
 	protected void update(Bundle bundle) throws DatabaseException {

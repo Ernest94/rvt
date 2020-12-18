@@ -16,6 +16,12 @@ export const constraints = {
             message: "^Geef een geldig email adres."
         }
     },
+    selectedLocationsIds: {
+        presence: {
+            allowEmpty: false,
+            message: "^Een locatie is verplicht."
+        }
+    },
     password: {
         presence: {
             allowEmpty: false,
@@ -28,7 +34,7 @@ export const constraints = {
             tooLong: "^Wachtwoord heeft teveel tekens. Maximum is %{count} tekens."
         }
     },
-    dateActive: {
+    startDate: {
         presence: {
             allowEmpty: false,
             message: "^Een datum is verplicht."

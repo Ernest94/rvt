@@ -3,10 +3,8 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.ConceptRating;
-import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Review.Status;
 /* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class ConceptRatingRepository {

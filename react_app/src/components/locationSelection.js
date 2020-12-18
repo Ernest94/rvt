@@ -3,7 +3,13 @@ import {Select} from '@material-ui/core'
 
 class LocationSelection extends React.Component {
     
+    constructor(props) {
+        super(props);
+        console.log(this.props.roleDisplayName);
+    }
+
     render() {
+        const roleDisplayName = this.props.roleDisplayName;
         const locations = this.props.locations;
         const locationsOptions = locations.map((loc) => {
            return (
@@ -14,8 +20,8 @@ class LocationSelection extends React.Component {
         if (this.props.isTrainee === null) {
             return null;
         }
-        
-        return (
+        // if (roleDisplayName ==="Trainee") {
+            return (
                 <div className="text-center">
                     <label htmlFor="location">Locatie:</label>
                     <div>
@@ -30,6 +36,13 @@ class LocationSelection extends React.Component {
                     </div>
                 </div>
         )
+        // }
+        // else {
+        //     return(
+        //         <div></div>
+        //     )
+        // }
+        
     }
 }
 

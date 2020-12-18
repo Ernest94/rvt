@@ -11,40 +11,46 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Where(clause = "end_date IS NULL")
-@Table(name="trainee_active")
-public class TraineeActive implements ReadOnlyEntity {
-
+@Table(name="user_location")
+public class UserLocation implements ReadOnlyEntity {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
 	@ManyToOne
-	@JoinColumn(name="concept_id")
-	private Concept concept;
-	@Column(name="active")
-	private Boolean active;
+	@JoinColumn(name="location_id")
+	private Location location;
 	@Column(name="start_date")
 	private LocalDate startDate;
 	@Column(name="end_date")
 	private LocalDate endDate;
 	
-	//needed for Hibernate
-	public TraineeActive() {
+	public UserLocation() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	
-	public TraineeActive(Concept concept, User user, Boolean active, LocalDate startDate, LocalDate endDate) {
+
+	public UserLocation(int id, User user, Location location, LocalDate startDate, LocalDate endDate) {
 		super();
-		this.concept = concept;
+		this.id = id;
+		this.location = location;
 		this.user = user;
-		this.active = active;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	public UserLocation(User user, Location location, LocalDate startDate, LocalDate endDate) {
+		super();
+		this.location = location;
+		this.user = user;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -57,28 +63,20 @@ public class TraineeActive implements ReadOnlyEntity {
 		this.id = id;
 	}
 
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Concept getConcept() {
-		return concept;
-	}
-
-	public void setConcept(Concept concept) {
-		this.concept = concept;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 
 	public LocalDate getStartDate() {
@@ -95,11 +93,5 @@ public class TraineeActive implements ReadOnlyEntity {
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
-	}
-	@Override
-	public String toString() {
-		return String.format("TraineeActive: %s %s active %s endDate %s", user, concept, active, endDate);
-	}
-
+	}	
 }
-	

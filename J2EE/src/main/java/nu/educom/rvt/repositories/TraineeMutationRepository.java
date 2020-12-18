@@ -26,7 +26,7 @@ public class TraineeMutationRepository {
 	
 	public TraineeMutation findWeekMutationByUserIdAndConceptId(int userId, int conceptId) throws DatabaseException {
 		TraineeMutation result = session
-					.createQuery("from TraineeMutation where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeMutation.class)
+					.createQuery("from TraineeMutation where user_id =:userId and concept_id=:conceptId and end_date is null", TraineeMutation.class)
 		 			.setParameter("userId", userId)
 					.setParameter("conceptId", conceptId)
 					.uniqueResultOptional().orElse(null);

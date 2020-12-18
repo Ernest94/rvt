@@ -25,6 +25,7 @@ import nu.educom.rvt.models.Search;
 
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
+import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.services.UserService;
 
@@ -39,9 +40,14 @@ public class UserResource extends BaseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
 		LOG.debug("login {} called", user);
+		System.out.print("\n" + "login is called" + "\n");
+
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
+
 			User foundUser = userServ.checkUser(user);
+			
+			
 			if (foundUser != null) {
 				return Response.status(200).entity(foundUser).build();
 			}
@@ -92,16 +98,17 @@ public class UserResource extends BaseResource {
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser (User user) {
-		LOG.debug("createUser called for user {}", user.getName());
+	public Response createUser (UserLocationView userLocationsView) {
+		LOG.debug("createUser called for user {}", userLocationsView.getUser().getName());
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
 			boolean valid = userServ.validateUser(user);
-		
 			if (!valid) {
 				return Response.status(412).build();
 			}
-			userServ.addUser(user);
+			userServ.addUserAndLocations(user,locations);
 			LOG.info("User {} has been created.", user);
 			return Response.status(201).build();
 		});
@@ -157,8 +164,11 @@ public class UserResource extends BaseResource {
 	@PUT
 	@Path("/dossier")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUser(User user) {
-		LOG.debug("updateUser called for {}", user);
+	public Response updateUser(UserLocationView userLocationsView) {
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
+		LOG.debug("updateUser called for {} on [{}]", user, locations);
+			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
 			User foundUser = userServ.getUserById(user.getId());
@@ -166,7 +176,7 @@ public class UserResource extends BaseResource {
 				return Response.status(404).build();  
 			}
 			else {
-				userServ.updateUser(user);
+				userServ.updateUser(user,locations);
 				LOG.info("{} has been updated.", foundUser);
 				return Response.status(200).build();
 			}

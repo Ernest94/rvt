@@ -47,7 +47,23 @@ public class BundleService {
 		this.traineeMutationRepo = new TraineeMutationRepository(session);
 	}
 	
+	public boolean doesBundleExist(Bundle bundle) throws DatabaseException {
+		Bundle duplicate = bundleRepo.readByName(bundle.getName());		
+		return duplicate==null;
+    }
+    
+	public boolean validateBundle(Bundle bundle) throws DatabaseException {
+		if(bundle.getName().trim().isEmpty()) {
+			return false;
+		}
+		else {
+			return this.doesBundleExist(bundle);
+		}		
+	}
+	
+	
 	public Bundle findBundleByName(String name) throws DatabaseException {
+		
 		return bundleRepo.readAll().stream().filter(b -> b.getName() == name).findFirst().orElse(null);
 	}
 	

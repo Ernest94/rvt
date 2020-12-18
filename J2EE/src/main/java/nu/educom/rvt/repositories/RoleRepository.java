@@ -3,7 +3,6 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Role;
 
