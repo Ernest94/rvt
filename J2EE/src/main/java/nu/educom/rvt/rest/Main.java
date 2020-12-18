@@ -27,12 +27,11 @@ public class Main {
     private static URI getBaseURISecured(){
         return UriBuilder.fromUri("https://0.0.0.0/").port(8081).build();
     }
-  
-    private static final String KEY_STORE_FILE = System.getenv("KEY_STORE_FILE");
-    private static final String KEY_STORE_TYPE = "PKCS12";
-    private static final String KEY_STORE_PW = System.getenv("KEY_STORE_PW");
-    private static final String TRUST_STORE_FILE = System.getenv("TRUST_STORE_FILE");
-	  
+    private static String KEY_STORE_FILE;
+    private static String KEY_STORE_TYPE;
+    private static String KEY_STORE_PW;
+    private static String TRUST_STORE_FILE;
+    
     static final URI BASE_URI = getBaseURI();
 	  
     static final URI BASE_URI_SECURED = getBaseURISecured();
@@ -57,6 +56,21 @@ public class Main {
     }
   
     private static SSLContextConfigurator setUpSSLCon(){
+        if(System.getenv("KEY_STORE_FILE")==null
+        	&& System.getenv("KEY_STORE_PW")==null
+        	&& System.getenv("TRUST_STORE_FILE")==null) 
+        {
+        	KEY_STORE_FILE = "/src/main/resources/educom_voortgang.keystore";
+            KEY_STORE_TYPE = "PKCS12";
+            KEY_STORE_PW = "?120qhZl";
+            TRUST_STORE_FILE = "/src/main/resources/educom_voortgang.truststore";
+            
+        }else{
+        	KEY_STORE_FILE = System.getenv("KEY_STORE_FILE");
+            KEY_STORE_TYPE = "PKCS12";
+            KEY_STORE_PW = System.getenv("KEY_STORE_PW");
+            TRUST_STORE_FILE = System.getenv("TRUST_STORE_FILE");
+        }
         SSLContextConfigurator sslCon=new SSLContextConfigurator();
         sslCon.setKeyStoreFile(KEY_STORE_FILE); // contains server keypair
         sslCon.setKeyStorePass(KEY_STORE_PW);
