@@ -155,8 +155,8 @@ public class BundleService {
 		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
 	}
 	
-	public List<Bundle> getAllCreatorBundles(User user) throws DatabaseException{
-		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
+	public List<BaseBundleView> getAllCreatorBundles(User user) throws DatabaseException{
+		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
 	}
 	 
 	 

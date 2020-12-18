@@ -93,14 +93,14 @@ public class BundleResource extends BaseResource {
 	}
 	
 	@GET
-	@Path("/bundleCreator/{userId}")
+	@Path("/creator/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCreatorBundles(@PathParam("userId") int userId) {
 		return wrapInSession(session -> {
 			UserService userService = new UserService(session);
 			BundleService bundleService = new BundleService(session);
 			User user = userService.getUserById(userId);
-			List<Bundle> bundles = bundleService.getAllCreatorBundles(user);
+			List<BaseBundleView> bundles = bundleService.getAllCreatorBundles(user);
 			
 			return Response.status(200).entity(bundles).build();
 		});
