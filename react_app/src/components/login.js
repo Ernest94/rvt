@@ -23,7 +23,6 @@ class Login extends React.Component {
         sessionStorage.setItem("isUserLoggedIn", true);
         var tokens = data.split(".");
         var responseData = JSON.parse(atob(tokens[1]));
-        axios.defaults.headers.common['Authorization'] = 'Bearer '+ sessionStorage.getItem("token");
         
         sessionStorage.setItem("userId", responseData.UserId);
         sessionStorage.setItem("userName", responseData.sub);
