@@ -60,8 +60,7 @@ public class ThemeConceptResource extends BaseResource {
 			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
 		
 			List<Theme> themes = themeConceptServ.getAllThemes();
-			return (themes == null ? Response.status(409/* JH: Had hier 404 verwacht */).build() : 
-				                     Response.status(200).entity(themes).build());
+			return Response.status(200).entity(themes).build();
 		
 		});
 	}
@@ -99,8 +98,7 @@ public class ThemeConceptResource extends BaseResource {
 		return wrapInSession(session -> {
 			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
 			List<Concept> concepts = themeConceptServ.getAllConcepts();
-			return (concepts == null ? Response.status(409 /* JH: Had hier 404 verwacht */).build() : 
-				Response.status(200).entity(concepts).build());
+			return Response.status(200).entity(concepts).build();
 		});
 	}
 	

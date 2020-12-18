@@ -20,6 +20,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import com.mysql.cj.exceptions.UnableToConnectException;
 
+import nu.educom.rvt.models.BaseEntity;
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
@@ -111,9 +112,31 @@ public class HibernateSession {
 		getSessionFactory().close();
 	}
 
+	/**
+	 * Get an known entity by id
+	 * 
+	 * @param <T> the type of the entity
+	 * @param type the type of the entity
+	 * @param id the id
+	 * @param session the session
+	 * @return the initialized and attached entry
+	 * @throws EntryNotFoundException when entry is missing
+	 * @throws DatabaseException when session is open
+	 */
+	public static <T extends BaseEntity> T loadByKnownId(Class<T> type, int id, Session session) throws EntryNotFoundException, DatabaseException {
+	    if (session == null || !session.isOpen()) {
+            throw new DatabaseException("Load by known id " + id + " of type " + type.getSimpleName() + " called on an session that is not open");
+    	}
+	    T entry = session.get(type, id);
+	    if (entry == null) {
+	    	throw new EntryNotFoundException(type, id);
+	    }
+	    return entry;
+	}
+	
     public static <T> List<T> loadAllData(Class<T> type, Session session) throws DatabaseException {
 	    if (session == null || !session.isOpen()) {
-            throw new DatabaseException("Load all data of type " + type.getName() + " called on an session that is not open");
+            throw new DatabaseException("Load all data of type " + type.getSimpleName() + " called on an session that is not open");
     	}
 
 	    try {

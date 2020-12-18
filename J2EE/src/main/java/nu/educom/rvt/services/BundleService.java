@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
@@ -24,29 +23,22 @@ import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
-import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.DatabaseException;
-import nu.educom.rvt.repositories.HibernateSession;
-//import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
 
 public class BundleService {
 	private static final Logger LOG = LogManager.getLogger();
 
 	private BundleRepository bundleRepo;
-	private ConceptRepository conceptRepo;
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleTraineeRepository bundleTraineeRepo;
-//	private TraineeActiveRepository traineeActiveRepo; /* JH: wordt nog niet gebruikt */
 	private TraineeMutationRepository traineeMutationRepo;
 	
 	public BundleService(Session session) {
 		this.bundleRepo = new BundleRepository(session);
-		this.conceptRepo = new ConceptRepository(session);
 		this.bundleConceptRepo = new BundleConceptRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
-//		this.traineeActiveRepo = new TraineeActiveRepository(session);
 		this.traineeMutationRepo = new TraineeMutationRepository(session);
 	}
 	
@@ -131,7 +123,8 @@ public class BundleService {
 			return 1;
 		} else {
 			for (BundleConceptWeekOffset bundleConceptToAddToDB : bundleConceptsToAddToDB) {
-				Concept conceptToAdd = conceptRepo.readById(bundleConceptToAddToDB.getConceptId());
+				Concept conceptToAdd = new Concept();
+				conceptToAdd.setId(bundleConceptToAddToDB.getConceptId());
 			    bundleConceptRepo.update(new BundleConcept(bundleToUpdate,
 								    		conceptToAdd,
 								    		bundleConceptToAddToDB.getWeekOffset(),
@@ -142,7 +135,7 @@ public class BundleService {
 	}
 		
 	public Bundle getBundleById(int bundleId) throws DatabaseException {
-		return bundleRepo.readById(bundleId);
+		return bundleRepo.readByKnownId(bundleId);
 	}
 	
 	public void createNewBundle(Bundle bundle) throws DatabaseException {
@@ -308,3 +301,4 @@ public class BundleService {
 		bundleConceptRepo.createMulti(bundleConcepts);
 	}	
 }
+

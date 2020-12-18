@@ -35,12 +35,12 @@ public class UserLocationRepository {
 		return userLocs;
 	}
 	
-	public List<UserLocationRepository> readAll() throws DatabaseException {
-		return HibernateSession.loadAllData(UserLocationRepository.class, session);
+	public List<UserLocation> readAll() throws DatabaseException {
+		return HibernateSession.loadAllData(UserLocation.class, session);
 	}
 	
-	public UserLocationRepository readById(int id) throws DatabaseException {
-		return session.get(UserLocationRepository.class, id);
+	public UserLocation readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(UserLocation.class, id, session);
 	}
 
 	protected void update(UserLocationRepository userLocation) throws DatabaseException {

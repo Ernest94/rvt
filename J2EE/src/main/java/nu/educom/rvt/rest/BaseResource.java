@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
+import nu.educom.rvt.repositories.EntryNotFoundException;
 import nu.educom.rvt.repositories.HibernateSession;
 
 public class BaseResource {
@@ -22,6 +23,9 @@ public class BaseResource {
 		try (Session session = HibernateSession.openSession()) {
 			session.setDefaultReadOnly(true);
 			return func.Execute(session);
+		} catch (EntryNotFoundException e) {
+			LOG.warn(e.getMessage());
+			return Response.status(404).build();
 		} catch (Exception e) {
 			LOG.error("failed to execute", e);
 			return Response.status(500).build();
@@ -43,6 +47,12 @@ public class BaseResource {
 			Response Result = func.Execute(session);
 			session.getTransaction().commit();
 			return Result;
+		} catch (EntryNotFoundException e) {
+			LOG.warn(e.getMessage());
+			if (session != null && session.getTransaction().isActive()) {
+				session.getTransaction().rollback();
+			}
+			return Response.status(404).build();
 		} catch (Exception e) {
 			LOG.error("failed to execute", e);
 			if (session != null && session.getTransaction().isActive()) {

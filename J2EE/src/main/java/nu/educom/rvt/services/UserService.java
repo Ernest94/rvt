@@ -17,6 +17,7 @@ import nu.educom.rvt.models.UserLocation;
 import nu.educom.rvt.models.view.UserSearch;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.EntryNotFoundException;
 import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserLocationRepository;
@@ -65,12 +66,12 @@ public class UserService {
 	}
 	
 	public Location getLocationById(int id) throws DatabaseException {
-		Location location = locationRepo.readById(id);
+		Location location = locationRepo.readByKnownId(id);
 		return location;
 	}
 	
 	public Role getRoleById(int id) throws DatabaseException {
-	    Role role = roleRepo.readById(id);
+	    Role role = roleRepo.readByKnownId(id);
 		return role;
 		
 	}
@@ -107,10 +108,12 @@ public class UserService {
 	{
 		userLocationRepo.create(userLocation);
 	}
-	public void updateUser(User user,List<Location> locations) throws DatabaseException
+	
+	public User updateUser(User user,List<Location> locations) throws DatabaseException
 	{
 		User userToUpdate = userRepo.update(user);
 		userRepo.updateLocations(userToUpdate,locations);
+		return userToUpdate;
 	}
 	
 	public List<Role> getRoles() throws DatabaseException {
@@ -203,11 +206,9 @@ public class UserService {
 		}		
 		return new UserSearchJson(userSearch);
 	}
-	
-	
 
-    public User getUserById(int userId) throws DatabaseException {
-      User user = userRepo.readById(userId);
+    public User getUserById(int userId) throws EntryNotFoundException, DatabaseException {
+      User user = userRepo.readByKnownId(userId);
     
       return user;
     }

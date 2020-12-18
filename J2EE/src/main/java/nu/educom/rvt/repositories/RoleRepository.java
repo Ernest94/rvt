@@ -21,11 +21,8 @@ public class RoleRepository {
 		session.save(role); 
 	}
 	
-	public Role readById(int id) throws DatabaseException {
-		if (!session.isOpen() || !session.getTransaction().isActive()) {
-			throw new DatabaseException("ReadById called on an DB transaction that is not open");
-		}
-		return session.get(Role.class, id);
+	public Role readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Role.class, id, session);
 	}
 	
 	public List<Role> readAll() throws DatabaseException {
