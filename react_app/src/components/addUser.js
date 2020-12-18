@@ -194,10 +194,8 @@ class AddUser extends React.Component {
                             {rolesOptions}
                         </Select>
                     </div>
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/development
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <Select
