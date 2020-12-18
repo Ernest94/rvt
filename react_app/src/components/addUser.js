@@ -7,7 +7,10 @@ import {Select, Input, MenuItem} from '@material-ui/core'
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
 import Utils from './Utils.js';
-import Permissions from './permissions.js'
+import Permissions from './permissions.js';
+// import BundleTable from './dossier.js';
+
+
 
 class AddUser extends React.Component {
 
@@ -183,14 +186,18 @@ class AddUser extends React.Component {
 
                     <div className="input row dossier mt-2">
                         <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
-                        <select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
+                        <Select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
                             onChange={this.handleFormChange}
                             value={this.state.roleId}
                             required>
                             <option hidden value=''></option>
                             {rolesOptions}
-                        </select>
+                        </Select>
                     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/development
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <Select
@@ -234,16 +241,18 @@ class AddUser extends React.Component {
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             onChange={this.handleFormChange}/>
                     </div>
-                            {/* 
-                                <div className="input row dossier" hidden={!traineeDossier}>
-                                    <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                                    <BundleTable 
-                                        bundlesTrainee={this.state.bundlesTrainee} 
-                                        bundles={this.state.bundles}
-                                        removeBundle={this.removeBundle.bind(this)}
-                                        handleBundleChange={this.handleBundleChange.bind(this)} 
-                                        addBundle ={this.addBundle.bind(this)} />
-                            </div> */}
+                            
+                    {/* leaving this here for when a bundleFeature like this is needed in the future
+                    <div className="input row dossier" hidden={!traineeDossier}>
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        <BundleTable 
+                            bundlesTrainee={this.state.bundlesTrainee} 
+                            bundles={this.state.bundles}
+                            removeBundle={this.removeBundle.bind(this)}
+                            handleBundleChange={this.handleBundleChange.bind(this)} 
+                            addBundle ={this.addBundle.bind(this)} 
+                        />
+                    </div> */}
 
                     <div className="row mt-2">
                         <div className="buttons">
@@ -256,65 +265,8 @@ class AddUser extends React.Component {
                             <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
                         </div>
                     </div>
-
                 </form>
-
-
-{/* 
-                    <form onSubmit={this.handleSubmit}>
-
-                        <div className="row justify-content-center">
-
-                            <div className="col-4">
-
-                                <RoleAndLocation
-                                    currentStep={this.state.currentStep}
-                                    roles={this.state.roles}
-                                    locations={this.state.locations}
-                                    // teachers={this.state.teachers}
-                                    // teacherDisplayName={this.state.teacherDisplayName}
-                                    roleDisplayName={this.state.roleDisplayName}
-                                    locationDisplayName={this.state.locationDisplayName}
-                                    onChangeRole={this.onChangeRole}
-                                    onChangeLocation={this.onChangeLocation}
-                                    // onChangeTeacher={this.onChangeTeacher}
-                                    isTrainee={this.state.isTrainee}
-                                />
-            
-                            <UserInfo
-                                currentStep={this.state.currentStep}
-                                name={this.state.name}
-                                email={this.state.email}
-                                date={this.state.dateActive}
-                                role={this.state.role}
-                                location={this.state.location}
-                                password={this.state.password}
-                                handleFormChange={this.handleFormChange}
-                            />
-                            </div>
-                        </div>
-
-                            <div className="row justify-content-center">
-                                <div className="col-3 m-1">
-                                    {this.nextButton}
-                                    {this.submitButton}
-                                </div>
-                            </div>
-                    </form>*/}
-
-                    {/* <div className="row justify-content-center">
-                        <div className="col-3">
-                            {(this.state.currentStep <= 1 ) ? 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
-                                <button
-                                    className="btn btn-primary float-right"
-                                    type="button" onClick={this._prev}>
-                                    Vorige
-                                </button>}
-                        </div>
-                    </div>  */}
-
-             </div> 
+            </div>
         )
     }
 }

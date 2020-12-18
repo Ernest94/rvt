@@ -17,15 +17,14 @@ public class BaseBundleView {
 	
 	public BaseBundleView(Bundle bundle)
 	{
-		this(bundle.getId(), bundle.getName(), bundle.getCreator().getName(), bundle.getCreator().getCurrentLocations().get(0).getName());
+		this(bundle.getId(), bundle.getName(), bundle.getCreator().getName());
 	}
 
-	public BaseBundleView(Integer id, String name, String creator_name, String creator_location) {
+	public BaseBundleView(Integer id, String name, String creator_name) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.creator_name = creator_name;
-		this.creator_location = creator_location;
 	}
 	
 	public Integer getId() {
@@ -50,14 +49,6 @@ public class BaseBundleView {
 
 	public void setCreator_name(String creator_name) {
 		this.creator_name = creator_name;
-	}
-
-	public String getCreator_location() {
-		return creator_location;
-	}
-
-	public void setCreator_location(String creator_location) {
-		this.creator_location = creator_location;
 	}
 
 	

@@ -1,10 +1,15 @@
 package nu.educom.rvt.models.view;
 
+import nu.educom.rvt.models.BundleConcept;
+
 public class ConceptWeekOffset {
 
 	private int conceptId;
 	private int weekOffset;
 	
+	public ConceptWeekOffset(BundleConcept bundleConcept) {
+		this(bundleConcept.getBundle().getId(), bundleConcept.getWeekOffset());
+	}
 	public ConceptWeekOffset(int conceptId, int weekOffset) {
 		super();
 		this.conceptId = conceptId;

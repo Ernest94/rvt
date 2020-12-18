@@ -7,7 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, InputLabel} from '@material-ui/core'
+import {Select, Input, MenuItem, FormControl, InputLabel, TextField} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -206,22 +206,19 @@ class Search extends React.Component {
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
                 <div className="row"> 
-                    <ul className="errors">{this.state.errors}</ul>
+                    <ul className="errors text-center">{this.state.errors}</ul>
                 </div>
-
-                    <form onSubmit={this.handleSubmit}>
-
-                        <div className="search-bar row d-flex">
-
-                          <div className="m-auto col-2">
-                            <label className="m-1" htmlFor="roleId">Rol:</label>
-                            <select name="roleId" id="roleId"
+                <form onSubmit={this.handleSubmit}>
+                    <div className="search-bar row d-flex">
+                        <div className="m-auto col-2">
+                        <label className="m-1" htmlFor="role">Rol:</label>
+                            <Select name="role" id="role"
 
                                 value={this.state.roleId}
                                 onChange={this.handleFormChange}
                                 >
                                 {rolesOptions}
-                            </select>
+                            </Select>
                           </div>
                           <div className="m-auto col-4">
                                 <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
@@ -259,9 +256,9 @@ class Search extends React.Component {
                                 {(loading)?"Laden...": "Zoek"}
                             </button>
                         </div>
-                        </div>
+                    </div>
 
-                    </form>
+                </form>
 
                 <div className="text-center">
                     <table className="w-100 mx-auto">

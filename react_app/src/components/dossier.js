@@ -407,7 +407,7 @@ class Dossier extends React.Component {
             });
         return (
             <div>
-                <h2 className="txt-centere">Gebruikersaccount</h2>
+                <h2 className="text-center">Gebruikersaccount</h2>
                 <ul className="errors text-center">{errors}</ul>
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
                     <div className="input row dossier">
@@ -436,25 +436,25 @@ class Dossier extends React.Component {
                         </select>
                     </div>
                     <div className="input row dossier">
-                    <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
-                    <Select
-                        className="m-1 text-black"
-                        id="currentLocationsIds"
-                        name="currentLocationsIds" 
-                        multiple
-                        value={currentLocationsIds}
-                        onChange={this.handleLocationChange.bind(this)}
-                        //the MenuProps below are needed to stop the dropdown jumping around when selecting
-                        MenuProps={{
-                            variant: "menu",
-                            getContentAnchorEl: null}
-                        }
-                        input={<Input id="currentLocationsIds" />}
-                        disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
-                        >
-                        {locationOptions}
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        <Select
+                            className="m-1 text-black"
+                            id="currentLocationsIds"
+                            name="currentLocationsIds" 
+                            multiple
+                            value={currentLocationsIds}
+                            onChange={this.handleLocationChange.bind(this)}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="currentLocationsIds" />}
+                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
+                            >
+                            {locationOptions}
 
-                    </Select>
+                        </Select>
                     </div>
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
@@ -465,10 +465,10 @@ class Dossier extends React.Component {
                     </div>
                     <div className="input row dossier" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                       <BundleTable 
-                       bundlesTrainee={this.state.bundlesTrainee} 
-                       bundles={this.state.bundles}
-                       editDisabled={editDisabled || !allowedToEditFields.includes("bundle") || !allowedToEdit} 
+                        <BundleTable 
+                        bundlesTrainee={this.state.bundlesTrainee}
+                        bundles={this.state.bundles}
+                        editDisabled={editDisabled || !allowedToEditFields.includes("bundle") || !allowedToEdit} 
                         removeBundle={this.removeBundle.bind(this)}
                         handleBundleChange={this.handleBundleChange.bind(this)} 
                         addBundle ={this.addBundle.bind(this)} />

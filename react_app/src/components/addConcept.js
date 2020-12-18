@@ -102,10 +102,10 @@ class addConcept extends React.Component {
     async componentDidMount() {
         this.getThemes()
         
-        this.setState({
+        await this.setState({
             userId: sessionStorage.getItem("userId")
         });
-        this.getYourBundles()
+        await this.getYourBundles()
         console.log("State:", this.state)
     }
 
@@ -209,7 +209,7 @@ class addConcept extends React.Component {
                 })
         }
         else {
-            axios.get(config.url.API_URL + '/webapi/bundle/getCreatorBundles/' + this.state.userId)
+            axios.get(config.url.API_URL + '/webapi/bundle/creator/' + this.state.userId)
                 .then(response => {
                     console.log("Repsponse:", response);
                     this.handleBundleResponse(response.data);
@@ -309,64 +309,63 @@ class addConcept extends React.Component {
                 <div className="container main-container">
 
                 <h2 className="text-center ">Concept toevoegen</h2>
+                <div className="text-danger text-center" >{this.state.errors}</div>
 
-                <div className="text-danger" >{this.state.errors}</div>
+                    <form onSubmit={this.handleSubmit} className="container col-lg-8">
+                        
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                                    <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                            </div>
 
-                <form onSubmit={this.handleSubmit} className="container col-lg-8">
-                    
-                    <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
-                            <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                    </div>
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
+                                    <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                            </div>
 
-                    <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
-                            <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                    </div>
-
-                    <div className="input row dossier">
-                        <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
-                            <select name="theme" id="theme" className="form-control col-sm-9"
-                                value={this.state.themeDisplayName}
-                                onChange={this.onChangeTheme}
-                                required>
-                                <option hidden value=''></option>
-                                {themeOptions}
-                            </select>
-                    </div>
-                    <div className="input row dossier">
-                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                        <div>
-                            <BundleConceptTable
-                                chosenBundles={this.state.chosenBundles}
-                                bundles={this.state.bundles}
-                                removeBundle={this.removeBundle.bind(this)}
-                                handleBundleChange={this.handleBundleChange.bind(this)}
-                                handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
-                                addBundle={this.addBundle.bind(this)}
-                            />
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
+                                    <select name="theme" id="theme" className="form-control col-sm-9"
+                                        value={this.state.themeDisplayName}
+                                        onChange={this.onChangeTheme}
+                                        required>
+                                        <option hidden value=''></option>
+                                        {themeOptions}
+                                    </select>
+                            </div>
+                            <div className="input row dossier">
+                                <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                                <div>
+                                    <BundleConceptTable
+                                        chosenBundles={this.state.chosenBundles}
+                                        bundles={this.state.bundles}
+                                        removeBundle={this.removeBundle.bind(this)}
+                                        handleBundleChange={this.handleBundleChange.bind(this)}
+                                        handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
+                                        addBundle={this.addBundle.bind(this)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="buttons">
+                            <div>
+                                <button 
+                                    className="btn btn-primary btn-block" 
+                                    type="submit"
+                                    >                        
+                                    Concept toevoegen
+                                </button>
+                            </div>
+                            <div>
+                                <Link 
+                                    className="btn btn-primary btn-block" 
+                                    to={"/settings/"}
+                                    role="button"
+                                    >                        
+                                    Annuleren
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                    <div className="buttons">
-                    <div>
-                            <button 
-                                className="btn btn-primary btn-block" 
-                                type="submit"
-                                >                        
-                                Concept toevoegen
-                            </button>
-                        </div>
-                        <div>
-                            <Link 
-                                className="btn btn-primary btn-block" 
-                                to={"/settings/"}
-                                role="button"
-                                >                        
-                                Annuleren
-                            </Link>
-                        </div>
-                    </div>
-                </form>
+                    </form>
                         
                     <h4 className="text-center text-success">{this.state.message}</h4>
                 </div >

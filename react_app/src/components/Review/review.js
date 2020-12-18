@@ -193,7 +193,7 @@ class review extends React.Component {
                                 </td>
                                 <td className="feather">
                                     <span className="feather">
-                                    {concept.feather?<GiFeather/>:""}
+                                    {concept.feather?<GiFeather className="feather-icon"/>:""}
                                     </span>
                                 </td>
                                 <td className="comment">
