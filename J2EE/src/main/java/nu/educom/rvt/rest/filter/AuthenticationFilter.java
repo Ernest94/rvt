@@ -17,6 +17,7 @@ import io.jsonwebtoken.Jwts;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 
 @Secured
 @Provider
@@ -70,10 +71,13 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     }
 
     private void validateToken(String token) throws Exception {
-        try{Jws<Claims> jws = Jwts.parserBuilder()
+        try{
+        	Jws<Claims> jws = Jwts.parserBuilder()
         	    .setSigningKey(Token.getSecretTokenKey())
         	    .build()
         	    .parseClaimsJws(token);
+        	String user = jws.getBody().getSubject();        	
+        	ThreadContext.put("user.name", user);
         }
         catch (KeyStoreException kse) {
         	LOG.error("Keystore error: "+ kse.getMessage());
