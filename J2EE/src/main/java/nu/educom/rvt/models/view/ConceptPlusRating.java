@@ -5,10 +5,12 @@ import nu.educom.rvt.models.Concept;
 public class ConceptPlusRating {
 
 	private Concept concept;
+	private Boolean feather;
 	private int rating;
 	private String comment;
 	private int week;
 	private Boolean active;
+	
 	
 	public ConceptPlusRating() {
 		
@@ -24,20 +26,23 @@ public class ConceptPlusRating {
 	public ConceptPlusRating(Concept concept, Boolean active) {
 		this.concept = concept;
 		this.active = active;
+		this.feather = false;
 		this.rating = 0;
 		this.week = 0;
 		this.comment = "";
 	}
 	
-	public ConceptPlusRating(Concept concept,int rating, String comment, Integer week) {
+	public ConceptPlusRating(Concept concept, Boolean feather, int rating, String comment, Integer week) {
 		this.concept = concept;
 		this.rating = rating;
 		this.comment = comment;
 		this.week = week;
+		this.feather = feather;
 	}
 	
-	public ConceptPlusRating(Concept concept,int rating, String comment, Integer week, Boolean active) {
+	public ConceptPlusRating(Concept concept, Boolean feather, int rating, String comment, Integer week, Boolean active) {
 		this.concept = concept;
+		this.feather = feather;
 		this.rating = rating;
 		this.comment = comment;
 		this.week = week;
@@ -78,5 +83,14 @@ public class ConceptPlusRating {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+
+	public Boolean getFeather() {
+		return feather;
+	}
+
+	public void setFeather(Boolean feather) {
+		this.feather = feather;
+	}
+	
 	
 }

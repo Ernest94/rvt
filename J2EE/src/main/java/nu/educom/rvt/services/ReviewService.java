@@ -91,7 +91,7 @@ public class ReviewService {
 		List<ConceptPlusRating> conceptPlusRating = new ArrayList<>();
 		if(reviews.size() == 0) {
 			for(Concept concept: concepts) {
-				conceptPlusRating.add(new ConceptPlusRating(concept, 0, "", 0));
+				conceptPlusRating.add(new ConceptPlusRating(concept, false, 0, "", 0));
 			}
 			return conceptPlusRating;
 		}
@@ -112,7 +112,7 @@ public class ReviewService {
 		List<Concept> removedDuplicates = removeAllDuplicates(concepts, CPRother);
 		
 		for(Concept concept: removedDuplicates) {
-			CPRother.add(new ConceptPlusRating(concept, 0, "", 0));
+			CPRother.add(new ConceptPlusRating(concept,false, 0, "", 0));
 		}
 		CPRother = bundleServ.getWeekForCPR(CPRother, user);
 		CPRMostRecent = bundleServ.getWeekForCPR(CPRMostRecent, user);
@@ -140,6 +140,7 @@ public class ReviewService {
 			conceptPlusRatings.add(
 					new ConceptPlusRating(
 					conceptRating.getConcept(), 
+					conceptRating.getFeather(),
 					conceptRating.getRating(),
 					conceptRating.getComment(),
 					0)
@@ -224,7 +225,7 @@ public class ReviewService {
 	}
 	
 	private ConceptRating convertConceptPlusRating(ConceptPlusRating cpr, int reviewId) throws DatabaseException {
-		return new ConceptRating(getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment());
+		return new ConceptRating(getReviewById(reviewId), cpr.getConcept(), cpr.getRating(), cpr.getComment(),cpr.getFeather());
 	}
 
 	public void addReview(Review review) throws DatabaseException {
