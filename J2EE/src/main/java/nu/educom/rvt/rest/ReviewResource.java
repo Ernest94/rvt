@@ -2,6 +2,7 @@ package nu.educom.rvt.rest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -62,7 +63,7 @@ public class ReviewResource extends BaseResource {
 				/* JH: Move this to a logic function or to conceptRatingJSON's constructor */
 				ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 				String traineeName = userOutput.getName();
-				String traineeLocation = userOutput.getLocation().getName();
+				String traineeLocation = userOutput.getCurrentLocations().get(0).getName();
 				conceptsRatingsJSON.setTraineeName(traineeName);
 				conceptsRatingsJSON.setTraineeLocation(traineeLocation);
 				if (!allReviews.isEmpty()) {
@@ -95,7 +96,7 @@ public class ReviewResource extends BaseResource {
 				    
 		    reviewServ.makeNewReviewIfNoPending(userOutput);
 	
-			List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput); // hier moet de check of iets active is in.
+			List<Review> allReviews = reviewServ.getAllReviewsForUser(userOutput).stream().filter(rev -> rev.getReviewStatus()!=Review.Status.CANCELLED).collect(Collectors.toList());
 			List<Concept> allActiveConcepts = conceptServ.getAllActiveConceptsFromUser(userOutput);
 			//hier kan de week functie ook. waarschijnlijk het meest logisch om het hier te doen
 			List<ConceptPlusRating> conceptsPlusRatings = reviewServ.createActiveConceptsPlusRatingsList(allActiveConcepts,allReviews, userOutput);
@@ -104,7 +105,7 @@ public class ReviewResource extends BaseResource {
 			
 			ConceptRatingJSON conceptsRatingsJSON = new ConceptRatingJSON();
 			String traineeName = userOutput.getName();
-			String traineeLocation = userOutput.getLocation().getName();
+			String traineeLocation = userOutput.getCurrentLocations().get(0).getName();
 			
 			Review mostRecentReview = reviewServ.getMostRecentReview(allReviews);		
 			LocalDateTime reviewDate = mostRecentReview.getDate();
@@ -195,11 +196,11 @@ public class ReviewResource extends BaseResource {
 				Review reviewOutput = reviewServ.updateConceptRating(conceptRating, cru.getConceptPlusRating());
 				LOG.debug("Review for trainee {} rating for concept {} changed to {} '{}'.", 
 						  reviewOutput.getUser(), conceptRating.getConcept().getName(), conceptRating.getRating(), conceptRating.getComment());
-				return Response.status(201).build();
+				return Response.status(200).build();
 			}
 			else {
 				reviewServ.addConceptRating(cru.getConceptPlusRating(), cru.getReviewId());
-		  	    return Response.status(404).build();
+		  	    return Response.status(201).build();
 			}
 		});
     }
@@ -216,6 +217,7 @@ public class ReviewResource extends BaseResource {
 				review.setReviewStatus(Review.Status.PENDING);
 				LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
 						 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
+				reviewServ.updateReview(review, reviewOutput);
 			  return Response.status(202).build();
 			} 
 			return Response.status(404).build();

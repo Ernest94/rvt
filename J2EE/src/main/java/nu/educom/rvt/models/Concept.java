@@ -10,7 +10,7 @@ import nu.educom.rvt.models.view.LocalDateAdapter;
 
 @Entity
 @Table(name="concept")
-public class Concept {
+public class Concept implements ReadOnlyEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -23,9 +23,9 @@ public class Concept {
 	private String name;
 	@Column(name="description")
 	private String description;
-	@Column(name="startdate")
+	@Column(name="start_date")
 	private LocalDate startDate;
-	@Column(name="enddate")
+	@Column(name="end_date")
 	private LocalDate endDate;
 	
 	//needed for Hibernate
@@ -40,9 +40,18 @@ public class Concept {
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
+    }
+    
+    public Concept(Theme theme, String name, String description, LocalDate startDate) {
+		super();
+		this.theme = theme;
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
 	}
+
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
@@ -95,7 +104,7 @@ public class Concept {
 		Concept other = (Concept) obj;
 		Integer Zero = Integer.valueOf(0);
 		if (Zero.compareTo(getId()) < 0 && Zero.compareTo(other.getId()) < 0) {
-			return getId().equals(other.getId());
+			return getId() == other.getId();
 		} 
 		return Objects.equals(getName(), other.getName()) &&
 			   Objects.equals(getDescription(), other.getDescription()) &&

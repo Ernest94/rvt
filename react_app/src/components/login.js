@@ -27,8 +27,7 @@ class Login extends React.Component {
         sessionStorage.setItem("userId", responseData.UserId);
         sessionStorage.setItem("userName", responseData.sub);
         sessionStorage.setItem("userRole", responseData.Role.name);
-        sessionStorage.setItem("userLocation", responseData.Location.name);
-        sessionStorage.setItem("userLocationId", responseData.Location.id);
+        sessionStorage.setItem("userLocation", JSON.stringify(responseData.currentLocations));
         this.props.handleLoginState();
         this.props.history.push('/settings');
     }
@@ -44,9 +43,11 @@ class Login extends React.Component {
         event.preventDefault();
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
+        console.log(this.createLoginJson())
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
                 .then(response => {
+                    console.log(response)
                     this.setState({buttonDisabled: false, errors: null});
                     
                     this.handleSuccessfulAuth(response.data);

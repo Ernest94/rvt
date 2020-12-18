@@ -2,10 +2,8 @@ package nu.educom.rvt.repositories;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Location;
 

@@ -1,9 +1,13 @@
 package nu.educom.rvt.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.hibernate.Session;
 
+import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.Role;
+import nu.educom.rvt.models.UserLocation;
 
 public class UserRepository {
 	protected Session session;
@@ -16,7 +20,8 @@ public class UserRepository {
 		if (!session.isOpen() || !session.getTransaction().isActive()) {
 			throw new DatabaseException("Create called on an DB transaction that is not open");
 		}
-	    session.save(user); 
+		user.setRole(session.get(Role.class, user.getRole().getId()));
+	    session.save(user);
 	    return user;
 	}
 	
@@ -24,14 +29,27 @@ public class UserRepository {
 		return session.get(User.class, id);
 	}
 	
-	public void update(User user) throws DatabaseException {
+	public User update(User user) throws DatabaseException {
 		User toUpdate = this.readById(user.getId());
 		toUpdate.setName(user.getName());
 		toUpdate.setEmail(user.getEmail());
-		toUpdate.setRole(user.getRole());
-		//TODO Fix location met record structure
-		toUpdate.setLocation(user.getLocation());
-		toUpdate.setDateActive(user.getDateActive());
+		toUpdate.setRole(session.get(Role.class, user.getRole().getId()));
+		toUpdate.setStartDate(user.getStartDate());
+		toUpdate.setEndDate(user.getEndDate());
+		return toUpdate;
+	}
+	
+	public void updateLocations(User user, List<Location> newLocations) throws DatabaseException {
+		final User attachedUser;
+		if (!session.contains(user)) {
+			attachedUser = readById(user.getId());
+		} else {
+			attachedUser = user;
+		}
+		HibernateSession.updateReadOnlyEntries(attachedUser.getAllUserLocations(), newLocations,
+				         (ul, l) -> ul.getLocation().equals(l),
+				         l -> new UserLocation(attachedUser, l, LocalDate.now(), null),
+				         session);
 	}
 	
 	protected void delete() throws DatabaseException {	

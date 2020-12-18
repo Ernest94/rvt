@@ -38,10 +38,8 @@ public class BundleResource extends BaseResource {
 		LOG.debug("createNewBundle {} called", bundle);
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
-			
 			bundle.setStartDate(LocalDate.now());
-			// TODO move the validation to a BundleLogic class so this reads if (BundelLogic.isValidBundel(bundle)) { .... including logging
-			if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleService.findBundleByName(bundle.getName()) == null)
+			if (bundleService.validateBundle(bundle))
 			{
 				bundleService.createNewBundle(bundle);
 				return Response.status(201).build();

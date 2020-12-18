@@ -5,8 +5,6 @@ import java.util.Properties;
 import org.hibernate.Session;
 import org.hibernate.cfg.Environment;
 
-import org.junit.jupiter.api.Assertions;
-
 public class TestHibernateSession extends HibernateSession {
 
 	public static void switchToTestDatabase() {

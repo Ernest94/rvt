@@ -32,7 +32,7 @@ class RoleAndLocation extends React.Component {
                         onChange={this.props.onChangeRole}
                         required>
                         
-                        <option hidden value=''>Rol</option>
+                        <option hidden value=''></option>
                         {rolesOptions}
                     </select>
                     </div>
@@ -42,6 +42,7 @@ class RoleAndLocation extends React.Component {
                     locations={this.props.locations}
                     isTrainee={this.props.isTrainee}
                     locationDisplayName= {this.props.locationDisplayName}
+                    roleDisplayName = {this.props.roleDisplayName}
                     onChangeLocation={this.props.onChangeLocation}
                 /> 
                 

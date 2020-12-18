@@ -1,10 +1,11 @@
 
 import React from 'react';
 import axios from 'axios';
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 
 import {config} from './constants';
 import Permissions from './permissions.js';
+import Utils from './Utils.js';
 
 class addBundle extends React.Component {
     
@@ -14,6 +15,7 @@ class addBundle extends React.Component {
             name: "",
             message: "",
             loading: false,
+            errors: null,
         };
     }
 
@@ -28,10 +30,6 @@ class addBundle extends React.Component {
         });
     }
 
-    validate() {
-        return null;
-    }
-
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({loading: true}); 
@@ -44,15 +42,28 @@ class addBundle extends React.Component {
                     this.props.history.push('/conceptOverview');
                 })
                 .catch((error) => {
-                    this.setErrors({login: ["Mislukt om bundel aan te maken."]}); 
-                    this.setState({loading: false});
+                    this.setState({loading: false, 
+                        errors: Utils.setErrors({input: ["Mislukt om bundel toe te voegen. Mogelijk bestaat er al een bundel met deze naam."]})});
                 });
         }
         else {
-            this.setErrors(errors);
-            this.setState({loading: false});
+            this.setState({errors: Utils.setErrors(errors),loading: false});
         }
     }
+
+    validate() {
+        if(!this.state.name.trim())
+        {
+            this.setState({name:""});
+            return {name: ["De bundelnaam mag niet leeg zijn"]};
+        }
+        if(!isNaN(this.state.name))
+        {
+            return {name: ["De bundelnaam moet letters bevatten"]}
+        }
+    }
+
+
 
     createBundleJson() {
         return {
@@ -65,21 +76,15 @@ class addBundle extends React.Component {
         this.setState({ message:"bundel aangemaakt", 
                         name: ""});
     }
-    
-    setErrors = (errors) => {
-        const foundErrors = Object.keys(errors).map((key) =>
-            <li key={key}>{errors[key][0]}</li>
-        );
-        this.setState({
-           errors: foundErrors 
-        });
-    }
 
     render() {
 
         return (
             <div className="container" >
                 <h2 className="text-center">Bundel aanmaken</h2>
+
+                <div className="row justify-content-center text-danger">{this.state.errors}</div>
+
 
                     <form onSubmit={this.handleSubmit}>
                     <div className="row justify-content-center">
@@ -98,7 +103,7 @@ class addBundle extends React.Component {
                         
                         <div className="row justify-content-center m-1">
                             <div className="col-4">
-                                <button className="btn btn-primary float-right" type="submit">Annuleer</button>
+                                <Link className="btn btn-primary float-right" to={"/conceptOverview"}>Annuleer</Link>
                             </div>
                         </div>
                     </form>
