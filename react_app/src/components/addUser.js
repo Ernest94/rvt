@@ -9,145 +9,6 @@ import {config} from './constants';
 import Utils from './Utils.js';
 import Permissions from './permissions.js'
 
-// class LocationSelection extends React.Component {
-    
-//     constructor(props) {
-//         super(props);
-//         console.log(this.props.roleDisplayName);
-//     }
-
-//     render() {
-//         const roleDisplayName = this.props.roleDisplayName;
-//         const locations = this.props.locations;
-//         const locationsOptions = locations.map((loc) => {
-//            return (
-//                 <option key={loc.id} value={loc.id}>{loc.name}</option>
-//            ) 
-//         });
-        
-//         if (this.props.isTrainee === null) {
-//             return null;
-//         }
-//             return (
-//                 <div className="my-2">
-//                     <label htmlFor="location">Locatie:</label>
-//                     <div>
-//                     <select className="m-1" name="location" id="location" 
-//                         value={this.props.locationDisplayName} 
-//                         onChange={this.props.onChangeLocation}
-//                         required>
-                        
-//                         <option hidden value=''>Locatie</option>
-//                         {locationsOptions}
-//                     </select>
-//                     </div>
-//                 </div>
-//         )        
-//     }
-// }
-
-
-// // export default RoleAndLocation;
-
-
-// class RoleAndLocation extends React.Component {
-    
-//     render() {
-        
-//         const roles = this.props.roles;
-//         const locations = this.props.locations;
-//         if (roles === null) return <span> Problemen met laden van de pagina. </span>;
-//         if (locations === null) return <span> Problemen met laden van de pagina. </span>;
-
-//         const rolesOptions = roles.map((role) => {
-//            return (
-//                 <option key={role.id} value={role.id}>{role.name}</option>
-//            ) 
-//         });
-        
-        
-//         if (this.props.currentStep !== 1) {
-//             return null;
-//         }
-        
-//         return (
-//             <div className="m-3 p-2">
-
-//                 <div className="">
-//                     <label htmlFor="role">Rol:</label>
-//                     <div>
-//                     <select className="m-1" name="role" id="role" 
-//                         value={this.props.roleDisplayName} 
-//                         onChange={this.props.onChangeRole}
-//                         required>
-                        
-//                         <option hidden value=''></option>
-//                         {rolesOptions}
-//                     </select>
-//                     </div>
-//                 </div>
-                
-//                 <LocationSelection 
-//                     locations={this.props.locations}
-//                     isTrainee={this.props.isTrainee}
-//                     locationDisplayName= {this.props.locationDisplayName}
-//                     roleDisplayName = {this.props.roleDisplayName}
-//                     onChangeLocation={this.props.onChangeLocation}
-//                 /> 
-                
-//             </div>
-//         )
-//     }
-// }
-
-// class UserInfo extends React.Component {
-    
-//     componentDidMount() {
-//         Utils.dateValidation();
-//     }
-    
-//     render() {
-        
-//         if (this.props.currentStep !== 2) {
-//             return null;
-//         }
-        
-        
-//         return (
-//             <div className="row">
-//                 <div className="col-6 ">
-//                     <div className="float-right">
-//                         <label className="form-label" htmlFor="name">Naam:</label>
-//                         <input className="form-control small-form" id="name" type="text" name="name" value={this.props.name} onChange={this.props.handleFormChange}/>
-                        
-//                         <label htmlFor="email">Email:</label>
-//                         <input className="form-control" id="email" type="email" name="email" value={this.props.email} onChange={this.props.handleFormChange}/>
-                    
-//                         <label htmlFor="password">Wachtwoord:</label>
-//                         <input className="form-control" id="password" type="password" name="password"  value={this.props.password} onChange={this.props.handleFormChange}/>
-//                     </div>
-//                 </div>
-                
-//                 <div className="col-6">
-//                     <div className="float-left">
-
-//                         <label htmlFor="date">Datum actief:</label>
-//                         <input className="form-control" id="date" type="date" name="dateActive" value={this.props.date} onChange={this.props.handleFormChange}/>
-                    
-//                         <label htmlFor="role">Rol:</label>
-//                         <input className="form-control" id="role" type="text" name="role" value={this.props.role.name} disabled/>
-                    
-//                         <label htmlFor="date">Locatie:</label>
-//                         <input className="form-control" id="location" type="text" name="location" value={this.props.location.name} disabled/>
-//                     </div>
-//                 </div>
-
-                
-//             </div>
-//         )
-//     }
-// }
-
 class AddUser extends React.Component {
 
     static hasAccess() {
@@ -159,7 +20,7 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
-            roleId: "",
+            roleId: ((sessionStorage.getItem("userRole")==="Docent")?"3":""),
             selectedLocationsIds:[],
             name: "",
             email: "",
@@ -171,7 +32,6 @@ class AddUser extends React.Component {
             locations: [],
             errors: null,
             pageLoading: true,
-            isDocent: sessionStorage.getItem("userRole") === "docent",
         };
     }
 
@@ -268,15 +128,6 @@ class AddUser extends React.Component {
         });
     }
 
-    onChangeRole = (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-
-        this.setState({
-            role: selectedRole,
-            roleDisplayName: e.target.value
-        });
-    }
-
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
@@ -301,6 +152,15 @@ class AddUser extends React.Component {
                 )
             });
         }
+
+
+        if (userRole === "admin") {
+            locationsOptions = locations.map((loc) => {
+                return (
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
+                )
+            });
+        }
         else {
             console.log(userLocation);
             locationsOptions = userLocation.map((loc) => {
@@ -318,19 +178,6 @@ class AddUser extends React.Component {
                 <div className="row text-center">
                     {errorsList}
                 </div>
-                    
-
-                    {/* <form onSubmit={this.handleSubmit} className="col-lg-8">
-
-                        <div className="">
-                        <label className="" htmlFor="role">Rol:</label>
-                        <select className="" name="role" id="role" disabled={!(userRole === "Admin")}
-                                value={this.state.roleDisplayName}
-                                onChange={this.onChangeRole}
-                                required>
-                                {rolesOptions}
-                            </select>
-                        </div>               */}
 
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
 
@@ -338,13 +185,12 @@ class AddUser extends React.Component {
                         <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
                         <select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
                             onChange={this.handleFormChange}
+                            value={this.state.roleId}
                             required>
                             <option hidden value=''></option>
                             {rolesOptions}
                         </select>
                     </div>
-{/* >>>>>>> origin/multiple_locations */}
-
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <Select
