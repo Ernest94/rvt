@@ -7,6 +7,8 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
@@ -22,7 +24,7 @@ import org.apache.logging.log4j.ThreadContext;
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
-public class AuthenticationFilter implements ContainerRequestFilter {
+public class AuthenticationFilter implements ContainerRequestFilter, ContainerResponseFilter{
 
     private static final String REALM = "users";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
@@ -49,7 +51,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             abortWithUnauthorized(requestContext);
         }
     }
-
+    
+    @Override
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext)
+            throws IOException {
+        ThreadContext.clearMap();
+    }
     private boolean isTokenBasedAuthentication(String authorizationHeader) {
 
         // Check if the Authorization header is valid
