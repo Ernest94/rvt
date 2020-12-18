@@ -74,7 +74,7 @@ public class BundleResource extends BaseResource {
 				if (!bundleService.doesBundleExists(bundleId)) {
 					return Response.status(404).build();
 				}
-				/*Bundle bundle =*/ bundleService.updateBundle(bundleId,frontendBundleConcepts);
+				bundleService.updateBundle(bundleId,frontendBundleConcepts);
 				return Response.status(201).build(/* TODO stuur de nieuwe bundel terug, new JSONBundel(bundle)*/);
 			}
 		});
