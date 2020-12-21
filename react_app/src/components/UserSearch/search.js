@@ -17,13 +17,14 @@ class Search extends React.Component {
             locations: [],
             selectedLocationsIds:[],
             selectedLocations: [],
+
             roles: [],
-            role: "",
-            roleId:"",
+            selectedRoleId:0,
+
             criteria: "",
+
             users: [],
-            loading: false,
-            roleDisplayName: "",
+            pageLoading: true,
             buttonDisabled: false,
         };
     }
@@ -33,9 +34,7 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ pageLoading: true });
-        this.getLocationsAndRoles()
-        
+        this.getLocationsAndRoles() 
     }
 
     getLocationsAndRoles() {
@@ -66,8 +65,7 @@ class Search extends React.Component {
             loading: true,
             selectedLocations:userLocations,
             selectedLocationsIds: userLocationsIds,
-            roleId: role.id,
-            // roleDisplayName: role.id
+            selectedRoleId: role.id,
         });
 
         console.log(this.createSearchJson());
@@ -109,7 +107,7 @@ class Search extends React.Component {
         }
         return {
             locations: locations,
-            role: {id:parseInt(this.state.roleId)},
+            role: {id:parseInt(this.state.selectedRoleId)},
             criteria: this.state.criteria
         }
 }
@@ -168,7 +166,7 @@ class Search extends React.Component {
         }
         const rolesOptions = roles.map((role) => {
             return (
-                <option key={role.id} value={role.id}>{role.name}</option>
+                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
             )
         });
         var userDisplay = users.map((user) => {
@@ -212,19 +210,22 @@ class Search extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-2">
-                        <label className="m-1" htmlFor="role">Rol:</label>
-                            <Select name="role" id="role"
-
-                                value={this.state.roleId}
-                                onChange={this.handleFormChange}
-                                >
-                                {rolesOptions}
-                            </Select>
+                            <InputLabel className="m-1 text-black" shrink={false} id="role-label" >Rol:
+                                <Select 
+                                    labelId="role-label"
+                                    name="selectedRoleId" 
+                                    id="selectedRoleId"
+                                    value={this.state.selectedRoleId}
+                                    onChange={this.handleFormChange}
+                                    >
+                                    {rolesOptions}
+                                </Select>
+                            </InputLabel>
                           </div>
                           <div className="m-auto col-4">
-                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
+                                <InputLabel className="m-1 text-black " id="location-label" >Locatie:
                                 <Select
-                                    className="m-1 text-black"
+                                    className="m-1 text-black locationInput search"
                                     labelId="location-label"
                                     id="selectedLocationsIds"
                                     name="selectedLocationsIds" 
