@@ -102,10 +102,10 @@ class addConcept extends React.Component {
     async componentDidMount() {
         this.getThemes()
         
-        this.setState({
+        await this.setState({
             userId: sessionStorage.getItem("userId")
         });
-        this.getYourBundles()
+        await this.getYourBundles()
         console.log("State:", this.state)
     }
 
@@ -209,7 +209,7 @@ class addConcept extends React.Component {
                 })
         }
         else {
-            axios.get(config.url.API_URL + '/webapi/bundle/getCreatorBundles/' + this.state.userId)
+            axios.get(config.url.API_URL + '/webapi/bundle/creator/' + this.state.userId)
                 .then(response => {
                     console.log("Repsponse:", response);
                     this.handleBundleResponse(response.data);

@@ -25,12 +25,32 @@ public class UserRepository {
 	    return user;
 	}
 	
+	/**
+	 * Find a user or return null
+	 * @param id the id of the user
+	 * @return the user or null if not found
+	 * @throws DatabaseException when the session is not open
+	 */
 	public User readById(int id) throws DatabaseException {
 		return session.get(User.class, id);
 	}
 	
+	/**
+	 * Get a known user
+	 * @param id the id of the user
+	 * @return the user 
+	 * @throws EntryNotFoundException if the user id is not known
+	 * @throws DatabaseException when the session is not open
+	 */
+	public User readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(User.class, id, session);
+	}
+	
 	public User update(User user) throws DatabaseException {
-		User toUpdate = this.readById(user.getId());
+		if (session.contains(user)) {
+			throw new DatabaseException("user should not be already attached");
+		}
+		User toUpdate = this.readByKnownId(user.getId());
 		toUpdate.setName(user.getName());
 		toUpdate.setEmail(user.getEmail());
 		toUpdate.setRole(session.get(Role.class, user.getRole().getId()));
@@ -42,7 +62,7 @@ public class UserRepository {
 	public void updateLocations(User user, List<Location> newLocations) throws DatabaseException {
 		final User attachedUser;
 		if (!session.contains(user)) {
-			attachedUser = readById(user.getId());
+			attachedUser = readByKnownId(user.getId());
 		} else {
 			attachedUser = user;
 		}

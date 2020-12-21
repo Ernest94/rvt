@@ -19,6 +19,7 @@ import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.repositories.ConceptRatingRepository;
 import nu.educom.rvt.repositories.ConceptRepository;
 import nu.educom.rvt.repositories.DatabaseException;
+import nu.educom.rvt.repositories.EntryNotFoundException;
 import nu.educom.rvt.repositories.ReviewRepository;
 import one.util.streamex.StreamEx;
 
@@ -164,12 +165,12 @@ public class ReviewService {
 		return removedDuplicates;
     }
     
-    public Review getReviewById(int reviewId) throws DatabaseException {
-        return reviewRepo.readById(reviewId);
+    public Review getReviewById(int reviewId) throws EntryNotFoundException, DatabaseException {
+        return reviewRepo.readByKnownId(reviewId);
     }
     
     public ConceptRating getConceptRatingById(int id) throws DatabaseException {
-    	return conceptRatingRepo.readById(id);
+    	return conceptRatingRepo.readByKnownId(id);
     }
     
     public ConceptRating checkIfConceptRatingExists(int reviewId, int conceptId) throws DatabaseException {
@@ -237,7 +238,7 @@ public class ReviewService {
 	}
 	
 	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) throws DatabaseException {
-		ConceptRating updated = conceptRatingRepo.readById(old.getId());
+		ConceptRating updated = conceptRatingRepo.readByKnownId(old.getId());
 		updated.setComment(conceptPlusRating.getComment());
 		updated.setRating(conceptPlusRating.getRating());		
 		return updated.getReview();

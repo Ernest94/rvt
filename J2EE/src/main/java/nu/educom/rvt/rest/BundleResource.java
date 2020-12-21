@@ -1,3 +1,4 @@
+
 package nu.educom.rvt.rest;
 
 import java.time.LocalDate;
@@ -71,10 +72,7 @@ public class BundleResource extends BaseResource {
 				return Response.status(412).build();
 			} 
 			else {
-				if (!bundleService.doesBundleExists(bundleId)) {
-					return Response.status(404).build();
-				}
-				/*Bundle bundle =*/ bundleService.updateBundle(bundleId,frontendBundleConcepts);
+				bundleService.updateBundle(bundleId,frontendBundleConcepts);
 				return Response.status(201).build(/* TODO stuur de nieuwe bundel terug, new JSONBundel(bundle)*/);
 			}
 		});
@@ -93,14 +91,14 @@ public class BundleResource extends BaseResource {
 	}
 	
 	@GET
-	@Path("/bundleCreator/{userId}")
+	@Path("/creator/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCreatorBundles(@PathParam("userId") int userId) {
 		return wrapInSession(session -> {
 			UserService userService = new UserService(session);
 			BundleService bundleService = new BundleService(session);
 			User user = userService.getUserById(userId);
-			List<Bundle> bundles = bundleService.getAllCreatorBundles(user);
+			List<BaseBundleView> bundles = bundleService.getAllCreatorBundles(user);
 			
 			return Response.status(200).entity(bundles).build();
 		});
@@ -113,8 +111,8 @@ public class BundleResource extends BaseResource {
 		LOG.debug("getTraineeBundles for user {} called", userId);
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
-			User user = new User();
-			user.setId(userId);
+			UserService userService = new UserService(session);
+			User user = userService.getUserById(userId);
 
 	        List<BundleTraineeView> bundlesTrainee = bundleService.getAllBundlesFromUser(user);
 	        
