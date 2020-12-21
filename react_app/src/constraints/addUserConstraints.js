@@ -41,8 +41,6 @@ export const constraints = {
         },
         datetime: {
             dateOnly: true,
-            earliest: moment().subtract(1, 'days'),
-            message: "^Gebruiker kan pas vanaf vandaag actief worden."
         }
     }
 };
