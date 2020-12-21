@@ -35,6 +35,7 @@ class Search extends React.Component {
     componentDidMount() {
         this.setState({ pageLoading: true });
         this.getLocationsAndRoles()
+        
     }
 
     getLocationsAndRoles() {

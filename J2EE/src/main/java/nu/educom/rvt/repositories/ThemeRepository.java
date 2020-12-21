@@ -28,8 +28,8 @@ public class ThemeRepository {
 	}
 	
 	
-	public Theme readById(int id) throws DatabaseException {
-		return session.get(Theme.class, id);
+	public Theme readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Theme.class, id, session);
 	}
 	
 	public Theme readByName(String name) throws DatabaseException {

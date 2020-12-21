@@ -20,8 +20,8 @@ public class TraineeMutationRepository {
 	    session.save(traineeMutation); 
 	}
 	
-	public TraineeMutation readById(int id) throws DatabaseException {
-		return session.get(TraineeMutation.class, id);
+	public TraineeMutation readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(TraineeMutation.class, id, session);
 	}
 	
 	public TraineeMutation findWeekMutationByUserIdAndConceptId(int userId, int conceptId) throws DatabaseException {
