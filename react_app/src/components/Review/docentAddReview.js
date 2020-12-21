@@ -14,6 +14,9 @@ import './review.css'
 import { config } from '../constants';
 import Permissions from '../permissions.js'
 import {SelectionTable} from '../Selection.js'
+import { GiFeather } from "react-icons/gi";
+import { BsDot } from "react-icons/bs";
+
 
 class docentAddReview extends React.Component {
 
@@ -155,9 +158,6 @@ class docentAddReview extends React.Component {
     async setComment(event) {
         const index = event.target.name.substring(7);
         const value = event.target.value;
-
-        
-
         let concepts = this.state.concepts;
         let concept = concepts[index];
         if (value === concept.comment) {
@@ -174,6 +174,18 @@ class docentAddReview extends React.Component {
         this.submitConceptRatingChange(conceptRatingJson);
     }
 
+    async setFeather(event) {
+        const index = event.target.name.substring(7);
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        concept.feather = !concept.feather;
+        concepts[index] = concept;
+        await this.setState({
+            concepts: concepts
+        });
+        let conceptRatingJson = this.createConceptRatingJson(concept);
+        this.submitConceptRatingChange(conceptRatingJson);
+    }
     // async setDate(event){
     //     console.log(event);
     //     const { name, value } = event.target;
@@ -221,6 +233,7 @@ class docentAddReview extends React.Component {
     }
 
     submitConceptRatingChange(conceptRatingJson) {
+        console.log(conceptRatingJson)
         axios.post(config.url.API_URL + "/webapi/review/addConceptRating", conceptRatingJson)
             .then(response => {
             })
@@ -315,6 +328,7 @@ class docentAddReview extends React.Component {
     }
 
     handleCheckboxChange(e,changedConceptId){
+
         this.setState(prevState => 
             ({concepts: prevState.concepts.map(concept => 
                 concept.concept.id===changedConceptId? 
@@ -336,6 +350,20 @@ class docentAddReview extends React.Component {
             console.log("an error occurred " + error);
         });
     }
+
+    handleFeatherChange(e,changedConceptId){
+        this.setState(prevState => 
+            ({concepts: prevState.concepts.map(concept => 
+                concept.concept.id===changedConceptId? 
+                {...concept, active: (!concept.feather)}
+                :concept)
+            })
+        );
+        this.changeConceptActive(changedConceptId);
+    };
+
+
+
 
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
@@ -380,6 +408,7 @@ class docentAddReview extends React.Component {
         });
 
 
+
         const ConceptDisplay = ({selectionFunction,}) => (
             <div className="table-responsive col-md-10">
                     <table className="addReviewTable">
@@ -397,6 +426,9 @@ class docentAddReview extends React.Component {
                                 <th className="concept">
                                     Concept
                                 </th> 
+                                <th className="feather">
+                                    Inzet
+                                </th>
                                 <th className="rating">
                                     Vaardigheid
                                 </th>
@@ -410,7 +442,9 @@ class docentAddReview extends React.Component {
             
                 {this.state.concepts.map((concept, index) => {    
                     var checkboxDisabled = (concept.comment!=="" || concept.rating!==0)
-                    
+                    // var concept.feather
+
+
                     if (selectionFunction(concept)){
                         return (
                         <tr className={(concept.active ? 'text-black' : 'text-muted')}>
@@ -419,7 +453,7 @@ class docentAddReview extends React.Component {
                                 id={"concept"+concept.id}
                                 onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
                                 checked={concept.active}
-                                disabled={checkboxDisabled}
+                                // disabled={checkboxDisabled}
                                 />                   
                             </td>
                             <td className="week" id="text">
@@ -443,23 +477,36 @@ class docentAddReview extends React.Component {
                                 {concept.concept.name}
                                 <span className="displayMessage"> {concept.concept.name} </span>
                                 </span>
+                            </td>
+                            <td className="feather">
+                            <div className="">
+                                <Checkbox
+                                checked={concept.feather}
+                                name={"feather" +  index}
+                                onChange={(event) => {this.setFeather(event)}}
+                                disabled={!concept.active}
+                                checkedIcon={<GiFeather/>}
+                                icon={<BsDot/>}
+                                />
+                            </div>
                             </td>                  
                             <td className="rating" id="text">
                             <div>
-                                    <Rating className="rating-star"
-                                        value={concept.rating}
-                                        name={"rating" +  index}
-                                        onChange={(event) => {
-                                        this.setRating(event);
-                                        }}
-                                    />
+                                <Rating className={"rating-star"}
+                                    value={concept.rating}
+                                    name={"rating" +  index}
+                                    onChange={(event) => {this.setRating(event)}}
+                                    disabled={!concept.active}
+                                />
                                 <div className="rating-text"> {this.getRating(concept.rating)} </div>
-                                </div>
+                            </div>
                             </td>
                             <td className="comment" id="text">
                                 <TextareaAutosize className="comment-text"
+                                    disabled={!concept.active}
                                     aria-label="minimum height"
-                                    name={"comment" + index} onBlur={(event) => {
+                                    name={"comment" + index} 
+                                    onBlur={(event) => {
                                     this.setComment(event); }}
                                     >
                                     {concept.comment}

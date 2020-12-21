@@ -311,31 +311,31 @@ public class Filler {
             
             //FILL THE CONCEPT-RATING TABLE
             List<ConceptRating> conceptsRatings = new ArrayList<ConceptRating>();
-            conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2, "Kan beter"));
-            conceptsRatings.add(new ConceptRating(review1,concepts.get(1),2, "Kan beter"));
-            conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2, "Kan beter"));
-            conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2, "Kan beter"));
-            conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2, "Kan beter"));
+            conceptsRatings.add(new ConceptRating(review1,concepts.get(0),2, "Kan beter",true));
+            conceptsRatings.add(new ConceptRating(review1,concepts.get(1),2, "Kan beter",false));
+            conceptsRatings.add(new ConceptRating(review1,concepts.get(2),2, "Kan beter",false));
+            conceptsRatings.add(new ConceptRating(review1,concepts.get(3),2, "Kan beter",false));
+            conceptsRatings.add(new ConceptRating(review1,concepts.get(4),2, "Kan beter",false));
                     
-            conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3, "Goed, maar komop"));
-            conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3, "Je komt er wel"));
-            conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3, "Je moet iets meer letten op je stijl"));
-            conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3, "no comment"));
-            conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3));
+            conceptsRatings.add(new ConceptRating(review2,concepts.get(1),3, "Goed, maar komop",false));
+            conceptsRatings.add(new ConceptRating(review2,concepts.get(2),3, "Je komt er wel",true));
+            conceptsRatings.add(new ConceptRating(review2,concepts.get(3),3, "Je moet iets meer letten op je stijl",false));
+            conceptsRatings.add(new ConceptRating(review2,concepts.get(4),3, "no comment",false));
+            conceptsRatings.add(new ConceptRating(review2,concepts.get(5),3,false));
             
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(0),5));
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(1),5));
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(2),5));
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(3),5));
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(4),5));
-            conceptsRatings.add(new ConceptRating(review3,concepts.get(5),5));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(0),5,false));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(1),5,false));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(2),5,false));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(3),5,false));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(4),5,false));
+            conceptsRatings.add(new ConceptRating(review3,concepts.get(5),5,false));
             
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(0),4));
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(1),4));
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(2),4));
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(3),4));
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(4),4));
-            conceptsRatings.add(new ConceptRating(review4,concepts.get(5),4));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(0),4,false));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(1),4,false));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(2),4,false));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(3),4,false));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(4),4,false));
+            conceptsRatings.add(new ConceptRating(review4,concepts.get(5),4,true));
             ConceptRatingRepository conceptRatingRepo = new ConceptRatingRepository(session);
             for (ConceptRating conceptRating : conceptsRatings) {
                 conceptRatingRepo.create(conceptRating);
