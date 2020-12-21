@@ -26,8 +26,8 @@ public class TraineeActiveRepository {
 		return HibernateSession.loadAllData(TraineeActive.class, session);
 	}
 	
-	public TraineeActive readById(int id) throws DatabaseException {
-		return session.get(TraineeActive.class, id);
+	public TraineeActive readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(TraineeActive.class, id, session);
 	}
 
 	public TraineeActive findActiveByUserIdAndConceptId(int userId, int conceptId) {

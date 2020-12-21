@@ -146,7 +146,6 @@ public class UserResource extends BaseResource {
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
 			List<User> users = userServ.getAllUsers();
-	  
 		  return Response.status(200).entity(users).build();
 		});
 	}
@@ -160,13 +159,9 @@ public class UserResource extends BaseResource {
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);//load injectables
 		    User user = userServ.getUserById(userId);
-		      
-		    if(user != null) {
-		    	LOG.debug("Dossier of {}", user);
-		        return Response.status(200).entity(user).build();
-		    } else {
-		        return Response.status(400).build();        
-		    }
+
+	    	LOG.debug("Dossier of {}", user);
+	        return Response.status(200).entity(user).build();
 		});
 	}	
 	
@@ -181,15 +176,9 @@ public class UserResource extends BaseResource {
 			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
-			User foundUser = userServ.getUserById(user.getId());
-			if(foundUser==null) {
-				return Response.status(404).build();  
-			}
-			else {
-				userServ.updateUser(user,locations);
-				LOG.info("{} has been updated.", foundUser);
-				return Response.status(200).build();
-			}
+			User updatedUser = userServ.updateUser(user,locations);
+			LOG.info("{} has been updated.", updatedUser);
+			return Response.status(200).build();
 		});
 	}	
 }

@@ -20,8 +20,8 @@ public class ReviewRepository {
 		session.save(review); 
 	}
 	
-	public Review readById(int id) throws DatabaseException {
-		return session.get(Review.class, id);
+	public Review readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Review.class, id, session);
 	}
 	
 	/* JH: Had een readByUser(user_id) en een readByCreator(int creator_id) verwacht, geen readAll() */ 
@@ -30,7 +30,7 @@ public class ReviewRepository {
 	}
 	
 	public void update(Review review) throws DatabaseException {
-        Review oldReview = readById(review.getId());
+        Review oldReview = readByKnownId(review.getId());
 		if (oldReview.getReviewStatus() != Status.PENDING) {
 			throw new DatabaseException("Modifying an existing Review");
 		}
@@ -40,7 +40,7 @@ public class ReviewRepository {
 	}
 	
 	public Review updateStatus(int reviewId, Status newStatus) throws DatabaseException {
-		Review review = readById(reviewId);
+		Review review = readByKnownId(reviewId);
 		if (review.getReviewStatus() != Status.PENDING) {
 			throw new DatabaseException("Modifying an existing Review");
 		}

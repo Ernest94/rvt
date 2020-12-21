@@ -42,8 +42,8 @@ public class ConceptRatingRepository {
 		return HibernateSession.loadAllData(ConceptRating.class, session);
 	}
 	
-	public ConceptRating readById(int id) throws DatabaseException {
-		return session.get(ConceptRating.class, id);
+	public ConceptRating readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(ConceptRating.class, id, session);
 	}
 	
 	public List<ConceptRating> readByReviewId(int review_id) throws DatabaseException {

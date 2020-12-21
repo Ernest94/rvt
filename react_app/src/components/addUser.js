@@ -7,146 +7,10 @@ import {Select, Input, MenuItem} from '@material-ui/core'
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
 import Utils from './Utils.js';
-import Permissions from './permissions.js'
-
-// class LocationSelection extends React.Component {
-    
-//     constructor(props) {
-//         super(props);
-//         console.log(this.props.roleDisplayName);
-//     }
-
-//     render() {
-//         const roleDisplayName = this.props.roleDisplayName;
-//         const locations = this.props.locations;
-//         const locationsOptions = locations.map((loc) => {
-//            return (
-//                 <option key={loc.id} value={loc.id}>{loc.name}</option>
-//            ) 
-//         });
-        
-//         if (this.props.isTrainee === null) {
-//             return null;
-//         }
-//             return (
-//                 <div className="my-2">
-//                     <label htmlFor="location">Locatie:</label>
-//                     <div>
-//                     <select className="m-1" name="location" id="location" 
-//                         value={this.props.locationDisplayName} 
-//                         onChange={this.props.onChangeLocation}
-//                         required>
-                        
-//                         <option hidden value=''>Locatie</option>
-//                         {locationsOptions}
-//                     </select>
-//                     </div>
-//                 </div>
-//         )        
-//     }
-// }
+import Permissions from './permissions.js';
+import BundleTable from './dossier.js';
 
 
-// // export default RoleAndLocation;
-
-
-// class RoleAndLocation extends React.Component {
-    
-//     render() {
-        
-//         const roles = this.props.roles;
-//         const locations = this.props.locations;
-//         if (roles === null) return <span> Problemen met laden van de pagina. </span>;
-//         if (locations === null) return <span> Problemen met laden van de pagina. </span>;
-
-//         const rolesOptions = roles.map((role) => {
-//            return (
-//                 <option key={role.id} value={role.id}>{role.name}</option>
-//            ) 
-//         });
-        
-        
-//         if (this.props.currentStep !== 1) {
-//             return null;
-//         }
-        
-//         return (
-//             <div className="m-3 p-2">
-
-//                 <div className="">
-//                     <label htmlFor="role">Rol:</label>
-//                     <div>
-//                     <select className="m-1" name="role" id="role" 
-//                         value={this.props.roleDisplayName} 
-//                         onChange={this.props.onChangeRole}
-//                         required>
-                        
-//                         <option hidden value=''></option>
-//                         {rolesOptions}
-//                     </select>
-//                     </div>
-//                 </div>
-                
-//                 <LocationSelection 
-//                     locations={this.props.locations}
-//                     isTrainee={this.props.isTrainee}
-//                     locationDisplayName= {this.props.locationDisplayName}
-//                     roleDisplayName = {this.props.roleDisplayName}
-//                     onChangeLocation={this.props.onChangeLocation}
-//                 /> 
-                
-//             </div>
-//         )
-//     }
-// }
-
-// class UserInfo extends React.Component {
-    
-//     componentDidMount() {
-//         Utils.dateValidation();
-//     }
-    
-//     render() {
-        
-//         if (this.props.currentStep !== 2) {
-//             return null;
-//         }
-        
-        
-//         return (
-//             <div className="row">
-//                 <div className="col-6 ">
-//                     <div className="float-right">
-//                         <label className="form-label" htmlFor="name">Naam:</label>
-//                         <input className="form-control small-form" id="name" type="text" name="name" value={this.props.name} onChange={this.props.handleFormChange}/>
-                        
-//                         <label htmlFor="email">Email:</label>
-//                         <input className="form-control" id="email" type="email" name="email" value={this.props.email} onChange={this.props.handleFormChange}/>
-                    
-//                         <label htmlFor="password">Wachtwoord:</label>
-//                         <input className="form-control" id="password" type="password" name="password"  value={this.props.password} onChange={this.props.handleFormChange}/>
-//                     </div>
-//                 </div>
-                
-//                 <div className="col-6">
-//                     <div className="float-left">
-
-//                         <label htmlFor="date">Datum actief:</label>
-//                         <input className="form-control" id="date" type="date" name="dateActive" value={this.props.date} onChange={this.props.handleFormChange}/>
-                    
-//                         <label htmlFor="role">Rol:</label>
-//                         <input className="form-control" id="role" type="text" name="role" value={this.props.role.name} disabled/>
-                    
-//                         <label htmlFor="date">Locatie:</label>
-//                         <input className="form-control" id="location" type="text" name="location" value={this.props.location.name} disabled/>
-//                     </div>
-//                 </div>
-
-                
-//             </div>
-//         )
-//     }
-// }
 
 class AddUser extends React.Component {
 
@@ -318,32 +182,18 @@ class AddUser extends React.Component {
                 <div className="row text-center">
                     {errorsList}
                 </div>
-                    
-
-                    {/* <form onSubmit={this.handleSubmit} className="col-lg-8">
-
-                        <div className="">
-                        <label className="" htmlFor="role">Rol:</label>
-                        <select className="" name="role" id="role" disabled={!(userRole === "Admin")}
-                                value={this.state.roleDisplayName}
-                                onChange={this.onChangeRole}
-                                required>
-                                {rolesOptions}
-                            </select>
-                        </div>               */}
 
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
 
                     <div className="input row dossier mt-2">
                         <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
-                        <select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
+                        <Select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
                             onChange={this.handleFormChange}
                             required>
                             <option hidden value=''></option>
                             {rolesOptions}
-                        </select>
+                        </Select>
                     </div>
-{/* >>>>>>> origin/multiple_locations */}
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
@@ -388,16 +238,18 @@ class AddUser extends React.Component {
                         <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             onChange={this.handleFormChange}/>
                     </div>
-                            {/* 
-                                <div className="input row dossier" hidden={!traineeDossier}>
-                                    <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                                    <BundleTable 
-                                        bundlesTrainee={this.state.bundlesTrainee} 
-                                        bundles={this.state.bundles}
-                                        removeBundle={this.removeBundle.bind(this)}
-                                        handleBundleChange={this.handleBundleChange.bind(this)} 
-                                        addBundle ={this.addBundle.bind(this)} />
-                            </div> */}
+                            
+                    {/* leaving this here for when a bundleFeature like this is needed in the future
+                    <div className="input row dossier" hidden={!traineeDossier}>
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        <BundleTable 
+                            bundlesTrainee={this.state.bundlesTrainee} 
+                            bundles={this.state.bundles}
+                            removeBundle={this.removeBundle.bind(this)}
+                            handleBundleChange={this.handleBundleChange.bind(this)} 
+                            addBundle ={this.addBundle.bind(this)} 
+                        />
+                    </div> */}
 
                     <div className="row mt-2">
                         <div className="buttons">
@@ -410,65 +262,8 @@ class AddUser extends React.Component {
                             <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
                         </div>
                     </div>
-
                 </form>
-
-
-{/* 
-                    <form onSubmit={this.handleSubmit}>
-
-                        <div className="row justify-content-center">
-
-                            <div className="col-4">
-
-                                <RoleAndLocation
-                                    currentStep={this.state.currentStep}
-                                    roles={this.state.roles}
-                                    locations={this.state.locations}
-                                    // teachers={this.state.teachers}
-                                    // teacherDisplayName={this.state.teacherDisplayName}
-                                    roleDisplayName={this.state.roleDisplayName}
-                                    locationDisplayName={this.state.locationDisplayName}
-                                    onChangeRole={this.onChangeRole}
-                                    onChangeLocation={this.onChangeLocation}
-                                    // onChangeTeacher={this.onChangeTeacher}
-                                    isTrainee={this.state.isTrainee}
-                                />
-            
-                            <UserInfo
-                                currentStep={this.state.currentStep}
-                                name={this.state.name}
-                                email={this.state.email}
-                                date={this.state.dateActive}
-                                role={this.state.role}
-                                location={this.state.location}
-                                password={this.state.password}
-                                handleFormChange={this.handleFormChange}
-                            />
-                            </div>
-                        </div>
-
-                            <div className="row justify-content-center">
-                                <div className="col-3 m-1">
-                                    {this.nextButton}
-                                    {this.submitButton}
-                                </div>
-                            </div>
-                    </form>*/}
-
-                    {/* <div className="row justify-content-center">
-                        <div className="col-3">
-                            {(this.state.currentStep <= 1 ) ? 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
-                                <button
-                                    className="btn btn-primary float-right"
-                                    type="button" onClick={this._prev}>
-                                    Vorige
-                                </button>}
-                        </div>
-                    </div>  */}
-
-             </div> 
+            </div>
         )
     }
 }

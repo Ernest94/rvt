@@ -51,9 +51,6 @@ public class ReviewResource extends BaseResource {
 			ThemeConceptService conceptServ = new ThemeConceptService(session);
 	
 		    User userOutput = userServ.getUserById(userId);
-		    if (userOutput == null) {
-		    	return Response.status(404).build();
-		    }
 		    if (userOutput.getRole().getId() == 3 /* JH: Make this an enum */) { /* JH TIP: invert the if */
 				
 				List<Review> allReviews = reviewServ.getAllCompletedReviewsForUser(userOutput);
@@ -130,9 +127,6 @@ public class ReviewResource extends BaseResource {
 		LOG.debug("setActiveReviewComplete {} called", review);
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
-			if (reviewServ.getReviewById(review.getId()) == null) {
-				return Response.status(404).build();
-			}
 	        Review reviewOutput = reviewServ.completedReview(review.getId());
 			LOG.info("Review for trainee {} is marked 'COMPLETED' by {}.", 
 					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
@@ -147,9 +141,6 @@ public class ReviewResource extends BaseResource {
 		LOG.debug("setActiveReviewComplete {} called", review);
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
-			if (reviewServ.getReviewById(review.getId()) == null) {
-				return Response.status(404).build();
-			}
 			Review reviewOutput = reviewServ.cancelledReview(review.getId());
 			LOG.info("Review for trainee {} is marked 'CANCELLED' by {}.", 
 					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
@@ -213,14 +204,12 @@ public class ReviewResource extends BaseResource {
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
 			Review reviewOutput = reviewServ.getReviewById(review.getId());
-			if (reviewOutput != null) {
-				review.setReviewStatus(Review.Status.PENDING);
-				LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
-						 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
-				reviewServ.updateReview(review, reviewOutput);
-			  return Response.status(202).build();
-			} 
-			return Response.status(404).build();
+			
+			review.setReviewStatus(Review.Status.PENDING);
+			LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
+					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
+			reviewServ.updateReview(review, reviewOutput);
+			return Response.status(202).build();
 		});
 	}
 	

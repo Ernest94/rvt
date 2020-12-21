@@ -57,7 +57,7 @@ class TestUserRepository {
 	void testCreate() throws DatabaseException {
 		// Prepare
 		UserRepository ur = new UserRepository(session);
-		Role role = new RoleRepository(session).readById(2);
+		Role role = new RoleRepository(session).readByKnownId(2);
 		User user = new User("testUser", "test@example.com", "1234", role);
 		
 		// Run
@@ -75,7 +75,7 @@ class TestUserRepository {
 		
 		// create new Repository
 		UserRepository ur2 = new UserRepository(session);
-		User result2 = ur2.readById(newId);
+		User result2 = ur2.readByKnownId(newId);
 		// check if they are the same
 		assertNotNull(result2);
 		assertEquals(newId, result2.getId());
@@ -107,7 +107,7 @@ class TestUserRepository {
 		UserRepository ur = new UserRepository(session);
 		
 		// Run
-		User result = ur.readById(1);
+		User result = ur.readByKnownId(1);
 		// Make sure the session is closed to test EAGER loading
 		TestHibernateSession.closeSession(session);
 		
@@ -124,7 +124,7 @@ class TestUserRepository {
 		UserRepository ur = new UserRepository(session);
 		
 		// Run
-		User result = ur.readById(1);
+		User result = ur.readByKnownId(1);
 		
 		// Validate
 		assertNotNull(result);
@@ -139,7 +139,7 @@ class TestUserRepository {
 	void testUpdate() throws DatabaseException {
 		// Prepare
 		UserRepository ur = new UserRepository(session);
-		Role role = new RoleRepository(session).readById(3);
+		Role role = new RoleRepository(session).readByKnownId(3);
 		User newUser = new User("Test", "test@example.com", "22211", role, LocalDate.ofYearDay(1999, 24), LocalDate.now());
 		newUser.setId(3);
 		
@@ -163,7 +163,7 @@ class TestUserRepository {
 		// Prepare
 		UserRepository ur = new UserRepository(session);
 		List<Location> locations = new LocationRepository(session).readAll();
-		User user = ur.readById(2);
+		User user = ur.readByKnownId(2);
 		
 		// Run
 		ur.updateLocations(user, locations);
@@ -173,7 +173,7 @@ class TestUserRepository {
 		TestHibernateSession.closeSession(session);
 		session = TestHibernateSession.openSessionAndTransaction();		
 		UserRepository ur2 = new UserRepository(session);
-		User result = ur2.readById(2);
+		User result = ur2.readByKnownId(2);
 		
 		assertNotNull(result);
 		assertEquals(2, result.getId());
@@ -184,7 +184,7 @@ class TestUserRepository {
 		
 		// Follow-up remove 1 location
 		locations.remove(new Location("Sittard"));
-		user = ur2.readById(2);
+		user = ur2.readByKnownId(2);
 		
 		// Run
 		ur2.updateLocations(user, locations);
@@ -194,7 +194,7 @@ class TestUserRepository {
 		TestHibernateSession.closeSession(session);
 		session = TestHibernateSession.openSession();		
 		UserRepository ur3 = new UserRepository(session);
-		User result2 = ur3.readById(2);
+		User result2 = ur3.readByKnownId(2);
 		
 		assertNotNull(result2);
 		assertEquals(2, result2.getId());
