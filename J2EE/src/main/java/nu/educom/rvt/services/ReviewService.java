@@ -240,7 +240,8 @@ public class ReviewService {
 	public Review updateConceptRating(ConceptRating old, ConceptPlusRating conceptPlusRating) throws DatabaseException {
 		ConceptRating updated = conceptRatingRepo.readById(old.getId());
 		updated.setComment(conceptPlusRating.getComment());
-		updated.setRating(conceptPlusRating.getRating());		
+		updated.setRating(conceptPlusRating.getRating());
+		updated.setFeather(conceptPlusRating.getFeather());
 		return updated.getReview();
 	}
 	
