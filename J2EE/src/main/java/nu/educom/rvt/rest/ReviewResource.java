@@ -128,6 +128,7 @@ public class ReviewResource extends BaseResource {
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
 	        Review reviewOutput = reviewServ.completedReview(review.getId());
+	        reviewOutput.setDocent(review.getDocent());
 			LOG.info("Review for trainee {} is marked 'COMPLETED' by {}.", 
 					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
 			return Response.status(202).build();
@@ -142,6 +143,7 @@ public class ReviewResource extends BaseResource {
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
 			Review reviewOutput = reviewServ.cancelledReview(review.getId());
+			reviewOutput.setDocent(review.getDocent());
 			LOG.info("Review for trainee {} is marked 'CANCELLED' by {}.", 
 					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
 			return Response.status(202).build();
@@ -204,7 +206,6 @@ public class ReviewResource extends BaseResource {
 		return wrapInSessionWithTransaction(session -> {
 			ReviewService reviewServ = new ReviewService(session);
 			Review reviewOutput = reviewServ.getReviewById(review.getId());
-			
 			review.setReviewStatus(Review.Status.PENDING);
 			LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
 					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");

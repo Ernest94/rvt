@@ -323,7 +323,8 @@ class docentAddReview extends React.Component {
 
     createReviewIdJSON() {
         return {
-            id: this.state.reviewId
+            id: this.state.reviewId,
+            docent: {id: +sessionStorage.getItem("userId")}
         };
     }
 
