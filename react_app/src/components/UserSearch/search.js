@@ -7,7 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, FormControl, InputLabel, TextField} from '@material-ui/core'
+import {Select, Input, MenuItem, FormHelperText, InputLabel, TextField} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -17,13 +17,14 @@ class Search extends React.Component {
             locations: [],
             selectedLocationsIds:[],
             selectedLocations: [],
+
             roles: [],
-            role: "",
-            roleId:"",
+            selectedRoleId:0,
+
             criteria: "",
+
             users: [],
-            loading: false,
-            roleDisplayName: "",
+            pageLoading: true,
             buttonDisabled: false,
         };
     }
@@ -33,9 +34,7 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ pageLoading: true });
-        this.getLocationsAndRoles()
-        
+        this.getLocationsAndRoles() 
     }
 
     getLocationsAndRoles() {
@@ -66,8 +65,7 @@ class Search extends React.Component {
             loading: true,
             selectedLocations:userLocations,
             selectedLocationsIds: userLocationsIds,
-            roleId: role.id,
-            // roleDisplayName: role.id
+            selectedRoleId: role.id,
         });
 
         console.log(this.createSearchJson());
@@ -109,7 +107,7 @@ class Search extends React.Component {
         }
         return {
             locations: locations,
-            role: {id:parseInt(this.state.roleId)},
+            role: {id:parseInt(this.state.selectedRoleId)},
             criteria: this.state.criteria
         }
 }
@@ -168,7 +166,7 @@ class Search extends React.Component {
         }
         const rolesOptions = roles.map((role) => {
             return (
-                <option key={role.id} value={role.id}>{role.name}</option>
+                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
             )
         });
         var userDisplay = users.map((user) => {
@@ -212,7 +210,9 @@ class Search extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-2">
-                        <label className="m-1" htmlFor="role">Rol:</label>
+                        <InputLabel className="m-1" htmlFor="role">
+                            <small>Rol:</small>
+                        </InputLabel>
                             <Select name="role" id="role"
 
                                 value={this.state.roleId}
@@ -222,9 +222,11 @@ class Search extends React.Component {
                             </Select>
                           </div>
                           <div className="m-auto col-4">
-                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
+                                <InputLabel className="m-1" shrink={false} id="location-label" >
+                                   <small> Locatie: </small>
+                                </InputLabel>
                                 <Select
-                                    className="m-1 text-black"
+                                    className="m-1 text-black locationInput search"
                                     labelId="location-label"
                                     id="selectedLocationsIds"
                                     name="selectedLocationsIds" 
@@ -244,11 +246,12 @@ class Search extends React.Component {
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                </InputLabel>
                           </div> 
                           <div className="m-auto col-4">
-                            <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
-                            <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                            <InputLabel className="m-1" htmlFor="criteria">
+                                <small>zoek een gebruiker: </small>
+                            </InputLabel>
+                            <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
                         <div className="m-auto col-2">
                             <button className="btn btn-outline-secondary m-2"

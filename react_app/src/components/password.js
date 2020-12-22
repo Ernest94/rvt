@@ -18,27 +18,28 @@ class Password extends React.Component {
             repeatPassword: "",
             errors: null,
             buttonDisabled: false,
+            message: "",
         };
     }
     
     handleFormChange = (e) => {
         const {name, value} = e.target;
         this.setState({
-           [name]: value 
+           [name]: value,
+           message: ""
         });
     }
     
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
+        this.setState({message: ""});
         var errors = validate(this.state, constraints);
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/password", this.createPasswordJson())
                 .then(response => {
-                    this.setState({buttonDisabled: false, errors: null});
-                    
-                    this.props.history.push('/settings');
-                })
+                    this.setState({buttonDisabled: false, errors: null, message: "Wachtwoord succesvol veranderd"});
+                                    })
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     const custErr = {password: ["Mislukt om het wachtwoord te veranderen."]}
@@ -72,35 +73,40 @@ class Password extends React.Component {
                 <h2 className="text-center">Wachtwoord veranderen</h2>
 
                 <div className="row justify-content-center m-4">
-                {errorsList}
+                    {errorsList} 
                 </div>
 
                 <div className="row justify-content-center m-4">
-                <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
 
-                    <div className="form-group">
-                        <label htmlFor="current">Huidig wachtwoord:</label>
-                        <TextField className="form-control" id="current" type="password" name="currentPassword" onChange={this.handleFormChange}/>
-                    </div>
+                        <div className="form-group">
+                            <label htmlFor="current">Huidig wachtwoord:</label>
+                            <TextField className="form-control" id="current" type="password" name="currentPassword" onChange={this.handleFormChange}/>
+                        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="newPassword">Nieuw wachtwoord:</label>
-                        <TextField className="form-control" id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
-                    </div>
-                    
-                    <div className="form-group">
-                        <label htmlFor="repeatePassword">Herhaal nieuw wachtwoord:</label>
-                        <TextField className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
-                    </div>
-                    
-                    <button className="btn btn-danger btn-block" 
-                        disabled={buttonDisabled} 
-                        type="submit">
-                        {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
-                    </button>
-                    
-                </form> 
+                        <div className="form-group">
+                            <label htmlFor="newPassword">Nieuw wachtwoord:</label>
+                            <TextField className="form-control" id="password" type="password" name="newPassword" onChange={this.handleFormChange}/>
+                        </div>
+                        
+                        <div className="form-group">
+                            <label htmlFor="repeatePassword">Herhaal nieuw wachtwoord:</label>
+                            <TextField className="form-control" id="repeatPassword" type="password" name="repeatPassword" onChange={this.handleFormChange}/>
+                        </div>
+                        
+                        <button className="btn btn-danger btn-block" 
+                            disabled={buttonDisabled} 
+                            type="submit">
+                            {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
+                        </button>
+                        
+                    </form>
                 </div>
+
+                <div className="form-group">
+                    <h4 className="text-center text-success">{this.state.message}</h4>
+                </div>
+
             </div>
         )
     }

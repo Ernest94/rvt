@@ -8,7 +8,7 @@ import Permissions from './permissions.js';
 import constraints from '../constraints/dossierConstraints';
 import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
-import {Select, Input, MenuItem} from '@material-ui/core'
+import {Select, Input, MenuItem, TextField} from '@material-ui/core'
 
 
 class BundleTable extends React.Component {
@@ -40,7 +40,7 @@ class BundleTable extends React.Component {
                     :
                     <tr className="row" key={"bundleSelect_" + index}>
                         <td>  
-                            <select className="form-control"
+                            <Select className="form-control"
                             id={"bundle_" + index}
                             name="bundle"
                             value={bundleTrainee.bundle.id? bundleTrainee.bundle.id : -1}
@@ -48,10 +48,10 @@ class BundleTable extends React.Component {
                             >
                                 <option value="-1" hidden>Kies een bundel</option>
                                 {bundleOptions}
-                            </select>                     
+                            </Select>                     
                         </td>
                         <td>              
-                            <select className="form-control"
+                            <Select className="form-control"
                                 id={"week_" + index}
                                 name="startWeek"
                                 value={bundleTrainee.startWeek}
@@ -59,7 +59,7 @@ class BundleTable extends React.Component {
                             >
                                 <option value="-1" hidden>Kies een startweek</option>
                                 {weekOptions}
-                            </select>
+                            </Select>
                         </td>
                         <td>
                             <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e,index)}>
@@ -200,42 +200,41 @@ class Dossier extends React.Component {
     getAllInfo() {
         const userId =  this.props.match.params.userId;
 
-        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier', 
-        {headers: {"userId": userId}} );
-        const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
-        const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
-        axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
+        axios.all([
+            axios.get(config.url.API_URL +'/webapi/user/dossier', {headers: {"userId": userId}} ), 
+            axios.get(config.url.API_URL + '/webapi/user/roles'), 
+            axios.get(config.url.API_URL + '/webapi/bundle/bundles')])
+        .then(axios.spread((...responses) => {
             const userResponse = responses[0]
             const roleLocResponse = responses[1]
             const bundleResponse = responses[2]
             console.log(userResponse.data)
-            
-           var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
-           this.setState({
-                userId: userId,
+        
+            var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
+            this.setState({
+                    userId: userId,
 
-                name: userResponse.data.name,
-                email: userResponse.data.email,
-                role: userResponse.data.role,
-                roleId: userResponse.data.role.id,
-                
-                currentLocations: userResponse.data.currentLocations,
-                currentLocationsIds: currentLocationsIds,
-                startDate: userResponse.data.startDate,
+                    name: userResponse.data.name,
+                    email: userResponse.data.email,
+                    role: userResponse.data.role,
+                    roleId: userResponse.data.role.id,
+                    
+                    currentLocations: userResponse.data.currentLocations,
+                    currentLocationsIds: currentLocationsIds,
+                    startDate: userResponse.data.startDate,
 
-                roles: roleLocResponse.data.roles,
-                locations: roleLocResponse.data.locations,
+                    roles: roleLocResponse.data.roles,
+                    locations: roleLocResponse.data.locations,
 
-                bundles: bundleResponse.data,
+                    bundles: bundleResponse.data,
 
-                pageLoading: false,
-           });
+                    pageLoading: false,
+            });
             this.getTraineeBundles();
             this.canViewUserDossier();
             this.canEditUserDossier();
-            // if (!this.props.editDisabled) {this.canEditUserDossier()};
-           
-        })).catch(errors => {
+        }))
+        .catch(errors => {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
@@ -270,10 +269,11 @@ class Dossier extends React.Component {
             sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
         console.log(this.createUserJson())
-        const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
-        const bundleUpdate = axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson());
         if (!errors) {
-            axios.all([userUpdate, ]) //bundleUpdate
+            axios.all([
+                axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson()),
+                axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson())
+            ]) 
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     this.props.history.push('/dossier/' + this.state.userId);
@@ -408,24 +408,29 @@ class Dossier extends React.Component {
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
-                <ul className="errors text-center">{errors}</ul>
+                <ul className="errors text-center">
+                    {errors}
+                </ul>
+
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
-                        <input className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
+                        <TextField className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
                             disabled={editDisabled || !allowedToEditFields.includes("name") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
-                        <input className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
+                        <TextField className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
                         disabled={editDisabled || !allowedToEditFields.includes("email") || !allowedToEdit}
                         onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
-                        <select className="form-control col-sm-9" name="roleId" id="roleId"
+                        <Select className="form-control col-sm-9" name="roleId" id="roleId"
                             value={roleId}
                             onChange={this.handleFormChange}
                             required
@@ -433,12 +438,13 @@ class Dossier extends React.Component {
 
                             <option hidden value=''>Rol</option>
                             {rolesOptions}
-                        </select>
+                        </Select>
                     </div>
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <Select
-                            className="m-1 text-black"
+                            className="form-control col-sm-9"
                             id="currentLocationsIds"
                             name="currentLocationsIds" 
                             multiple
@@ -456,13 +462,15 @@ class Dossier extends React.Component {
 
                         </Select>
                     </div>
+
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
+                        <TextField className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             value={startDate} 
                             disabled={editDisabled || !allowedToEditFields.includes("startDate") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
+
                     <div className="input row dossier" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
                         <BundleTable 
@@ -473,11 +481,13 @@ class Dossier extends React.Component {
                         handleBundleChange={this.handleBundleChange.bind(this)} 
                         addBundle ={this.addBundle.bind(this)} />
                     </div>
+
                     <div className="row">
                         <div className="buttons">
                             {(!editDisabled) ? <button type="submit" className="btn btn-danger btn-block">Opslaan</button> : <span></span>}
                         </div>
                     </div>
+                    
                     <div className="row">
                         <div className="buttons">
                             {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger btn-block">Annuleer</Link> : <span></span>}

@@ -5,7 +5,7 @@ import {config} from './constants';
 import './conceptOverview.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
-import { Checkbox} from '@material-ui/core';
+import {Select, Checkbox} from '@material-ui/core';
 import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
@@ -217,19 +217,20 @@ class conceptOverview extends React.Component {
                     
                     <div className="col-2 col-lg-6">
                         Selecteer een bundel:
-                        <select className="m-1" name="bundle" id="bundle"
+                        <Select className="m-auto col-6" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
                                 <option hidden value=''></option>
                                 {bundleOptions}
-                            </select>
+                        </Select>
                     </div>
                     <div className="col-2">
                         <span>
-                            <Link className="btn btn-primary" 
+                            <Link className="btn btn-danger" 
                                 to={{pathname:"/addBundle/",                                
                                     state:{bundleId:-1}}}>
+
                                 <FaPlus/>
                             </Link>
                         </span>
@@ -238,7 +239,7 @@ class conceptOverview extends React.Component {
                         {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
                             || "Admin"===sessionStorage.getItem("userName"))) ? 
                         <span>
-                            <Link className="btn btn-primary" 
+                            <Link className="btn btn-danger" 
                                 to={{pathname:"/addBundle/",                                
                                     state:{
                                             bundleId:this.state.selectedBundle,
@@ -247,19 +248,11 @@ class conceptOverview extends React.Component {
                                 Dupliceer bundel
                             </Link>
                         </span>:<span></span>}
-
-
-
-                        {/* {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
-                            || "Admin"===sessionStorage.getItem("userName"))) ? 
-                            <button className="btn btn-primary bundle-submit-button" onClick={this.saveBundle}> 
-                                Dupliceer bundel
-                            </button>: <span></span>} */}
                     </div>
                     <div className="col">
                         {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
                             || "Admin"===sessionStorage.getItem("userName"))) ? 
-                        <button className="btn btn-primary bundle-submit-button" onClick={this.saveBundle}> 
+                        <button className="btn btn-danger bundle-submit-button" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
                     </div>

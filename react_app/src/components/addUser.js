@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link,withRouter } from 'react-router-dom';
-import {Select, Input, MenuItem} from '@material-ui/core'
+import {Select, Input, MenuItem, TextField} from '@material-ui/core'
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
@@ -186,12 +186,16 @@ class AddUser extends React.Component {
 
                     <div className="input row dossier mt-2">
                         <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
-                        <Select className="form-control col-sm-9" name="roleId" id="roleId" disabled={!(userRole === "Admin")}
+                        <Select 
+                            className="form-control col-sm-9" 
+                            name="roleId" 
+                            id="roleId" 
+                            disabled={!(userRole === "Admin")}
                             onChange={this.handleFormChange}
                             value={this.state.roleId}
                             required>
-                            <option hidden value=''></option>
-                            {rolesOptions}
+                                <option hidden value=''></option>
+                                {rolesOptions}
                         </Select>
                     </div>
 
@@ -210,33 +214,32 @@ class AddUser extends React.Component {
                                 variant: "menu",
                                 getContentAnchorEl: null}
                             }
-                            input={<Input id="selectedLocationsIds" />}
-                            >
-                            {locationsOptions}
+                            input={<Input id="selectedLocationsIds" />}>
+                                {locationsOptions}
                         </Select>
                     </div>
             
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
-                        <input className="form-control col-sm-9" id="name" type="name" name="name"
+                        <TextField className="form-control col-sm-9" id="name" type="name" name="name"
                             onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
-                        <input className="form-control col-sm-9" id="email" type="email" name="email"
+                        <TextField className="form-control col-sm-9" id="email" type="email" name="email"
                         onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="password">Wachtwoord:</label>
-                        <input className="form-control col-sm-9" id="password" type="password" name="password"
+                        <TextField className="form-control col-sm-9" id="password" type="password" name="password"
                         onChange={this.handleFormChange}/>
                     </div>
 
                     <div className="input row dossier" >
                         <label className="label col-sm col-form-label" htmlFor="startDate">Startdatum:</label>
-                        <input className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
+                        <TextField className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
                             onChange={this.handleFormChange}/>
                     </div>
                             
@@ -254,13 +257,13 @@ class AddUser extends React.Component {
 
                     <div className="row mt-2">
                         <div className="buttons">
-                            <button type="submit" className="btn btn-primary btn-block">Voeg toe</button>
+                            <button type="submit" className="btn btn-danger btn-block">Voeg toe</button>
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="buttons">
-                            <Link to="/settings"  className="btn btn-primary btn-block">Annuleer</Link>
+                            <Link to="/settings"  className="btn btn-danger btn-block">Annuleer</Link>
                         </div>
                     </div>
                 </form>
