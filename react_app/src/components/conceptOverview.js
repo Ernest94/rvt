@@ -5,7 +5,7 @@ import {config} from './constants';
 import './conceptOverview.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
-import { Checkbox} from '@material-ui/core';
+import {Select, Checkbox} from '@material-ui/core';
 import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
@@ -212,17 +212,17 @@ class conceptOverview extends React.Component {
                 <div className="row justify-content-lg-center">
                     <div className="col col-lg-6">
                         Selecteer een bundel:
-                        <select className="m-1" name="bundle" id="bundle"
+                        <Select className="m-auto col-6" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
                                 <option hidden value=''></option>
                                 {bundleOptions}
-                            </select>
+                        </Select>
                     </div>
                     <div className="col-md-auto">
                         <span>
-                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
+                            <Link className="btn btn-danger float-left" to={"/addBundle/"}>
                                 <FaPlus/>
                             </Link>
                         </span>
@@ -230,7 +230,7 @@ class conceptOverview extends React.Component {
                     <div className="col-7">
                     {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
                         || "Admin"===sessionStorage.getItem("userName"))) ? 
-                        <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                        <button className="btn btn-danger bundle-submit-button float-right" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
                     </div>

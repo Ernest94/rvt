@@ -5,7 +5,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className="center">
-                <p>Welkom op de home pagina!</p>
+                <p>er is iets misgegaan, ga terug naar de menu pagina via de link in de header!</p>
             </div >
 
         )

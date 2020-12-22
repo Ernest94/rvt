@@ -6,6 +6,7 @@ import {config} from './constants';
 import Permissions from './permissions.js';
 import Utils from './Utils.js';
 import {Link} from 'react-router-dom';
+import { TextField } from '@material-ui/core';
 
 class addLocation extends React.Component {
     
@@ -84,28 +85,27 @@ class addLocation extends React.Component {
                 <div className="row justify-content-center text-danger">{this.state.errors}</div>
                 
                     <form onSubmit={this.handleSubmit}>
-                    <div className="row justify-content-center">
-                        <div className="form-group">
-                            <label htmlFor="name">Naam van locatie:</label>
-                            <input className="form-control" id="locationName" type="text" name="locationName" value={this.state.locationName} onChange={this.handleFormChange}/>
+                        <div className="row justify-content-center">
+                            <div className="form-group">
+                                <label htmlFor="name">Naam van locatie:</label>
+                                <TextField className="form-control" id="locationName" type="text" name="locationName" value={this.state.locationName} onChange={this.handleFormChange}/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-8 m-1">
-                            <button className="btn btn-primary float-right" type="submit">Locatie toevoegen</button>
-                        </div>
-                    </div >
+
+                        <div className="buttons">
+                            <button className="btn btn-danger btn-block" type="submit">
+                                Locatie toevoegen
+                            </button>
+                            {(this.state.loading) ? 
+                            <button className="btn btn-danger btn-block" type="submit" disabled> 
+                                Laden...
+                            </button>: 
+                            <Link className="btn btn-danger btn-block" to={"/settings"}>
+                                Annuleren
+                            </Link>}
+                        </div> 
 
                     </form>
-
-                    <div className="row">
-                        <div className="col-8 ">
-                            {(this.state.loading) ? 
-                                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>}
-                        </div>
-                    </div> 
-
 
                 <div className="row justify-content-center m-3">
                     <h4 className="text-center text-success">{this.state.message}</h4>

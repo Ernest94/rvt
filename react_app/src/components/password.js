@@ -18,6 +18,7 @@ class Password extends React.Component {
             repeatPassword: "",
             errors: null,
             buttonDisabled: false,
+            message: "",
         };
     }
     
@@ -31,6 +32,7 @@ class Password extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({buttonDisabled: true});
+        this.setState({message: ""});
         var errors = validate(this.state, constraints);
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/password", this.createPasswordJson())
@@ -72,7 +74,7 @@ class Password extends React.Component {
                 <h2 className="text-center">Wachtwoord veranderen</h2>
 
                 <div className="row justify-content-center m-4">
-                {errorsList}
+                    {errorsList} 
                 </div>
 
                 <div className="row justify-content-center m-4">
@@ -100,6 +102,11 @@ class Password extends React.Component {
                     </button>
                     
                 </form> 
+
+                <div className="row justify-content-center m-3">
+                    <h4 className="text-center text-success">{this.state.message}</h4>
+                </div>
+
                 </div>
             </div>
         )

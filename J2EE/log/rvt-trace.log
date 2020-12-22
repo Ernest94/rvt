@@ -343,3 +343,538 @@
 2020-12-18T11:24:50.032+0100 [                ] TRACE UserResource         - getRoles called
 2020-12-18T11:24:51.436+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
 2020-12-18T11:24:51.437+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T10:53:40.164+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-21T10:53:40.166+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-21T10:53:40.167+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-21T11:03:39.875+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-21T11:03:41.083+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:03:41.187+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:04:33.649+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:04:33.729+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:04:36.472+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria 'asd'
+2020-12-21T11:04:38.294+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria '1'
+2020-12-21T11:05:46.150+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:05:46.290+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:08:10.621+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:08:10.749+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:09:19.334+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:09:19.423+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:09:46.079+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:09:46.179+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:10:03.567+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:10:03.727+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:10:30.444+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:10:30.547+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:10:43.798+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:10:43.883+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:10:46.976+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:10:47.053+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:12:03.236+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:12:03.322+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:12:14.836+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:12:14.925+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:12:26.033+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:12:26.120+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:12:29.871+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:12:29.952+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:12:49.986+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:12:50.140+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:13:11.172+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:13:11.264+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:34:59.606+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:34:59.753+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:35:22.706+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:35:22.791+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:35:31.713+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:35:31.800+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:35:34.885+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:35:34.951+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:35:36.712+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:35:36.784+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:36:07.309+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:36:07.434+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:36:16.892+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:36:16.977+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:36:22.823+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:36:22.908+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:36:27.378+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:36:27.446+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:36:35.182+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:36:35.262+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:37:33.328+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:37:33.452+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:38:06.621+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:38:06.804+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:38:14.376+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:38:14.460+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:38:23.132+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:38:23.221+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:42:49.599+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:42:49.692+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:42:55.785+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:42:55.859+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:43:20.296+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:43:20.445+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:43:51.416+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:43:51.592+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:45:58.618+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:45:58.716+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:46:34.542+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:46:34.639+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:46:44.835+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:46:44.921+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:46:47.303+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:46:47.381+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:47:11.111+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:47:11.238+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:47:39.098+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:47:39.100+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:47:39.116+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:47:39.121+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:47:52.188+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:47:52.190+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:47:52.207+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:47:52.215+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:48:43.564+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:48:43.566+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:48:43.581+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:48:43.584+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:49:32.155+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:49:32.155+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:49:32.204+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:49:32.207+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:49:36.656+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:49:36.658+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:49:36.659+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:49:36.661+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:50:13.268+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:50:13.268+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:50:13.288+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:50:13.291+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:50:16.893+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:50:16.893+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:50:16.896+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:50:16.899+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:50:21.661+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:50:21.661+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:50:21.735+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:50:21.738+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:50:23.979+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:50:23.979+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:50:23.980+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:50:23.982+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:51:33.790+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:51:33.790+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:51:33.845+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:51:33.848+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:51:37.757+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:51:37.758+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:51:37.761+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:51:37.765+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:51:59.938+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:51:59.938+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:51:59.988+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:51:59.990+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:52:17.095+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:52:17.095+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:52:17.111+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:52:17.113+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:52:20.531+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:52:20.531+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:52:20.531+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:52:20.533+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:54:40.100+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:54:40.100+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:54:40.158+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:54:40.160+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:54:49.706+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:54:49.707+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:54:49.722+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:54:49.724+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:54:53.062+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:54:53.062+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:54:53.063+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T11:54:53.065+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T11:54:55.143+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:54:55.220+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T11:54:55.802+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:54:55.803+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:54:55.814+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:54:55.816+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:54:55.884+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:55:04.969+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:55:04.969+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:55:05.030+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:55:05.032+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:55:05.113+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:55:10.837+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:55:10.837+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:55:10.854+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:55:10.856+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:55:10.919+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:55:14.485+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:55:14.485+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:55:14.486+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:55:14.487+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:55:14.576+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:55:50.247+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:55:50.247+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:55:50.271+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:55:50.273+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:55:50.443+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:56:55.788+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:56:55.788+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:56:55.807+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:56:55.809+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:56:55.920+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T11:57:00.329+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T11:57:00.330+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T11:57:00.330+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T11:57:00.331+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T11:57:00.422+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:03:52.686+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:03:52.686+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:03:52.704+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:03:52.706+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:03:52.850+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:03:56.474+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:03:56.474+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:03:56.475+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:03:56.477+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:03:56.563+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:04:13.551+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:04:13.551+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:04:13.572+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:04:13.574+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:04:13.765+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:04:21.746+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:04:21.746+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:04:21.774+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:04:21.776+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:04:21.961+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:04:48.428+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:04:48.428+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:04:48.471+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:04:48.473+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:04:48.602+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:04:52.019+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:04:52.019+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:04:52.020+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:04:52.021+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:04:52.113+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:01.261+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:01.261+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:01.316+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:01.318+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:01.455+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:02.527+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:02.527+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:02.527+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:02.533+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:02.629+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:04.245+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:04.245+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:04.245+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:04.247+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:04.322+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:11.965+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:11.965+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:11.983+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:11.984+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:12.095+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:17.104+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:17.188+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T12:05:18.219+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:05:30.280+0100 [                ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-21T12:05:44.842+0100 [                ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-21T12:05:54.879+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-21T12:05:56.447+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:56.512+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T12:05:57.916+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:57.916+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:57.929+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:57.931+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:57.986+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:05:59.605+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:05:59.605+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:05:59.605+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:05:59.606+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:05:59.680+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:06:00.885+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:06:00.886+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:06:00.886+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:06:00.889+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:06:00.966+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:06:02.151+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:06:02.151+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:06:02.151+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:06:02.153+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:06:02.233+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:06:02.992+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:06:02.992+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:06:03.006+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:06:03.007+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:06:03.067+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:06:04.977+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T12:06:04.977+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:06:04.977+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:06:04.979+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T12:06:14.408+0100 [                ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-21T12:06:14.593+0100 [                ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-21T12:08:33.823+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:08:33.823+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-21T12:08:49.021+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:08:49.023+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-21T12:08:53.678+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-21T12:08:53.678+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:11:03.366+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-21T12:11:03.372+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:11:15.145+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-21T12:11:15.147+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:11:24.823+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:11:26.901+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:11:50.148+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:11:55.252+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:11:59.071+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:12:09.254+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:18:38.820+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:18:38.820+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:18:38.836+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-21T12:18:38.838+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-21T12:19:08.395+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:20:35.751+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:21:18.236+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:21:18.346+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T12:21:19.214+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:21:19.217+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-21T12:21:19.266+0100 [                ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-21T12:21:19.268+0100 [                ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-21T12:21:19.480+0100 [                ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-21T12:21:21.649+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-21T12:21:21.730+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-21T12:21:23.751+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-21T12:21:25.539+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:36:10.030+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T09:36:10.032+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T09:36:10.034+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T09:47:03.397+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T09:47:11.601+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T09:47:11.602+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T09:47:16.007+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T09:49:22.200+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:49:22.325+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T09:49:30.160+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T09:49:30.161+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T09:50:19.683+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T09:52:21.475+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:52:59.477+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:53:25.547+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:53:46.910+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:53:55.039+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T09:54:00.608+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T09:54:00.609+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:07:23.243+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:07:23.243+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:07:23.261+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T10:07:23.266+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T10:07:25.565+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:07:25.565+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:07:25.565+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T10:07:25.568+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T10:07:28.345+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:07:28.430+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:07:37.443+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:07:43.638+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:08:07.093+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:08:31.106+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:08:52.271+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:09:58.585+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:10:12.731+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:10:38.114+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:10:46.388+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:10:50.919+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:11:04.822+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:11:04.906+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:13:02.363+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:13:06.270+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:13:06.270+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:13:06.286+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T10:13:06.289+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T10:13:09.002+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:13:09.099+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:13:09.892+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:13:11.416+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:13:12.634+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:13:12.635+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:13:15.957+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:13:15.957+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:13:54.835+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:13:54.836+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:08.299+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:08.300+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:10.599+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:10.601+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:17.209+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:17.209+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:31.500+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:31.500+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:43.916+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:43.921+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:14:56.727+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:14:56.728+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:15:01.957+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:24:11.980+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:24:11.980+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:24:21.151+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:24:21.151+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:24:22.983+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:24:28.624+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:24:29.636+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:24:32.379+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:24:32.444+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:28:33.753+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:28:33.753+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:28:41.524+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:28:41.525+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:28:45.590+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:28:47.110+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:28:49.937+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:31:36.030+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:31:36.030+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:31:40.720+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:31:40.720+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:31:49.139+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:31:50.221+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:31:51.554+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:31:53.335+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:32:27.222+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:32:41.315+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:32:51.875+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:33:03.711+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:33:08.819+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:33:19.178+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:33:51.789+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:34:26.553+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:34:31.742+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:34:37.545+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:34:54.936+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:34:59.288+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:36:01.463+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:36:12.716+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:36:14.597+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:36:15.918+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:36:15.921+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:36:56.452+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:36:56.452+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:37:05.393+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:37:06.309+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:37:08.776+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:37:08.776+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:38:26.543+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:38:26.544+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:38:48.994+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:38:48.994+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:39:14.156+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:39:14.167+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:39:34.666+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:39:34.666+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:39:55.025+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:39:59.162+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:40:00.444+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:40:01.349+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:40:03.700+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:40:03.702+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:41:12.310+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:41:12.342+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:41:35.479+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:41:35.488+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:42:09.697+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:42:09.712+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:42:17.995+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:42:18.006+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:42:23.914+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:42:23.925+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:45:20.105+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:45:20.105+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:45:43.781+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:45:43.784+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:46:08.161+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:46:08.161+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:46:33.414+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:46:33.426+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:46:39.350+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:46:39.353+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:46:55.956+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:46:55.957+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:03.384+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:03.384+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:47:22.602+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:22.602+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:47:30.653+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:30.653+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:47:41.341+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:47:41.341+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:45.133+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:47:45.133+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:48:13.505+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:48:13.505+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:48:21.900+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:48:21.910+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:48:58.794+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:48:58.794+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:49:42.647+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:49:42.660+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:50:19.056+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:50:27.982+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:50:27.990+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:50:30.250+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:50:30.250+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:50:34.131+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:50:36.137+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:50:38.869+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:52:58.411+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:52:58.502+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:53:00.136+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:53:05.957+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:53:07.284+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:53:07.285+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:53:26.697+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:53:26.697+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:53:48.029+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:53:48.032+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:53:55.123+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:53:55.209+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:53:56.731+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:53:59.129+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:01.703+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:54:01.704+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:01.727+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T10:54:01.729+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T10:54:09.119+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:13.889+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:14.859+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:54:14.860+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:54:18.057+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:23.136+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:54:27.906+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:54:27.914+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:54:29.737+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:54:29.738+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:54:48.369+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:54:48.369+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:54:50.904+0100 [                ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T10:54:52.786+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:54:52.851+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:54:55.917+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:55:00.692+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:55:00.765+0100 [                ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T10:55:06.349+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:55:06.349+0100 [                ] TRACE UserResource         - getRoles called
+2020-12-22T10:55:06.365+0100 [                ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T10:55:06.367+0100 [                ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T10:55:12.601+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:55:12.601+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:55:25.767+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:55:25.767+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T10:55:41.358+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T10:55:41.361+0100 [                ] TRACE BundleResource       - getAllBundles called

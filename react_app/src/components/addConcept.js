@@ -6,6 +6,7 @@ import './form.css'
 import Utils from './Utils.js'
 import { Link } from 'react-router-dom';
 import { FaPlus, FaTimes } from "react-icons/fa";
+import {Select, TextField} from '@material-ui/core';
 
 class BundleConceptTable extends React.Component {
 
@@ -37,17 +38,6 @@ class BundleConceptTable extends React.Component {
                                 <tr className="row" key={"bundleSelect_" + index}>
                                     <td>
                                         <select className="form-control"
-                                            id={"week_" + index}
-                                            name="startWeek"
-                                            value={chosenBundle.week}
-                                            onChange={(e) => this.props.handleBundleWeekChange(e)}
-                                        >
-                                            <option value="-1" hidden>Kies een startweek</option>
-                                            {weekOptions}
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select className="form-control"
                                             id={"bundle_" + index}
                                             name="bundle"
                                             value={chosenBundle.bundle.id ? chosenBundle.bundle.id : -1}
@@ -58,7 +48,18 @@ class BundleConceptTable extends React.Component {
                                         </select>
                                     </td>
                                     <td>
-                                        <button className="btn btn-primary btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
+                                        <select className="form-control"
+                                            id={"week_" + index}
+                                            name="startWeek"
+                                            value={chosenBundle.week}
+                                            onChange={(e) => this.props.handleBundleWeekChange(e)}
+                                        >
+                                            <option value="-1" hidden>Kies een startweek</option>
+                                            {weekOptions}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
                                             <FaTimes />
                                         </button>
                                     </td>
@@ -66,7 +67,7 @@ class BundleConceptTable extends React.Component {
                     </tbody>
                 </table>
                 {!this.props.editDisabled ?
-                    <button className="btn btn-primary btn-sm" name="add" type="button" onClick={this.props.addBundle}>
+                    <button className="btn btn-danger btn-sm" name="add" type="button" onClick={this.props.addBundle}>
                         <FaPlus />
                     </button> : ""}
             </div>)
@@ -349,7 +350,7 @@ class addConcept extends React.Component {
                             <div className="buttons">
                             <div>
                                 <button 
-                                    className="btn btn-primary btn-block" 
+                                    className="btn btn-danger btn-block" 
                                     type="submit"
                                     >                        
                                     Concept toevoegen
@@ -357,7 +358,7 @@ class addConcept extends React.Component {
                             </div>
                             <div>
                                 <Link 
-                                    className="btn btn-primary btn-block" 
+                                    className="btn btn-danger btn-block" 
                                     to={"/settings/"}
                                     role="button"
                                     >                        

@@ -7,7 +7,7 @@ import './search.css';
 import { withRouter } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, FormControl, InputLabel, TextField} from '@material-ui/core'
+import {Select, Input, MenuItem, FormHelperText, InputLabel, TextField} from '@material-ui/core'
 
 class Search extends React.Component {
 
@@ -211,7 +211,9 @@ class Search extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-2">
-                        <label className="m-1" htmlFor="role">Rol:</label>
+                        <InputLabel className="m-1" htmlFor="role">
+                            <small>Rol:</small>
+                        </InputLabel>
                             <Select name="role" id="role"
 
                                 value={this.state.roleId}
@@ -221,7 +223,9 @@ class Search extends React.Component {
                             </Select>
                           </div>
                           <div className="m-auto col-4">
-                                <InputLabel className="m-1 text-black" shrink={false} id="location-label" >Locatie: 
+                                <InputLabel className="m-1" shrink={false} id="location-label" >
+                                   <small> Locatie: </small>
+                                </InputLabel>
                                 <Select
                                     className="m-1 text-black"
                                     labelId="location-label"
@@ -243,11 +247,12 @@ class Search extends React.Component {
                                         </MenuItem>
                                     ))}
                                 </Select>
-                                </InputLabel>
                           </div> 
                           <div className="m-auto col-4">
-                            <label className="m-1" htmlFor="criteria">Zoek Criteria:</label>
-                            <input id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
+                            <InputLabel className="m-1" htmlFor="criteria">
+                                <small>zoek een gebruiker: </small>
+                            </InputLabel>
+                            <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
                         <div className="m-auto col-2">
                             <button className="btn btn-outline-secondary m-2"
