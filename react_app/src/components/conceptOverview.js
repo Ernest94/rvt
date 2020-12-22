@@ -229,7 +229,7 @@ class conceptOverview extends React.Component {
                         <span>
                             <Link className="btn btn-primary" 
                                 to={{pathname:"/addBundle/",                                
-                                    state:{bundle:""}}}>
+                                    state:{bundleId:-1}}}>
                                 <FaPlus/>
                             </Link>
                         </span>
