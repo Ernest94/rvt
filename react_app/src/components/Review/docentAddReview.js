@@ -363,7 +363,7 @@ class docentAddReview extends React.Component {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
-            case 0: return ("geen week aangegeven");
+            case 0: return ("geen week gegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " +  (3 * wpb));
@@ -435,9 +435,7 @@ class docentAddReview extends React.Component {
             <tbody className="tableBody table">
             
                 {this.state.concepts.map((concept, index) => {    
-                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0)
-                    // var concept.feather
-
+                   var checkboxDisabled = (concept.comment!=="" || concept.rating!==0);
 
                     if (selectionFunction(concept)){
                         return (
@@ -447,7 +445,7 @@ class docentAddReview extends React.Component {
                                 id={"concept"+concept.id}
                                 onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
                                 checked={concept.active}
-                                // disabled={checkboxDisabled}
+                                disabled={checkboxDisabled}
                                 />                   
                             </td>
                             <td className="week" id="text">
