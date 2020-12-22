@@ -507,6 +507,11 @@ class Dossier extends React.Component {
                         </Link>
                     </div>
                     <div>
+                        <Link className="btn btn-danger btn-block" to={"/settings"}>
+                                Annuleer
+                            </Link>
+                    </div>
+                    <div>
                         <Link
                             className="btn btn-danger btn-block"
                             to={"/curriculum/" + userId /*+ "/" + name */}

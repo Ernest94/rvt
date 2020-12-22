@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
-import { withRouter } from 'react-router-dom'
+import { withRouter,Link } from 'react-router-dom'
 
 import Util from './Utils.js'
 import constraints from '../constraints/passwordChangeConstraints';
@@ -99,6 +99,10 @@ class Password extends React.Component {
                             type="submit">
                             {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
                         </button>
+
+                        <Link className="btn btn-danger btn-block" to={"/settings"}>
+                            Annuleer
+                        </Link>
                         
                     </form>
                 </div>

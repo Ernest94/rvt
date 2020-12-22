@@ -4,7 +4,7 @@ import axios from 'axios';
 import {config} from '../constants.js';
 import './search.css';
 
-import { withRouter } from 'react-router-dom'
+import { withRouter,Link } from 'react-router-dom'
 import Util from '../Utils';
 import Permissions from '../permissions.js'
 import {Select, Input, MenuItem, FormHelperText, InputLabel, TextField} from '@material-ui/core'
@@ -209,7 +209,7 @@ class Search extends React.Component {
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
-                        <div className="m-auto col-2">
+                        <div className="m-auto col-1">
                         <InputLabel className="m-1" htmlFor="role">
                             <small>Rol:</small>
                         </InputLabel>
@@ -221,7 +221,7 @@ class Search extends React.Component {
                                 {rolesOptions}
                             </Select>
                           </div>
-                          <div className="m-auto col-4">
+                          <div className="m-auto col-3">
                                 <InputLabel className="m-1" shrink={false} id="location-label" >
                                    <small> Locatie: </small>
                                 </InputLabel>
@@ -247,18 +247,23 @@ class Search extends React.Component {
                                     ))}
                                 </Select>
                           </div> 
-                          <div className="m-auto col-4">
+                          <div className="m-auto col-3">
                             <InputLabel className="m-1" htmlFor="criteria">
-                                <small>zoek een gebruiker: </small>
+                                <small>Zoek een gebruiker: </small>
                             </InputLabel>
                             <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        <div className="m-auto col-2">
+                        <div className="m-auto col-1">
                             <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
                                 type="submit">
                                 {(loading)?"Laden...": "Zoek"}
                             </button>
+                        </div>
+                        <div className="m-auto col-1">
+                        <Link className="btn btn-outline-secondary m-2" to={"/settings"}>
+                            Annuleer
+                        </Link>
                         </div>
                     </div>
 
