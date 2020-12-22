@@ -106,9 +106,9 @@ class addBundle extends React.Component {
                             Maak aan
                         </button>}
                     
-                        <button className="btn btn-danger btn-block" to={"/conceptOverview"}>
+                        <Link className="btn btn-danger btn-block" to={"/conceptOverview"}>
                             Annuleer
-                        </button>
+                        </Link>
                     </div>
                     </form>
                 </div>
