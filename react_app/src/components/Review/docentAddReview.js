@@ -52,7 +52,7 @@ class docentAddReview extends React.Component {
             const { computedMatch: { params } } = this.props;
             await this.setState({ userId: params.userId });
         }
-        this.setState({ pageLoading: false });
+        
         await this.getConcepts();
     }
 
@@ -74,7 +74,7 @@ class docentAddReview extends React.Component {
             pageLoading: true,
             userId: selectedUser.id,
             userName: selectedUser.name,
-            userLocation: selectedUser.location.name,
+            userLocation: selectedUser.currentUserLocations[0].name,
         });
 
         this.getConcepts();
@@ -84,13 +84,15 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
-        axios.get(config.url.API_URL + "/webapi/review/pending/location/" + sessionStorage.getItem("userLocationId"))
+        axios.get(config.url.API_URL + "/webapi/review/pending/docent/" + sessionStorage.getItem("userId"))
             .then(response => {
                 this.handleUsersReponse(response.data);
+
             })
             .catch((error) => {
                 console.log("an error occurred " + error);
             })
+            this.setState({ pageLoading: false });
     }
 
     getConcepts() {
@@ -399,7 +401,7 @@ class docentAddReview extends React.Component {
                             </MenuItem>))
 
         const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
-        if (pageLoading) return (<span className="center">Laden...</span>)
+        if (pageLoading) return (<div className="error-message-center"><span> Laden...</span></div>);
 
         let userOptions = null;
         userOptions = pendingUsers.map((user) => {
@@ -412,7 +414,7 @@ class docentAddReview extends React.Component {
 
         const ConceptDisplay = ({selectionFunction,}) => (
             <div className="table-responsive col-md-10">
-                    <table className="addReviewTable">
+                    <table className="addReviewTable table">
                         <thead>
                             <tr>
                                 <th className="active">

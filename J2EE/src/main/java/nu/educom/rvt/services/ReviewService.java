@@ -42,9 +42,8 @@ public class ReviewService {
 		return activeConcepts;
 	}
 	
-	public List<User> getAllUsersWithPendingReviews(int locationId) throws DatabaseException {
-		//		List<Review> reviews = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).collect(Collectors.toList());
-		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->u.getCurrentLocations().get(0).getId() == locationId).collect(Collectors.toList());
+	public List<User> getAllUsersWithPendingReviews(User docent) throws DatabaseException {
+		List<User> users = reviewRepo.readAll().stream().filter(r -> r.getReviewStatus() == Review.Status.PENDING).map(r ->r.getUser()).filter(u->docent.getCurrentLocations().contains(u.getCurrentLocations().get(0))).collect(Collectors.toList());
 		
 		return users;
 	}

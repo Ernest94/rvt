@@ -151,14 +151,15 @@ public class ReviewResource extends BaseResource {
     }
 	
 	@GET
-	@Path("/pending/location/{locationId}")
+	@Path("/pending/docent/{docentId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUsersWithPendingReviews(@PathParam("locationId") int locationId) {
+	public Response getAllUsersWithPendingReviews(@PathParam("docentId") int docentId) {
 		LOG.debug("getAllUsersWithPendingReviews called");
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session); /* JH: Should be a UserLogic class */
 			ReviewService reviewServ = new ReviewService(session);
-			List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(locationId);
+			User docent = userServ.getUserById(docentId);
+			List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(docent);
 			UserSearchJson USJ = userServ.convertToUSJ(foundUsers); 
 		
 			return Response.status(200).entity(USJ).build();
