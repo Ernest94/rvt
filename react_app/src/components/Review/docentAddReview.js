@@ -16,6 +16,7 @@ import Permissions from '../permissions.js'
 import {SelectionTable} from '../Selection.js'
 import { GiFeather } from "react-icons/gi";
 import { BsDot } from "react-icons/bs";
+import Utils from '../Utils';
 
 
 class docentAddReview extends React.Component {
@@ -119,7 +120,6 @@ class docentAddReview extends React.Component {
     }
 
     handleCurriculumReponse(data){
-        console.log(data.conceptsPlusRatings);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
@@ -130,6 +130,9 @@ class docentAddReview extends React.Component {
             officeFeedback: data.commentOffice,
             message: "",
         });
+        if (!JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation)){
+            this.props.history.push('/settings')
+        }
     }
 
     getActiveDisplayName(bool) {
@@ -144,7 +147,6 @@ class docentAddReview extends React.Component {
         let concepts = this.state.concepts;
         let concept = concepts[index];
         if (value == concept.rating) {
-            console.log("equal");
             return;
         }
         concept.rating = value;
@@ -163,7 +165,6 @@ class docentAddReview extends React.Component {
         let concepts = this.state.concepts;
         let concept = concepts[index];
         if (value === concept.comment) {
-            console.log("equal");
             return;
         }
         concept.comment = value;
@@ -188,15 +189,6 @@ class docentAddReview extends React.Component {
         let conceptRatingJson = this.createConceptRatingJson(concept);
         this.submitConceptRatingChange(conceptRatingJson);
     }
-    // async setDate(event){
-    //     console.log(event);
-    //     const { name, value } = event.target;
-    //     console.log("Date Input Value: " + value);
-    //     console.log("Date parsed Value: " + new Date(value.split("-")).setTime(new Date().getTime()).toLocaleString());
-    //     this.setState({
-    //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
-    //     },()=>console.log(this.state.reviewDate));
-    // }
 
     async setReviewData(event) {
         const { name, value } = event.target;
@@ -235,7 +227,6 @@ class docentAddReview extends React.Component {
     }
 
     submitConceptRatingChange(conceptRatingJson) {
-        console.log(conceptRatingJson)
         axios.post(config.url.API_URL + "/webapi/review/addConceptRating", conceptRatingJson)
             .then(response => {
             })
