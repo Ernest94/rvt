@@ -210,7 +210,8 @@ class conceptOverview extends React.Component {
                 </div>
 
                 <div className="row justify-content-lg-center">
-                    <div className="col col-lg-6">
+                    
+                    <div className="col-2 col-lg-6">
                         Selecteer een bundel:
                         <select className="m-1" name="bundle" id="bundle"
                                 value={this.state.bundle}
@@ -220,20 +221,28 @@ class conceptOverview extends React.Component {
                                 {bundleOptions}
                             </select>
                     </div>
-                    <div className="col-md-auto">
+                    <div className="col-2">
                         <span>
-                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
+                            <Link className="btn btn-primary" to={"/addBundle/"}>
                                 <FaPlus/>
                             </Link>
                         </span>
                     </div>
-                    <div className="col-7">
-                    {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
-                        || "Admin"===sessionStorage.getItem("userName"))) ? 
-                        <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                    <div className="col">
+                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
+                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                            <button className="btn btn-primary bundle-submit-button" onClick={this.saveBundle}> 
+                                Dupliceer bundel
+                            </button>: <span></span>}
+                    </div>
+                    <div className="col">
+                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
+                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        <button className="btn btn-primary bundle-submit-button" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
                     </div>
+
                 </div>
 
                 <div className="container mt-4">
