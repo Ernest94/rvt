@@ -13,12 +13,20 @@ class addBundle extends React.Component {
     
     constructor(props) {
         super(props);
+        console.log(props);
+        this.duplicate = !(this.props.location.state.bundleId===-1);
+        this.bundleId = this.props.location.state.bundleId;
+        this.bundleName= this.props.location.state.bundleName;
+        this.bundleCreator= this.props.location.state.bundleCreator;
         this.state = {
             name: "",
             message: "",
             loading: false,
             errors: null,
         };
+    }
+
+    componentDidMount(){
     }
 
     static hasAccess() {
@@ -36,6 +44,7 @@ class addBundle extends React.Component {
         event.preventDefault();
         this.setState({loading: true}); 
         var errors = this.validate();
+        console.log(this.createBundleJson())
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/bundle/create", this.createBundleJson())  
                 .then(response => {
@@ -65,12 +74,11 @@ class addBundle extends React.Component {
         }
     }
 
-
-
     createBundleJson() {
         return {
             name: this.state.name,
-            creator: {"id":sessionStorage.getItem("userId")}
+            creator: {"id":sessionStorage.getItem("userId")},
+            id: this.bundleId
         }
     }
 
@@ -85,17 +93,20 @@ class addBundle extends React.Component {
             <div className="container" >
                 <h2 className="text-center">Bundel aanmaken</h2>
 
-                <div className="row justify-content-center text-danger">{
-                    this.state.errors}
+                <div className="row justify-content-center text-danger">
+                    {this.state.errors}
                 </div>
-
                 <div className="row justify-content-center m-4">
                     <form onSubmit={this.handleSubmit}>
+                    <div className="row justify-content-center m-2">
+                        {(this.duplicate)?"Dupliceer bundel: " + this.bundleName + " (" + this.bundleCreator + ") ":""}
+                    </div>
+                    <div className="row justify-content-center m-2">
 
-                    <div className="form-group">
                         <div className="form-group">
-                            <label htmlFor="name">Naam:</label>
+                            <label htmlFor="name">{(this.duplicate)?"Nieuwe naam:":"Naam:"}</label>
                             <TextField className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+
                         </div>
                     </div>
 

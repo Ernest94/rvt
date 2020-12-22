@@ -10,6 +10,9 @@ import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
 
+
+
+
 class conceptOverview extends React.Component {
 
     constructor(props) {
@@ -56,10 +59,12 @@ class conceptOverview extends React.Component {
 
     onChangeBundle = (e) => {
         var bundleKeyId = parseInt(e.target.value);
+        var bundleName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.name)[0];
         var bundleCreatorName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.creator_name)[0];
 
         this.setState({
             selectedBundle: bundleKeyId,
+            selectedBundleName: bundleName,
             selectedBundleCreator: bundleCreatorName
         });
         this.selectActiveConcepts(bundleKeyId)
@@ -198,7 +203,6 @@ class conceptOverview extends React.Component {
             )
         });
 
-
         return (
 
             <div className="container">
@@ -210,7 +214,8 @@ class conceptOverview extends React.Component {
                 </div>
 
                 <div className="row justify-content-lg-center">
-                    <div className="col col-lg-6">
+                    
+                    <div className="col-2 col-lg-6">
                         Selecteer een bundel:
                         <Select className="m-auto col-6" name="bundle" id="bundle"
                                 value={this.state.bundle}
@@ -220,20 +225,38 @@ class conceptOverview extends React.Component {
                                 {bundleOptions}
                         </Select>
                     </div>
-                    <div className="col-md-auto">
+                    <div className="col-2">
                         <span>
-                            <Link className="btn btn-danger float-left" to={"/addBundle/"}>
+                            <Link className="btn btn-danger" 
+                                to={{pathname:"/addBundle/",                                
+                                    state:{bundleId:-1}}}>
+
                                 <FaPlus/>
                             </Link>
                         </span>
                     </div>
-                    <div className="col-7">
-                    {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
-                        || "Admin"===sessionStorage.getItem("userName"))) ? 
-                        <button className="btn btn-danger bundle-submit-button float-right" onClick={this.saveBundle}> 
+                    <div className="col">
+                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
+                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        <span>
+                            <Link className="btn btn-danger" 
+                                to={{pathname:"/addBundle/",                                
+                                    state:{
+                                            bundleId:this.state.selectedBundle,
+                                            bundleName:this.state.selectedBundleName,
+                                            bundleCreator:this.state.selectedBundleCreator}}}>
+                                Dupliceer bundel
+                            </Link>
+                        </span>:<span></span>}
+                    </div>
+                    <div className="col">
+                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
+                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        <button className="btn btn-danger bundle-submit-button" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
                     </div>
+
                 </div>
 
                 <div className="container mt-4">

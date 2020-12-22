@@ -138,8 +138,17 @@ public class BundleService {
 		return bundleRepo.readByKnownId(bundleId);
 	}
 	
-	public void createNewBundle(Bundle bundle) throws DatabaseException {
-		bundleRepo.create(bundle);
+	public Bundle createNewBundle(Bundle bundle) throws DatabaseException {
+		return bundleRepo.create(bundle);
+	}
+	public void setBundleConceptsNewBundle(Bundle dbBundle,Bundle duplicateBundle) throws DatabaseException {
+		List<BundleConcept> newBundleConcepts = new ArrayList<BundleConcept>();
+		Bundle bundleInDB = this.findBundleById(dbBundle.getId());
+		List<BundleConcept> linkedBundleConcepts = bundleInDB.getAllConcepts();
+		for (BundleConcept bundleConcept : linkedBundleConcepts) {
+			newBundleConcepts.add(new BundleConcept(duplicateBundle, bundleConcept.getConcept(), bundleConcept.getWeekOffset(), LocalDate.now()));
+		}
+		bundleConceptRepo.createMulti(newBundleConcepts);
 	}
 	
 	public List<Bundle> getAllBundles() throws DatabaseException {
