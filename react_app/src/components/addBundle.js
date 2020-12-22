@@ -11,12 +11,20 @@ class addBundle extends React.Component {
     
     constructor(props) {
         super(props);
+        console.log(props)
         this.state = {
             name: "",
             message: "",
             loading: false,
             errors: null,
+            bundleId: this.props.location.state.bundleId,
+            bundle: this.props.location.state.bundleName,
+            bundleCreator: this.props.location.state.bundleCreator
         };
+    }
+
+    componentDidMount(){
+        console.log(this.state.bundle)
     }
 
     static hasAccess() {
@@ -84,7 +92,6 @@ class addBundle extends React.Component {
                 <h2 className="text-center">Bundel aanmaken</h2>
 
                 <div className="row justify-content-center text-danger">{this.state.errors}</div>
-
 
                     <form onSubmit={this.handleSubmit}>
                     <div className="row justify-content-center">
