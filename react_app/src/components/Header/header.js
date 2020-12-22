@@ -18,7 +18,7 @@ class Header extends React.Component {
 
         if (sessionStorage.getItem("isUserLoggedIn")) {
                button = <div>
-                            <span className="userName">Welkom "{sessionStorage.getItem("userName")}"</span>
+                            <span className="userName">Welkom {sessionStorage.getItem("userName")}</span>
                             <button className="btn rvtbutton logoutbutton" onClick={() => this.handleLogOut()}> Log uit </button>
                         </div>;
                accountSettings = <Link to="/settings" className="header-link">Menu</Link> ;
