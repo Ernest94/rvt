@@ -140,23 +140,6 @@ class Search extends React.Component {
         }
     }
 
-
-
-    // onChangeRole = (e) => {
-    //     this.setState({
-    //         role: this.state.roles.find(role => role.id === parseInt(e.target.value)),
-    //     });
-    // }
-
-    // onChangeRole = (e) => {
-    //     var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-
-    //     this.setState({
-    //         role: selectedRole,
-    //         roleDisplayName: e.target.value
-    //     });
-    // }
-
     render() {
         const {roles, locations, users, pageLoading, loading, selectedLocationsIds} = this.state;
         if (pageLoading) return (<span className="error-message-center">Laden...</span>)
@@ -164,11 +147,16 @@ class Search extends React.Component {
         if (roles === null || locations === null) {
             return (<span className="error-message-center">Mislukt om pagina te laden.</span>)
         }
-        const rolesOptions = roles.map((role) => {
+        const rolesOptions = (sessionStorage.getItem("userRole")==="Docent")?roles.filter(role => role.name==="Trainee").map((role) => {
+            return (
+                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
+            )
+        }):roles.map((role) => {
             return (
                 <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
             )
         });
+
         var userDisplay = users.map((user) => {
             var userLocationsColumn = '';
             var i;
@@ -213,10 +201,11 @@ class Search extends React.Component {
                         <InputLabel className="m-1" htmlFor="role">
                             <small>Rol:</small>
                         </InputLabel>
-                            <Select name="role" id="role"
+                            <Select name="selectedRoleId" id="selectedRoleId"
 
-                                value={this.state.roleId}
+                                value={this.state.selectedRoleId}
                                 onChange={this.handleFormChange}
+                                // disabled={sessionStorage.getItem("userRole")==="Docent"}
                                 >
                                 {rolesOptions}
                             </Select>
