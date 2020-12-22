@@ -177,7 +177,7 @@ class Dossier extends React.Component {
         var isAllowedToEdit;
         var fields = [];
         switch (userRole) {
-            case "Office": break;
+            case "Office":
             case "Docent":
                 isAllowedToEdit = (dossierRole === "Trainee"
                     && this.compareLocations(dossierLocation, userLocation))
@@ -190,7 +190,6 @@ class Dossier extends React.Component {
                 break;
             case "Sales": break;
             case "Trainee": break;
-            
             default:
                 isAllowedToEdit = false;
                 break;
@@ -391,7 +390,7 @@ class Dossier extends React.Component {
         if (pageLoading) return <span className="error-message-center"> Laden... </span>
         if (serverFail) return <span className="error-message-center"> Mislukt om de gegevens op te halen. </span> 
         if (!allowedToView) return <span className="error-message-center"> Het is niet mogelijk om deze pagina te bekijken. </span>
-        
+        if (!editDisabled && !allowedToEdit) return <span className="error-message-center"> Het is niet mogelijk om deze pagina te bekijken. </span>
         const rolesOptions = roles.map((role) => {
             return (
                 <option key={role.id} value={role.id}>{role.name}</option>
