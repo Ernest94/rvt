@@ -15,3 +15,23 @@
 2020-12-22T09:36:10.030+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
 2020-12-22T09:36:10.032+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
 2020-12-22T09:36:10.034+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:00:45.310+0100 [                ] INFO  ThemeConceptResource - Concept added with name 123!@#$123 and description 123.
+2020-12-22T11:14:16.364+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:16.366+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:14:16.367+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:16.395+0100 [                ] ERROR Main                 - sslContext not valid
+2020-12-22T11:14:34.427+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:34.429+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:14:34.429+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:34.457+0100 [                ] ERROR Main                 - sslContext not valid
+2020-12-22T11:26:01.365+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:26:01.367+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:26:01.368+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:26:01.396+0100 [                ] ERROR Main                 - sslContext not valid
+2020-12-22T11:26:10.318+0100 [                ] ERROR UserResource         - Login failed: null
+2020-12-22T11:34:26.262+0100 [Admin           ] INFO  UserResource         - User(1: Trainee1) has been updated.
+2020-12-22T11:36:48.754+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:47:58.245+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:48:28.431+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:48:34.360+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:49:43.812+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).

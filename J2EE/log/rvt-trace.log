@@ -878,3 +878,234 @@
 2020-12-22T10:55:25.767+0100 [                ] TRACE BundleResource       - getAllBundles called
 2020-12-22T10:55:41.358+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
 2020-12-22T10:55:41.361+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:00:38.532+0100 [                ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:00:38.532+0100 [                ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:00:45.297+0100 [                ] DEBUG ThemeConceptResource - saveConcept nu.educom.rvt.models.view.ConceptPlusBundles@3da9ab02 called
+2020-12-22T11:00:45.310+0100 [                ] INFO  ThemeConceptResource - Concept added with name 123!@#$123 and description 123.
+2020-12-22T11:00:45.316+0100 [                ] TRACE ThemeConceptResource - Concept 123!@#$123 added to bundles [nu.educom.rvt.models.view.BundleViewWeek@24f394cb] 
+2020-12-22T11:10:52.305+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T11:11:17.537+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T11:11:21.715+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T11:14:16.364+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:16.366+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:14:16.367+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:34.427+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:14:34.429+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:14:34.429+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:26:01.365+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:26:01.367+0100 [                ] INFO  MyApp                - |  Registratie Voortgang Trainees versie 1.0.0 Started   |
+2020-12-22T11:26:01.368+0100 [                ] INFO  MyApp                - ----------------------------------------------------------
+2020-12-22T11:26:10.189+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T11:26:17.738+0100 [                ] DEBUG UserResource         - login User(0: admin@educom.nu) called
+2020-12-22T11:26:28.661+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:26:28.834+0100 [Admin           ] TRACE ThemeConceptResource - getAllConceptsAndBundles called
+2020-12-22T11:28:25.905+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:28:25.906+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:28:26.064+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:28:26.064+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:29:57.093+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:57.231+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:29:57.362+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:57.500+0100 [Admin           ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(5: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T11:29:58.209+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:58.225+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:58.226+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:58.361+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:29:58.364+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:29:58.369+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:29:58.382+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:29:58.526+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:29:58.696+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:30:01.966+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:30:01.966+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:30:01.966+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:30:02.135+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:30:02.140+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:30:02.175+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:30:02.180+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:30:02.262+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:30:02.413+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:31:46.891+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:31:46.892+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:31:46.892+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:31:47.036+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:31:47.039+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:31:47.041+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:31:47.047+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:31:47.124+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:31:47.254+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:32:01.471+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:01.603+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:32:01.661+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:01.791+0100 [Admin           ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(5: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T11:32:01.955+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:01.970+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:01.972+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:02.094+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:32:02.111+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:32:02.113+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:32:02.114+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:32:02.189+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:02.323+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:32:03.595+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:03.595+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:03.596+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:03.737+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:32:03.747+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:32:03.754+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:32:03.756+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:32:03.868+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:04.002+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:32:15.738+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:15.739+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:15.739+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:15.877+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:32:15.886+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:32:15.901+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:32:15.903+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:32:15.970+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:32:16.112+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:33:24.843+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:24.844+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:24.846+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:25.000+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:33:25.002+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:33:25.025+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:33:25.027+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:33:25.110+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:25.259+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:33:46.375+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:46.374+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:46.375+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:46.544+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:33:46.560+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:33:46.564+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:33:46.589+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:33:46.669+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:33:46.834+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:34:26.115+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.115+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.255+0100 [Admin           ] DEBUG UserResource         - updateUser called for User(1: Trainee1) on [[Location(5: null)]]
+2020-12-22T11:34:26.255+0100 [Admin           ] DEBUG BundleResource       - updateTraineeBundle for user 1 called with [(2de OO-programmeertaal (Java/C#), 1)]
+2020-12-22T11:34:26.262+0100 [Admin           ] INFO  UserResource         - User(1: Trainee1) has been updated.
+2020-12-22T11:34:26.337+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.350+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.350+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.482+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:34:26.484+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:34:26.491+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:34:26.493+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:34:26.571+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:34:26.704+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:35:08.086+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:35:08.086+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:35:08.086+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:35:08.230+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:35:08.234+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:35:08.241+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:35:08.242+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:35:08.339+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:35:08.470+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:36:48.431+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:36:48.572+0100 [Admin           ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-22T11:36:48.754+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:37:12.082+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:37:12.084+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:37:12.216+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:37:12.217+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:38:01.707+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:38:01.707+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:38:01.845+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:38:01.846+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:39:55.311+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:39:55.312+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:39:55.461+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:39:55.461+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:40:56.402+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:40:56.407+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:40:56.546+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:40:56.550+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:42:38.333+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:42:38.334+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:42:38.501+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:42:38.506+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:43:15.330+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:15.330+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:15.473+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:43:15.473+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:43:21.602+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:21.603+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:21.766+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:43:21.764+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:43:33.489+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:33.491+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:33.647+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:43:33.647+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:43:39.090+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:39.097+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:39.239+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:43:39.257+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:43:41.398+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:41.398+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:43:41.532+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:43:41.532+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:45:57.585+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:45:57.605+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:45:57.804+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:45:57.813+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:46:18.508+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:18.645+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:46:18.831+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:18.968+0100 [Admin           ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(5: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T11:46:21.860+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:21.886+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:21.892+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:22.008+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:46:22.026+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:46:22.039+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:46:22.041+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:46:22.176+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:22.311+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:46:23.845+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:23.845+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:23.878+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:23.995+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:46:23.998+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 1 called
+2020-12-22T11:46:23.999+0100 [Admin           ] DEBUG UserResource         - Dossier of User(1: Trainee1)
+2020-12-22T11:46:24.039+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:46:24.120+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:46:24.259+0100 [Admin           ] DEBUG BundleResource       - getTraineeBundles for user 1 called
+2020-12-22T11:47:49.997+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:47:49.998+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:47:49.999+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:47:50.172+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:47:50.173+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T11:47:50.176+0100 [Admin           ] DEBUG UserResource         - Dossier of User(6: Admin)
+2020-12-22T11:47:50.193+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:47:57.927+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:47:58.065+0100 [Admin           ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-22T11:47:58.245+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:48:28.110+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:48:28.248+0100 [Admin           ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-22T11:48:28.431+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:48:34.031+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:48:34.172+0100 [Admin           ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-22T11:48:34.360+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:49:43.488+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:49:43.628+0100 [Admin           ] DEBUG UserResource         - changePassword called for user id 6
+2020-12-22T11:49:43.812+0100 [Admin           ] INFO  UserResource         - Password changed for user User(6: Admin).
+2020-12-22T11:50:20.517+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:20.517+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:20.665+0100 [Admin           ] TRACE ThemeConceptResource - getAllBundles called
+2020-12-22T11:50:20.665+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:50:34.091+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:34.230+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:50:34.344+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:34.487+0100 [Admin           ] TRACE UserResource         - getUsers Role(null) from [Location(1: null), Location(5: null), Location(2: null), Location(3: null), Location(4: null)] and criteria ''
+2020-12-22T11:50:36.147+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:36.162+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:36.162+0100 [                ] DEBUG AuthenticationFilter - Authentication filter called
+2020-12-22T11:50:36.294+0100 [Admin           ] TRACE UserResource         - getRoles called
+2020-12-22T11:50:36.305+0100 [Admin           ] TRACE UserResource         - getUserDossier for user with id 6 called
+2020-12-22T11:50:36.306+0100 [Admin           ] TRACE BundleResource       - getAllBundles called
+2020-12-22T11:50:36.307+0100 [Admin           ] DEBUG UserResource         - Dossier of User(6: Admin)

@@ -40,7 +40,7 @@ class BundleTable extends React.Component {
                     :
                     <tr className="row" key={"bundleSelect_" + index}>
                         <td>  
-                            <select className="form-control"
+                            <Select className="form-control"
                             id={"bundle_" + index}
                             name="bundle"
                             value={bundleTrainee.bundle.id? bundleTrainee.bundle.id : -1}
@@ -48,10 +48,10 @@ class BundleTable extends React.Component {
                             >
                                 <option value="-1" hidden>Kies een bundel</option>
                                 {bundleOptions}
-                            </select>                     
+                            </Select>                     
                         </td>
                         <td>              
-                            <select className="form-control"
+                            <Select className="form-control"
                                 id={"week_" + index}
                                 name="startWeek"
                                 value={bundleTrainee.startWeek}
@@ -59,7 +59,7 @@ class BundleTable extends React.Component {
                             >
                                 <option value="-1" hidden>Kies een startweek</option>
                                 {weekOptions}
-                            </select>
+                            </Select>
                         </td>
                         <td>
                             <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e,index)}>
@@ -408,14 +408,19 @@ class Dossier extends React.Component {
         return (
             <div>
                 <h2 className="text-center">Gebruikersaccount</h2>
-                <ul className="errors text-center">{errors}</ul>
+                <ul className="errors text-center">
+                    {errors}
+                </ul>
+
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
                         <TextField className="form-control col-sm-9" id="name" type="name" name="name" value={name} 
                             disabled={editDisabled || !allowedToEditFields.includes("name") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
                         <TextField className="form-control col-sm-9" id="email" type="email" name="email" value={email} 
@@ -435,6 +440,7 @@ class Dossier extends React.Component {
                             {rolesOptions}
                         </Select>
                     </div>
+
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
                         <Select
@@ -456,6 +462,7 @@ class Dossier extends React.Component {
 
                         </Select>
                     </div>
+
                     <div className="input row dossier" >
                         <label className="label col col-form-label" htmlFor="startDate">Startdatum:</label>
                         <TextField className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
@@ -463,6 +470,7 @@ class Dossier extends React.Component {
                             disabled={editDisabled || !allowedToEditFields.includes("startDate") || !allowedToEdit}
                             onChange={this.handleFormChange}/>
                     </div>
+
                     <div className="input row dossier" hidden={!traineeDossier}>
                         <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
                         <BundleTable 
@@ -473,11 +481,13 @@ class Dossier extends React.Component {
                         handleBundleChange={this.handleBundleChange.bind(this)} 
                         addBundle ={this.addBundle.bind(this)} />
                     </div>
+
                     <div className="row">
                         <div className="buttons">
                             {(!editDisabled) ? <button type="submit" className="btn btn-danger btn-block">Opslaan</button> : <span></span>}
                         </div>
                     </div>
+                    
                     <div className="row">
                         <div className="buttons">
                             {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger btn-block">Annuleer</Link> : <span></span>}
