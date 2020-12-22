@@ -41,9 +41,6 @@ class App extends React.Component {
             loggedIn: false  
           });
     }
-   
-
-
     
     render() {
         return (

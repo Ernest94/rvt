@@ -122,23 +122,7 @@ class Dossier extends React.Component {
     }
 
 
-    compareLocations(first, second) {
-        console.log(first)
-        console.log(second);
-        let bool = false;
-        if (first.length === 0 || second.length === 0) return bool;
-        Object.values(first).map(o1 => {
-            Object.values(second).map(o2 => {
-                console.log(o1);
-                console.log(o2);
-                if (o1.id === o2.id) {
-                    console.log("True");
-                    bool = true;
-                }
-            });
-        });
-        return bool;
-    }
+
     
     isOwnUserId(){
         const userId = sessionStorage.getItem("userId");
@@ -180,7 +164,7 @@ class Dossier extends React.Component {
             case "Office":
             case "Docent":
                 isAllowedToEdit = (dossierRole === "Trainee"
-                    && this.compareLocations(dossierLocation, userLocation))
+                    && Utils.compareLocations(dossierLocation, userLocation))
                     || this.isOwnUserId();
                 fields = ["name", "email","location", "bundle"];
                 break;
@@ -524,7 +508,7 @@ class Dossier extends React.Component {
                         <Link
                             className="btn btn-danger btn-block"
                                 to={"/docentAddReview/" + userId}
-                                hidden={!traineeDossier || !(Permissions.canAddReview() && this.compareLocations(dossierLocation, userLocation))}
+                                hidden={!traineeDossier || !(Permissions.canAddReview() && Utils.compareLocations(dossierLocation, userLocation))}
                                 >
                                 Review aanmaken/aanpassen
                         </Link>
