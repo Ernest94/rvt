@@ -200,42 +200,41 @@ class Dossier extends React.Component {
     getAllInfo() {
         const userId =  this.props.match.params.userId;
 
-        const userRequest = axios.get(config.url.API_URL +'/webapi/user/dossier', 
-        {headers: {"userId": userId}} );
-        const roleLocRequest = axios.get(config.url.API_URL + '/webapi/user/roles');
-        const bundleRequest = axios.get(config.url.API_URL + '/webapi/bundle/bundles');
-        axios.all([userRequest, roleLocRequest, bundleRequest]).then(axios.spread((...responses) => {
+        axios.all([
+            axios.get(config.url.API_URL +'/webapi/user/dossier', {headers: {"userId": userId}} ), 
+            axios.get(config.url.API_URL + '/webapi/user/roles'), 
+            axios.get(config.url.API_URL + '/webapi/bundle/bundles')])
+        .then(axios.spread((...responses) => {
             const userResponse = responses[0]
             const roleLocResponse = responses[1]
             const bundleResponse = responses[2]
             console.log(userResponse.data)
-            
-           var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
-           this.setState({
-                userId: userId,
+        
+            var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
+            this.setState({
+                    userId: userId,
 
-                name: userResponse.data.name,
-                email: userResponse.data.email,
-                role: userResponse.data.role,
-                roleId: userResponse.data.role.id,
-                
-                currentLocations: userResponse.data.currentLocations,
-                currentLocationsIds: currentLocationsIds,
-                startDate: userResponse.data.startDate,
+                    name: userResponse.data.name,
+                    email: userResponse.data.email,
+                    role: userResponse.data.role,
+                    roleId: userResponse.data.role.id,
+                    
+                    currentLocations: userResponse.data.currentLocations,
+                    currentLocationsIds: currentLocationsIds,
+                    startDate: userResponse.data.startDate,
 
-                roles: roleLocResponse.data.roles,
-                locations: roleLocResponse.data.locations,
+                    roles: roleLocResponse.data.roles,
+                    locations: roleLocResponse.data.locations,
 
-                bundles: bundleResponse.data,
+                    bundles: bundleResponse.data,
 
-                pageLoading: false,
-           });
+                    pageLoading: false,
+            });
             this.getTraineeBundles();
             this.canViewUserDossier();
             this.canEditUserDossier();
-            // if (!this.props.editDisabled) {this.canEditUserDossier()};
-           
-        })).catch(errors => {
+        }))
+        .catch(errors => {
             console.log("errors occured " + errors); 
             this.setState({pageLoading:false, error: true});
         });
@@ -270,10 +269,11 @@ class Dossier extends React.Component {
             sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
         console.log(this.createUserJson())
-        const userUpdate = axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson());
-        const bundleUpdate = axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson());
         if (!errors) {
-            axios.all([userUpdate, ]) //bundleUpdate
+            axios.all([
+                axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson()),
+                axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson())
+            ]) 
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     this.props.history.push('/dossier/' + this.state.userId);

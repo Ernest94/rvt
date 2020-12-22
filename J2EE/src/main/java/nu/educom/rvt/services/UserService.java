@@ -1,5 +1,6 @@
 package nu.educom.rvt.services;
 
+import java.security.Key;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,9 +8,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.security.auth.login.LoginException;
+
 import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
 
+import io.jsonwebtoken.Jwts;
 import nu.educom.rvt.models.Role;
 import nu.educom.rvt.models.Location;
 import nu.educom.rvt.models.User;
@@ -22,6 +26,7 @@ import nu.educom.rvt.repositories.LocationRepository;
 import nu.educom.rvt.repositories.RoleRepository;
 import nu.educom.rvt.repositories.UserLocationRepository;
 import nu.educom.rvt.repositories.UserRepository;
+import nu.educom.rvt.rest.filter.Token;
 
 public class UserService {
 	private final UserRepository userRepo;
@@ -36,14 +41,16 @@ public class UserService {
 		userLocationRepo = new UserLocationRepository(session);
 	}
 
-	public User checkUser(User user) throws DatabaseException {
-		User dbUser = userRepo.readByEmail(user.getEmail());
+	public User checkUser(User user) throws DatabaseException, LoginException {
 		
+		User dbUser = userRepo.readByEmail(user.getEmail());
+	
 		if (dbUser != null && BCrypt.checkpw(user.getPassword(), dbUser.getPassword())) {
 			return dbUser;
 		}
-		
-		return null;
+		else {
+			throw new LoginException();
+		}
 	}
 	
 	public User checkUserPasswordById(int id, String password) throws DatabaseException {
@@ -80,6 +87,18 @@ public class UserService {
 		User foundUser = userRepo.readByEmail(user.getEmail());
 		if (foundUser == null) return true; 
 		else return false;
+	}
+	
+	public String issueToken(User user) throws Exception {
+		Key key = Token.getSecretTokenKey();
+		String jws = Jwts.builder()
+				.setSubject(user.getName())
+				.claim("currentLocations", user.getCurrentLocations())
+				.claim("UserId", user.getId())
+				.claim("Role", user.getRole())
+				.signWith(key)
+				.compact();
+		return jws;
 	}
 	
 	// TODO move to a UserLogic class om beter te kunnen testen

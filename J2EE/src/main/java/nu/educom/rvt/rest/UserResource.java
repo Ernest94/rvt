@@ -27,9 +27,11 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.UserService;
 
 @Path("webapi/user")
+
 public class UserResource extends BaseResource {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -43,19 +45,22 @@ public class UserResource extends BaseResource {
 		System.out.print("\n" + "login is called" + "\n");
 
 		return wrapInSession(session -> {
-			UserService userServ = new UserService(session);
-			User foundUser = userServ.checkUser(user);
-			
-			if (foundUser != null) {
-				return Response.status(200).entity(foundUser).build();
+			try {
+				UserService userServ = new UserService(session);
+				User foundUser = userServ.checkUser(user);
+				String token = userServ.issueToken(foundUser);
+				//TODO: token is not entity, how to send string, not object?
+				return Response.status(200).entity(token).build();
 			}
-			else {
+			catch (Exception e){
+				LOG.error("Login failed: " + e.getMessage());
 				return Response.status(401).build();
 			}
 		});
 	}
 	
 	@POST
+	@Secured
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -74,6 +79,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
@@ -94,6 +100,7 @@ public class UserResource extends BaseResource {
 	}
 		
 	@POST
+	@Secured
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createUser (UserLocationView userLocationsView) {
@@ -112,7 +119,9 @@ public class UserResource extends BaseResource {
 		});
 	}
 	
+	
 	@POST
+	@Secured
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +138,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
@@ -136,12 +146,12 @@ public class UserResource extends BaseResource {
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
 			List<User> users = userServ.getAllUsers();
-	  
 		  return Response.status(200).entity(users).build();
 		});
 	}
 		
 	@GET
+	@Secured
     @Path("/dossier")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserDossier(@HeaderParam("UserId") int userId ){ /* JH: Had hier @PathParam verwacht */
@@ -156,6 +166,7 @@ public class UserResource extends BaseResource {
 	}	
 	
 	@PUT
+	@Secured
 	@Path("/dossier")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateUser(UserLocationView userLocationsView) {

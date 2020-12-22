@@ -12,7 +12,7 @@ public class Theme implements BaseEntity {
 	private int id;
 	@Column(name="name")
 	private String name;
-	@Column(name="description", length=450)
+	@Column(name="description", length=1024)
 	private String description;
 	@Column(name="abbreviation")
 	private String abbreviation;

@@ -26,10 +26,10 @@ public class Review implements BaseEntity {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@Column(name="comment_student")
+	@Column(name="comment_student", length = 4000)
 	private String commentStudent;
 	
-	@Column(name="comment_office")
+	@Column(name="comment_office", length = 4000)
 	private String commentOffice;
 	
 	@Column(name="date_time")

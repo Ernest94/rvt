@@ -8,7 +8,7 @@ import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
 import Utils from './Utils.js';
 import Permissions from './permissions.js';
-import BundleTable from './dossier.js';
+// import BundleTable from './dossier.js';
 
 
 
@@ -23,7 +23,7 @@ class AddUser extends React.Component {
         this.state = {
 
             role: null,
-            roleId: "",
+            roleId: ((sessionStorage.getItem("userRole")==="Docent")?"3":""),
             selectedLocationsIds:[],
             name: "",
             email: "",
@@ -35,7 +35,6 @@ class AddUser extends React.Component {
             locations: [],
             errors: null,
             pageLoading: true,
-            isDocent: sessionStorage.getItem("userRole") === "docent",
         };
     }
 
@@ -132,15 +131,6 @@ class AddUser extends React.Component {
         });
     }
 
-    onChangeRole = (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-
-        this.setState({
-            role: selectedRole,
-            roleDisplayName: e.target.value
-        });
-    }
-
     render() {
         const pageLoading = this.state.pageLoading;
         const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
@@ -158,6 +148,15 @@ class AddUser extends React.Component {
             )
         });
             
+        if (userRole === "admin") {
+            locationsOptions = locations.map((loc) => {
+                return (
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
+                )
+            });
+        }
+
+
         if (userRole === "admin") {
             locationsOptions = locations.map((loc) => {
                 return (
@@ -193,11 +192,13 @@ class AddUser extends React.Component {
                             id="roleId" 
                             disabled={!(userRole === "Admin")}
                             onChange={this.handleFormChange}
+                            value={this.state.roleId}
                             required>
                                 <option hidden value=''></option>
                                 {rolesOptions}
                         </Select>
                     </div>
+
 
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>

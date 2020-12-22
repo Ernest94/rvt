@@ -31,24 +31,29 @@ public class ConceptRating implements BaseEntity {
 		
 		@Column(name="comment") 
 		private String comment;
-
+		
+		@Column(name="feather") 
+		private Boolean feather;
+		
 		public ConceptRating() {
 			super();
 		}
 		
-		public ConceptRating(Review review, Concept concept, int rating) {
+		public ConceptRating(Review review, Concept concept, int rating, Boolean feather) {
 			super();
 			this.review = review;
 			this.concept = concept;
 			this.rating = rating;
+			this.feather = feather;
 		}
-		
-		public ConceptRating(Review review, Concept concept, int rating, String comment) {
+				
+		public ConceptRating(Review review, Concept concept, int rating, String comment, Boolean feather) {
 			super();
 			this.review = review;
 			this.concept = concept;
 			this.rating = rating;
 			this.comment = comment;
+			this.feather = feather;
 		}
 		
 		@Override
@@ -92,6 +97,14 @@ public class ConceptRating implements BaseEntity {
 		public void setComment(String comment) {
 			this.comment = comment;
 		}
-		
+
+		public Boolean getFeather() {
+			return feather;
+		}
+
+		public void setFeather(Boolean feather) {
+			this.feather = feather;
+		}
+
 		
 }

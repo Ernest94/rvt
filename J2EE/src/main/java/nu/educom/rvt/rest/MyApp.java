@@ -7,7 +7,9 @@ import javax.ws.rs.core.Application;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.glassfish.grizzly.utils.LogFilter;
+
+import nu.educom.rvt.rest.filter.AuthenticationFilter;
+import nu.educom.rvt.rest.filter.CORSFilter;
 
 @ApplicationPath("")
 public class MyApp extends Application {
@@ -30,7 +32,7 @@ public class MyApp extends Application {
 		set.add(LocationResource.class);
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
-		set.add(LogFilter.class);
+		set.add(AuthenticationFilter.class);
 //		LOG.info("classes: {}", set);
 		return set;
 	}

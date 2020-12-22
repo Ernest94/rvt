@@ -6,11 +6,7 @@ import './review.css'
 import { config } from '../constants'
 import Permissions from '../permissions.js'
 import {SelectionTable} from '../Selection.js'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Slider from '@material-ui/core/Slider';
-
+import { GiFeather } from "react-icons/gi";
 
 
 class review extends React.Component {
@@ -158,6 +154,9 @@ class review extends React.Component {
                     <th className="rating">
                         Vaardigheid
                         </th>
+                    <th className="rating">
+                        {""}
+                        </th>
                     <th className="comment">
                         Commentaar
                     </th>
@@ -184,13 +183,18 @@ class review extends React.Component {
                                 </td>
                                 <td className="rating">
                                 <div>
-                                        <Rating className="rating-star"
-                                            value={concept.rating}
-                                            name="rating"
-                                            readOnly={true}
+                                    <Rating className="rating-star"
+                                        value={concept.rating}
+                                        name="rating"
+                                        readOnly={true}
                                     />
                                     <div className="rating-text"> {this.getRating(concept.rating)} </div>
                                     </div>
+                                </td>
+                                <td className="feather">
+                                    <span className="feather">
+                                    {concept.feather?<GiFeather className="feather-icon"/>:""}
+                                    </span>
                                 </td>
                                 <td className="comment">
                                     <TextareaAutosize className="comment-text" readOnly={true} aria-label="minimum height">

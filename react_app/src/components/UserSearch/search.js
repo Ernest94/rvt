@@ -17,13 +17,14 @@ class Search extends React.Component {
             locations: [],
             selectedLocationsIds:[],
             selectedLocations: [],
+
             roles: [],
-            role: "",
-            roleId:"",
+            selectedRoleId:0,
+
             criteria: "",
+
             users: [],
-            loading: false,
-            roleDisplayName: "",
+            pageLoading: true,
             buttonDisabled: false,
         };
     }
@@ -33,8 +34,7 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ pageLoading: true });
-        this.getLocationsAndRoles()
+        this.getLocationsAndRoles() 
     }
 
     getLocationsAndRoles() {
@@ -65,8 +65,7 @@ class Search extends React.Component {
             loading: true,
             selectedLocations:userLocations,
             selectedLocationsIds: userLocationsIds,
-            roleId: role.id,
-            // roleDisplayName: role.id
+            selectedRoleId: role.id,
         });
 
         console.log(this.createSearchJson());
@@ -108,7 +107,7 @@ class Search extends React.Component {
         }
         return {
             locations: locations,
-            role: {id:parseInt(this.state.roleId)},
+            role: {id:parseInt(this.state.selectedRoleId)},
             criteria: this.state.criteria
         }
 }
@@ -167,7 +166,7 @@ class Search extends React.Component {
         }
         const rolesOptions = roles.map((role) => {
             return (
-                <option key={role.id} value={role.id}>{role.name}</option>
+                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
             )
         });
         var userDisplay = users.map((user) => {
@@ -227,7 +226,7 @@ class Search extends React.Component {
                                    <small> Locatie: </small>
                                 </InputLabel>
                                 <Select
-                                    className="m-1 text-black"
+                                    className="m-1 text-black locationInput search"
                                     labelId="location-label"
                                     id="selectedLocationsIds"
                                     name="selectedLocationsIds" 

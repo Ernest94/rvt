@@ -131,8 +131,8 @@ class TestUserRepository {
 		assertEquals(1, result.getId());
 		assertEquals("Trainee1", result.getName());
 		assertEquals("Trainee", result.getRole().getName());
-		assertEquals(1, result.getCurrentLocations().size()); // "Utrecht"
-		assertEquals(2, result.getAllUserLocations().size()); // inactive "Arnhem" 
+		assertEquals(1, result.getCurrentLocations().size()); // "TestLocatie"
+		assertEquals(2, result.getAllUserLocations().size()); // inactive "Arnhem" & active "Testlocatie"
 	}
 	
 	@Test
@@ -179,8 +179,8 @@ class TestUserRepository {
 		assertEquals(2, result.getId());
 		assertEquals("Trainee2", result.getName());
 		assertEquals("Trainee", result.getRole().getName());
-		assertEquals(4, result.getCurrentLocations().size()); // Utrecht, Arnhem, Sittard en Eindhoven
-		assertEquals(5, result.getAllUserLocations().size()); // inactive Arnhem + active Utrecht, Arnhem, Sittard en Eindhoven
+		assertEquals(5, result.getCurrentLocations().size()); // Testlocatie, Utrecht, Arnhem, Sittard en Eindhoven
+		assertEquals(6, result.getAllUserLocations().size()); // inactive Arnhem + active Utrecht, Arnhem, Sittard en Eindhoven
 		
 		// Follow-up remove 1 location
 		locations.remove(new Location("Sittard"));
@@ -200,8 +200,8 @@ class TestUserRepository {
 		assertEquals(2, result2.getId());
 		assertEquals("Trainee2", result2.getName());
 		assertEquals("Trainee", result2.getRole().getName());
-		assertEquals(3, result2.getCurrentLocations().size()); // Utrecht, Arnhem en Eindhoven
-		assertEquals(5, result2.getAllUserLocations().size()); // inactive Arnhem & Sittard + active Utrecht, Arnhem en Eindhoven
+		assertEquals(4, result2.getCurrentLocations().size()); // Testlocatie, Utrecht, Arnhem en Eindhoven
+		assertEquals(6, result2.getAllUserLocations().size()); // inactive Arnhem & Sittard + active TestLocatie, Utrecht, Arnhem en Eindhoven
 	}
 	
 	@Test
