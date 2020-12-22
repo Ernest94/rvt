@@ -469,7 +469,7 @@ class docentAddReview extends React.Component {
                             <td className="concept" id="text">
                                 <span className="concept-text">
                                 {concept.concept.name}
-                                <span className="displayMessage"> {concept.concept.name} </span>
+                                <span className="displayMessage"> {concept.concept.description} </span>
                                 </span>
                             </td>
                             <td className="feather">
