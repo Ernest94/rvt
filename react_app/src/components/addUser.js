@@ -99,13 +99,12 @@ class AddUser extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         var errors = validate(this.state, constraints);
-        console.log(this.createUserJson());
-        console.log();
 
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
-                    this.props.history.push('/settings');
+                    console.log(response);
+                    this.props.history.push('/dossier/' + response.data.id);
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
@@ -124,8 +123,6 @@ class AddUser extends React.Component {
 
     handleFormChange = (e) => {
         const {name, value} = e.target;
-        console.log(name, value)
-
         this.setState({
            [name]: value
         });
@@ -165,7 +162,6 @@ class AddUser extends React.Component {
             });
         }
         else {
-            console.log(userLocation);
             locationsOptions = userLocation.map((loc) => {
                 return (
                     <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >

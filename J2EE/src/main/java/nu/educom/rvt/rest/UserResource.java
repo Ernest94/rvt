@@ -113,9 +113,9 @@ public class UserResource extends BaseResource {
 			if (!valid) {
 				return Response.status(412).build();
 			}
-			userServ.addUserAndLocations(user,locations);
+			User createdUser = userServ.addUserAndLocations(user,locations);
 			LOG.info("User {} has been created.", user);
-			return Response.status(201).build();
+			return Response.status(201).entity(createdUser).build();
 		});
 	}
 	

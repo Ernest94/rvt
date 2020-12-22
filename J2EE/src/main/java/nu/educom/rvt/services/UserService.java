@@ -116,11 +116,12 @@ public class UserService {
 		userRepo.create(user);
 	}
 	
-	public void addUserAndLocations(User user,List<Location> locations) throws DatabaseException
+	public User addUserAndLocations(User user,List<Location> locations) throws DatabaseException
 	{
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User createdUser = userRepo.create(user);
 		userRepo.updateLocations(createdUser,locations);
+		return createdUser;
 	}
 	
 	public void addUserLocation(UserLocation userLocation) throws DatabaseException
