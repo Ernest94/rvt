@@ -96,12 +96,23 @@ class addBundle extends React.Component {
                 <div className="row justify-content-center text-danger">
                     {this.state.errors}
                 </div>
-                <div className="row justify-content-center m-4">
+                <div className="row justify-content-center m-2">
                     <form onSubmit={this.handleSubmit}>
-                    <div className="row justify-content-center m-2">
-                        {(this.duplicate)?"Dupliceer bundel: " + this.bundleName + " (" + this.bundleCreator + ") ":""}
-                    </div>
-                    <div className="row justify-content-center m-2">
+                        {(this.duplicate)?
+                        <div>
+                        <div className="row justify-content-center m-2">
+                            <div className="">
+                                {"Dupliceer bundel: "}
+                            </div>
+                        </div>
+                        <div className="row justify-content-center m-2">
+                            <div className="">
+                                {this.bundleName + " (" + this.bundleCreator + ") "}
+                            </div>
+                        </div>
+                        </div>
+                         :<div></div>}
+                    <div className="row justify-content-center m-4">
 
                         <div className="form-group">
                             <label htmlFor="name">{(this.duplicate)?"Nieuwe naam:":"Naam:"}</label>
