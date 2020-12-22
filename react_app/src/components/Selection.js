@@ -11,6 +11,7 @@ class SliderSelection extends React.Component {
     render (){
       return (
         <Slider
+        className="selectionSlider"
             classes={{thumb: 'sliderThumb' ,
                     valueLabel: 'sliderLabel' }}
             name={this.props.name}

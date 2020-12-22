@@ -66,6 +66,22 @@
     width:100%;
 }
 
+.addReviewTable .activeCheckbox:hover{
+    background-color:rgb(204, 44, 62,.2)!important;
+}
+.addReviewTable .activeCheckbox{
+    color:#CC2C3E!important;
+}
+.addReviewTable .featherCheckbox:hover{
+    background-color:rgb(0, 121, 46,.2)!important;
+}
+.addReviewTable .featherCheckbox{
+    color:rgb(0, 121, 46)!important;
+}
+.addReviewTable .Mui-disabled{
+    color:lightgrey!important;
+}
+
 .theme-text {
     position: relative;
     display: inline-block;
@@ -159,6 +175,9 @@
 }
 .sliderThumb{
     background-color:#ffc107!important;
+}
+.selectionSlider{
+    color:#CC2C3E!important;
 }
 .conceptSelection .lightButton{
     margin:0px 5px;

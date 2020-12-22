@@ -441,11 +441,12 @@ class docentAddReview extends React.Component {
                         return (
                         <tr className={(concept.active ? 'text-black' : 'text-muted')}>
                             <td className="active">
-                            <Checkbox className=""
+                            <Checkbox className="activeCheckbox"
                                 id={"concept"+concept.id}
                                 onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
                                 checked={concept.active}
                                 disabled={checkboxDisabled}
+                                
                                 />                   
                             </td>
                             <td className="week" id="text">
@@ -473,6 +474,7 @@ class docentAddReview extends React.Component {
                             <td className="feather">
                             <div className="">
                                 <Checkbox
+                                className="featherCheckbox"
                                 checked={concept.feather}
                                 name={"feather" +  index}
                                 onChange={(event) => {this.setFeather(event)}}
