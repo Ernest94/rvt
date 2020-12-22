@@ -38,6 +38,9 @@ public class Review implements BaseEntity {
 	@Column(name="status")
 	private Status reviewStatus;
 	
+	@ManyToOne
+	@JoinColumn(name="submittedBy")
+	private User docent;
 
 	public Review() {
 		super();
@@ -108,9 +111,19 @@ public class Review implements BaseEntity {
 	public void setReviewStatus(Status reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
+	
+	public User getDocent() {
+		return docent;
+	}
+	
+	public void setDocent(User docent) {
+		this.docent = docent;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Review(%d, %s)[%s]", getId(), getUser(), getReviewStatus());
 	}
+
 
 }
