@@ -121,9 +121,6 @@ class Dossier extends React.Component {
         return Permissions.canViewDossier(props.match.params.userId);
     }
 
-
-
-    
     isOwnUserId(){
         const userId = sessionStorage.getItem("userId");
         const dossierId = this.state.userId;
@@ -439,7 +436,9 @@ class Dossier extends React.Component {
                                 getContentAnchorEl: null}
                             }
                             input={<Input id="currentLocationsIds" />}
-                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit}
+                            disabled={editDisabled || !allowedToEditFields.includes("location") || !allowedToEdit ||
+                        (this.isOwnUserId()&&
+                        (sessionStorage.getItem("userRole")==="Sales"||sessionStorage.getItem("userRole")==="Docent"))}
                             >
                             {locationOptions}
 
@@ -492,7 +491,7 @@ class Dossier extends React.Component {
                     </div>
                     <div>
                         <Link className="btn btn-danger btn-block" to={"/settings"}>
-                                Annuleer
+                                Terug
                             </Link>
                     </div>
                     <div>
