@@ -67,6 +67,10 @@ class Search extends React.Component {
             selectedLocationsIds: userLocationsIds,
             selectedRoleId: role.id,
         });
+        if (sessionStorage.getItem("userRole")==="Office") {
+            this.setState({
+                locations:userLocations});
+            }
 
         console.log(this.createSearchJson());
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
@@ -147,7 +151,7 @@ class Search extends React.Component {
         if (roles === null || locations === null) {
             return (<span className="error-message-center">Mislukt om pagina te laden.</span>)
         }
-        const rolesOptions = (sessionStorage.getItem("userRole")==="Docent")?roles.filter(role => role.name==="Trainee").map((role) => {
+        const rolesOptions = (sessionStorage.getItem("userRole")==="Docent"||sessionStorage.getItem("userRole")==="Office")?roles.filter(role => role.name==="Trainee").map((role) => {
             return (
                 <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
             )
@@ -168,7 +172,7 @@ class Search extends React.Component {
                 }
 
             return (
-                <tr className="row searchResult" key={user.id} onClick={(e) => {   this.props.history.push('/dossier/' + user.id)} } >
+                <tr className="row searchResult" key={user.id} onClick={(e) => {this.props.history.push('/dossier/' + user.id)} } >
                     <td className="p-2 col-sm text-nowrap align-middle">
                         {user.name}
                     </td>
@@ -194,9 +198,6 @@ class Search extends React.Component {
 
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
-                <div className="row">
-                    <ul className="errors text-center" hidden={!emptyUsers}>Geen overeenkomende gebruikers gevonden</ul>
-                </div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-1">
@@ -204,10 +205,8 @@ class Search extends React.Component {
                             <small>Rol:</small>
                         </InputLabel>
                             <Select name="selectedRoleId" id="selectedRoleId"
-
                                 value={this.state.selectedRoleId}
                                 onChange={this.handleFormChange}
-                                // disabled={sessionStorage.getItem("userRole")==="Docent"}
                                 >
                                 {rolesOptions}
                             </Select>
@@ -259,6 +258,10 @@ class Search extends React.Component {
                     </div>
 
                 </form>
+
+                <div className="row justify-content-center">
+                    <ul className="errors text-center" hidden={!emptyUsers}>Geen overeenkomende gebruikers gevonden</ul>
+                </div>
 
                 <div className="text-center" hidden={emptyUsers}>
                     <table className="w-100 mx-auto">
