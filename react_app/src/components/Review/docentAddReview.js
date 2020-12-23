@@ -14,6 +14,11 @@ import './review.css'
 import { config } from '../constants';
 import Permissions from '../permissions.js'
 import {SelectionTable} from '../Selection.js'
+import { GiFeather } from "react-icons/gi";
+import { BsDot } from "react-icons/bs";
+import Utils from '../Utils';
+import { Link} from 'react-router-dom';
+
 
 class docentAddReview extends React.Component {
 
@@ -42,14 +47,9 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         this.setState({ pageLoading: true });
-        if (Permissions.isUserTrainee()) {
-            await this.setState({ userId: sessionStorage.getItem("userId") });
-        }
-        else {
-            const { computedMatch: { params } } = this.props;
-            await this.setState({ userId: params.userId });
-        }
-        this.setState({ pageLoading: false });
+        const { computedMatch: { params } } = this.props;
+        await this.setState({ userId: params.userId });
+  
         await this.getConcepts();
     }
 
@@ -71,7 +71,7 @@ class docentAddReview extends React.Component {
             pageLoading: true,
             userId: selectedUser.id,
             userName: selectedUser.name,
-            userLocation: selectedUser.location.name,
+            userLocation: selectedUser.currentUserLocations[0].name,
         });
 
         this.getConcepts();
@@ -81,13 +81,15 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
-        axios.get(config.url.API_URL + "/webapi/review/pending/location/" + sessionStorage.getItem("userLocationId"))
+        axios.get(config.url.API_URL + "/webapi/review/pending/docent/" + sessionStorage.getItem("userId"))
             .then(response => {
                 this.handleUsersReponse(response.data);
+
             })
             .catch((error) => {
                 console.log("an error occurred " + error);
             })
+            this.setState({ pageLoading: false });
     }
 
     getConcepts() {
@@ -114,7 +116,6 @@ class docentAddReview extends React.Component {
     }
 
     handleCurriculumReponse(data){
-        console.log(data.conceptsPlusRatings);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
@@ -125,6 +126,9 @@ class docentAddReview extends React.Component {
             officeFeedback: data.commentOffice,
             message: "",
         });
+        if (!JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation)){
+            this.props.history.push('/settings')
+        }
     }
 
     getActiveDisplayName(bool) {
@@ -139,7 +143,6 @@ class docentAddReview extends React.Component {
         let concepts = this.state.concepts;
         let concept = concepts[index];
         if (value == concept.rating) {
-            console.log("equal");
             return;
         }
         concept.rating = value;
@@ -155,13 +158,9 @@ class docentAddReview extends React.Component {
     async setComment(event) {
         const index = event.target.name.substring(7);
         const value = event.target.value;
-
-        
-
         let concepts = this.state.concepts;
         let concept = concepts[index];
         if (value === concept.comment) {
-            console.log("equal");
             return;
         }
         concept.comment = value;
@@ -174,15 +173,18 @@ class docentAddReview extends React.Component {
         this.submitConceptRatingChange(conceptRatingJson);
     }
 
-    // async setDate(event){
-    //     console.log(event);
-    //     const { name, value } = event.target;
-    //     console.log("Date Input Value: " + value);
-    //     console.log("Date parsed Value: " + new Date(value.split("-")).setTime(new Date().getTime()).toLocaleString());
-    //     this.setState({
-    //         reviewDate: new Date(value.split("-")).setTime(new Date().getTime()),
-    //     },()=>console.log(this.state.reviewDate));
-    // }
+    async setFeather(event) {
+        const index = event.target.name.substring(7);
+        let concepts = this.state.concepts;
+        let concept = concepts[index];
+        concept.feather = !concept.feather;
+        concepts[index] = concept;
+        await this.setState({
+            concepts: concepts
+        });
+        let conceptRatingJson = this.createConceptRatingJson(concept);
+        this.submitConceptRatingChange(conceptRatingJson);
+    }
 
     async setReviewData(event) {
         const { name, value } = event.target;
@@ -282,16 +284,6 @@ class docentAddReview extends React.Component {
         });
     }
 
-    // setActiveConcept() {
-    //     var checkBox = document.getElementById("myCheck");
-    //     var text = document.getElementById("text");
-    //     if (checkBox.checked === false){
-    //       text.style.display = "block";
-    //     } else {
-    //        text.style.display = "none";
-    //     }
-    // }
-
     handleWeekChange(e,changedConceptId){
         this.setState(prevState => 
                 ({concepts: prevState.concepts.map(concept => 
@@ -320,11 +312,13 @@ class docentAddReview extends React.Component {
 
     createReviewIdJSON() {
         return {
-            id: this.state.reviewId
+            id: this.state.reviewId,
+            docent: {id: +sessionStorage.getItem("userId")}
         };
     }
 
     handleCheckboxChange(e,changedConceptId){
+
         this.setState(prevState => 
             ({concepts: prevState.concepts.map(concept => 
                 concept.concept.id===changedConceptId? 
@@ -347,11 +341,25 @@ class docentAddReview extends React.Component {
         });
     }
 
+    handleFeatherChange(e,changedConceptId){
+        this.setState(prevState => 
+            ({concepts: prevState.concepts.map(concept => 
+                concept.concept.id===changedConceptId? 
+                {...concept, active: (!concept.feather)}
+                :concept)
+            })
+        );
+        this.changeConceptActive(changedConceptId);
+    };
+
+
+
+
     getWeekBlock(week) {
         const wpb = this.state.weeksPerBlock
         var devidedweek = Math.ceil(week / wpb);
         switch (devidedweek) {
-            case 0: return ("geen week aangegeven");
+            case 0: return ("geen week gegeven");
             case 1: return ("week " + 1 + " t/m " + wpb);
             case 2: return ("week " + (1 + wpb) + " t/m " + (2 * wpb));
             case 3: return ("week " + (1 + 2 * wpb) + " t/m " +  (3 * wpb));
@@ -379,8 +387,8 @@ class docentAddReview extends React.Component {
                                 {"week " + week}
                             </MenuItem>))
 
-        const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
-        if (pageLoading) return (<span className="center">Laden...</span>)
+        const { pageLoading, traineeFeedback, officeFeedback, userId, pendingUsers } = this.state;
+        if (pageLoading) return (<div className="error-message-center"><span> Laden...</span></div>);
 
         let userOptions = null;
         userOptions = pendingUsers.map((user) => {
@@ -390,46 +398,47 @@ class docentAddReview extends React.Component {
         });
 
 
-        const ConceptDisplay = ({selectionFunction,}) => (
-            <div className="table-responsive col-md-10">
-                    <table className="addReviewTable">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th> 
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
 
-            <tbody className="tableBody table">
-            
+        const ConceptDisplay = ({selectionFunction,}) => (
+            <div>
+                <thead>
+                    <tr>
+                        <th className="active">
+                            actief
+                        </th>
+                        <th className="week">
+                            Blok
+                        </th>
+                        <th className="theme">
+                            Thema
+                        </th>
+                        <th className="concept">
+                            Concept
+                        </th>
+                        <th className="feather">
+                            Inzet
+                        </th>
+                        <th className="rating">
+                            Vaardigheid
+                        </th>
+                        <th className="comment">
+                            Commentaar
+                        </th>
+                    </tr>
+                </thead>
                 {this.state.concepts.map((concept, index) => {    
-                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0)
-                    
+                   var checkboxDisabled = (concept.comment!=="" || concept.rating!==0);
+
                     if (selectionFunction(concept)){
                         return (
                         <tr className={(concept.active ? 'text-black' : 'text-muted')}>
                             <td className="active">
-                            <Checkbox className=""
+                            <Checkbox className="activeCheckbox"
                                 id={"concept"+concept.id}
                                 onChange={(e)=>this.handleCheckboxChange(e,concept.concept.id)}
                                 checked={concept.active}
                                 disabled={checkboxDisabled}
+                                
                                 />                   
                             </td>
                             <td className="week" id="text">
@@ -451,25 +460,39 @@ class docentAddReview extends React.Component {
                             <td className="concept" id="text">
                                 <span className="concept-text">
                                 {concept.concept.name}
-                                <span className="displayMessage"> {concept.concept.name} </span>
+                                <span className="displayMessage"> {concept.concept.description} </span>
                                 </span>
+                            </td>
+                            <td className="feather">
+                            <div className="">
+                                <Checkbox
+                                className="featherCheckbox"
+                                checked={concept.feather}
+                                name={"feather" +  index}
+                                onChange={(event) => {this.setFeather(event)}}
+                                disabled={!concept.active}
+                                checkedIcon={<GiFeather/>}
+                                icon={<BsDot/>}
+                                />
+                            </div>
                             </td>                  
                             <td className="rating" id="text">
                             <div>
-                                    <Rating className="rating-star"
-                                        value={concept.rating}
-                                        name={"rating" +  index}
-                                        onChange={(event) => {
-                                        this.setRating(event);
-                                        }}
-                                    />
+                                <Rating className={"rating-star"}
+                                    value={concept.rating}
+                                    name={"rating" +  index}
+                                    onChange={(event) => {this.setRating(event)}}
+                                    disabled={!concept.active}
+                                />
                                 <div className="rating-text"> {this.getRating(concept.rating)} </div>
-                                </div>
+                            </div>
                             </td>
                             <td className="comment" id="text">
                                 <TextareaAutosize className="comment-text"
+                                    disabled={!concept.active}
                                     aria-label="minimum height"
-                                    name={"comment" + index} onBlur={(event) => {
+                                    name={"comment" + index} 
+                                    onBlur={(event) => {
                                     this.setComment(event); }}
                                     >
                                     {concept.comment}
@@ -478,11 +501,8 @@ class docentAddReview extends React.Component {
                         </tr>
                         )
                     }
-        })}
-        </tbody>
-        </table>
-        </div>
-        );
+        })
+    }</div>);
 
         return (
             <div className="container">
@@ -499,7 +519,7 @@ class docentAddReview extends React.Component {
                                 onChange={(event) => { this.setDate(event) }} />
                         </h3>
                     </div> */}
-                    <div className="col">
+                    <div className="col-5">
                         <h3 classname="text-center">Review van 
                             <select 
                                 className="border-0" 
@@ -519,16 +539,26 @@ class docentAddReview extends React.Component {
                         </h3>
                     </div>
 
-                    <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                    <div className="col-5"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                    <Link
+                            className="btn btn-danger col-2 btn-small"
+                            to={"/curriculum/" + userId /*+ "/" + name */}
+                            >
+                                Review bekijken</Link>
                 </div>
 
                 <div >
                     <ul className="errors">{this.state.errors}</ul>
                 </div >
 
-                <SelectionTable fields={["inactive","stars","weeks","themes"]} starsSelected={[0,5]}>
-                    {paramFunction=>(<ConceptDisplay selectionFunction={paramFunction}/>)}
-                </SelectionTable>
+
+                <div className="table-responsive col-md-12">
+                    <table className="addReviewTable table">
+                            <SelectionTable fields={["inactive", "stars", "weeks", "themes"]} starsSelected={[0, 5]}>
+                                {paramFunction => (<ConceptDisplay selectionFunction={paramFunction} />)}
+                            </SelectionTable>
+                    </table>
+                </div>
 
                 <div className="float-right mr-1">
                     <p>{this.state.message}</p>

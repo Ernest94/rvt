@@ -1,201 +1,115 @@
 import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
-import RoleAndLocation from './roleAndLocation.js';
-import UserInfo from './userInfo.js';
 import { Link,withRouter } from 'react-router-dom';
+import {Select, Input, MenuItem, TextField} from '@material-ui/core'
 
 import constraints from '../constraints/addUserConstraints';
 import {config} from './constants';
 import Utils from './Utils.js';
-import Permissions from './permissions.js'
+import Permissions from './permissions.js';
+// import BundleTable from './dossier.js';
+
+
+
 class AddUser extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-
-            currentStep: 1,
-            name: "",
-            email: "",
-            password: "",
-            dateActive: "",
-            role: null,
-            location: null,
-            // teacher: null,
-            roleDisplayName: "",
-            locationDisplayName: "",
-            // teacherDisplayName: "",
-            isTrainee: null,
-            roles : [],
-            locations: [],
-            // teachers: [{id:1 , name: "Pieter"}],
-            errors: null,
-            pageLoading: false,
-            submitButtonDisabled: false,
-            isDocent: sessionStorage.getItem("userRole") === "docent",
-        };
-
-        this.handleFormChange = this.handleFormChange.bind(this);
-        this.onChangeRole = this.onChangeRole.bind(this);
-        this.onChangeLocation = this.onChangeLocation.bind(this);
-        // this.onChangeTeacher = this.onChangeTeacher.bind(this);
-        this._next = this._next.bind(this);
-        this._prev = this._prev.bind(this);
-    }
-
-    componentDidMount() {
-        this.setState({pageLoading: true});
-        this.getLocationsAndRoles()
-    }
 
     static hasAccess() {
         return Permissions.canAddUser();
     }
 
-    getLocationsAndRoles() {
+    constructor(props) {
+        super(props);
+        this.state = {
 
+            role: null,
+            roleId: ((sessionStorage.getItem("userRole")==="Docent")?"3":""),
+            selectedLocationsIds:[],
+            name: "",
+            email: "",
+            password: "",
+            startDate: "",
+            isTrainee: null,
+
+            roles : [],
+            locations: [],
+            errors: null,
+            pageLoading: true,
+        };
+    }
+
+    componentDidMount() {
+        Utils.dateValidation();
+        this.setState({pageLoading: true});
+        this.getLocationsAndRoles()
+    }
+
+    getLocationsAndRoles() {
         axios.get(config.url.API_URL + '/webapi/user/roles')
-            .then( response => {
+            .then(response => {
+                    const roleName = "Trainee";
+                    let role = response.data.roles.find(element => element.name === roleName);
                     this.setState({
                         roles: response.data.roles,
                         locations: response.data.locations,
-                        pageLoading: false
+                        pageLoading: false,
+                        role: role,
+                        roleId: role.id
                     });
-                console.log("api_call succesfull");
                 })
-        .catch(() => {
-            this.setState({
-                roles: null, //[{id: 1, name: "Trainee"}, {id: 2, name: "Docent"}],
-                locations: null, // [{id: 1, name: "Utrecht"}],
-                pageLoading: false
-            });
-        })
-        .finally(() => {
-            if (this.state.isLocation) {
+            .catch(() => {
                 this.setState({
-                    currentStep: 2,
-                    role: this.state.roles.find(role => role.name === "Trainee"),
-                    location: {id: sessionStorage.getItem("userLocationId"),
-                               name: sessionStorage.getItem("userLocation")}
+                    errors: Utils.setErrors({connection: ["Momenteel kan er geen gebruiker worden toegevoegd."]}),
+                    pageLoading: false
                 });
-            }
         })
+
     }
 
-    handleFormChange = (e) => {
-        const {name, value} = e.target;
-        this.setState({
-           [name]: value
+    compareLocations(first, second) {
+        first.map(o1 => {
+            second.map(o2 => {
+                if (o1.id === o2.id) { return true; }
+            });
         });
+        return false;
     }
 
-    onChangeRole= (e) => {
-        var selectedRole = this.state.roles.find(role => role.id === parseInt(e.target.value));
-        var isTrainee = selectedRole.name === "Trainee";
-
-        this.setState({
-           isTrainee: isTrainee,
-           role: selectedRole,
-           roleDisplayName: e.target.value
-        });
-    }
-
-    onChangeLocation= (e) => {
-        this.setState({
-           location: this.state.locations.find(loc => loc.id === parseInt(e.target.value)),
-           locationDisplayName: e.target.value
-        });
-    }
-
-    // onChangeTeacher= (e) => {
-    //     this.setState({
-    //        teacher: this.state.teachers.find(tea => tea.id === parseInt(e.target.value)),
-    //        teacherDisplayName: e.target.value
-    //     });
-    // }
-
-    _next() {
-    //     console.log(this.state.currentStep);
-    //     if (!this.state.isTrainee) {
-    //         this.setState({teacher: null, teacherDisplayName: ""});
-    // }
-
-        if ((this.state.location != null /*|| this.state.teacher*/) && this.state.role != null) {
-            this.setState({currentStep: 2, errors: null});
-        }
-        else {
-            Utils.setErrors({roleAndLoc: ["Maak voor alle velden een selectie."]});
-        }
-        console.log(this.state.currentStep);
-    }
-
-    _prev() {
-        this.setState({currentStep: 1, errors: null});
-    }
-
-    // get previousButton() {
-    //     let currentStep = this.state.currentStep;
-
-    //     if (currentStep > 1 /*&&  !this.state.isDocent*/) {
-    //         return (
-    //             <button
-    //                 className="btn btn-primary float-right"
-    //                 type="button" onClick={this._prev}>
-    //                 Vorige
-    //             </button>
-    //         )
-    //     }
-    //     return null;
-    // }
-
-    get nextButton() {
-        let currentStep = this.state.currentStep;
-
-        if (currentStep <= 1 ) {
-            return (
-                <button
-                    className="btn btn-primary float-right"
-                    type="button" onClick={this._next}>
-                    Volgende
-                </button>
+    createUserJson() {
+        const {name, email, password, roleId, selectedLocationsIds, startDate } = this.state;
+        var locations = [];
+        var i;
+        for (i=0;i<selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:selectedLocationsIds[i]}
             )
         }
-        return null;
-    }
-
-    get submitButton() {
-        const {currentStep, submitButtonDisabled} = this.state;
-
-        if (currentStep === 2) {
-            return (
-                    <button className="btn btn-primary float-right"
-                        disabled={submitButtonDisabled}
-                        type="submit">
-                        {(submitButtonDisabled) ? "Laden..." :"Opslaan"}
-                    </button>
-            )
+        return {
+            user:{
+                name: name,
+                email: email,
+                password:password,
+                role: {id:parseInt(roleId)},
+                startDate: startDate
+            },
+            locations: locations
         }
-        return null;
-    }
+    }  
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.setState({submitButtonDisabled: true});
         var errors = validate(this.state, constraints);
-        console.log(this.createUserJson());
+
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
-                    this.setState({submitButtonDisabled: false, errors: null});
-                    this.props.history.push('/settings');
+                    console.log(response);
+                    this.props.history.push('/dossier/' + response.data.id);
                 })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    const custErr = {addUser: ["Mislukt om een gebruiker toe te voegen."]};
                     this.setState({
-                        submitButtonDisabled: false,
-                        errors: Utils.setErrors(custErr)
+                        errors: Utils.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen. Mogelijk bestaat er al een gebruiker met dit e-mailadres."]})
                     });
                 });
         }
@@ -207,82 +121,162 @@ class AddUser extends React.Component {
         }
     }
 
-    createUserJson() {
-        return {
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            role: this.state.role,
-            location: this.state.location,
-            dateActive: this.state.dateActive
+    handleFormChange = (e) => {       
+        const {name, value} = e.target;
+        if (name==="roleId"){
+            this.state.selectedLocationsIds=[];
         }
+        this.setState({
+           [name]: value
+        });
     }
 
     render() {
         const pageLoading = this.state.pageLoading;
-        const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
+        const errorsList = !!this.state.errors?<ul className="">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
+        const userRole = sessionStorage.getItem("userRole");
+        const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
+        const {locations,roles,selectedLocationsIds} = this.state
+
+        let locationsOptions;
+        const rolesOptions = roles.map((role) => {
+            return (
+                <option key={role.id} value={role.id}>{role.name}</option>
+            )
+        });
+            
+        if (userRole === "admin") {
+            locationsOptions = locations.map((loc) => {
+                return (
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
+                )
+            });
+        }
+
+
+        if (userRole === "admin") {
+            locationsOptions = locations.map((loc) => {
+                return (
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
+                )
+            });
+        }
+        else {
+            locationsOptions = userLocation.map((loc) => {
+                return (
+                    <MenuItem key={loc.id} value={loc.id}>{loc.name}</MenuItem >
+                )
+            });
+        }
 
         return (
-            <div className="container">
+            <div className="container main-container">
+
                 <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                    <div className="col text-center">
-                        {errorsList}
+                <div className="text-center text-danger">{errorsList}</div>
+
+                <form onSubmit={this.handleSubmit} className="container col-lg-8">
+
+                    <div className="input row dossier mt-2">
+                        <label className="label col-sm col-form-label" htmlFor="roleId">Rol:</label>
+                        <Select 
+                            className="form-control col-sm-9" 
+                            name="roleId" 
+                            id="roleId" 
+                            disabled={!(userRole === "Admin")}
+                            onChange={this.handleFormChange}
+                            value={this.state.roleId}
+                            required>
+                                <option hidden value=''></option>
+                                {rolesOptions}
+                        </Select>
                     </div>
-                    
-                    <form onSubmit={this.handleSubmit}>
-                        <div className="row justify-content-center">
 
-                            <div className="col-4">
-
-                                <RoleAndLocation
-                                    currentStep={this.state.currentStep}
-                                    roles={this.state.roles}
-                                    locations={this.state.locations}
-                                    // teachers={this.state.teachers}
-                                    // teacherDisplayName={this.state.teacherDisplayName}
-                                    roleDisplayName={this.state.roleDisplayName}
-                                    locationDisplayName={this.state.locationDisplayName}
-                                    onChangeRole={this.onChangeRole}
-                                    onChangeLocation={this.onChangeLocation}
-                                    // onChangeTeacher={this.onChangeTeacher}
-                                    isTrainee={this.state.isTrainee}
-                                />
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        
+                        {(this.state.roleId===3)?
+                            <Select
+                            className="text-black form-control col-sm-9"
+                            id="selectedLocationsIds"
+                            name="selectedLocationsIds" 
+                            value={selectedLocationsIds}
+                            onChange={this.handleFormChange}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="selectedLocationsIds" />}>
+                                {locationsOptions}
+                        </Select>:
+                        <Select
+                            className="text-black form-control col-sm-9"
+                            id="selectedLocationsIds"
+                            name="selectedLocationsIds" 
+                            multiple
+                            value={selectedLocationsIds}
+                            onChange={this.handleFormChange}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="selectedLocationsIds" />}>
+                                {locationsOptions}
+                        </Select>}
+                    </div>
             
-                            <UserInfo
-                                currentStep={this.state.currentStep}
-                                name={this.state.name}
-                                email={this.state.email}
-                                date={this.state.dateActive}
-                                role={this.state.role}
-                                location={this.state.location}
-                                password={this.state.password}
-                                handleFormChange={this.handleFormChange}
-                            />
-                            </div>
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                        <TextField className="form-control col-sm-9" id="name" type="name" name="name"
+                            onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="email">Email:</label>
+                        <TextField className="form-control col-sm-9" id="email" type="email" name="email"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier">
+                        <label className="label col-sm col-form-label" htmlFor="password">Wachtwoord:</label>
+                        <TextField className="form-control col-sm-9" id="password" type="password" name="password"
+                        onChange={this.handleFormChange}/>
+                    </div>
+
+                    <div className="input row dossier" >
+                        <label className="label col-sm col-form-label" htmlFor="startDate">Startdatum:</label>
+                        <TextField className="form-control col-sm-9" id="startDate" type="date" name="startDate" 
+                            onChange={this.handleFormChange}/>
+                    </div>
+                            
+                    {/* leaving this here for when a bundleFeature like this is needed in the future
+                    <div className="input row dossier" hidden={!traineeDossier}>
+                        <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                        <BundleTable 
+                            bundlesTrainee={this.state.bundlesTrainee} 
+                            bundles={this.state.bundles}
+                            removeBundle={this.removeBundle.bind(this)}
+                            handleBundleChange={this.handleBundleChange.bind(this)} 
+                            addBundle ={this.addBundle.bind(this)} 
+                        />
+                    </div> */}
+
+                    <div className="row mt-2">
+                        <div className="buttons">
+                            <button type="submit" className="btn btn-danger btn-block">Voeg toe</button>
                         </div>
+                    </div>
 
-                            <div className="row justify-content-center">
-                                <div className="col-3 m-1">
-                                    {this.nextButton}
-                                    {this.submitButton}
-                                </div>
-                            </div>
-                    </form>
-
-                    <div className="row justify-content-center">
-                        <div className="col-3">
-                            {(this.state.currentStep <= 1 ) ? 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>: 
-                                <button
-                                    className="btn btn-primary float-right"
-                                    type="button" onClick={this._prev}>
-                                    Vorige
-                                </button>}
+                    <div className="row">
+                        <div className="buttons">
+                            <Link to="/settings"  className="btn btn-danger btn-block">Annuleer</Link>
                         </div>
-                    </div> 
-
+                    </div>
+                </form>
             </div>
         )
     }

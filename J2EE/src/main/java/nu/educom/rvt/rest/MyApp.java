@@ -8,10 +8,21 @@ import javax.ws.rs.core.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import nu.educom.rvt.rest.filter.AuthenticationFilter;
+import nu.educom.rvt.rest.filter.CORSFilter;
+
 @ApplicationPath("")
 public class MyApp extends Application {
 	private static final Logger LOG = LogManager.getLogger();
 	
+	
+	public MyApp() {
+		super();
+		LOG.info("----------------------------------------------------------");
+		LOG.info("|  Registratie Voortgang Trainees versie 1.0.0 Started   |");
+		LOG.info("----------------------------------------------------------");
+	}
+
 	@Override
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> set = new HashSet<>();
@@ -21,8 +32,8 @@ public class MyApp extends Application {
 		set.add(LocationResource.class);
 		set.add(BundleResource.class);
 		set.add(CORSFilter.class);
-		set.add(BundleResource.class);
-		LOG.info("classes: {}", set);
+		set.add(AuthenticationFilter.class);
+//		LOG.info("classes: {}", set);
 		return set;
 	}
 	

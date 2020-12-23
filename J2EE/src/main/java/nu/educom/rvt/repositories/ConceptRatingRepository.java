@@ -3,10 +3,8 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import nu.educom.rvt.models.ConceptRating;
-import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.Review.Status;
 /* JH: Voor link tabellen is doorgaans geen aparte repository, maar dit wordt in de andere repositories opgelost */
 public class ConceptRatingRepository {
@@ -44,8 +42,8 @@ public class ConceptRatingRepository {
 		return HibernateSession.loadAllData(ConceptRating.class, session);
 	}
 	
-	public ConceptRating readById(int id) throws DatabaseException {
-		return session.get(ConceptRating.class, id);
+	public ConceptRating readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(ConceptRating.class, id, session);
 	}
 	
 	public List<ConceptRating> readByReviewId(int review_id) throws DatabaseException {

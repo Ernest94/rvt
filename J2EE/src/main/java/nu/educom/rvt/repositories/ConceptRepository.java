@@ -29,11 +29,8 @@ public class ConceptRepository {
 		return HibernateSession.loadAllData(Concept.class, session);
 	}
 	
-	public Concept readById(int id) throws DatabaseException {
-		if (!session.isOpen()) {
-			throw new DatabaseException("Create called on an session that is not open");
-		}
-		return session.get(Concept.class, id);
+	public Concept readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Concept.class, id, session);
 	}
 	
 	public Concept readByName(String name) throws DatabaseException {
@@ -47,7 +44,8 @@ public class ConceptRepository {
 	}
 	
 	public boolean isConceptInUserBundle(int id, int userId)  throws DatabaseException {
-		Optional result = session.createNativeQuery("SELECT name FROM concepts c "
+		@SuppressWarnings("rawtypes")
+		Optional result = session.createNativeQuery("SELECT name FROM concept c "
 												+ "LEFT JOIN bundle_concept AS bc "
 												+ "ON c.id = bc.concept_id "
 												+ "LEFT JOIN bundle_trainee AS btr "

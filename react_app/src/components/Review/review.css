@@ -1,3 +1,7 @@
+
+.feather-icon{
+    fill:rgb(0, 121, 46)
+}
 .text-black {
     color:black;
 }
@@ -51,7 +55,7 @@
 .addReviewTable td:nth-child(2){
     white-space: nowrap;
 }
-.addReviewTable td:nth-child(4),.reviewTable th:nth-child(4){
+.addReviewTable td:nth-child(4),.addReviewTable th:nth-child(4){
     width:100%;
 }
 
@@ -60,6 +64,22 @@
 }
 .reviewTable td:nth-child(3),.reviewTable th:nth-child(3){
     width:100%;
+}
+
+.addReviewTable .activeCheckbox:hover{
+    background-color:rgb(204, 44, 62,.2)!important;
+}
+.addReviewTable .activeCheckbox{
+    color:#CC2C3E!important;
+}
+.addReviewTable .featherCheckbox:hover{
+    background-color:rgb(0, 121, 46,.2)!important;
+}
+.addReviewTable .featherCheckbox{
+    color:rgb(0, 121, 46)!important;
+}
+.addReviewTable .Mui-disabled{
+    color:lightgrey!important;
 }
 
 .theme-text {
@@ -84,8 +104,8 @@
     z-index: 1;
 
     top: 20px;
-    left: 110%;
-  }
+    left: 110%;    
+}
 
 .theme-text:hover .displayMessage {
     visibility: visible;
@@ -156,12 +176,25 @@
 .sliderThumb{
     background-color:#ffc107!important;
 }
+.selectionSlider{
+    color:#CC2C3E!important;
+}
 .conceptSelection .lightButton{
     margin:0px 5px;
     padding:1px 3px;
     min-width:0;
     background-color:lightGrey;
     float:right;
+}
+.conceptSelection{
+    position:sticky;
+    top:0;
+    height:440px;
+    width:20%;
+}
+.conceptSelection div{
+    position:sticky;
+    top:0;
 }
 
 .conceptSelection .lightButton:hover{
@@ -172,10 +205,18 @@
 }
 .selectionCheckbox{
     color:#ffc107!important;
+    
 }
 .checkboxControl{
-    width:45%;
+    width:33%;
     padding:1px;
+    margin:0;
+}
+.checkboxControl .MuiFormControlLabel-label{
+    font-size:12px!important;
+}
+.checkboxControl .MuiButtonBase-root{
+    padding:3px!important;
 }
 .selectionCheckbox .icon{
     height:10px!important;

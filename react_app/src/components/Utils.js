@@ -11,6 +11,19 @@ class Utils{
         return foundErrors;
     }
 
+    static compareLocations(first, second) {
+      let bool = false;
+      if (first.length === 0 || second.length === 0) return bool;
+      Object.values(first).map(o1 => {
+          Object.values(second).map(o2 => {
+              if (o1.id === o2.id) {
+                  bool = true;
+              }
+          });
+      });
+      return bool;
+  }
+
     static dateValidation = () => {
         validate.extend(validate.validators.datetime, {
           // The value is guaranteed not to be null or undefined but otherwise it

@@ -1,5 +1,6 @@
 import React from 'react';
 import LocationSelection from './locationSelection.js';
+import {Select} from '@material-ui/core'
 
 class RoleAndLocation extends React.Component {
     
@@ -24,15 +25,15 @@ class RoleAndLocation extends React.Component {
         return (
             <div className="m-3 p-2">
 
-                <div className="">
+                <div className="text-center">
                     <label htmlFor="role">Rol:</label>
                     <div>
-                    <select className="m-1" name="role" id="role" 
+                    <select className="form-control" name="role" id="role" 
                         value={this.props.roleDisplayName} 
                         onChange={this.props.onChangeRole}
                         required>
                         
-                        <option hidden value=''>Rol</option>
+                        <option hidden value=''></option>
                         {rolesOptions}
                     </select>
                     </div>
@@ -42,6 +43,7 @@ class RoleAndLocation extends React.Component {
                     locations={this.props.locations}
                     isTrainee={this.props.isTrainee}
                     locationDisplayName= {this.props.locationDisplayName}
+                    roleDisplayName = {this.props.roleDisplayName}
                     onChangeLocation={this.props.onChangeLocation}
                 /> 
                 

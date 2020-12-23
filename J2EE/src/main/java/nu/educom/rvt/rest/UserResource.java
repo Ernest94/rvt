@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -24,11 +25,15 @@ import nu.educom.rvt.models.Search;
 //import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.PasswordChangeAdmin;
 import nu.educom.rvt.models.view.RoleLocationJson;
+import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.UserService;
 
 @Path("webapi/user")
+
 public class UserResource extends BaseResource {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -39,19 +44,25 @@ public class UserResource extends BaseResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(User user) {
 		LOG.debug("login {} called", user);
+		System.out.print("\n" + "login is called" + "\n");
+
 		return wrapInSession(session -> {
-			UserService userServ = new UserService(session);
-			User foundUser = userServ.checkUser(user);
-			if (foundUser != null) {
-				return Response.status(200).entity(foundUser).build();
+			try {
+				UserService userServ = new UserService(session);
+				User foundUser = userServ.checkUser(user);
+				String token = userServ.issueToken(foundUser);
+				//TODO: token is not entity, how to send string, not object?
+				return Response.status(200).entity(token).build();
 			}
-			else {
+			catch (Exception e){
+				LOG.error("Login failed: " + e.getMessage());
 				return Response.status(401).build();
 			}
 		});
 	}
 	
 	@POST
+	@Secured
 	@Path("/password")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -69,7 +80,24 @@ public class UserResource extends BaseResource {
 		});
 	}
 	
+	@POST
+	@Secured
+	@Path("/adminPassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changePasswordAdmin(PasswordChangeAdmin change) {
+		LOG.debug("changePasswordAdmin called for user id {}", change.getUserId());
+		return wrapInSessionWithTransaction(session -> {
+			UserService userServ = new UserService(session);
+			User foundUser = userServ.getUserById(change.getUserId());
+			User changedUser = userServ.changePassword(foundUser, change.getNewPassword());
+			LOG.info("Password changed for user {}.", changedUser);
+			return Response.status(200).entity(changedUser).build();
+		});
+	}
+	
 	@GET
+	@Secured
 	@Path("/roles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoles() {
@@ -90,24 +118,28 @@ public class UserResource extends BaseResource {
 	}
 		
 	@POST
+	@Secured
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createUser (User user) {
-		LOG.debug("createUser called for user {}", user.getName());
+	public Response createUser (UserLocationView userLocationsView) {
+		LOG.debug("createUser called for user {}", userLocationsView.getUser().getName());
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
 			boolean valid = userServ.validateUser(user);
-		
 			if (!valid) {
 				return Response.status(412).build();
 			}
-			userServ.addUser(user);
+			User createdUser = userServ.addUserAndLocations(user,locations);
 			LOG.info("User {} has been created.", user);
-			return Response.status(201).build();
+			return Response.status(201).entity(createdUser).build();
 		});
 	}
 	
+	
 	@POST
+	@Secured
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -116,7 +148,7 @@ public class UserResource extends BaseResource {
 				   search.getRole(), search.getLocations(), search.getCriteria());
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
-			List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocations());
+			List<User> searchResult = userServ.getFilteredUsers(search.getCriteria().toLowerCase(Locale.ROOT), search.getRole(), search.getLocations());
 			UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
 			
 			return Response.status(200).entity(USJ).build();
@@ -124,6 +156,7 @@ public class UserResource extends BaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/users")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllUsers() {
@@ -131,12 +164,12 @@ public class UserResource extends BaseResource {
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
 			List<User> users = userServ.getAllUsers();
-	  
 		  return Response.status(200).entity(users).build();
 		});
 	}
 		
 	@GET
+	@Secured
     @Path("/dossier")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserDossier(@HeaderParam("UserId") int userId ){ /* JH: Had hier @PathParam verwacht */
@@ -144,32 +177,30 @@ public class UserResource extends BaseResource {
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);//load injectables
 		    User user = userServ.getUserById(userId);
-		      
-		    if(user != null) {
-		    	LOG.debug("Dossier of {}", user);
-		        return Response.status(200).entity(user).build();
-		    } else {
-		        return Response.status(400).build();        
-		    }
+
+	    	LOG.debug("Dossier of {}", user);
+	        return Response.status(200).entity(user).build();
 		});
 	}	
 	
 	@PUT
+	@Secured
 	@Path("/dossier")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateUser(User user) {
-		LOG.debug("updateUser called for {}", user);
+	public Response updateUser(UserLocationView userLocationsView) {
+		User user = userLocationsView.getUser();
+		List<Location> locations = userLocationsView.getLocations();
+		LOG.debug("updateUser called for {} on [{}]", user, locations);
+			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
-			User foundUser = userServ.getUserById(user.getId());
-			if(foundUser==null) {
-				return Response.status(404).build();  
+			boolean valid = userServ.validateUser(user);
+			if (!valid) {
+				return Response.status(412).build();	
 			}
-			else {
-				userServ.updateUser(user);
-				LOG.info("{} has been updated.", foundUser);
-				return Response.status(200).build();
-			}
+			User updatedUser = userServ.updateUser(user,locations);
+			LOG.info("{} has been updated.", updatedUser);
+			return Response.status(200).build();
 		});
 	}	
 }

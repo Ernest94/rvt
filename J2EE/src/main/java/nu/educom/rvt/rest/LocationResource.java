@@ -10,9 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Location;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.UserService;
 
 @Path("webapi")
+@Secured
 public class LocationResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	

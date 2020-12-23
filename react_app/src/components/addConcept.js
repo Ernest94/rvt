@@ -6,6 +6,7 @@ import './form.css'
 import Utils from './Utils.js'
 import { Link } from 'react-router-dom';
 import { FaPlus, FaTimes } from "react-icons/fa";
+import {Select, TextField} from '@material-ui/core';
 
 class BundleConceptTable extends React.Component {
 
@@ -24,7 +25,7 @@ class BundleConceptTable extends React.Component {
 
         return (
             <div className="col-sm-9">
-                <table className="bundleTable dossier">
+                <table className="bundleTable concept">
                     <tbody>
                         {this.props.chosenBundles.map((chosenBundle, index) =>
                             (this.props.editDisabled ?
@@ -36,26 +37,26 @@ class BundleConceptTable extends React.Component {
                                 :
                                 <tr className="row" key={"bundleSelect_" + index}>
                                     <td>
-                                        <select className="form-control"
-                                            id={"week_" + index}
-                                            name="startWeek"
-                                            value={chosenBundle.week}
-                                            onChange={(e) => this.props.handleBundleWeekChange(e)}
-                                        >
-                                            <option value="-1" hidden>Kies een startweek</option>
-                                            {weekOptions}
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select className="form-control"
+                                        <Select className="form-control"
                                             id={"bundle_" + index}
                                             name="bundle"
                                             value={chosenBundle.bundle.id ? chosenBundle.bundle.id : -1}
-                                            onChange={(e) => this.props.handleBundleChange(e)}
+                                            onChange={(e) => this.props.handleBundleChange(e, index)}
                                         >
                                             <option value="-1" hidden>Kies een bundel</option>
                                             {bundleOptions}
-                                        </select>
+                                        </Select>
+                                    </td>
+                                    <td>
+                                        <Select className="form-control"
+                                            id={"week_" + index}
+                                            name="startWeek"
+                                            value={chosenBundle.week}
+                                            onChange={(e) => this.props.handleBundleWeekChange(e, index)}
+                                        >
+                                            <option value="-1" hidden>Kies een startweek</option>
+                                            {weekOptions}
+                                        </Select>
                                     </td>
                                     <td>
                                         <button className="btn btn-danger btn-sm" type="button" onClick={(e) => this.props.removeBundle(e, index)}>
@@ -102,10 +103,10 @@ class addConcept extends React.Component {
     async componentDidMount() {
         this.getThemes()
         
-        this.setState({
+        await this.setState({
             userId: sessionStorage.getItem("userId")
         });
-        this.getYourBundles()
+        await this.getYourBundles()
         console.log("State:", this.state)
     }
 
@@ -156,12 +157,14 @@ class addConcept extends React.Component {
 
     succesfullAdd(){
         this.setState({ 
-                        themeDisplayName:"",
-                        name:"",
-                        description:"",
-                        message:"Concept toegevoegd",
-                        startDate:"",
-                        week:""
+            themeDisplayName:"",
+            name:"",
+            description:"",
+            message:"Concept toegevoegd",
+            startDate:"",
+            week: "",
+            chosenBundles: []
+
         });
     }
 
@@ -209,7 +212,7 @@ class addConcept extends React.Component {
                 })
         }
         else {
-            axios.get(config.url.API_URL + '/webapi/bundle/getCreatorBundles/' + this.state.userId)
+            axios.get(config.url.API_URL + '/webapi/bundle/creator/' + this.state.userId)
                 .then(response => {
                     console.log("Repsponse:", response);
                     this.handleBundleResponse(response.data);
@@ -260,10 +263,9 @@ class addConcept extends React.Component {
         this.setState((prevState) => ({ chosenBundles: [...prevState.chosenBundles.slice(0, index), ...prevState.chosenBundles.slice(index + 1)] }));
     }
 
-    handleBundleChange(e) {
+    handleBundleChange(e, index) {
 
         let allBundles = this.state.bundles;
-        const index = e.target.id.substring(7);
         const value = +e.target.value;
 
         var selectedBundleIndex = allBundles.findIndex(bundle => bundle.id === value);
@@ -278,9 +280,8 @@ class addConcept extends React.Component {
         console.log(this.state.chosenBundles);
     }
 
-    handleBundleWeekChange(e) {
+    handleBundleWeekChange(e, index) {
 
-        const index = e.target.id.substring(5);
         const value = e.target.value;
         console.log(index);
         console.log(value);
@@ -309,52 +310,54 @@ class addConcept extends React.Component {
                 <div className="container main-container">
 
                 <h2 className="text-center ">Concept toevoegen</h2>
-                <div className="text-danger" >{this.state.errors}</div>
+                <div className="text-danger text-center" >
+                    {this.state.errors}
+                </div>
 
                     <form onSubmit={this.handleSubmit} className="container col-lg-8">
                         
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
-                                <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
-                                <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
-                        </div>
-
-                        <div className="input row dossier">
-                            <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
-                                <select name="theme" id="theme" className="form-control col-sm-9"
-                                    value={this.state.themeDisplayName}
-                                    onChange={this.onChangeTheme}
-                                    required>
-                                    <option hidden value=''></option>
-                                    {themeOptions}
-                                </select>
-                        </div>
-                        <div className="input row dossier">
-                            <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
-                            <div>
-                                <BundleConceptTable
-                                    chosenBundles={this.state.chosenBundles}
-                                    bundles={this.state.bundles}
-                                    removeBundle={this.removeBundle.bind(this)}
-                                    handleBundleChange={this.handleBundleChange.bind(this)}
-                                    handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
-                                    addBundle={this.addBundle.bind(this)}
-                                />
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="name">Naam:</label>
+                                    <input id="name" className="form-control col-sm-9" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                             </div>
-                        </div>
-                        <div className="buttons">
-                        <div>
+
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="description">Beschrijving:</label>
+                                    <input id="description" className="form-control col-sm-9" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                            </div>
+
+                            <div className="input row dossier">
+                                <label className="label col-sm col-form-label" htmlFor="theme">Thema:</label>
+                                    <select name="theme" id="theme" className="form-control col-sm-9"
+                                        value={this.state.themeDisplayName}
+                                        onChange={this.onChangeTheme}
+                                        required>
+                                        <option hidden value=''></option>
+                                        {themeOptions}
+                                    </select>
+                            </div>
+
+                            <div className="input row concept">
+                                <label className="label col col-form-label" htmlFor="bundles">Bundels:</label>
+                                <div>
+                                    <BundleConceptTable
+                                        chosenBundles={this.state.chosenBundles}
+                                        bundles={this.state.bundles}
+                                        removeBundle={this.removeBundle.bind(this)}
+                                        handleBundleChange={this.handleBundleChange.bind(this)}
+                                        handleBundleWeekChange={this.handleBundleWeekChange.bind(this)}
+                                        addBundle={this.addBundle.bind(this)}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="buttons">
                                 <button 
                                     className="btn btn-danger btn-block" 
                                     type="submit"
                                     >                        
                                     Concept toevoegen
                                 </button>
-                            </div>
                             <div>
                                 <Link 
                                     className="btn btn-danger btn-block" 

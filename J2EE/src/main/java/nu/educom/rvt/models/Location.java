@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="location")
-public class Location {
+public class Location implements BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -52,8 +52,9 @@ public class Location {
 			}
 		}
 	}
+	
 	@Override
 	public String toString() {
-		return String.format("Location(%s)", getName());
+		return String.format("Location(%d: %s)", getId(), getName());
 	}
 }

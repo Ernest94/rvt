@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Link,withRouter } from 'react-router-dom';
 import './header.css';
 
@@ -11,12 +12,13 @@ class Header extends React.Component {
     }
 
     render() {
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+ sessionStorage.getItem("token");
         let button;
         let accountSettings;
 
         if (sessionStorage.getItem("isUserLoggedIn")) {
                button = <div>
-                            <span className="userName">Welkom "{sessionStorage.getItem("userName")}"</span>
+                            <span className="userName">Welkom {sessionStorage.getItem("userName")}</span>
                             <button className="btn rvtbutton logoutbutton" onClick={() => this.handleLogOut()}> Log uit </button>
                         </div>;
                accountSettings = <Link to="/settings" className="header-link">Menu</Link> ;

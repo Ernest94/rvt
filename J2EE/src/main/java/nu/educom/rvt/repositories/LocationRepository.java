@@ -2,10 +2,8 @@ package nu.educom.rvt.repositories;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import nu.educom.rvt.models.Location;
 
@@ -22,8 +20,8 @@ public class LocationRepository {
 		return generated;
 	}
 	
-	public Location readById(int id) throws DatabaseException {
-		return session.get(Location.class, id);
+	public Location readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Location.class, id, session);
 	}
 	public Location readByName(String name) throws DatabaseException {
 		return (Location) session

@@ -77,7 +77,7 @@ class TestConceptRepository {
 		
 		// create new Repository
 		ConceptRepository cr2 = new ConceptRepository(session);
-		Concept result2 = cr2.readById(newId);
+		Concept result2 = cr2.readByKnownId(newId);
 		// check if they are the same
 		assertNotNull(result2);
 		assertEquals(newId, result2.getId());
@@ -109,7 +109,7 @@ class TestConceptRepository {
 		ConceptRepository cr = new ConceptRepository(session);
 		
 		// Run
-		Concept result = cr.readById(3);
+		Concept result = cr.readByKnownId(3);
 		
 		// Validate
 		assertNotNull(result);

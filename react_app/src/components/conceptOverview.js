@@ -5,10 +5,13 @@ import {config} from './constants';
 import './conceptOverview.css';
 import Permissions from './permissions.js'
 import Utils from './Utils.js'
-import { Checkbox} from '@material-ui/core';
+import {Select, Checkbox} from '@material-ui/core';
 import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
+
+
+
 
 class conceptOverview extends React.Component {
 
@@ -56,10 +59,12 @@ class conceptOverview extends React.Component {
 
     onChangeBundle = (e) => {
         var bundleKeyId = parseInt(e.target.value);
+        var bundleName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.name)[0];
         var bundleCreatorName = this.bundles.filter(bundle => bundle.id===bundleKeyId).map(bundle => bundle.creator_name)[0];
 
         this.setState({
             selectedBundle: bundleKeyId,
+            selectedBundleName: bundleName,
             selectedBundleCreator: bundleCreatorName
         });
         this.selectActiveConcepts(bundleKeyId)
@@ -172,6 +177,7 @@ class conceptOverview extends React.Component {
                             id={"concept"+concept.id}
                             checked={selected}
                             onChange={this.onChangeActive}
+                            disabled={sessionStorage.getItem("userRole")!=="Admin"&&sessionStorage.getItem("userName")!==this.state.selectedBundleCreator}
                             />                   
                         </td>
                         <td className="">
@@ -185,20 +191,21 @@ class conceptOverview extends React.Component {
                                     {weekOptions}
                         </select>
                         </td>
-                        <td className="">
-                            <div className="p-1">
-                            {concept.theme.name}
-                            </div>
-                        </td>
-                        <td className="">
-                            <div className="p-1">
-                            {concept.name}
-                            </div>
-                        </td>
+                        <td className="" id="text">
+                                <span className="concept-theme-text conceptOverview-theme-text"> 
+                                    <span className="no-wrap">{concept.theme.name}</span>
+                                    <span className="displayMessage"> {concept.theme.description} </span>
+                                </span>
+                            </td>
+                        <td className="" id="text">
+                            <span className="concept-theme-text conceptOverview-concept-text"> 
+                                <span className="no-wrap">{concept.name}</span>
+                                <span className="displayMessage"> {concept.description} </span>
+                            </span>
+                            </td>
                     </tr >
             )
         });
-
 
         return (
 
@@ -207,35 +214,53 @@ class conceptOverview extends React.Component {
                 <h2 className="text-center">Concepten overzicht</h2>
                 
                 <div className="row justify-content-center">
-                        <ul className="errors">{this.state.errors}</ul>
+                        <ul className="errors text-center">{this.state.errors}</ul>
                 </div>
 
-                <div className="row">
-                    <div className="col-3">
+                <div className="row justify-content-lg-center">
+                    
+                    <div className="col-2 col-lg-6">
                         Selecteer een bundel:
-                        <select className="m-1" name="bundle" id="bundle"
+                        <Select className="m-auto col-6" name="bundle" id="bundle"
                                 value={this.state.bundle}
                                 onChange={this.onChangeBundle}
                                 required>
                                 <option hidden value=''></option>
                                 {bundleOptions}
-                            </select>
+                        </Select>
                     </div>
                     <div className="col-2">
-
                         <span>
-                            <Link className="btn btn-primary float-left" to={"/addBundle/"}>
+                            <Link className="btn btn-danger" 
+                                to={{pathname:"/addBundle/",                                
+                                    state:{bundleId:-1}}}>
+
                                 <FaPlus/>
                             </Link>
                         </span>
                     </div>
-                    <div className="col-7">
+
+                    <div className="col">
+                        {(this.state.selectedBundle!=="") ? 
+                        <span>
+                            <Link className="btn btn-danger" 
+                                to={{pathname:"/addBundle/",                                
+                                    state:{
+                                            bundleId:this.state.selectedBundle,
+                                            bundleName:this.state.selectedBundleName,
+                                            bundleCreator:this.state.selectedBundleCreator}}}>
+                                Dupliceer bundel
+                            </Link>
+                        </span>:<span></span>}
+                    </div>
+                    <div className="col">
                         {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
-                        || "Admin"===sessionStorage.getItem("userName"))) ? 
-                        <button className="btn btn-primary bundle-submit-button float-right" onClick={this.saveBundle}> 
+                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        <button className="btn btn-danger bundle-submit-button" onClick={this.saveBundle}> 
                             Bundel opslaan
                         </button>: <span></span>}
                     </div>
+
                 </div>
 
                 <div className="container mt-4">

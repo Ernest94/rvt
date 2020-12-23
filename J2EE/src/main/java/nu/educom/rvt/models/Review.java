@@ -9,7 +9,7 @@ import nu.educom.rvt.models.view.LocalDateTimeAdapter;
 
 @Entity
 @Table(name="review")
-public class Review {
+public class Review implements BaseEntity {
 
 	public enum Status {
 		CANCELLED,
@@ -26,18 +26,21 @@ public class Review {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@Column(name="comment_student")
+	@Column(name="comment_student", length = 4000)
 	private String commentStudent;
 	
-	@Column(name="comment_office")
+	@Column(name="comment_office", length = 4000)
 	private String commentOffice;
 	
-	@Column(name="datetime")
+	@Column(name="date_time")
 	private LocalDateTime date;
 	
 	@Column(name="status")
 	private Status reviewStatus;
 	
+	@ManyToOne
+	@JoinColumn(name="submittedBy")
+	private User docent;
 
 	public Review() {
 		super();
@@ -108,9 +111,19 @@ public class Review {
 	public void setReviewStatus(Status reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
+	
+	public User getDocent() {
+		return docent;
+	}
+	
+	public void setDocent(User docent) {
+		this.docent = docent;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Review(%d, %s)[%s]", getId(), getUser(), getReviewStatus());
 	}
+
 
 }

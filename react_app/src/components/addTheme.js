@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import {TextField} from '@material-ui/core'
 import {config} from './constants';
 import Permissions from './permissions.js';
 import Utils from './Utils.js'
@@ -90,22 +90,22 @@ class addTheme extends React.Component {
                                 <div className="col-4">
                                     <div className="form-group">
                                         <label htmlFor="name">Naam:</label>
-                                        <input className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
+                                        <TextField className="form-control" id="name" type="text" name="name" value={this.state.name} onChange={this.handleFormChange}/>
                                     </div>
 
                                     <div className="form-group">
                                         <label htmlFor="description">Beschrijving:</label>
-                                        <input className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
+                                        <TextField className="form-control " id="description" type="text" name="description" value={this.state.description} onChange={this.handleFormChange}/>
                                     </div>
 
                                     <div className="form-group">
                                         <label htmlFor="abbreviation">Afkorting:</label>
-                                        <input className="form-control " id="abbreviation" type="text" name="abbreviation" value={this.state.abbreviation} onChange={this.handleFormChange} />
+                                        <TextField className="form-control " id="abbreviation" type="text" name="abbreviation" value={this.state.abbreviation} onChange={this.handleFormChange} />
                                     </div>
 
                                     {(this.state.loading) ? 
-                                        <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                                        <button className="btn btn-primary float-right"  type="submit">Thema toevoegen</button>}
+                                        <button className="btn btn-danger btn-block" type="submit" disabled> Laden...</button>: 
+                                        <button className="btn btn-danger btn-block"  type="submit">Thema toevoegen</button>}
                                 </div>
                         </div>
                     </form>
@@ -113,8 +113,8 @@ class addTheme extends React.Component {
                     <div className="row justify-content-center">
                         <div className="col-4 m-1">
                             {(this.state.loading) ? 
-                                <button className="btn btn-primary float-right" type="submit" disabled> Laden...</button>: 
-                                <Link className="btn btn-primary float-right" to={"/settings"}>Annuleren</Link>}
+                                <button className="btn btn-danger btn-block" type="submit" disabled> Laden...</button>: 
+                                <Link className="btn btn-danger btn-block" to={"/settings"}>Annuleren</Link>}
                         </div>
                     </div> 
 

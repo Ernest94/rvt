@@ -1,8 +1,15 @@
 import React from 'react';
+import {Select} from '@material-ui/core'
 
 class LocationSelection extends React.Component {
     
+    constructor(props) {
+        super(props);
+        console.log(this.props.roleDisplayName);
+    }
+
     render() {
+        const roleDisplayName = this.props.roleDisplayName;
         const locations = this.props.locations;
         const locationsOptions = locations.map((loc) => {
            return (
@@ -13,12 +20,12 @@ class LocationSelection extends React.Component {
         if (this.props.isTrainee === null) {
             return null;
         }
-        
-        return (
-                <div className="my-2">
+        // if (roleDisplayName ==="Trainee") {
+            return (
+                <div className="text-center">
                     <label htmlFor="location">Locatie:</label>
                     <div>
-                    <select className="m-1" name="location" id="location" 
+                    <select className="form-control" name="location" id="location" 
                         value={this.props.locationDisplayName} 
                         onChange={this.props.onChangeLocation}
                         required>
@@ -29,6 +36,13 @@ class LocationSelection extends React.Component {
                     </div>
                 </div>
         )
+        // }
+        // else {
+        //     return(
+        //         <div></div>
+        //     )
+        // }
+        
     }
 }
 

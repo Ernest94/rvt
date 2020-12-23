@@ -211,14 +211,13 @@ public class ThemeConceptService {
 			Integer bundleId =  bundle.getId();
 			String bundleName = bundle.getName();
 			String bundleCreatorName = bundle.getCreator().getName();
-			String bundleCreatorLocation = bundle.getCreator().getLocation().getName();
 			List<ConceptWeekOffset> bundleConceptWeekOffset = new ArrayList<ConceptWeekOffset>();
 			for (BundleConcept bundleConcept : bundlesConceptsModel) {
 				if (bundleConcept.getBundle().getId()==bundle.getId()) {
 					bundleConceptWeekOffset.add(new ConceptWeekOffset(bundleConcept.getConcept().getId(),bundleConcept.getWeekOffset()));
 				}
 			}
-			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleCreatorLocation,bundleConceptWeekOffset));
+			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleConceptWeekOffset));
 		}	
 		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(conceptsView,bundlesConceptsView);
 		

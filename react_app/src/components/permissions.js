@@ -51,6 +51,7 @@ class Permissions{
             return (!this.isUserTrainee());
         }
     }
+    
     static canSeeReview() {
         return (this.isUserAdmin()||this.isUserDocent()||this.isUserTrainee()||this.isUserSales()||this.isUserOffice());
     }

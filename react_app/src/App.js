@@ -12,6 +12,7 @@ import Search from './components/UserSearch/search.js';
 import Menu from './components/Menu/menu.js';
 import AddUser from './components/addUser.js';
 import Password from './components/password.js';
+import adminPassword from './components/adminPassword.js';
 import PrivateRoute from './components/routes/PrivateRoute.js';
 import AccessRoute from './components/routes/AccessRoute.js';
 import addTheme from './components/addTheme.js';
@@ -41,7 +42,7 @@ class App extends React.Component {
             loggedIn: false  
           });
     }
-   
+    
     render() {
         return (
 
@@ -87,7 +88,9 @@ class App extends React.Component {
 
                             <AccessRoute exact path="/docentAddReview" component={docentAddReview}/>
 
-                            <AccessRoute exact path="/docentAddReview/:userId" component={docentAddReview}/>
+                            <AccessRoute exact path="/docentAddReview/:userId" component={docentAddReview} />
+
+                            <AccessRoute exact path="/adminPassword/:userId" component={adminPassword} />
 
                         </Switch>
                     </div>

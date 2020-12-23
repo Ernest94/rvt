@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,15 +18,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Bundle;
+import nu.educom.rvt.models.BundleConcept;
+import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.UserService;
 
 @Path("/webapi/bundle")
+@Secured
 public class BundleResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	
@@ -37,11 +42,13 @@ public class BundleResource extends BaseResource {
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
 			
-			bundle.setStartDate(LocalDate.now());
-			// TODO move the validation to a BundleLogic class so this reads if (BundelLogic.isValidBundel(bundle)) { .... including logging
-			if(bundle.getName() != "" && bundle.getCreator() != null && bundle.getStartDate() != null && bundleService.findBundleByName(bundle.getName()) == null)
+			if (bundleService.validateBundle(bundle))
 			{
-				bundleService.createNewBundle(bundle);
+				Bundle newBundle = new Bundle(bundle.getName(), bundle.getCreator(), LocalDate.now());
+				Bundle createdBundle = bundleService.createNewBundle(newBundle);
+				if (bundle.getId()!=-1) {
+					bundleService.setBundleConceptsNewBundle(bundle,createdBundle);					
+				}
 				return Response.status(201).build();
 			}
 			else {
@@ -95,19 +102,19 @@ public class BundleResource extends BaseResource {
 	}
 	
 	@GET
-	@Path("/bundleCreator/{userId}")
+	@Path("/creator/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCreatorBundles(@PathParam("userId") int userId) {
 		return wrapInSession(session -> {
 			UserService userService = new UserService(session);
 			BundleService bundleService = new BundleService(session);
 			User user = userService.getUserById(userId);
-			List<Bundle> bundles = bundleService.getAllCreatorBundles(user);
+			List<BaseBundleView> bundles = bundleService.getAllCreatorBundles(user);
 			
 			return Response.status(200).entity(bundles).build();
 		});
 	}
-	
+
 	@GET 
 	@Path("/user/{userId}") 
 	@Produces(MediaType.APPLICATION_JSON)
@@ -153,6 +160,5 @@ public class BundleResource extends BaseResource {
 			return Response.status(200).entity(concepts).build();
 		});
 	}
-
-	
 }
+

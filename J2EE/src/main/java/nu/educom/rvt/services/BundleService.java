@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-
 import nu.educom.rvt.models.Bundle;
 import nu.educom.rvt.models.BundleConcept;
 import nu.educom.rvt.models.BundleTrainee;
@@ -25,8 +24,6 @@ import nu.educom.rvt.repositories.BundleConceptRepository;
 import nu.educom.rvt.repositories.BundleRepository;
 import nu.educom.rvt.repositories.BundleTraineeRepository;
 import nu.educom.rvt.repositories.DatabaseException;
-import nu.educom.rvt.repositories.HibernateSession;
-//import nu.educom.rvt.repositories.TraineeActiveRepository;
 import nu.educom.rvt.repositories.TraineeMutationRepository;
 
 public class BundleService {
@@ -35,7 +32,6 @@ public class BundleService {
 	private BundleRepository bundleRepo;
 	private BundleConceptRepository bundleConceptRepo;
 	private BundleTraineeRepository bundleTraineeRepo;
-//	private TraineeActiveRepository traineeActiveRepo; /* JH: wordt nog niet gebruikt */
 	private TraineeMutationRepository traineeMutationRepo;
 	
 	public BundleService(Session session) {
@@ -43,11 +39,26 @@ public class BundleService {
 		this.bundleConceptRepo = new BundleConceptRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
 		this.bundleTraineeRepo = new BundleTraineeRepository(session);
-//		this.traineeActiveRepo = new TraineeActiveRepository(session);
 		this.traineeMutationRepo = new TraineeMutationRepository(session);
 	}
 	
+	public boolean doesBundleExist(Bundle bundle) throws DatabaseException {
+		Bundle duplicate = bundleRepo.readByName(bundle.getName());		
+		return duplicate==null;
+    }
+    
+	public boolean validateBundle(Bundle bundle) throws DatabaseException {
+		if(bundle.getName().trim().isEmpty()) {
+			return false;
+		}
+		else {
+			return this.doesBundleExist(bundle);
+		}		
+	}
+	
+	
 	public Bundle findBundleByName(String name) throws DatabaseException {
+		
 		return bundleRepo.readAll().stream().filter(b -> b.getName() == name).findFirst().orElse(null);
 	}
 	
@@ -69,8 +80,6 @@ public class BundleService {
 	}
 	
 	public int updateBundle(int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) throws DatabaseException {
-		Session session = HibernateSession.getSessionFactory().openSession();
-	    session.beginTransaction();
 	    
 		Bundle bundleToUpdate = bundleRepo.readById(bundleId);
 		List<BundleConcept> databaseBundleConcepts = bundleToUpdate.getAllConcepts();
@@ -86,7 +95,7 @@ public class BundleService {
 			LOG.trace("index of databaseBundleConcept: {}", i);
 			if (!frontendBundleConceptIds.contains(databaseBundleConcept.getConcept().getId())) {
 				databaseBundleConcept.setEndDate(LocalDate.now());
-			    session.saveOrUpdate(databaseBundleConcept);
+			    bundleConceptRepo.update(databaseBundleConcept);
 			    continue;
 			}	
 			int j=0;
@@ -102,7 +111,7 @@ public class BundleService {
 				else if (((Integer)databaseBundleConcept.getConcept().getId()).equals((Integer)frontendBundleConcept.getConceptId())
 						&& !(((Integer)databaseBundleConcept.getWeekOffset()).equals((Integer)frontendBundleConcept.getWeekOffset()))) {
 					databaseBundleConcept.setEndDate(LocalDate.now());
-				    session.saveOrUpdate(databaseBundleConcept);
+					bundleConceptRepo.update(databaseBundleConcept);
 				} 
 				++j;
 			}
@@ -114,8 +123,9 @@ public class BundleService {
 			return 1;
 		} else {
 			for (BundleConceptWeekOffset bundleConceptToAddToDB : bundleConceptsToAddToDB) {
-				Concept conceptToAdd = session.get(Concept.class, bundleConceptToAddToDB.getConceptId());
-			    session.saveOrUpdate(new BundleConcept(bundleToUpdate,
+				Concept conceptToAdd = new Concept();
+				conceptToAdd.setId(bundleConceptToAddToDB.getConceptId());
+			    bundleConceptRepo.update(new BundleConcept(bundleToUpdate,
 								    		conceptToAdd,
 								    		bundleConceptToAddToDB.getWeekOffset(),
 								    		LocalDate.now()));
@@ -125,11 +135,20 @@ public class BundleService {
 	}
 		
 	public Bundle getBundleById(int bundleId) throws DatabaseException {
-		return bundleRepo.readById(bundleId);
+		return bundleRepo.readByKnownId(bundleId);
 	}
 	
-	public void createNewBundle(Bundle bundle) throws DatabaseException {
-		bundleRepo.create(bundle);
+	public Bundle createNewBundle(Bundle bundle) throws DatabaseException {
+		return bundleRepo.create(bundle);
+	}
+	public void setBundleConceptsNewBundle(Bundle dbBundle,Bundle duplicateBundle) throws DatabaseException {
+		List<BundleConcept> newBundleConcepts = new ArrayList<BundleConcept>();
+		Bundle bundleInDB = this.findBundleById(dbBundle.getId());
+		List<BundleConcept> linkedBundleConcepts = bundleInDB.getAllConcepts();
+		for (BundleConcept bundleConcept : linkedBundleConcepts) {
+			newBundleConcepts.add(new BundleConcept(duplicateBundle, bundleConcept.getConcept(), bundleConcept.getWeekOffset(), LocalDate.now()));
+		}
+		bundleConceptRepo.createMulti(newBundleConcepts);
 	}
 	
 	public List<Bundle> getAllBundles() throws DatabaseException {
@@ -139,8 +158,8 @@ public class BundleService {
 		return bundleRepo.readAll().stream().map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
 	}
 	
-	public List<Bundle> getAllCreatorBundles(User user) throws DatabaseException{
-		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).collect(Collectors.toList());
+	public List<BaseBundleView> getAllCreatorBundles(User user) throws DatabaseException{
+		return bundleRepo.readAll().stream().filter(bundle -> bundle.getCreator().getId() == user.getId()).map(bundle -> new BaseBundleView(bundle)).collect(Collectors.toList());
 	}
 	 
 	 
@@ -291,3 +310,4 @@ public class BundleService {
 		bundleConceptRepo.createMulti(bundleConcepts);
 	}	
 }
+

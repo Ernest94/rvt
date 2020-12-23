@@ -36,8 +36,8 @@ public class BundleTraineeRepository {
 		return HibernateSession.loadAllData(BundleTrainee.class, session);
 	}
 	
-	public BundleTrainee readById(int id) throws DatabaseException {
-		return session.get(BundleTrainee.class, id);
+	public BundleTrainee readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(BundleTrainee.class, id,session);
 	}
 	
 //	public List<BundleConcept> readByConceptId(int concept_id) {

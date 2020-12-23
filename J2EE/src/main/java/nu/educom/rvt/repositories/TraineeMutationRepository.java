@@ -20,13 +20,13 @@ public class TraineeMutationRepository {
 	    session.save(traineeMutation); 
 	}
 	
-	public TraineeMutation readById(int id) throws DatabaseException {
-		return session.get(TraineeMutation.class, id);
+	public TraineeMutation readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(TraineeMutation.class, id, session);
 	}
 	
 	public TraineeMutation findWeekMutationByUserIdAndConceptId(int userId, int conceptId) throws DatabaseException {
 		TraineeMutation result = session
-					.createQuery("from TraineeMutation where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeMutation.class)
+					.createQuery("from TraineeMutation where user_id =:userId and concept_id=:conceptId and end_date is null", TraineeMutation.class)
 		 			.setParameter("userId", userId)
 					.setParameter("conceptId", conceptId)
 					.uniqueResultOptional().orElse(null);

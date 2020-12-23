@@ -3,7 +3,6 @@ package nu.educom.rvt.repositories;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import nu.educom.rvt.models.BundleConcept;
 
 public class BundleConceptRepository {
@@ -51,7 +50,7 @@ public class BundleConceptRepository {
 //					.getResultList();
 //	} This function isn't necessary yet, but I believe it will be in the future so it's already built. 
 	
-	protected void update(BundleConcept bundleConcept) throws DatabaseException {
+	public void update(BundleConcept bundleConcept) throws DatabaseException {
 		session.saveOrUpdate(bundleConcept);
 	}
 	

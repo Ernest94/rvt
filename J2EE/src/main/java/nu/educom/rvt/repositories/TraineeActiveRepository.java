@@ -1,6 +1,9 @@
 package nu.educom.rvt.repositories;
 
 import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import org.hibernate.Session;
 import nu.educom.rvt.models.TraineeActive;
 
@@ -23,16 +26,21 @@ public class TraineeActiveRepository {
 		return HibernateSession.loadAllData(TraineeActive.class, session);
 	}
 	
-	public TraineeActive readById(int id) throws DatabaseException {
-		return session.get(TraineeActive.class, id);
+	public TraineeActive readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(TraineeActive.class, id, session);
 	}
 
 	public TraineeActive findActiveByUserIdAndConceptId(int userId, int conceptId) {
-		TraineeActive result = session
-			.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and enddate is null", TraineeActive.class)
-			.setParameter("userId", userId)
-			.setParameter("conceptId", conceptId)
-			.getSingleResult();
+		TraineeActive result;
+		try {
+			result = session
+				.createQuery("from TraineeActive where user_id =:userId and concept_id=:conceptId and end_date is null", TraineeActive.class)
+				.setParameter("userId", userId)
+				.setParameter("conceptId", conceptId)
+				.getSingleResult();
+		}catch(NoResultException nre) {
+			result = null;
+		}
 		return result;
 	}
 	

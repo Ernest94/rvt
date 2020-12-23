@@ -35,6 +35,20 @@ public class BundleRepository {
 		return session.get(Bundle.class, id);
 	}
 	
+	public Bundle readByKnownId(int id) throws EntryNotFoundException, DatabaseException {
+		return HibernateSession.loadByKnownId(Bundle.class, id, session);
+	}
+	
+	public Bundle readByName(String name) throws DatabaseException {
+		if (!session.isOpen()) {
+			throw new DatabaseException("Create called on an session that is not open");
+		}
+		return (Bundle) session
+				.createQuery("from Bundle where name =:name", Bundle.class)
+				.setParameter("name", name)
+				.uniqueResultOptional().orElse(null);
+	}
+	
 	protected void update(Bundle bundle) throws DatabaseException {
 		if (!session.isOpen() || !session.getTransaction().isActive()) {
 			throw new DatabaseException("Create called on an DB transaction that is not open");

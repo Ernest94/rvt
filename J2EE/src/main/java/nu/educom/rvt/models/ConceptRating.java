@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="concept_rating")
-public class ConceptRating {
+public class ConceptRating implements BaseEntity {
 
 		@Id
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,30 +31,37 @@ public class ConceptRating {
 		
 		@Column(name="comment") 
 		private String comment;
-
+		
+		@Column(name="feather") 
+		private Boolean feather;
+		
 		public ConceptRating() {
 			super();
 		}
 		
-		public ConceptRating(Review review, Concept concept, int rating) {
+		public ConceptRating(Review review, Concept concept, int rating, Boolean feather) {
 			super();
 			this.review = review;
 			this.concept = concept;
 			this.rating = rating;
+			this.feather = feather;
 		}
-		
-		public ConceptRating(Review review, Concept concept, int rating, String comment) {
+				
+		public ConceptRating(Review review, Concept concept, int rating, String comment, Boolean feather) {
 			super();
 			this.review = review;
 			this.concept = concept;
 			this.rating = rating;
 			this.comment = comment;
+			this.feather = feather;
 		}
 		
+		@Override
 		public int getId() {
 			return id;
 		}
 
+		@Override
 		public void setId(int id) {
 			this.id = id;
 		}
@@ -90,6 +97,14 @@ public class ConceptRating {
 		public void setComment(String comment) {
 			this.comment = comment;
 		}
-		
+
+		public Boolean getFeather() {
+			return feather;
+		}
+
+		public void setFeather(Boolean feather) {
+			this.feather = feather;
+		}
+
 		
 }

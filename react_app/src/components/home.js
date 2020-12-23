@@ -4,9 +4,11 @@ class Home extends React.Component {
     
     render() {
         return (
-            <div className="center">
-                <p>Welkom op de home pagina!</p>
-            </div >
+            <div className="container">
+                <div className="text-center m-3">
+                    <p>Er is iets misgegaan, ga terug naar de menu pagina via de link in de header!</p>
+                </div>
+            </div>
 
         )
     }
