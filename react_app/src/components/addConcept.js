@@ -117,11 +117,15 @@ class addConcept extends React.Component {
             message: ""
         });
     }
+
     validate() {
         if(!this.state.name.trim() || !this.state.description.trim() || this.state.themeDisplayName==="")
         {
             return {input: ["Alle velden moeten worden ingevuld"]};
-        }        
+        }
+        for (var i = 0; i < this.state.chosenBundles.length; i++) {
+            if (this.state.chosenBundles[i].bundle.id === -1) return { input: ["Niet alle bundels zijn geselecteerd"] };
+        }
     }
 
     handleSubmit = (event) => {
