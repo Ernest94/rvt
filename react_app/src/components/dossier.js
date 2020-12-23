@@ -260,7 +260,7 @@ class Dossier extends React.Component {
                 })
                 .catch((error) => {
                     console.log("an error occurred " + error);  
-                    const custErr = {changeUser: ["Mislukt om gebruiker te veranderen."]};
+                    const custErr = {changeUser: ["Mislukt om gegevens aan te passen. Mogelijk bestaat er al een gebruiker met dit e-mailadres."]};
                     this.setState({
                         buttonDisabled: false,
                         errors: Utils.setErrors(custErr)

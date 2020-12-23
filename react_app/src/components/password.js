@@ -42,7 +42,7 @@ class Password extends React.Component {
                                     })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    const custErr = {password: ["Mislukt om het wachtwoord te veranderen, mogelijk is het ingevoerde huidige wachtwoord incorrect."]}
+                    const custErr = {password: ["Mislukt om het wachtwoord te veranderen. Mogelijk is het ingevoerde huidige wachtwoord incorrect."]}
                     this.setState({
                         buttonDisabled: false,
                         errors: Util.setErrors(custErr)

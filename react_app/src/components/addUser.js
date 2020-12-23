@@ -109,7 +109,7 @@ class AddUser extends React.Component {
                 .catch((error) => {
                     console.log("an error occorured " + error);
                     this.setState({
-                        errors: Utils.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen."]})
+                        errors: Utils.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen. Mogelijk bestaat er al een gebruiker met dit e-mailadres."]})
                     });
                 });
         }
@@ -133,7 +133,7 @@ class AddUser extends React.Component {
 
     render() {
         const pageLoading = this.state.pageLoading;
-        const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
+        const errorsList = !!this.state.errors?<ul className="">{this.state.errors}</ul>: <span></span>;
         if (pageLoading) return <div className="error-message-center"><span> Laden...</span></div>;
         const userRole = sessionStorage.getItem("userRole");
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
@@ -175,9 +175,7 @@ class AddUser extends React.Component {
 
                 <h2 className="text-center">Gebruiker toevoegen</h2>
 
-                <div className="row text-center">
-                    {errorsList}
-                </div>
+                <div className="text-center text-danger">{errorsList}</div>
 
                 <form onSubmit={this.handleSubmit} className="container col-lg-8">
 

@@ -176,6 +176,10 @@ public class UserResource extends BaseResource {
 			
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session);
+			boolean valid = userServ.validateUser(user);
+			if (!valid) {
+				return Response.status(412).build();	
+			}
 			User updatedUser = userServ.updateUser(user,locations);
 			LOG.info("{} has been updated.", updatedUser);
 			return Response.status(200).build();
