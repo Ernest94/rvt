@@ -17,6 +17,7 @@ import {SelectionTable} from '../Selection.js'
 import { GiFeather } from "react-icons/gi";
 import { BsDot } from "react-icons/bs";
 import Utils from '../Utils';
+import { Link} from 'react-router-dom';
 
 
 class docentAddReview extends React.Component {
@@ -391,7 +392,7 @@ class docentAddReview extends React.Component {
                                 {"week " + week}
                             </MenuItem>))
 
-        const { pageLoading, traineeFeedback, officeFeedback, reviewDate, pendingUsers } = this.state;
+        const { pageLoading, traineeFeedback, officeFeedback, userId, pendingUsers } = this.state;
         if (pageLoading) return (<div className="error-message-center"><span> Laden...</span></div>);
 
         let userOptions = null;
@@ -530,7 +531,7 @@ class docentAddReview extends React.Component {
                                 onChange={(event) => { this.setDate(event) }} />
                         </h3>
                     </div> */}
-                    <div className="col">
+                    <div className="col-5">
                         <h3 classname="text-center">Review van 
                             <select 
                                 className="border-0" 
@@ -550,7 +551,12 @@ class docentAddReview extends React.Component {
                         </h3>
                     </div>
 
-                    <div className="col"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                    <div className="col-5"><h3 classname="text-center">{this.state.userLocation}</h3></div>
+                    <Link
+                            className="btn btn-danger col-2 btn-small"
+                            to={"/curriculum/" + userId /*+ "/" + name */}
+                            >
+                                Review bekijken</Link>
                 </div>
 
                 <div >

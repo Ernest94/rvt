@@ -7,7 +7,7 @@ import { config } from '../constants'
 import Permissions from '../permissions.js'
 import {SelectionTable} from '../Selection.js'
 import { GiFeather } from "react-icons/gi";
-
+import { Link, withRouter } from 'react-router-dom';
 
 class review extends React.Component {
 
@@ -40,7 +40,7 @@ class review extends React.Component {
             await this.setState({ userId: params.userId });
         }
         this.getConcepts();
-        this.setState({ pageLoading: false });
+        this.setState({ pageLoading: false});
     }
 
     getThemes() {
@@ -81,14 +81,19 @@ class review extends React.Component {
     }
 
     handleCurriculumReponse(data) {
+        var canReview = (Permissions.isUserDocent() 
+                    && JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation));
+        console.log(canReview);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
             reviewDate: new Date(data.reviewDate),
             concepts: data.conceptsPlusRatings,
             traineeFeedback: data.commentStudent,
+            canReview: canReview,
         });
-        console.log(this.state);
+
+
     }
 
     handleThemeResponse(data) {
@@ -133,7 +138,8 @@ class review extends React.Component {
 
     render() {
         console.log(this.state);
-        const { pageLoading, traineeFeedback } = this.state;
+        const { pageLoading, traineeFeedback, canReview, userId } = this.state;
+
 
         if (pageLoading) return (<span className="center">Laden...</span>)
 
@@ -213,11 +219,13 @@ class review extends React.Component {
             <div className="container">
                 
                 <div class="row pt-4">
-                    <h3 class="col-md-4 text-center">{this.state.reviewDate.toLocaleDateString('nl-NL')}</h3>
+                    <h3 class="col-md-3 text-center">{this.state.reviewDate.toLocaleDateString('nl-NL')}</h3>
                     <h3 class="col-md-4 text-center">Review {this.state.userName}</h3>
-                    <h3 class="col-md-4 text-center">{this.state.userLocation}</h3>
+                    <h3 class="col-md-3 text-center">{this.state.userLocation}</h3>
+                    <Link to={"/docentAddReview/" + userId} className="btn btn-danger col-md-2 " hidden={!canReview} role="button" >Review aanmaken</Link>
                 </div>
                 <div >
+                    
                     <ul className="errors">{this.state.errors}</ul>
                 </div >
                     <SelectionTable
