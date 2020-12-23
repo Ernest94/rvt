@@ -405,37 +405,7 @@ class docentAddReview extends React.Component {
 
 
         const ConceptDisplay = ({selectionFunction,}) => (
-            <div className="table-responsive col-md-10">
-                    <table className="addReviewTable table">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th> 
-                                <th className="feather">
-                                    Inzet
-                                </th>
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-
-            <tbody className="tableBody table">
-            
-                {this.state.concepts.map((concept, index) => {    
+                this.state.concepts.map((concept, index) => {    
                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0);
 
                     if (selectionFunction(concept)){
@@ -510,10 +480,7 @@ class docentAddReview extends React.Component {
                         </tr>
                         )
                     }
-        })}
-        </tbody>
-        </table>
-        </div>
+        })
         );
 
         return (
@@ -563,9 +530,42 @@ class docentAddReview extends React.Component {
                     <ul className="errors">{this.state.errors}</ul>
                 </div >
 
-                <SelectionTable fields={["inactive","stars","weeks","themes"]} starsSelected={[0,5]}>
-                    {paramFunction=>(<ConceptDisplay selectionFunction={paramFunction}/>)}
-                </SelectionTable>
+
+                <div className="table-responsive col-md-10">
+                    <table className="addReviewTable table">
+                        <thead>
+                            <tr>
+                                <th className="active">
+                                    actief
+                                </th>
+                                <th className="week">
+                                    Blok
+                                </th>
+                                <th className="theme">
+                                    Thema
+                                </th>
+                                <th className="concept">
+                                    Concept
+                                </th>
+                                <th className="feather">
+                                    Inzet
+                                </th>
+                                <th className="rating">
+                                    Vaardigheid
+                                </th>
+                                <th className="comment">
+                                    Commentaar
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody className="tableBody table">
+                            <SelectionTable fields={["inactive", "stars", "weeks", "themes"]} starsSelected={[0, 5]}>
+                                {paramFunction => (<ConceptDisplay selectionFunction={paramFunction} />)}
+                            </SelectionTable>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div className="float-right mr-1">
                     <p>{this.state.message}</p>
