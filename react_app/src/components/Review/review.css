@@ -215,7 +215,7 @@
 .checkboxControl .MuiFormControlLabel-label{
     font-size:12px!important;
 }
-.MuiButtonBase-root{
+.checkboxControl .MuiButtonBase-root{
     padding:3px!important;
 }
 .selectionCheckbox .icon{
