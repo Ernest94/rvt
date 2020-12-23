@@ -238,8 +238,7 @@ class conceptOverview extends React.Component {
                         </span>
                     </div>
                     <div className="col">
-                        {(this.state.selectedBundle!==""&&(this.state.selectedBundleCreator===sessionStorage.getItem("userName") 
-                            || "Admin"===sessionStorage.getItem("userName"))) ? 
+                        {(this.state.selectedBundle!=="") ? 
                         <span>
                             <Link className="btn btn-danger" 
                                 to={{pathname:"/addBundle/",                                

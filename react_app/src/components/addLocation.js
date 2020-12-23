@@ -53,11 +53,8 @@ class addLocation extends React.Component {
                     this.setState({errors: null, locationName: ""});
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
-                    console.log(this.createLocationJson());
-
-                    this.setErrors({login: ["Mislukt om locatie toe te voegen."]}); 
-                    this.setState({loading: false});
+                    this.setState({loading: false, 
+                        errors: Utils.setErrors({input: ["Mislukt om Locatie toe te voegen. Mogelijk bestaat er al een locatie met deze naam."]})});
                 });
         }
         else {

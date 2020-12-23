@@ -121,8 +121,11 @@ class AddUser extends React.Component {
         }
     }
 
-    handleFormChange = (e) => {
+    handleFormChange = (e) => {       
         const {name, value} = e.target;
+        if (name==="roleId"){
+            this.state.selectedLocationsIds=[];
+        }
         this.setState({
            [name]: value
         });
@@ -137,8 +140,6 @@ class AddUser extends React.Component {
         const {locations,roles,selectedLocationsIds} = this.state
 
         let locationsOptions;
-
-
         const rolesOptions = roles.map((role) => {
             return (
                 <option key={role.id} value={role.id}>{role.name}</option>
@@ -195,9 +196,24 @@ class AddUser extends React.Component {
                         </Select>
                     </div>
 
-
                     <div className="input row dossier">
                         <label className="label col-sm col-form-label" htmlFor="location">Locatie:</label>
+                        
+                        {(this.state.roleId===3)?
+                            <Select
+                            className="text-black form-control col-sm-9"
+                            id="selectedLocationsIds"
+                            name="selectedLocationsIds" 
+                            value={selectedLocationsIds}
+                            onChange={this.handleFormChange}
+                            //the MenuProps below are needed to stop the dropdown jumping around when selecting
+                            MenuProps={{
+                                variant: "menu",
+                                getContentAnchorEl: null}
+                            }
+                            input={<Input id="selectedLocationsIds" />}>
+                                {locationsOptions}
+                        </Select>:
                         <Select
                             className="text-black form-control col-sm-9"
                             id="selectedLocationsIds"
@@ -212,7 +228,7 @@ class AddUser extends React.Component {
                             }
                             input={<Input id="selectedLocationsIds" />}>
                                 {locationsOptions}
-                        </Select>
+                        </Select>}
                     </div>
             
                     <div className="input row dossier">
