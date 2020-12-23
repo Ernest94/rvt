@@ -176,6 +176,7 @@ class conceptOverview extends React.Component {
                             id={"concept"+concept.id}
                             checked={selected}
                             onChange={this.onChangeActive}
+                            disabled={sessionStorage.getItem("userRole")!=="Admin"&&sessionStorage.getItem("userName")!==this.state.selectedBundleCreator}
                             />                   
                         </td>
                         <td className="">
