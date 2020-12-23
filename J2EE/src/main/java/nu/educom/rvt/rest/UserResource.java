@@ -1,6 +1,7 @@
 package nu.educom.rvt.rest;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -130,7 +131,7 @@ public class UserResource extends BaseResource {
 				   search.getRole(), search.getLocations(), search.getCriteria());
 		return wrapInSession(session -> {
 			UserService userServ = new UserService(session);
-			List<User> searchResult = userServ.getFilteredUsers(search.getCriteria(), search.getRole(), search.getLocations());
+			List<User> searchResult = userServ.getFilteredUsers(search.getCriteria().toLowerCase(Locale.ROOT), search.getRole(), search.getLocations());
 			UserSearchJson USJ = userServ.convertToUSJ(searchResult);			
 			
 			return Response.status(200).entity(USJ).build();

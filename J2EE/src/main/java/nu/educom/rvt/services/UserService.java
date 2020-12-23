@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -208,7 +209,7 @@ public class UserService {
 		
 		if (criteria != null) {
 			filteredUsers = filteredUsers.stream()
-					.filter(u -> u.getName().contains(criteria) || u.getEmail().contains(criteria))
+					.filter(u -> u.getName().toLowerCase(Locale.ROOT).contains(criteria) || u.getEmail().toLowerCase(Locale.ROOT).contains(criteria))
 					.collect(Collectors.toList());
 		}
 		
