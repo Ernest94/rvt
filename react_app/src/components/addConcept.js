@@ -41,7 +41,7 @@ class BundleConceptTable extends React.Component {
                                             id={"bundle_" + index}
                                             name="bundle"
                                             value={chosenBundle.bundle.id ? chosenBundle.bundle.id : -1}
-                                            onChange={(e) => this.props.handleBundleChange(e)}
+                                            onChange={(e) => this.props.handleBundleChange(e, index)}
                                         >
                                             <option value="-1" hidden>Kies een bundel</option>
                                             {bundleOptions}
@@ -52,7 +52,7 @@ class BundleConceptTable extends React.Component {
                                             id={"week_" + index}
                                             name="startWeek"
                                             value={chosenBundle.week}
-                                            onChange={(e) => this.props.handleBundleWeekChange(e)}
+                                            onChange={(e) => this.props.handleBundleWeekChange(e, index)}
                                         >
                                             <option value="-1" hidden>Kies een startweek</option>
                                             {weekOptions}
@@ -157,12 +157,14 @@ class addConcept extends React.Component {
 
     succesfullAdd(){
         this.setState({ 
-                        themeDisplayName:"",
-                        name:"",
-                        description:"",
-                        message:"Concept toegevoegd",
-                        startDate:"",
-                        week:""
+            themeDisplayName:"",
+            name:"",
+            description:"",
+            message:"Concept toegevoegd",
+            startDate:"",
+            week: "",
+            chosenBundles: []
+
         });
     }
 
@@ -261,10 +263,9 @@ class addConcept extends React.Component {
         this.setState((prevState) => ({ chosenBundles: [...prevState.chosenBundles.slice(0, index), ...prevState.chosenBundles.slice(index + 1)] }));
     }
 
-    handleBundleChange(e) {
+    handleBundleChange(e, index) {
 
         let allBundles = this.state.bundles;
-        const index = e.target.id.substring(7);
         const value = +e.target.value;
 
         var selectedBundleIndex = allBundles.findIndex(bundle => bundle.id === value);
@@ -279,9 +280,8 @@ class addConcept extends React.Component {
         console.log(this.state.chosenBundles);
     }
 
-    handleBundleWeekChange(e) {
+    handleBundleWeekChange(e, index) {
 
-        const index = e.target.id.substring(5);
         const value = e.target.value;
         console.log(index);
         console.log(value);
