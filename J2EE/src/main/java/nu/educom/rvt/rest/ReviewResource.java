@@ -1,5 +1,6 @@
 package nu.educom.rvt.rest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,6 +70,9 @@ public class ReviewResource extends BaseResource {
 					conceptsRatingsJSON.setReviewDate(reviewDate);
 					conceptsRatingsJSON.setCommentStudent(mostRecentReview.getCommentStudent());
 					conceptsRatingsJSON.setCommentOffice(mostRecentReview.getCommentOffice());
+				}
+				else {
+					conceptsRatingsJSON.setReviewDate(LocalDateTime.now());
 				}
 				conceptsRatingsJSON.setConceptPlusRating(conceptsPlusRatings);
 
