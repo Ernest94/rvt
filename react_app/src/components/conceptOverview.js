@@ -189,16 +189,18 @@ class conceptOverview extends React.Component {
                                     {weekOptions}
                         </select>
                         </td>
-                        <td className="">
-                            <div className="p-1">
-                            {concept.theme.name}
-                            </div>
-                        </td>
-                        <td className="">
-                            <div className="p-1">
-                            {concept.name}
-                            </div>
-                        </td>
+                        <td className="" id="text">
+                                <span className="concept-theme-text conceptOverview-theme-text"> 
+                                    <span className="no-wrap">{concept.theme.name}</span>
+                                    <span className="displayMessage"> {concept.theme.description} </span>
+                                </span>
+                            </td>
+                        <td className="" id="text">
+                            <span className="concept-theme-text conceptOverview-concept-text"> 
+                                <span className="no-wrap">{concept.name}</span>
+                                <span className="displayMessage"> {concept.description} </span>
+                            </span>
+                            </td>
                     </tr >
             )
         });

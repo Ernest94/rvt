@@ -11,6 +11,45 @@
     color:black;
 }
 
+.concept-theme-text {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted grey;
+}
+
+.concept-theme-text>.displayMessage{
+    visibility: hidden;
+    width: 200px;
+    background-color: #F8F8FF;
+    color: black;
+    font-size: 11px;
+    text-align: center;
+    padding: 5px 0;
+    border: outset 1px;
+    border-color: black;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+
+  }
+
+.conceptOverview-theme-text .displayMessage{
+    top: 20px;
+    left: 110%;  
+}
+
+.conceptOverview-concept-text .displayMessage{
+    top: 30px;
+    left: -90%;  
+  }
+
+.concept-theme-text:hover .displayMessage {
+    visibility: visible;
+    position: absolute;
+    opacity: 1;
+  }
+
 .concept-overview-table{
     display:block;
     height:300px;
@@ -27,7 +66,16 @@
     background-color:#fff!important;
     z-index:1;
 }
-.concept-overview-table td:nth-child(3), .concept-overview-table td:nth-child(4){
+.no-wrap{
+    white-space: nowrap;
+}
+
+.concept-overview-table td:nth-child(2){
+    white-space: nowrap;
+}
+
+
+.concept-overview-table td:nth-child(1){
     white-space: nowrap;
 }
 
