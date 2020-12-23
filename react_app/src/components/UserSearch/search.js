@@ -157,6 +157,8 @@ class Search extends React.Component {
             )
         });
 
+        const emptyUsers = users.length === 0;
+
         var userDisplay = users.map((user) => {
             var userLocationsColumn = '';
             var i;
@@ -192,8 +194,8 @@ class Search extends React.Component {
 
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
-                <div className="row"> 
-                    <ul className="errors text-center">{this.state.errors}</ul>
+                <div className="row">
+                    <ul className="errors text-center" hidden={!emptyUsers}>Geen overeenkomende gebruikers gevonden</ul>
                 </div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="search-bar row d-flex">
@@ -258,7 +260,7 @@ class Search extends React.Component {
 
                 </form>
 
-                <div className="text-center">
+                <div className="text-center" hidden={emptyUsers}>
                     <table className="w-100 mx-auto">
                         <thead>
                             <tr className="row" key={0}>
