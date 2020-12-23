@@ -42,7 +42,7 @@ class Password extends React.Component {
                                     })
                 .catch((error) => {
                     console.log("an error occorured " + error);
-                    const custErr = {password: ["Mislukt om het wachtwoord te veranderen."]}
+                    const custErr = {password: ["Mislukt om het wachtwoord te veranderen, mogelijk is het ingevoerde huidige wachtwoord incorrect."]}
                     this.setState({
                         buttonDisabled: false,
                         errors: Util.setErrors(custErr)
@@ -67,14 +67,13 @@ class Password extends React.Component {
     
     render() {
         const {buttonDisabled} = this.state;
-        const errorsList = !!this.state.errors?<ul className="errors">{this.state.errors}</ul>: <span></span>;
+        const errorsList = !!this.state.errors?<ul className="text-danger">{this.state.errors}</ul>: <span></span>;
         return (
             <div className="container">
+
                 <h2 className="text-center">Wachtwoord veranderen</h2>
 
-                <div className="row justify-content-center m-4">
-                    {errorsList} 
-                </div>
+                <div className="row justify-content-center">{errorsList} </div>
 
                 <div className="row justify-content-center m-4">
                     <form onSubmit={this.handleSubmit}>
