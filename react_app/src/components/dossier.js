@@ -494,7 +494,7 @@ class Dossier extends React.Component {
                             <Link
                                 className="btn btn-danger btn-block"
                                 to={'/adminPassword/' + this.state.userId}
-                                hidden={!Permissions.isUserAdmin}
+                                hidden={!Permissions.isUserAdmin()}
                                 role="button"
                             >
                                 Wachtwoord aanpassen
@@ -503,7 +503,7 @@ class Dossier extends React.Component {
 
                         <div>
                             <Link className="btn btn-danger btn-block" to={"/settings"}>
-                                    Terug
+                                    Terug naar menu
                                 </Link>
                         </div>
                         <div>
