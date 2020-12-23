@@ -47,14 +47,9 @@ class docentAddReview extends React.Component {
 
     async componentDidMount() {
         this.setState({ pageLoading: true });
-        if (Permissions.isUserTrainee()) {
-            await this.setState({ userId: sessionStorage.getItem("userId") });
-        }
-        else {
-            const { computedMatch: { params } } = this.props;
-            await this.setState({ userId: params.userId });
-        }
-        
+        const { computedMatch: { params } } = this.props;
+        await this.setState({ userId: params.userId });
+  
         await this.getConcepts();
     }
 

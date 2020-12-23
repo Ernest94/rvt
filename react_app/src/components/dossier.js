@@ -469,58 +469,70 @@ class Dossier extends React.Component {
                             {(!editDisabled) ? <button type="submit" className="btn btn-danger btn-block">Opslaan</button> : <span></span>}
                         </div>
                     </div>
-                    
+
                     <div className="row">
                         <div className="buttons">
                             {(!editDisabled) ? <Link to={'/dossier/' + this.state.userId}  className="btn btn-danger btn-block">Annuleer</Link> : <span></span>}
                         </div>
-                    </div>
+                    </div>                
                 </form>
 
                 {(editDisabled) ?
-                <div className="buttons">
-                    <div>
-                        <Link 
-                            className="btn btn-danger btn-block" 
-                            to={"/dossier/" + userId + "/edit"}
-                            hidden={!allowedToEdit}
-                            role="button"
-                            >                        
-                            Gegevens aanpassen
-                        </Link>
-                    </div>
-                    <div>
-                        <Link className="btn btn-danger btn-block" to={"/settings"}>
-                                Terug
+                    <div className="buttons"> 
+                        <div>
+                            <Link 
+                                className="btn btn-danger btn-block" 
+                                to={"/dossier/" + userId + "/edit"}
+                                hidden={!allowedToEdit} 
+                                role="button"
+                                >                        
+                                Gegevens aanpassen
                             </Link>
-                    </div>
-                    <div>
-                        <Link
-                            className="btn btn-danger btn-block"
-                            to={"/curriculum/" + userId /*+ "/" + name */}
-                            hidden={!traineeDossier}
+                         </div>
+
+                        <div>
+                            <Link
+                                className="btn btn-danger btn-block"
+                                to={'/adminPassword/' + this.state.userId}
+                                hidden={!Permissions.isUserAdmin()}
+                                role="button"
                             >
-                            Review
-                        </Link>
-                    </div>
-                    <div>
-                        <Link
-                            className="btn btn-danger btn-block"
-                                to={"/docentAddReview/" + userId}
-                                hidden={!traineeDossier || !(Permissions.canAddReview() && Utils.compareLocations(dossierLocation, userLocation))}
+                                Wachtwoord aanpassen
+                            </Link>
+                        </div>
+
+                        <div>
+                            <Link className="btn btn-danger btn-block" to={"/settings"}>
+                                    Terug naar menu
+                                </Link>
+                        </div>
+                        <div>
+                            <Link
+                                className="btn btn-danger btn-block"
+                                to={"/curriculum/" + userId /*+ "/" + name */}
+                                hidden={!traineeDossier}
                                 >
-                                Review aanmaken/aanpassen
-                        </Link>
-                    </div>
-                    <div className="text-center">
-                        <button 
-                            hidden={true} 
-                            className="rvtbutton" 
-                            type="submit">
-                            Voortgang
-                        </button>
-                    </div>
-                </div>: <span></span>
+                                Review
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                className="btn btn-danger btn-block"
+                                    to={"/docentAddReview/" + userId}
+                                    hidden={!traineeDossier || !(Permissions.canAddReview() && Utils.compareLocations(dossierLocation, userLocation))}
+                                    >
+                                    Review aanmaken/aanpassen
+                            </Link>
+                        </div>
+                        <div className="text-center">
+                            <button 
+                                hidden={true} 
+                                className="rvtbutton" 
+                                type="submit">
+                                Voortgang
+                            </button>
+                        </div>
+                    </div>: <span></span>
                 }
             </div>
         )

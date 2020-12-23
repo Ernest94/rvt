@@ -25,6 +25,7 @@ import nu.educom.rvt.models.Search;
 //import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.PasswordChangeAdmin;
 import nu.educom.rvt.models.view.RoleLocationJson;
 import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
@@ -76,6 +77,22 @@ public class UserResource extends BaseResource {
 				return Response.status(200).entity(changedUser).build();
 			}
 			return Response.status(401).build();
+		});
+	}
+	
+	@POST
+	@Secured
+	@Path("/adminPassword")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response changePasswordAdmin(PasswordChangeAdmin change) {
+		LOG.debug("changePasswordAdmin called for user id {}", change.getUserId());
+		return wrapInSessionWithTransaction(session -> {
+			UserService userServ = new UserService(session);
+			User foundUser = userServ.getUserById(change.getUserId());
+			User changedUser = userServ.changePassword(foundUser, change.getNewPassword());
+			LOG.info("Password changed for user {}.", changedUser);
+			return Response.status(200).entity(changedUser).build();
 		});
 	}
 	
