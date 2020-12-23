@@ -128,7 +128,6 @@ class Search extends React.Component {
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
-
                     this.handleSearchReponse(response.data);
                     this.render();
                 })
@@ -151,15 +150,18 @@ class Search extends React.Component {
         if (roles === null || locations === null) {
             return (<span className="error-message-center">Mislukt om pagina te laden.</span>)
         }
-        const rolesOptions = (sessionStorage.getItem("userRole")==="Docent"||sessionStorage.getItem("userRole")==="Office")?roles.filter(role => role.name==="Trainee").map((role) => {
-            return (
-                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
-            )
-        }):roles.map((role) => {
-            return (
-                <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
-            )
-        });
+        const rolesOptions = (sessionStorage.getItem("userRole")==="Docent"||
+            sessionStorage.getItem("userRole")==="Office"||
+            sessionStorage.getItem("userRole")==="Sales")?
+                roles.filter(role => role.name==="Trainee").map((role) => {
+                    return (
+                        <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
+                    )
+                }):roles.map((role) => {
+                    return (
+                        <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>
+                    )
+                });
 
         const emptyUsers = users.length === 0;
 
@@ -167,7 +169,6 @@ class Search extends React.Component {
             var userLocationsColumn = '';
             var i;
             for (i=0;i<user.currentUserLocations.length;i++){
-
                 userLocationsColumn+= user.currentUserLocations[i].name + ((i>=0&&i+1<user.currentUserLocations.length) ? ", ":"")
                 }
 
