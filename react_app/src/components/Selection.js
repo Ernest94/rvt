@@ -173,7 +173,9 @@ class ConceptSelection extends React.Component {
 
     return (
     <div className="conceptSelection">
-        {this.props.fields.map(field=> fieldoptions[field])}
+        <div>
+            {this.props.fields.map(field=> fieldoptions[field])}
+        </div>
     </div>
         )
     }
