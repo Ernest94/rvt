@@ -54,7 +54,7 @@ class AddUser extends React.Component {
                         locations: response.data.locations,
                         pageLoading: false,
                         role: role,
-                        roleDisplayName: role.id
+                        roleId: role.id
                     });
                 })
             .catch(() => {
