@@ -186,6 +186,16 @@
     background-color:lightGrey;
     float:right;
 }
+.conceptSelection{
+    position:sticky;
+    top:0;
+    height:440px;
+    width:20%;
+}
+.conceptSelection div{
+    position:sticky;
+    top:0;
+}
 
 .conceptSelection .lightButton:hover{
     background-color:rgb(155, 155, 155);
@@ -195,10 +205,18 @@
 }
 .selectionCheckbox{
     color:#ffc107!important;
+    
 }
 .checkboxControl{
-    width:45%;
+    width:33%;
     padding:1px;
+    margin:0;
+}
+.checkboxControl .MuiFormControlLabel-label{
+    font-size:12px!important;
+}
+.MuiButtonBase-root{
+    padding:3px!important;
 }
 .selectionCheckbox .icon{
     height:10px!important;

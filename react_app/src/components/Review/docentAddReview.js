@@ -405,7 +405,33 @@ class docentAddReview extends React.Component {
 
 
         const ConceptDisplay = ({selectionFunction,}) => (
-                this.state.concepts.map((concept, index) => {    
+            <div>
+                <thead>
+                    <tr>
+                        <th className="active">
+                            actief
+                        </th>
+                        <th className="week">
+                            Blok
+                        </th>
+                        <th className="theme">
+                            Thema
+                        </th>
+                        <th className="concept">
+                            Concept
+                        </th>
+                        <th className="feather">
+                            Inzet
+                        </th>
+                        <th className="rating">
+                            Vaardigheid
+                        </th>
+                        <th className="comment">
+                            Commentaar
+                        </th>
+                    </tr>
+                </thead>
+                {this.state.concepts.map((concept, index) => {    
                    var checkboxDisabled = (concept.comment!=="" || concept.rating!==0);
 
                     if (selectionFunction(concept)){
@@ -481,7 +507,7 @@ class docentAddReview extends React.Component {
                         )
                     }
         })
-        );
+    }</div>);
 
         return (
             <div className="container">
@@ -531,39 +557,11 @@ class docentAddReview extends React.Component {
                 </div >
 
 
-                <div className="table-responsive col-md-10">
+                <div className="table-responsive col-md-12">
                     <table className="addReviewTable table">
-                        <thead>
-                            <tr>
-                                <th className="active">
-                                    actief
-                                </th>
-                                <th className="week">
-                                    Blok
-                                </th>
-                                <th className="theme">
-                                    Thema
-                                </th>
-                                <th className="concept">
-                                    Concept
-                                </th>
-                                <th className="feather">
-                                    Inzet
-                                </th>
-                                <th className="rating">
-                                    Vaardigheid
-                                </th>
-                                <th className="comment">
-                                    Commentaar
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody className="tableBody table">
                             <SelectionTable fields={["inactive", "stars", "weeks", "themes"]} starsSelected={[0, 5]}>
                                 {paramFunction => (<ConceptDisplay selectionFunction={paramFunction} />)}
                             </SelectionTable>
-                        </tbody>
                     </table>
                 </div>
 
