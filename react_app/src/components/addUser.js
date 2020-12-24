@@ -76,7 +76,11 @@ class AddUser extends React.Component {
     }
 
     createUserJson() {
-        const {name, email, password, roleId, selectedLocationsIds, startDate } = this.state;
+        const {name, email, password, roleId, startDate } = this.state;
+        var {selectedLocationsIds} = this.state;
+        if(Number.isInteger(this.state.selectedLocationsIds)){
+            selectedLocationsIds = [this.state.selectedLocationsIds];
+        }
         var locations = [];
         var i;
         for (i=0;i<selectedLocationsIds.length;i++) {
@@ -84,7 +88,8 @@ class AddUser extends React.Component {
                 {id:selectedLocationsIds[i]}
             )
         }
-        return {
+        console.log(locations);
+                return {
             user:{
                 name: name,
                 email: email,
@@ -123,9 +128,12 @@ class AddUser extends React.Component {
 
     handleFormChange = (e) => {       
         const {name, value} = e.target;
-        if (name==="roleId"){
-            this.state.selectedLocationsIds=[];
-        }
+/*         if (name==="roleId"){
+            this.setState({
+                selectedLocationsIds:[]
+             });
+            
+        } */
         this.setState({
            [name]: value
         });

@@ -86,10 +86,12 @@ public class UserService {
 	
 	public boolean validateUser(User user) throws DatabaseException {
 		User foundUser = userRepo.readByEmail(user.getEmail());
-		if (foundUser == null) return true; 
+
+		if (user.getId()==0 && foundUser == null) return true; 
+		if (user.getId()==foundUser.getId()) return true;
 		else return false;
 	}
-	
+
 	public String issueToken(User user) throws Exception {
 		Key key = Token.getSecretTokenKey();
 		String jws = Jwts.builder()
