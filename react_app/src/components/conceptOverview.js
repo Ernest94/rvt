@@ -48,7 +48,6 @@ class conceptOverview extends React.Component {
                 this.setState({
                     pageLoading: false,
                 });
-            console.log(response.data);
             })
             .catch((error) => {
                 const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
@@ -133,7 +132,6 @@ class conceptOverview extends React.Component {
     }
 
     saveBundle() {
-        console.log(this.bundleJSON());
         axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
         .then(response => {
             this.setState({
@@ -143,7 +141,7 @@ class conceptOverview extends React.Component {
         })
         .catch((error) => {
             this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
-            console.log("an error occorured " + error);
+            console.log("an error occurred " + error);
         });
     }
 

@@ -88,8 +88,7 @@ class AddUser extends React.Component {
                 {id:selectedLocationsIds[i]}
             )
         }
-        console.log(locations);
-                return {
+        return {
             user:{
                 name: name,
                 email: email,
@@ -108,11 +107,10 @@ class AddUser extends React.Component {
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
                 .then(response => {
-                    console.log(response);
                     this.props.history.push('/dossier/' + response.data.id);
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
+                    console.log("an error occurred " + error);
                     this.setState({
                         errors: Utils.setErrors({addUser: ["Mislukt om een gebruiker toe te voegen. Mogelijk bestaat er al een gebruiker met dit e-mailadres."]})
                     });

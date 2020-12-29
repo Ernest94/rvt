@@ -40,7 +40,6 @@ class Search extends React.Component {
     getLocationsAndRoles() {
         axios.get(config.url.API_URL + '/webapi/user/roles')
             .then(response => {
-                console.log(response.data)
                 this.setState({
                     roles: response.data.roles,
                     locations: response.data.locations,
@@ -72,7 +71,6 @@ class Search extends React.Component {
                 locations:userLocations});
             }
 
-        console.log(this.createSearchJson());
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
 
             .then(response => {
@@ -81,7 +79,7 @@ class Search extends React.Component {
                 this.render();
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
                 this.setState({ loading: false });
             });
     }
@@ -123,7 +121,6 @@ class Search extends React.Component {
         event.preventDefault();
         this.setState({loading: true});
         var errors = null;
-        console.log(this.createSearchJson());
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
                 .then(response => {
@@ -132,7 +129,7 @@ class Search extends React.Component {
                     this.render();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
+                    console.log("an error occurred " + error);
                     Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
                     this.setState({loading: false});
                 });

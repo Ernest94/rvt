@@ -13,7 +13,6 @@ class addBundle extends React.Component {
     
     constructor(props) {
         super(props);
-        console.log(props);
         this.duplicate = !(this.props.location.state.bundleId===-1);
         this.bundleId = this.props.location.state.bundleId;
         this.bundleName= this.props.location.state.bundleName;
@@ -44,7 +43,6 @@ class addBundle extends React.Component {
         event.preventDefault();
         this.setState({loading: true}); 
         var errors = this.validate();
-        console.log(this.createBundleJson())
         if (!errors) {
             axios.post(config.url.API_URL + "/webapi/bundle/create", this.createBundleJson())  
                 .then(response => {

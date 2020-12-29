@@ -107,7 +107,6 @@ class addConcept extends React.Component {
             userId: sessionStorage.getItem("userId")
         });
         await this.getYourBundles()
-        console.log("State:", this.state)
     }
 
     handleFormChange = (e) => {
@@ -129,7 +128,6 @@ class addConcept extends React.Component {
     }
 
     handleSubmit = (event) => {
-        console.log(this.createConceptJson())
         event.preventDefault();
         this.setState({loading: true}); 
         var errors = this.validate();
@@ -208,17 +206,15 @@ class addConcept extends React.Component {
         if (Permissions.isUserAdmin()) {
             axios.get(config.url.API_URL + '/webapi/bundle/bundles')
                 .then(response => {
-                    console.log("Response:", response);
                     this.handleBundleResponse(response.data);
                 })
                 .catch(() => {
-                    console.log("error");
+                    console.log("an error occurred");
                 })
         }
         else {
             axios.get(config.url.API_URL + '/webapi/bundle/creator/' + this.state.userId)
                 .then(response => {
-                    console.log("Repsponse:", response);
                     this.handleBundleResponse(response.data);
                 })
                 .catch(() => {
@@ -281,14 +277,11 @@ class addConcept extends React.Component {
         this.setState({
             chosenBundles: bundles
         });
-        console.log(this.state.chosenBundles);
     }
 
     handleBundleWeekChange(e, index) {
 
         const value = e.target.value;
-        console.log(index);
-        console.log(value);
 
         let bundles = this.state.chosenBundles;
         let bundle = bundles[index];
@@ -297,7 +290,6 @@ class addConcept extends React.Component {
         this.setState({
             chosenBundles: bundles
         });
-        console.log(this.state.chosenBundles);
      }
 
     

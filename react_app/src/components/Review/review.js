@@ -49,18 +49,17 @@ class review extends React.Component {
                 this.handleThemeResponse(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });
     }
 
     getConcepts() {
-        console.log(this.state.userId);
         axios.get(config.url.API_URL + "/webapi/review/curriculum/" + this.state.userId)
             .then(response => {
                 this.handleCurriculumReponse(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });
     }
     handleSelectionChange(newValue, name) {
@@ -83,7 +82,6 @@ class review extends React.Component {
     handleCurriculumReponse(data) {
         var canReview = (Permissions.isUserDocent() 
                     && JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation));
-        console.log(canReview);
         this.setState({
             userName: data.traineeName,
             userLocation: data.traineeLocation,
@@ -103,7 +101,7 @@ class review extends React.Component {
             this.selection.push({id: data[i].id,checked:true});
         }
         this.setState({
-            themes: data},()=>console.log(this.state.themes)
+            themes: data})
         )
     }
 
@@ -137,9 +135,7 @@ class review extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const { pageLoading, traineeFeedback, canReview, userId } = this.state;
-
 
         if (pageLoading) return (<span className="center">Laden...</span>)
 

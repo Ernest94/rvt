@@ -49,7 +49,7 @@ class adminPassword extends React.Component {
                     this.setState({ buttonDisabled: false, errors: null, message: "Wachtwoord succesvol veranderd",newPassword:"",repeatPassword:"" });
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
+                    console.log("an error occurred " + error);
                     const custErr = { newPassword: ["Mislukt om het wachtwoord te veranderen."] }
                     this.setState({
                         buttonDisabled: false,

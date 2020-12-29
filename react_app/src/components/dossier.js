@@ -188,7 +188,6 @@ class Dossier extends React.Component {
             const userResponse = responses[0]
             const roleLocResponse = responses[1]
             const bundleResponse = responses[2]
-            console.log(userResponse.data)
         
             var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
             this.setState({
@@ -215,7 +214,7 @@ class Dossier extends React.Component {
             this.canEditUserDossier();
         }))
         .catch(errors => {
-            console.log("errors occured " + errors); 
+            console.log("errors occurred " + errors); 
             this.setState({pageLoading:false, error: true});
         });
     }
@@ -231,10 +230,9 @@ class Dossier extends React.Component {
                 this.setState({
                     bundlesTrainee: response.data,
                 });
-                console.log(response.data.bundleCheck);
             })
             .catch((error) => {
-                console.log(error);
+                console.log("an error occurred: " + error);
             });
     }
     
@@ -248,7 +246,6 @@ class Dossier extends React.Component {
             sessionStorage.setItem("userName", this.state.name);
             sessionStorage.setItem("userLocation", JSON.stringify(newUserLocations));
         }
-        console.log(this.createUserJson())
         if (!errors) {
             axios.all([
                 axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson()),
@@ -365,8 +362,6 @@ class Dossier extends React.Component {
         const traineeDossier = role.name === "Trainee";
         const userLocation = JSON.parse(sessionStorage.getItem("userLocation"));
         const dossierLocation = this.state.currentLocations;
-        console.log(userLocation);
-        console.log(dossierLocation);
 
         if (pageLoading) return <span className="error-message-center"> Laden... </span>
         if (serverFail) return <span className="error-message-center"> Mislukt om de gegevens op te halen. </span> 

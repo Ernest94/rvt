@@ -41,7 +41,7 @@ class Password extends React.Component {
                     this.setState({buttonDisabled: false, errors: null, message: "Wachtwoord succesvol veranderd"});
                                     })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
+                    console.log("an error occurred " + error);
                     const custErr = {password: ["Mislukt om het wachtwoord te veranderen. Mogelijk is het ingevoerde huidige wachtwoord incorrect."]}
                     this.setState({
                         buttonDisabled: false,

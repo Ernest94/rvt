@@ -99,7 +99,7 @@ class docentAddReview extends React.Component {
                 this.getPendingUsers();
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });
     }
 
@@ -218,7 +218,7 @@ class docentAddReview extends React.Component {
             .then(response => {
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });
     }
 
@@ -227,7 +227,7 @@ class docentAddReview extends React.Component {
             .then(response => {
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });
     }
 

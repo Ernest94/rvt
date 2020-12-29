@@ -50,7 +50,7 @@ class addTheme extends React.Component {
                     this.succesfullAdd();
                 })
                 .catch((error) => {
-                    console.log("an error occorured " + error);
+                    console.log("an error occurred " + error);
                     this.setState({loading: false, 
                         errors: Utils.setErrors({input: ["Mislukt om thema toe te voegen. Mogelijk bestaat er al een thema met deze naam."]})});
                 });

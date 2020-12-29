@@ -96,7 +96,6 @@ class ConceptSelection extends React.Component {
 
     }
     componentDidMount(){
-        console.log(this.props.starsSelected);
         this.setState({stars: this.props.starsSelected});
     }
     handleSliderChange(newValue, name){
@@ -204,7 +203,7 @@ class SelectionTable extends React.Component {
                 this.handleThemeResponse(response.data);
             })
             .catch((error) => {
-                console.log("an error occorured " + error);
+                console.log("an error occurred " + error);
             });       
     }
 
