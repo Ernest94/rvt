@@ -97,15 +97,16 @@ class Search extends React.Component {
         this.setState({
            [name]: value
         });
+
+        let searchJSON ={}
         var locations = [];
         var i;
-        for (i=0;i<this.state.selectedLocationsIds.length;i++) {
-            locations.push(
-                {id:this.state.selectedLocationsIds[i]}
-            )
-        }
-        let searchJSON ={}
         if (e.target.name==="selectedRoleId") {
+            for (i=0;i<this.state.selectedLocationsIds.length;i++) {
+                locations.push(
+                    {id:this.state.selectedLocationsIds[i]}
+                )
+            }
             searchJSON = {
                 locations: locations,
                 role: {id:parseInt(value)},
@@ -123,6 +124,11 @@ class Search extends React.Component {
                 criteria: this.state.criteria
             }
         } else if (e.target.name==="criteria") {
+            for (i=0;i<this.state.selectedLocationsIds.length;i++) {
+                locations.push(
+                    {id:this.state.selectedLocationsIds[i]}
+                )
+            }
             searchJSON = {
                 locations: locations,
                 role: {id:parseInt(this.state.selectedRoleId)},
@@ -141,50 +147,6 @@ class Search extends React.Component {
                     Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
                     this.setState({loading: false});
                 });    
-    }
-
-    createSearchJson() {
-        var locations = [];
-        var i;
-        for (i=0;i<this.state.selectedLocationsIds.length;i++) {
-            locations.push(
-                {id:this.state.selectedLocationsIds[i]}
-            )
-        }
-        return {
-            locations: locations,
-            role: {id:parseInt(this.state.selectedRoleId)},
-            criteria: this.state.criteria
-        }
-    }
-
-    findlocation(location) {
-        return location;
-    }
-
-
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        this.setState({loading: true});
-        var errors = null;
-        if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
-                .then(response => {
-                    this.setState({loading: false, errors: null});
-                    this.handleSearchReponse(response.data);
-                    this.render();
-                })
-                .catch((error) => {
-                    console.log("an error occurred " + error);
-                    Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
-                    this.setState({loading: false});
-                });
-        }
-        else {
-            Util.setErrors(errors);
-            this.setState({loading: false});
-        }
     }
 
     render() {
@@ -243,7 +205,7 @@ class Search extends React.Component {
 
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
-                <form onSubmit={this.handleSubmit}>
+                {/* <form onSubmit={this.handleSubmit}> */}
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-1">
                         <InputLabel className="m-1" htmlFor="role">
@@ -302,7 +264,7 @@ class Search extends React.Component {
                         </div>
                     </div>
 
-                </form>
+                {/* </form> */}
 
                 <div className="row justify-content-center">
                     <ul className="errors text-center" hidden={!emptyUsers}>Geen overeenkomende gebruikers gevonden</ul>
