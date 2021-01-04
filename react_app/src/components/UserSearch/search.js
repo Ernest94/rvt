@@ -215,7 +215,7 @@ class Search extends React.Component {
                             <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
                         <div className="m-auto col-1">
-                        <Link className="btn btn-outline-secondary m-2" to={"/settings"}>
+                        <Link className="btn btn-outline-secondary m-2" to={"/menu"}>
                             Annuleer
                         </Link>
                         </div>

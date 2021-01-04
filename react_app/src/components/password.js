@@ -99,7 +99,7 @@ class Password extends React.Component {
                             {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
                         </button>
 
-                        <Link className="btn btn-danger btn-block" to={"/settings"}>
+                        <Link className="btn btn-danger btn-block" to={"/menu"}>
                             Annuleer
                         </Link>
                         

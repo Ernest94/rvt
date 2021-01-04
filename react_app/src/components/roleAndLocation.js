@@ -1,6 +1,5 @@
 import React from 'react';
 import LocationSelection from './locationSelection.js';
-import {Select} from '@material-ui/core'
 
 class RoleAndLocation extends React.Component {
     

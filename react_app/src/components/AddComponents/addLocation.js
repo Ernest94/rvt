@@ -2,9 +2,9 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from './constants';
-import Permissions from './permissions.js';
-import Utils from './Utils.js';
+import {config} from '../constants';
+import Permissions from '../permissions.js';
+import Utils from '../Utils.js';
 import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 
@@ -97,7 +97,7 @@ class addLocation extends React.Component {
                             <button className="btn btn-danger btn-block" type="submit" disabled> 
                                 Laden...
                             </button>: 
-                            <Link className="btn btn-danger btn-block" to={"/settings"}>
+                            <Link className="btn btn-danger btn-block" to={"/menu"}>
                                 Annuleren
                             </Link>}
                         </div> 

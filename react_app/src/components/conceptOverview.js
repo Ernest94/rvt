@@ -10,9 +10,6 @@ import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
 
-
-
-
 class conceptOverview extends React.Component {
 
     constructor(props) {
@@ -137,7 +134,7 @@ class conceptOverview extends React.Component {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"
             });
-            this.props.history.push('/settings');
+            this.props.history.push('/menu');
         })
         .catch((error) => {
             this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
@@ -147,7 +144,7 @@ class conceptOverview extends React.Component {
 
 
     handleAddBundle() {
-        this.props.history.push('/addBundle');
+        this.props.history.push('/bundle');
     }
 
     render() {
@@ -230,7 +227,7 @@ class conceptOverview extends React.Component {
                     <div className="col-2">
                         <span>
                             <Link className="btn btn-danger" 
-                                to={{pathname:"/addBundle/",                                
+                                to={{pathname:"/bundle/",                                
                                     state:{bundleId:-1}}}>
 
                                 <FaPlus/>
@@ -242,7 +239,7 @@ class conceptOverview extends React.Component {
                         {(this.state.selectedBundle!=="") ? 
                         <span>
                             <Link className="btn btn-danger" 
-                                to={{pathname:"/addBundle/",                                
+                                to={{pathname:"/bundle/",                                
                                     state:{
                                             bundleId:this.state.selectedBundle,
                                             bundleName:this.state.selectedBundleName,

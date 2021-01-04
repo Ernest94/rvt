@@ -29,7 +29,7 @@ class Login extends React.Component {
         sessionStorage.setItem("userRole", responseData.Role.name);
         sessionStorage.setItem("userLocation", JSON.stringify(responseData.currentLocations));
         this.props.handleLoginState();
-        this.props.history.push('/settings');
+        this.props.history.push('/menu');
     }
 
     handleFormChange = (e) => {

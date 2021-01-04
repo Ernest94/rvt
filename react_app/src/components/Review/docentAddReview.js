@@ -127,7 +127,7 @@ class docentAddReview extends React.Component {
             message: "",
         });
         if (!JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation)){
-            this.props.history.push('/settings')
+            this.props.history.push('/menu')
         }
     }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import {TextField} from '@material-ui/core'
-import {config} from './constants';
-import Permissions from './permissions.js';
-import Utils from './Utils.js'
+import {config} from '../constants';
+import Permissions from '../permissions.js';
+import Utils from '../Utils.js'
 import {Link} from 'react-router-dom';
 
 class addTheme extends React.Component {
@@ -114,7 +114,7 @@ class addTheme extends React.Component {
                         <div className="col-4 m-1">
                             {(this.state.loading) ? 
                                 <button className="btn btn-danger btn-block" type="submit" disabled> Laden...</button>: 
-                                <Link className="btn btn-danger btn-block" to={"/settings"}>Annuleren</Link>}
+                                <Link className="btn btn-danger btn-block" to={"/menu"}>Annuleren</Link>}
                         </div>
                     </div> 
 

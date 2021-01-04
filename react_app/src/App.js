@@ -4,25 +4,24 @@ import {Switch, Route} from 'react-router-dom';
 import './App.css';
 
 import Header from './components/Header/header.js';
-import Footer from './components/Footer/footer.js'; 
+import Footer from './components/Footer/footer.js';
+import NotFound from './components/NotFound.js';
 import Login from './components/login.js';
 import Dossier from './components/dossier.js';
-import Home from './components/home.js';
 import Search from './components/UserSearch/search.js';
 import Menu from './components/Menu/menu.js';
-import AddUser from './components/addUser.js';
+import AddUser from './components/AddComponents/addUser.js';
 import Password from './components/password.js';
 import adminPassword from './components/adminPassword.js';
 import PrivateRoute from './components/routes/PrivateRoute.js';
 import AccessRoute from './components/routes/AccessRoute.js';
-import addTheme from './components/addTheme.js';
-import addConcept from './components/addConcept.js';
+import addTheme from './components/AddComponents/addTheme.js';
+import addConcept from './components/AddComponents/addConcept.js';
 import conceptOverview from './components/conceptOverview.js';
-import addLocation from './components/addLocation.js';
-import addBundle from './components/addBundle.js';
+import addLocation from './components/AddComponents/addLocation.js';
+import addBundle from './components/AddComponents/addBundle.js';
 import review from './components/Review/review.js';
 import docentAddReview from './components/Review/docentAddReview.js';
-
 class App extends React.Component {
     
     constructor(props) {
@@ -58,9 +57,9 @@ class App extends React.Component {
 
                             <PrivateRoute exact path="/logout"/>
 
-                            <PrivateRoute exact path="/" component={Home}/>
-             
-                            <PrivateRoute exact path="/settings" component={Menu}/>
+                            <PrivateRoute exact path="/" component={Menu}/>
+                            
+                            <PrivateRoute exact path="/menu" component={Menu}/>
 
                             <PrivateRoute exact path="/password" component={Password}/>
 
@@ -72,25 +71,27 @@ class App extends React.Component {
 
                             <AccessRoute exact path="/dossier/:userId/edit" component={Dossier} editDisabled={false}/>
 
-                            <AccessRoute exact path="/addUser" component={AddUser}/>
+                            <AccessRoute exact path="/user" component={AddUser}/>
 
                             <AccessRoute exact path="/search" component={Search}/>
 
-                            <AccessRoute exact path="/addTheme" component={addTheme}/>
+                            <AccessRoute exact path="/theme" component={addTheme}/>
 
-                            <AccessRoute exact path="/addConcept" component={addConcept}/>
+                            <AccessRoute exact path="/concept" component={addConcept}/>
 
-                            <AccessRoute exact path="/addLocation" component={addLocation}/>
+                            <AccessRoute exact path="/location" component={addLocation}/>
 
-                            <AccessRoute exact path="/addBundle" component={addBundle}/>
+                            <AccessRoute exact path="/bundle" component={addBundle}/>
 
-                            <AccessRoute exact path="/conceptOverview" component={conceptOverview}/>
+                            <AccessRoute exact path="/bundles" component={conceptOverview}/>
 
-                            <AccessRoute exact path="/docentAddReview" component={docentAddReview}/>
+                            <AccessRoute exact path="/review" component={docentAddReview}/>
 
-                            <AccessRoute exact path="/docentAddReview/:userId" component={docentAddReview} />
+                            <AccessRoute exact path="/review/:userId" component={docentAddReview} />
 
-                            <AccessRoute exact path="/adminPassword/:userId" component={adminPassword} />
+                            <AccessRoute exact path="/password/:userId" component={adminPassword} />
+                            
+                            <PrivateRoute component={NotFound}/>
 
                         </Switch>
                     </div>
@@ -102,17 +103,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
-                        // <AccessRoute exact path="/linking" 
-                        //    isLoggedIn={loggedIn}
-                        //    userHasAccess={!isTrainee} /* JH: Volgens mij moet dit zijn {isAdmin || isOffice || isDocent} of of {canAddUser()} */
-                        //    handleReturnToSettings={this.handleReturnToSettings}
-                        //    component={LinkUsers} 
-                        ///>
-                        //<PrivateRoute exact path="/linking/:userId" 
-                        //    isLoggedIn={loggedIn} 
-                        //    handleReturnToSettings={this.handleReturnToSettings}
-                        //    component={LinkUsers} 
-                        //    /* JH: Mis hier de useHasAccess */
-                        ///>
