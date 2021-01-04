@@ -17,11 +17,10 @@ class Search extends React.Component {
             locations: [],
             selectedLocationsIds:[],
             selectedLocations: [],
+            criteria: "",
 
             roles: [],
             selectedRoleId:0,
-
-            criteria: "",
 
             users: [],
             pageLoading: true,
@@ -43,7 +42,7 @@ class Search extends React.Component {
                 this.setState({
                     roles: response.data.roles,
                     locations: response.data.locations,
-                    pageLoading: false
+                    pageLoading: true
                 });
                 this.setLocationAndRole();
             })
@@ -60,9 +59,8 @@ class Search extends React.Component {
         var userLocationsIds = userLocations.map(element => element.id)
         const roleName = "Trainee";
         let role = this.state.roles.find(element => element.name === roleName);
-
         this.setState({
-            loading: true,
+            pageLoading: true,
             selectedLocations:userLocations,
             selectedLocationsIds: userLocationsIds,
             selectedRoleId: role.id,
@@ -71,18 +69,42 @@ class Search extends React.Component {
             this.setState({
                 locations:userLocations});
             }
+        this.handleSubmit();
+    }
 
+    handleFormChange = (e) => {
+        const {name, value} = e.target;
+        this.setState({
+           [name]: value
+        }, () => this.handleSubmit());
+    }
+
+    createSearchJson() {
+        var locations = [];
+        var i;
+        for (i=0;i<this.state.selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:this.state.selectedLocationsIds[i]}
+            )
+        }
+        return {
+            locations: locations,
+            role: {id:parseInt(this.state.selectedRoleId)},
+            criteria: this.state.criteria
+        }
+    }
+
+    handleSubmit() {
         axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
-
             .then(response => {
-                this.setState({ loading: false, errors: null });
+                this.setState({pageLoading: false, errors: null});
                 this.handleSearchReponse(response.data);
                 this.render();
             })
             .catch((error) => {
                 console.log("an error occurred " + error);
-                this.setState({ loading: false });
-            });
+                Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
+                });
     }
 
     handleSearchReponse(data)
@@ -92,65 +114,8 @@ class Search extends React.Component {
         });
     }
 
-    handleFormChange = (e) => {
-        const {name, value} = e.target;
-        this.setState({
-           [name]: value
-        });
-
-        let searchJSON ={}
-        var locations = [];
-        var i;
-        if (e.target.name==="selectedRoleId") {
-            for (i=0;i<this.state.selectedLocationsIds.length;i++) {
-                locations.push(
-                    {id:this.state.selectedLocationsIds[i]}
-                )
-            }
-            searchJSON = {
-                locations: locations,
-                role: {id:parseInt(value)},
-                criteria: this.state.criteria
-            }
-        } else if (e.target.name==="selectedLocationsIds") {
-            for (i=0;i<value.length;i++) {
-                locations.push(
-                    {id:value[i]}
-                )
-            }
-            searchJSON = {
-                locations: locations,
-                role: {id:parseInt(this.state.selectedRoleId)},
-                criteria: this.state.criteria
-            }
-        } else if (e.target.name==="criteria") {
-            for (i=0;i<this.state.selectedLocationsIds.length;i++) {
-                locations.push(
-                    {id:this.state.selectedLocationsIds[i]}
-                )
-            }
-            searchJSON = {
-                locations: locations,
-                role: {id:parseInt(this.state.selectedRoleId)},
-                criteria: value
-            }
-        }
-
-        axios.post(config.url.API_URL + "/webapi/user/search", searchJSON)
-                .then(response => {
-                    this.setState({loading: false, errors: null});
-                    this.handleSearchReponse(response.data);
-                    this.render();
-                })
-                .catch((error) => {
-                    console.log("an error occurred " + error);
-                    Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
-                    this.setState({loading: false});
-                });    
-    }
-
     render() {
-        const {roles, locations, users, pageLoading, loading, selectedLocationsIds} = this.state;
+        const {roles, locations, users, pageLoading, selectedLocationsIds} = this.state;
         if (pageLoading) return (<span className="error-message-center">Laden...</span>)
 
         if (roles === null || locations === null) {
@@ -205,7 +170,6 @@ class Search extends React.Component {
 
                 <h2 className="text-center">Zoeken naar gebruikers</h2>
 
-                {/* <form onSubmit={this.handleSubmit}> */}
                     <div className="search-bar row d-flex">
                         <div className="m-auto col-1">
                         <InputLabel className="m-1" htmlFor="role">
@@ -250,21 +214,12 @@ class Search extends React.Component {
                             </InputLabel>
                             <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        {/* <div className="m-auto col-1">
-                            <button className="btn btn-outline-secondary m-2"
-                                disabled={loading}
-                                type="submit">
-                                {(loading)?"Laden...": "Zoek"}
-                            </button>
-                        </div> */}
                         <div className="m-auto col-1">
                         <Link className="btn btn-outline-secondary m-2" to={"/settings"}>
                             Annuleer
                         </Link>
                         </div>
                     </div>
-
-                {/* </form> */}
 
                 <div className="row justify-content-center">
                     <ul className="errors text-center" hidden={!emptyUsers}>Geen overeenkomende gebruikers gevonden</ul>
