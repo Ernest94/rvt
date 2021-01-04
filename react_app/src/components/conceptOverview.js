@@ -184,7 +184,7 @@ class conceptOverview extends React.Component {
                                     value={weekoffset}
                                     onChange={this.onChangeWeek}
                                     required
-                                    disabled={!selected}>
+                                    disabled={sessionStorage.getItem("userRole")!=="Admin"&&sessionStorage.getItem("userName")!==this.state.selectedBundleCreator}>
                                     <option hidden value=''></option>
                                     {weekOptions}
                         </select>
