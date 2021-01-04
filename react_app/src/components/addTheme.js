@@ -83,7 +83,7 @@ class addTheme extends React.Component {
             <div className="container">
                 
                 <h2 className="text-center">Thema toevoegen</h2>
-                <div className="text-danger" >{this.state.errors}</div>
+                <div className="text-danger text-center" >{this.state.errors}</div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row justify-content-center">
 
