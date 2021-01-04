@@ -53,6 +53,7 @@ class Search extends React.Component {
                 });
             })
     }
+
     setLocationAndRole()
     {
         let userLocations = JSON.parse(sessionStorage.getItem("userLocation"));
@@ -96,8 +97,51 @@ class Search extends React.Component {
         this.setState({
            [name]: value
         });
-    }
+        var locations = [];
+        var i;
+        for (i=0;i<this.state.selectedLocationsIds.length;i++) {
+            locations.push(
+                {id:this.state.selectedLocationsIds[i]}
+            )
+        }
+        let searchJSON ={}
+        if (e.target.name==="selectedRoleId") {
+            searchJSON = {
+                locations: locations,
+                role: {id:parseInt(value)},
+                criteria: this.state.criteria
+            }
+        } else if (e.target.name==="selectedLocationsIds") {
+            for (i=0;i<value.length;i++) {
+                locations.push(
+                    {id:value[i]}
+                )
+            }
+            searchJSON = {
+                locations: locations,
+                role: {id:parseInt(this.state.selectedRoleId)},
+                criteria: this.state.criteria
+            }
+        } else if (e.target.name==="criteria") {
+            searchJSON = {
+                locations: locations,
+                role: {id:parseInt(this.state.selectedRoleId)},
+                criteria: value
+            }
+        }
 
+        axios.post(config.url.API_URL + "/webapi/user/search", searchJSON)
+                .then(response => {
+                    this.setState({loading: false, errors: null});
+                    this.handleSearchReponse(response.data);
+                    this.render();
+                })
+                .catch((error) => {
+                    console.log("an error occurred " + error);
+                    Util.setErrors({login: ["Mislukt om zoekactie uit te voeren."]});
+                    this.setState({loading: false});
+                });    
+    }
 
     createSearchJson() {
         var locations = [];
@@ -112,10 +156,13 @@ class Search extends React.Component {
             role: {id:parseInt(this.state.selectedRoleId)},
             criteria: this.state.criteria
         }
-}
+    }
+
     findlocation(location) {
         return location;
     }
+
+
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -241,13 +288,13 @@ class Search extends React.Component {
                             </InputLabel>
                             <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
-                        <div className="m-auto col-1">
+                        {/* <div className="m-auto col-1">
                             <button className="btn btn-outline-secondary m-2"
                                 disabled={loading}
                                 type="submit">
                                 {(loading)?"Laden...": "Zoek"}
                             </button>
-                        </div>
+                        </div> */}
                         <div className="m-auto col-1">
                         <Link className="btn btn-outline-secondary m-2" to={"/settings"}>
                             Annuleer
