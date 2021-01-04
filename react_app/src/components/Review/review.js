@@ -102,7 +102,6 @@ class review extends React.Component {
         }
         this.setState({
             themes: data})
-        )
     }
 
     getActiveDisplayName(bool) {
