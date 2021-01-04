@@ -44,7 +44,7 @@ class addTheme extends React.Component {
         this.setState({loading: true, message: ""}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/theme_concept/saveTheme", this.createThemeJson())
+            axios.post(config.url.API_URL + "/webapi/themes", this.createThemeJson())
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();

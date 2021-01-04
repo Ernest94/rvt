@@ -292,29 +292,7 @@ class docentAddReview extends React.Component {
                     :concept)
                 })
         );
-        this.changeConceptWeek(changedConceptId,e.target.value);
-
-    }
-
-    changeConceptWeek(changedConceptId,newWeek) {
-        axios.post(config.url.API_URL + "/webapi/theme_concept/week", 
-                        {
-                        user: {id:this.state.userId}, 
-                        concept:{id: changedConceptId},
-                        week: newWeek
-                        })
-        .then(response => {
-        })
-        .catch((error) => {
-            console.log("an error occurred " + error);
-        });
-    }
-
-    createReviewIdJSON() {
-        return {
-            id: this.state.reviewId,
-            docent: {id: +sessionStorage.getItem("userId")}
-        };
+        this.changeConceptForUser(changedConceptId,e.target.value);
     }
 
     handleCheckboxChange(e,changedConceptId){
@@ -326,20 +304,40 @@ class docentAddReview extends React.Component {
                 :concept)
             })
         );
-        this.changeConceptActive(changedConceptId);
+        this.changeConceptForUser(changedConceptId,-1);
     };
 
-    changeConceptActive(changedConceptId) {
-        axios.post(config.url.API_URL + "/webapi/theme_concept/active", 
-                {user: {id:this.state.userId}, 
-                concept: {id: changedConceptId}})
+    //newWeek is -1 if unchanged
+    changeConceptForUser(changedConceptId,newWeek) {
+        axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/concepts/" +changedConceptId, 
+                        {newWeek: newWeek}
+                        )
+        .then(response => {
+        })
+        .catch((error) => {
+            console.log("an error occurred " + error);
+        });
+    }
+
+
+    createReviewIdJSON() {
+        return {
+            id: this.state.reviewId,
+            docent: {id: +sessionStorage.getItem("userId")}
+        };
+    }
+
+
+
+/*     changeConceptActive(changedConceptId) {
+        axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/concepts/" +changedConceptId)
         .then(response => {
             
         })
         .catch((error) => {
             console.log("an error occurred " + error);
         });
-    }
+    } */
 
     handleFeatherChange(e,changedConceptId){
         this.setState(prevState => 

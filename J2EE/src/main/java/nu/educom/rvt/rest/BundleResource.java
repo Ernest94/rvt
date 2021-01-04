@@ -25,17 +25,32 @@ import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
+import nu.educom.rvt.models.view.BundleView;
+import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.BundleService;
+import nu.educom.rvt.services.ThemeConceptService;
 import nu.educom.rvt.services.UserService;
 
-@Path("/webapi/bundle")
 @Secured
+@Path("webapi")
 public class BundleResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	
+	@GET
+	@Path("/bundles")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllBundles() {
+		LOG.trace("getAllBundles called");
+		return wrapInSession(session -> {
+			BundleService bundleService = new BundleService(session);
+			List<BaseBundleView> bundles = bundleService.getAllBundleViews();
+			return Response.status(200).entity(bundles).build();
+		});
+	}
+	
 	@POST
-	@Path("/create")
+	@Path("/bundles")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNewBundle(Bundle bundle) {
 		LOG.debug("createNewBundle {} called", bundle);
@@ -57,6 +72,20 @@ public class BundleResource extends BaseResource {
 		});
 	}	
 	
+	@GET
+	@Path("/bundles-incl-concepts")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllBundlesIncludingConcepts() {
+		LOG.trace("getAllBundlesIncludingConcepts called");
+		return wrapInSessionWithTransaction(session -> {
+			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
+			List<BundleView> allBundlesIncludingConcepts = themeConceptServ.getBundlesIncludingConcepts();
+			return (allBundlesIncludingConcepts == null ? Response.status(404).build() : 
+			Response.status(200).entity(allBundlesIncludingConcepts).build());
+		});
+	}
+
+	
 	// 1. check if bundle_id consistent
 	// 2. collect bundle from database (Hibernate) (or collect the bundle_concept with specific bundle_id from database (Hibernate))
 	// 2. 
@@ -67,16 +96,16 @@ public class BundleResource extends BaseResource {
 	// 5. if frontend bundle_concepts empty -> done
 	// 6. if frontend bundle_concepts not empty -> get all concepts based on ids left in frontend bundle_concept -> 
 	// 	loop over frontend bundle_concepts -> create new bundle_conept object ->  add to bundle_table database				
-	@POST
-	@Path("/change")
+	@PUT
+	@Path("/bundles/{bundleId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response changeBundle(List<BundleConceptWeekOffset> frontendBundleConcepts) {
+	public Response changeBundle(@PathParam("bundleId") int bundleId, List<BundleConceptWeekOffset> frontendBundleConcepts) {
 		LOG.debug("changeBundle called for bundle id {}", 
 				  frontendBundleConcepts.isEmpty() ? "<none>" : frontendBundleConcepts.get(0).getBundleId());
 		return wrapInSessionWithTransaction(session -> {
 			BundleService bundleService = new BundleService(session);
-			int bundleId = bundleService.isBundleIdConsistent(frontendBundleConcepts);
-			if (bundleId==-1) {
+			int bundleIdFromConcepts = bundleService.isBundleIdConsistent(frontendBundleConcepts);
+			if (bundleIdFromConcepts==-1) {
 				return Response.status(412).build();
 			} 
 			else {
@@ -84,25 +113,14 @@ public class BundleResource extends BaseResource {
 					return Response.status(404).build();
 				}
 				/*Bundle bundle =*/ bundleService.updateBundle(bundleId,frontendBundleConcepts);
-				return Response.status(201).build(/* TODO stuur de nieuwe bundel terug, new JSONBundel(bundle)*/);
+				return Response.status(200).build(/* TODO stuur de nieuwe bundel terug, new JSONBundel(bundle)*/);
 			}
 		});
 	}
+
 	
 	@GET
-	@Path("/bundles")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllBundles() {
-		LOG.trace("getAllBundles called");
-		return wrapInSession(session -> {
-			BundleService bundleService = new BundleService(session);
-			List<BaseBundleView> bundles = bundleService.getAllBundleViews();
-			return Response.status(200).entity(bundles).build();
-		});
-	}
-	
-	@GET
-	@Path("/creator/{userId}")
+	@Path("/creators/{userId}/bundles")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getCreatorBundles(@PathParam("userId") int userId) {
 		return wrapInSession(session -> {
@@ -116,7 +134,7 @@ public class BundleResource extends BaseResource {
 	}
 
 	@GET 
-	@Path("/user/{userId}") 
+	@Path("/trainees/{userId}/bundles") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTraineeBundles(@PathParam("userId") int userId) {
 		LOG.debug("getTraineeBundles for user {} called", userId);
@@ -132,7 +150,7 @@ public class BundleResource extends BaseResource {
 	}
 	
 	@PUT
-	@Path("/user/{userId}")
+	@Path("/trainees/{userId}/bundles")
 	@Consumes(MediaType.APPLICATION_JSON)
     public Response updateTraineeBundle(@PathParam("userId") int userId, List<BundleTraineeView> bundlesTrainee) {
 		LOG.debug("updateTraineeBundle for user {} called with {}", userId, bundlesTrainee);
@@ -148,7 +166,7 @@ public class BundleResource extends BaseResource {
 	}	
 	
 	@GET
-	@Path("/conceptsBundle/{bundleId}")
+	@Path("/bundles/{bundleId}/concepts")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
 		return wrapInSession(session -> {

@@ -183,7 +183,7 @@ class Dossier extends React.Component {
         axios.all([
             axios.get(config.url.API_URL +'/webapi/user/dossier', {headers: {"userId": userId}} ), 
             axios.get(config.url.API_URL + '/webapi/user/roles'), 
-            axios.get(config.url.API_URL + '/webapi/bundle/bundles')])
+            axios.get(config.url.API_URL + '/webapi/bundles')])
         .then(axios.spread((...responses) => {
             const userResponse = responses[0]
             const roleLocResponse = responses[1]
@@ -225,7 +225,7 @@ class Dossier extends React.Component {
             return;
         }
 
-        axios.get(config.url.API_URL + "/webapi/bundle/user/" + this.state.userId)
+        axios.get(config.url.API_URL + "/webapi/trainees/" + this.state.userId + '/bundles')
             .then(response => {
                 this.setState({
                     bundlesTrainee: response.data,
@@ -249,7 +249,7 @@ class Dossier extends React.Component {
         if (!errors) {
             axios.all([
                 axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson()),
-                axios.put(config.url.API_URL + "/webapi/bundle/user/"+this.state.userId, this.createBundleJson())
+                axios.put(config.url.API_URL + "/webapi/trainees/"+this.state.userId + '/bundles', this.createBundleJson())
             ]) 
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});

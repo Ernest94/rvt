@@ -41,18 +41,21 @@ class conceptOverview extends React.Component {
     }
 
     getConceptsAndBundles() {
-        axios.get(config.url.API_URL + "/webapi/theme_concept/concepts/bundles")
-            .then(response => {
-                this.concepts = response.data.concepts;
-                this.bundles = response.data.bundlesConcepts;
+        axios.all([axios.get(config.url.API_URL + "/webapi/concepts"),
+                    axios.get(config.url.API_URL + "/webapi/bundles-incl-concepts")])
+            .then(axios.spread((conceptResponse, bundleResponse) => {
+                this.concepts = conceptResponse.data;
+                this.bundles = bundleResponse.data;
                 this.setState({
                     pageLoading: false,
                 });
-            })
+            }))
             .catch((error) => {
-                const custErr = {search: ["Mislukt om zoek actie uit te voeren."]};
+                this.setState({
+                    pageLoading: false,
+                });
+                const custErr = {search: ["Mislukt om concepten en bundles op te halen."]};
                 this.setState({errors: Utils.setErrors(custErr)});
-                this.setState({errors: Utils.setErrors(error)});
             });
     }
 
@@ -68,22 +71,6 @@ class conceptOverview extends React.Component {
         });
         this.selectActiveConcepts(bundleKeyId)
     } 
-
-    getThemes() {
-        axios.get(config.url.API_URL + '/webapi/user/themes')
-            .then(response => {
-                this.setState({
-                    themes: response.data.themes,
-                    pageLoading: false
-                });
-            })
-            .catch(() => {
-                this.setState({
-                    themes: [{ id: 1, name: "MySQL" }, { id: 2, name: "webbasis" }, { id: 3, name: "agile/scrum" }],
-                    pageLoading: false
-                });
-            })
-    }
 
     selectActiveConcepts(bundleKeyId) {
         var activeBundleConceptsAndWeekOffsets = this.bundles.find(bundle => bundle.id === parseInt(bundleKeyId)).bundleConceptWeekOffset;       
@@ -132,7 +119,7 @@ class conceptOverview extends React.Component {
     }
 
     saveBundle() {
-        axios.post(config.url.API_URL + "/webapi/bundle/change", this.bundleJSON())
+        axios.put(config.url.API_URL + "/webapi/bundles/" + this.state.selectedBundle, this.bundleJSON())
         .then(response => {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"

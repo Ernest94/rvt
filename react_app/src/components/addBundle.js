@@ -44,7 +44,7 @@ class addBundle extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/bundle/create", this.createBundleJson())  
+            axios.post(config.url.API_URL + "/webapi/bundles", this.createBundleJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();

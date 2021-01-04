@@ -138,16 +138,28 @@ public class ThemeConceptService {
 		return weekMutation;
 	}
 
-	public void createNewMutation(ActiveChangeForUser activeChange) throws DatabaseException {
+	public void createNewMutation(User user, Concept concept, Boolean active) throws DatabaseException {
 
 		TraineeActive newMutation = new TraineeActive();
 
-		newMutation.setUser(activeChange.getUser());
-		newMutation.setConcept(activeChange.getConcept());
-		newMutation.setActive(activeChange.getActive());
+		newMutation.setUser(user);
+		newMutation.setConcept(concept);
+		newMutation.setActive(active);
 		newMutation.setStartDate(LocalDate.now());
 		
 		traineeActiveRepo.create(newMutation);
+		
+	}
+	public void createNewMutation(User user, Concept concept, int week) throws DatabaseException {
+
+		TraineeMutation newMutation = new TraineeMutation();
+
+		newMutation.setUser(user);
+		newMutation.setConcept(concept);
+		newMutation.setWeek(week);
+		newMutation.setStartDate(LocalDate.now());
+		
+		traineeMutationRepo.create(newMutation);
 		
 	}
 	
@@ -156,20 +168,7 @@ public class ThemeConceptService {
 		traineeActiveRepo.update(currentMutation);
 	}
 	
-	public void createNewWeekMutation(WeekChangeForUser weekChange) throws DatabaseException {
-
-		TraineeMutation newMutation = new TraineeMutation();
-
-		newMutation.setUser(weekChange.getUser());
-		newMutation.setConcept(weekChange.getConcept());
-		newMutation.setWeek(weekChange.getWeek());
-		newMutation.setStartDate(LocalDate.now());
-		
-		traineeMutationRepo.create(newMutation);
-		
-	}
-	
-	public void endWeekMutation(TraineeMutation currentMutation) throws DatabaseException {
+	public void endMutation(TraineeMutation currentMutation) throws DatabaseException {
 		currentMutation.setEndDate(LocalDate.now());
 		traineeMutationRepo.update(currentMutation);
 	}
@@ -194,18 +193,11 @@ public class ThemeConceptService {
 		return CPRAs;		
 	}
 
-	
-	public ConceptBundleJSON getAllConceptsAndAllBundles() throws DatabaseException {
-		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
-		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
+	public List<BundleView> getBundlesIncludingConcepts() throws DatabaseException {
 		
-		List<Concept> conceptsModel = this.conceptRepo.readAll();
+		List<BundleView> bundlesConceptsView = new ArrayList<BundleView>();
 		List<BundleConcept> bundlesConceptsModel = this.bundleConceptRepo.readAll();		
 		List<Bundle> bundlesModel = this.bundleRepo.readAll();
-	
-		for (Concept concept : conceptsModel) {
-			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
-		}
 		
 		for (Bundle bundle : bundlesModel) {
 			Integer bundleId =  bundle.getId();
@@ -219,6 +211,19 @@ public class ThemeConceptService {
 			}
 			bundlesConceptsView.add(new BundleView(bundleId,bundleName,bundleCreatorName,bundleConceptWeekOffset));
 		}	
+		return bundlesConceptsView;
+	}
+	public ConceptBundleJSON getAllConceptsAndAllBundles() throws DatabaseException {
+		List<ConceptView> conceptsView =  new ArrayList<ConceptView>();
+
+		List<Concept> conceptsModel = this.conceptRepo.readAll();
+	
+		for (Concept concept : conceptsModel) {
+			conceptsView.add(new ConceptView(concept.getId(),concept.getName(),concept.getDescription(),concept.getTheme()));
+		}
+		
+		List<BundleView> bundlesConceptsView = getBundlesIncludingConcepts();
+		
 		ConceptBundleJSON conceptBundleJSON = new ConceptBundleJSON(conceptsView,bundlesConceptsView);
 		
 		return conceptBundleJSON;

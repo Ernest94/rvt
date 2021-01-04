@@ -44,7 +44,7 @@ class review extends React.Component {
     }
 
     getThemes() {
-        axios.get(config.url.API_URL + "/webapi/theme_concept/themes")
+        axios.get(config.url.API_URL + "/webapi/themes")
             .then(response => {
                 this.handleThemeResponse(response.data);
             })

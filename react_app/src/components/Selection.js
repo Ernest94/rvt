@@ -198,7 +198,7 @@ class SelectionTable extends React.Component {
         this.setState({starsSelected:this.props.starsSelected});
     }
     getThemes() {
-        axios.get(config.url.API_URL + "/webapi/theme_concept/themes")
+        axios.get(config.url.API_URL + "/webapi/themes")
             .then(response => {            
                 this.handleThemeResponse(response.data);
             })

@@ -132,7 +132,7 @@ class addConcept extends React.Component {
         this.setState({loading: true}); 
         var errors = this.validate();
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/theme_concept/saveConcept", this.createConceptJson())  
+            axios.post(config.url.API_URL + "/webapi/concepts", this.createConceptJson())  
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
@@ -187,7 +187,7 @@ class addConcept extends React.Component {
     // }
 
     getThemes() {
-        axios.get(config.url.API_URL + '/webapi/theme_concept/themes')
+        axios.get(config.url.API_URL + '/webapi/themes')
             .then(response => {
                 this.setState({
                     themes: response.data, 
@@ -204,7 +204,7 @@ class addConcept extends React.Component {
     getYourBundles() {
 
         if (Permissions.isUserAdmin()) {
-            axios.get(config.url.API_URL + '/webapi/bundle/bundles')
+            axios.get(config.url.API_URL + '/webapi/bundles')
                 .then(response => {
                     this.handleBundleResponse(response.data);
                 })
@@ -213,7 +213,7 @@ class addConcept extends React.Component {
                 })
         }
         else {
-            axios.get(config.url.API_URL + '/webapi/bundle/creator/' + this.state.userId)
+            axios.get(config.url.API_URL + '/webapi/creators/' + this.state.userId + '/bundles')
                 .then(response => {
                     this.handleBundleResponse(response.data);
                 })

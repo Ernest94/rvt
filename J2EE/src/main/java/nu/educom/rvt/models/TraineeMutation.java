@@ -23,11 +23,11 @@ public class TraineeMutation implements ReadOnlyEntity  {
 	@Column(name="id")
 	private int id;
 	@ManyToOne
+	@JoinColumn(name="user_id")
+	private User user;		
+	@ManyToOne
 	@JoinColumn(name="concept_id")
 	private Concept concept;	
-	@ManyToOne
-	@JoinColumn(name="user_id")
-	private User user;	
 	@Column(name="week")
 	private int week;
 	@Column(name="start_date")
