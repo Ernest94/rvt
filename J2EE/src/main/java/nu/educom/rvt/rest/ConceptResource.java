@@ -63,7 +63,7 @@ public class ConceptResource extends BaseResource {
 				return Response.status(201).build();
 			}
 			else {
-				return Response.status(402).build();
+				return Response.status(400).build();
 			}
 		});
 	}
