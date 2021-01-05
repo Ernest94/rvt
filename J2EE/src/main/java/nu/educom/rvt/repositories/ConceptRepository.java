@@ -1,7 +1,6 @@
 package nu.educom.rvt.repositories;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.Session;
 
@@ -44,19 +43,20 @@ public class ConceptRepository {
 	}
 	
 	public boolean isConceptInUserBundle(int id, int userId)  throws DatabaseException {
-		@SuppressWarnings("rawtypes")
-		Optional result = session.createNativeQuery("SELECT name FROM concept c "
+		boolean result = session.createNativeQuery("SELECT name FROM concept c "
 												+ "LEFT JOIN bundle_concept AS bc "
 												+ "ON c.id = bc.concept_id "
 												+ "LEFT JOIN bundle_trainee AS btr "
 												+ "ON bc.bundle_id = btr.bundle_id "
 												+ "WHERE bc.concept_id =:conceptId "
-												+ "AND btr.user_id =:userId")
+												+ "AND btr.user_id =:userId "
+												+ "AND btr.end_date IS NULL "
+												+ "AND bc.end_date IS NULL")
 					.setParameter("userId", userId)
 					.setParameter("conceptId", id)
-					.uniqueResultOptional();
+					.getResultList().isEmpty();
 		
-		return result.isPresent();
+		return !result;
 	}
 	
 	protected void update() throws DatabaseException {

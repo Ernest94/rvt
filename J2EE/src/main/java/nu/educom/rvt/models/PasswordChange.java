@@ -4,7 +4,8 @@ public class PasswordChange {
 
 	private String currentPassword;
 	private String newPassword;
-	private int userId;
+	private User user;
+	private User requester;
 	
 	public String getCurrentPassword() {
 		return currentPassword;
@@ -18,10 +19,17 @@ public class PasswordChange {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
+	public User getRequester() {
+		return requester;
+	}
+	public void setRequester(User requester) {
+		this.requester = requester;
+	}
+
 }

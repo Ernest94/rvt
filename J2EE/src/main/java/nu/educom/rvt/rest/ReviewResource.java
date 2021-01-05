@@ -1,6 +1,5 @@
 package nu.educom.rvt.rest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,25 +24,19 @@ import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
-import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.ThemeConceptService;
 import nu.educom.rvt.services.UserService;
 
-@Path("/webapi/review")
+@Path("/webapi")
 @Secured
 public class ReviewResource extends BaseResource {
 
 	private static final Logger LOG = LogManager.getLogger();
 	
-	// Maak functies als:
-	// - getActiveConceptsAndRating
-	// - getReviews
-	// - 
-  
 	@GET
-	@Path("/curriculum/{userId}")
+	@Path("/users/{userId}/reviews")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getActiveConceptsAndRating(@PathParam("userId") int userId) {
 		LOG.debug("getActiveConceptsAndRating {} called", userId);
@@ -84,16 +78,16 @@ public class ReviewResource extends BaseResource {
   	}
 	
 	@POST
-	@Path("/makeReview")
+	@Path("/users/{userId}/reviews")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getMakeReviewData(User user) {
-		LOG.debug("getActiveConceptsAndRating {} called", user);
+	public Response getMakeReviewData(@PathParam("userId") int userId) {
+		LOG.debug("getActiveConceptsAndRating called for user {}", userId);
 		return wrapInSessionWithTransaction(session -> {
 			UserService userServ = new UserService(session); //load injectables
 			ReviewService reviewServ = new ReviewService(session);
 			ThemeConceptService conceptServ = new ThemeConceptService(session);
-		    User userOutput = userServ.getUserById(user.getId());
+		    User userOutput = userServ.getUserById(userId);
 				    
 		    reviewServ.makeNewReviewIfNoPending(userOutput);
 	
@@ -123,9 +117,25 @@ public class ReviewResource extends BaseResource {
 			return Response.status(200).entity(conceptsRatingsJSON).build();
 		});
       }
-    
+	
+	@PUT
+	@Path("/users/{userId}/reviews")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updateReview(Review review) {
+		LOG.debug("updateReview {} called", review);
+		return wrapInSessionWithTransaction(session -> {
+			ReviewService reviewServ = new ReviewService(session);
+			Review reviewOutput = reviewServ.getReviewById(review.getId());
+			review.setReviewStatus(Review.Status.PENDING);
+			LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
+					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
+			reviewServ.updateReview(review, reviewOutput);
+			return Response.status(202).build();
+		});
+	}
+	
 	@POST
-    @Path("/confirmReview")
+    @Path("/users/{userId}/reviews/confirm")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setActiveReviewComplete(Review review){
 		LOG.debug("setActiveReviewComplete {} called", review);
@@ -140,7 +150,7 @@ public class ReviewResource extends BaseResource {
     }
 	
 	@POST
-    @Path("/cancelReview")
+    @Path("/users/{userId}/reviews/cancel")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response setActiveReviewCancelled(Review review){
 		LOG.debug("setActiveReviewComplete {} called", review);
@@ -154,33 +164,10 @@ public class ReviewResource extends BaseResource {
 		});
     }
 	
-	@GET
-	@Path("/pending/docent/{docentId}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllUsersWithPendingReviews(@PathParam("docentId") int docentId) {
-		LOG.debug("getAllUsersWithPendingReviews called");
-		return wrapInSession(session -> {
-			UserService userServ = new UserService(session); /* JH: Should be a UserLogic class */
-			ReviewService reviewServ = new ReviewService(session);
-			User docent = userServ.getUserById(docentId);
-			List<User> foundUsers = reviewServ.getAllUsersWithPendingReviews(docent);
-			UserSearchJson USJ = userServ.convertToUSJ(foundUsers); 
-		
-			return Response.status(200).entity(USJ).build();
-		});
-	}
-	
-//	@POST
-//    @Path("/addConceptRatings")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response addconceptratings(ConceptRatingJSON crJSON){
-//        Review completedReview = reviewServ.addConceptRatings(crJSON.getConceptsPlusRatings(), crJSON.getReviewId());
-//        reviewServ.updateReview(completedReview);
-//		return Response.status(201).build();
-//    }
 
+	
 	@POST
-    @Path("/addConceptRating")
+    @Path("/users/{userId}/reviews/ratings/")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addconceptrating(ConceptRatingUpdate cru){
 		LOG.debug("addConceptRating {} called", cru);
@@ -203,20 +190,5 @@ public class ReviewResource extends BaseResource {
 		});
     }
 	
-	@POST
-	@Path("/updateReview")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateReview(Review review) {
-		LOG.debug("updateReview {} called", review);
-		return wrapInSessionWithTransaction(session -> {
-			ReviewService reviewServ = new ReviewService(session);
-			Review reviewOutput = reviewServ.getReviewById(review.getId());
-			review.setReviewStatus(Review.Status.PENDING);
-			LOG.info("Review for trainee {} is marked 'PENDING' by {}.", 
-					 reviewOutput.getUser(), /*reviewOutput.getDocent()*/"<someone>");
-			reviewServ.updateReview(review, reviewOutput);
-			return Response.status(202).build();
-		});
-	}
-	
+
 }

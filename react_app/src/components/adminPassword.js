@@ -44,7 +44,7 @@ class adminPassword extends React.Component {
         this.setState({ message: "" });
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/adminPassword", this.createPasswordJson())
+            axios.put(config.url.API_URL + "/webapi/users/" + this.state.userId + "/password", this.createPasswordJson())
                 .then(response => {
                     this.setState({ buttonDisabled: false, errors: null, message: "Wachtwoord succesvol veranderd",newPassword:"",repeatPassword:"" });
                 })
@@ -68,7 +68,8 @@ class adminPassword extends React.Component {
     createPasswordJson() {
         return {
             newPassword: this.state.newPassword,
-            userId: this.state.userId
+            user: {id: this.state.userId},
+            requester: {id: sessionStorage.getItem("userId")}
         }
     }
 

@@ -20,10 +20,7 @@ import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.TraineeActive;
 import nu.educom.rvt.models.TraineeMutation;
 import nu.educom.rvt.models.User;
-import nu.educom.rvt.models.view.ActiveChangeForUser;
-import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.models.view.ConceptPlusBundles;
-import nu.educom.rvt.models.view.WeekChangeForUser;
 import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.ThemeConceptService;
@@ -74,47 +71,52 @@ public class ConceptResource extends BaseResource {
 	
 	@PUT
 	@Path("/trainees/{userId}/concepts/{conceptId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response changeMutation(@PathParam("userId") int userId, @PathParam("conceptId") int conceptId, String body){
-		System.out.println(body);
-		return Response.status(200).build();
-//		LOG.debug("changeMutation {} called");
-//		return wrapInSessionWithTransaction(session -> {
-//			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
-//			User user = new User();
-//			user.setId(userId);
-//			Concept concept = new Concept();
-//			concept.setId(conceptId);
-//			
-//			if(newWeek == -1) {
-//				TraineeActive currentMutation = themeConceptServ.getCurrentMutationForUserAndConcept(user, concept);
-//
-//				if(currentMutation==null) {
-//					boolean inBundel = themeConceptServ.isConceptInBundleUser(user, concept);
-//					themeConceptServ.createNewMutation(user,concept,!inBundel);
-//					return Response.status(201).build();
-//				}
-//				else {
-//					themeConceptServ.endMutation(currentMutation);
-//					return Response.status(200).build();
-//				}
-//			}
-//			else{
-//				TraineeMutation currentMutation = themeConceptServ.getCurrentWeekMutationForUserAndConcept(user, concept);
-//				
-//				if(currentMutation==null) {
-//					LOG.trace("currentMutation is null");
-//					themeConceptServ.createNewMutation(user,concept,newWeek);
-//					return Response.status(201).build();
-//				}
-//				else {
-//					LOG.trace("currentMutation is {}", currentMutation);
-//					themeConceptServ.endMutation(currentMutation);
-//					themeConceptServ.createNewMutation(user,concept,newWeek);
-//					return Response.status(200).build();
-//				}
-//			}
-//		});
+	public Response changeActive(@PathParam("userId") int userId, @PathParam("conceptId") int conceptId){
+		LOG.debug("changeActive {} called");
+		return wrapInSessionWithTransaction(session -> {
+			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
+			User user = new User();
+			user.setId(userId);
+			Concept concept = new Concept();
+			concept.setId(conceptId);
+			TraineeActive currentMutation = themeConceptServ.getCurrentMutationForUserAndConcept(user, concept);
+
+			if(currentMutation==null) {
+				boolean inBundel = themeConceptServ.isConceptInBundleUser(user, concept);
+				themeConceptServ.createNewMutation(user,concept,!inBundel);
+				return Response.status(201).build();
+			}
+			else {
+				themeConceptServ.endMutation(currentMutation);
+				return Response.status(200).build();
+			}
+		});
 	}
 	
+	@PUT
+	@Path("/trainees/{userId}/concepts/{conceptId}/week/{newWeek}")
+	public Response changeMutation(@PathParam("userId") int userId, @PathParam("conceptId") int conceptId, @PathParam("newWeek") int newWeek){
+		LOG.debug("changeMutation {} called");
+		return wrapInSessionWithTransaction(session -> {
+			ThemeConceptService themeConceptServ = new ThemeConceptService(session);
+			User user = new User();
+			user.setId(userId);
+			Concept concept = new Concept();
+			concept.setId(conceptId);
+			
+			TraineeMutation currentMutation = themeConceptServ.getCurrentWeekMutationForUserAndConcept(user, concept);
+			
+			if(currentMutation==null) {
+				LOG.trace("currentMutation is null");
+				themeConceptServ.createNewMutation(user,concept,newWeek);
+				return Response.status(201).build();
+			}
+			else {
+				LOG.trace("currentMutation is {}", currentMutation);
+				themeConceptServ.endMutation(currentMutation);
+				themeConceptServ.createNewMutation(user,concept,newWeek);
+				return Response.status(200).build();
+			}
+		});
+	}
 }

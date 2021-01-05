@@ -81,7 +81,7 @@ class docentAddReview extends React.Component {
     }
 
     getPendingUsers() {
-        axios.get(config.url.API_URL + "/webapi/review/pending/docent/" + sessionStorage.getItem("userId"))
+        axios.get(config.url.API_URL + "/webapi/users/pending/teachers/" + sessionStorage.getItem("userId"))
             .then(response => {
                 this.handleUsersReponse(response.data);
 
@@ -93,7 +93,7 @@ class docentAddReview extends React.Component {
     }
 
     getConcepts() {
-        axios.post(config.url.API_URL + "/webapi/review/makeReview", this.createUserIdJson())
+        axios.post(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews")
             .then(response => {
                 this.handleCurriculumReponse(response.data);
                 this.getPendingUsers();
@@ -101,12 +101,6 @@ class docentAddReview extends React.Component {
             .catch((error) => {
                 console.log("an error occurred " + error);
             });
-    }
-
-    createUserIdJson() {
-        return {
-            id: this.state.userId, //6 is ID voor trainee 3/11/2020
-        };
     }
 
     handleUsersReponse(data) {
@@ -214,7 +208,7 @@ class docentAddReview extends React.Component {
     }
 
     submitReviewChange(ReviewJson) {
-        axios.post(config.url.API_URL + "/webapi/review/updateReview", ReviewJson)
+        axios.put(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews", ReviewJson)
             .then(response => {
             })
             .catch((error) => {
@@ -223,7 +217,7 @@ class docentAddReview extends React.Component {
     }
 
     submitConceptRatingChange(conceptRatingJson) {
-        axios.post(config.url.API_URL + "/webapi/review/addConceptRating", conceptRatingJson)
+        axios.post(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews/ratings", conceptRatingJson)
             .then(response => {
             })
             .catch((error) => {
@@ -247,7 +241,7 @@ class docentAddReview extends React.Component {
 
     submitReview() {
         this.setState({reviewDate: new Date()})
-        axios.post(config.url.API_URL + "/webapi/review/confirmReview", this.createReviewIdJSON())
+        axios.post(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews/confirm", this.createReviewIdJSON())
         .then(response => {
             this.props.history.push('/curriculum/' + this.state.userId);
         })
@@ -275,7 +269,7 @@ class docentAddReview extends React.Component {
     };
 
     cancelReview() {
-        axios.post(config.url.API_URL + "/webapi/review/cancelReview", this.createReviewIdJSON())
+        axios.post(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews/cancel", this.createReviewIdJSON())
             .then(response => {
               this.props.history.push('/dossier/' + this.state.userId);
         })
@@ -304,14 +298,11 @@ class docentAddReview extends React.Component {
                 :concept)
             })
         );
-        this.changeConceptForUser(changedConceptId,-1);
+        this.changeConceptActive(changedConceptId);
     };
 
-    //newWeek is -1 if unchanged
     changeConceptForUser(changedConceptId,newWeek) {
-        axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/concepts/" +changedConceptId, 
-                        {newWeek: newWeek}
-                        )
+        axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/concepts/" +changedConceptId+"/week/" + newWeek)
         .then(response => {
         })
         .catch((error) => {
@@ -327,9 +318,7 @@ class docentAddReview extends React.Component {
         };
     }
 
-
-
-/*     changeConceptActive(changedConceptId) {
+    changeConceptActive(changedConceptId) {
         axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/concepts/" +changedConceptId)
         .then(response => {
             
@@ -337,7 +326,7 @@ class docentAddReview extends React.Component {
         .catch((error) => {
             console.log("an error occurred " + error);
         });
-    } */
+    }
 
     handleFeatherChange(e,changedConceptId){
         this.setState(prevState => 

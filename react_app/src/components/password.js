@@ -36,7 +36,7 @@ class Password extends React.Component {
         this.setState({message: ""});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/password", this.createPasswordJson())
+            axios.put(config.url.API_URL + "/webapi/users/" + sessionStorage.getItem("userId") + "/password", this.createPasswordJson())
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null, message: "Wachtwoord succesvol veranderd"});
                                     })
@@ -61,7 +61,7 @@ class Password extends React.Component {
         return {
             currentPassword: this.state.currentPassword,
             newPassword: this.state.newPassword,
-            userId: sessionStorage.getItem("userId")
+            user: {id: sessionStorage.getItem("userId")}
         }
     }
     

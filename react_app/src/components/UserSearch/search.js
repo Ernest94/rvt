@@ -37,15 +37,17 @@ class Search extends React.Component {
     }
 
     getLocationsAndRoles() {
-        axios.get(config.url.API_URL + '/webapi/user/roles')
-            .then(response => {
+        axios.all([ axios.get(config.url.API_URL + '/webapi/roles'),
+                    axios.get(config.url.API_URL + '/webapi/locations')])
+       
+            .then(axios.spread((roleResponse, locationResponse) => {
                 this.setState({
-                    roles: response.data.roles,
-                    locations: response.data.locations,
+                    roles: roleResponse.data,
+                    locations: locationResponse.data,
                     pageLoading: true
                 });
                 this.setLocationAndRole();
-            })
+            }))
             .catch(() => {
                 this.setState({
                     pageLoading: false
@@ -95,7 +97,7 @@ class Search extends React.Component {
     }
 
     handleSubmit() {
-        axios.post(config.url.API_URL + "/webapi/user/search", this.createSearchJson())
+        axios.post(config.url.API_URL + "/webapi/users/search", this.createSearchJson())
             .then(response => {
                 this.setState({pageLoading: false, errors: null});
                 this.handleSearchReponse(response.data);

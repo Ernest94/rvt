@@ -45,18 +45,19 @@ class AddUser extends React.Component {
     }
 
     getLocationsAndRoles() {
-        axios.get(config.url.API_URL + '/webapi/user/roles')
-            .then(response => {
+        axios.all([ axios.get(config.url.API_URL + '/webapi/roles'),
+                    axios.get(config.url.API_URL + '/webapi/locations')])
+            .then(axios.spread((roleResponse, locationResponse) => {
                     const roleName = "Trainee";
-                    let role = response.data.roles.find(element => element.name === roleName);
+                    let role = roleResponse.data.find(element => element.name === roleName);
                     this.setState({
-                        roles: response.data.roles,
-                        locations: response.data.locations,
+                        roles: roleResponse,
+                        locations: locationResponse,
                         pageLoading: false,
                         role: role,
                         roleId: role.id
                     });
-                })
+                }))
             .catch(() => {
                 this.setState({
                     errors: Utils.setErrors({connection: ["Momenteel kan er geen gebruiker worden toegevoegd."]}),
@@ -105,7 +106,7 @@ class AddUser extends React.Component {
         var errors = validate(this.state, constraints);
 
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/create", this.createUserJson())
+            axios.post(config.url.API_URL + "/webapi/users", this.createUserJson())
                 .then(response => {
                     this.props.history.push('/dossier/' + response.data.id);
                 })

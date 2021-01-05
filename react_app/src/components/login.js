@@ -44,7 +44,7 @@ class Login extends React.Component {
         this.setState({buttonDisabled: true});
         var errors = validate(this.state, constraints);
         if (!errors) {
-            axios.post(config.url.API_URL + "/webapi/user/login", this.createLoginJson())
+            axios.post(config.url.API_URL + "/webapi/login", this.createLoginJson())
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
                     this.handleSuccessfulAuth(response.data);

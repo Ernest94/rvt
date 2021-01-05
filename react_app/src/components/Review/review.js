@@ -54,7 +54,7 @@ class review extends React.Component {
     }
 
     getConcepts() {
-        axios.get(config.url.API_URL + "/webapi/review/curriculum/" + this.state.userId)
+        axios.get(config.url.API_URL + "/webapi/users/" + this.state.userId + "/reviews")
             .then(response => {
                 this.handleCurriculumReponse(response.data);
             })
@@ -73,12 +73,6 @@ class review extends React.Component {
         this.setState({themesSelected: localThemes});
     }
 
-    createUserIdJson() {
-        return {
-            id: this.state.userId,
-        };
-    }
-
     handleCurriculumReponse(data) {
         var canReview = (Permissions.isUserDocent() 
                     && JSON.parse(sessionStorage.getItem("userLocation")).map(location =>location.name).includes(data.traineeLocation));
@@ -90,8 +84,6 @@ class review extends React.Component {
             traineeFeedback: data.commentStudent,
             canReview: canReview,
         });
-
-
     }
 
     handleThemeResponse(data) {

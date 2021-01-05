@@ -1,7 +1,6 @@
 package nu.educom.rvt.rest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -18,15 +17,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Bundle;
-import nu.educom.rvt.models.BundleConcept;
-import nu.educom.rvt.models.BundleTrainee;
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.BaseBundleView;
 import nu.educom.rvt.models.view.BundleConceptWeekOffset;
 import nu.educom.rvt.models.view.BundleTraineeView;
 import nu.educom.rvt.models.view.BundleView;
-import nu.educom.rvt.models.view.ConceptBundleJSON;
 import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.BundleService;
 import nu.educom.rvt.services.ThemeConceptService;
@@ -85,6 +81,19 @@ public class BundleResource extends BaseResource {
 		});
 	}
 
+	@GET
+	@Path("/bundles/{bundleId}/concepts")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
+		return wrapInSession(session -> {
+			BundleService bundleService = new BundleService(session);
+				
+			Bundle bundle = bundleService.getBundleById(bundleId);
+			List<Concept> concepts = bundleService.getAllConceptsFromBundle(bundle);		
+		
+			return Response.status(200).entity(concepts).build();
+		});
+	}
 	
 	// 1. check if bundle_id consistent
 	// 2. collect bundle from database (Hibernate) (or collect the bundle_concept with specific bundle_id from database (Hibernate))
@@ -165,18 +174,6 @@ public class BundleResource extends BaseResource {
 		});
 	}	
 	
-	@GET
-	@Path("/bundles/{bundleId}/concepts")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllConceptsFromBundle(@PathParam("bundleId") int bundleId) {
-		return wrapInSession(session -> {
-			BundleService bundleService = new BundleService(session);
-				
-			Bundle bundle = bundleService.getBundleById(bundleId);
-			List<Concept> concepts = bundleService.getAllConceptsFromBundle(bundle);		
-		
-			return Response.status(200).entity(concepts).build();
-		});
-	}
+
 }
 

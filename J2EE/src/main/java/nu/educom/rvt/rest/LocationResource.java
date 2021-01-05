@@ -1,8 +1,12 @@
 package nu.educom.rvt.rest;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,7 +22,19 @@ import nu.educom.rvt.services.UserService;
 public class LocationResource extends BaseResource {
 	private static final Logger LOG = LogManager.getLogger();
 	
-	/* JH: Mis hier de GET op /locations om een lijst van alle lokaties te krijgen (nodig voor de dropdowns) */
+	@GET
+	@Path("/locations")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocations() {
+		LOG.debug("getLocations called");
+		return wrapInSession(session -> {
+			UserService userServ = new UserService(session);
+			List<Location> locations = userServ.getLocations();	
+						
+			return Response.status(200).entity(locations).build();
+		});
+			
+	}
 	
 	@POST
 	@Path("/locations")
@@ -40,5 +56,6 @@ public class LocationResource extends BaseResource {
 		}); 
 	}
 	
+
 
 }

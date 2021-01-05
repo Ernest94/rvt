@@ -181,14 +181,11 @@ class Dossier extends React.Component {
         const userId =  this.props.match.params.userId;
 
         axios.all([
-            axios.get(config.url.API_URL +'/webapi/user/dossier', {headers: {"userId": userId}} ), 
-            axios.get(config.url.API_URL + '/webapi/user/roles'), 
+            axios.get(config.url.API_URL +'/webapi/users/' + userId), 
+            axios.get(config.url.API_URL + '/webapi/roles'),
+            axios.get(config.url.API_URL + '/webapi/locations'),
             axios.get(config.url.API_URL + '/webapi/bundles')])
-        .then(axios.spread((...responses) => {
-            const userResponse = responses[0]
-            const roleLocResponse = responses[1]
-            const bundleResponse = responses[2]
-        
+        .then(axios.spread((userResponse, roleResponse, locResponse, bundleResponse) => {
             var currentLocationsIds = userResponse.data.currentLocations.map(element => element.id)
             this.setState({
                     userId: userId,
@@ -202,8 +199,9 @@ class Dossier extends React.Component {
                     currentLocationsIds: currentLocationsIds,
                     startDate: userResponse.data.startDate,
 
-                    roles: roleLocResponse.data.roles,
-                    locations: roleLocResponse.data.locations,
+                    roles: roleResponse.data,
+
+                    locations: locResponse.data,
 
                     bundles: bundleResponse.data,
 
@@ -248,8 +246,8 @@ class Dossier extends React.Component {
         }
         if (!errors) {
             axios.all([
-                axios.put(config.url.API_URL + "/webapi/user/dossier", this.createUserJson()),
-                axios.put(config.url.API_URL + "/webapi/trainees/"+this.state.userId + '/bundles', this.createBundleJson())
+                axios.put(config.url.API_URL + "/webapi/users/" + this.state.userId, this.createUserJson()),
+                axios.put(config.url.API_URL + "/webapi/trainees/" + this.state.userId + "/bundles", this.createBundleJson())
             ]) 
                 .then(response => {
                     this.setState({buttonDisabled: false, errors: null});
