@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from './constants';
+import {config} from '../MISC/constants';
 import './conceptOverview.css';
-import Permissions from './permissions.js'
-import Utils from './Utils.js'
+import Permissions from '../MISC/Permissions.js'
+import Utils from '../MISC/Utils.js'
 import {Select, Checkbox} from '@material-ui/core';
 import { FaPlus } from "react-icons/fa";
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import './menu.css';
-import Permissions from '../permissions.js'
+import Permissions from '../MISC/Permissions.js'
 
 class Menu extends React.Component {
     

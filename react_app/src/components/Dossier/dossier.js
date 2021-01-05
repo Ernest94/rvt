@@ -2,12 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link, withRouter } from 'react-router-dom';
-import {config} from './constants';
-import Permissions from './permissions.js';
-import constraints from '../constraints/dossierConstraints';
-import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
 import {Select, Input, MenuItem, TextField} from '@material-ui/core'
+
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import constraints from '../../constraints/dossierConstraints';
+import Utils from '../MISC/Utils';
 
 class BundleTable extends React.Component {
 

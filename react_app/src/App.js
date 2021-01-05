@@ -1,27 +1,27 @@
 import React from 'react';
-
 import {Switch, Route} from 'react-router-dom';
-import './App.css';
 
+import './App.css';
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/footer.js';
-import NotFound from './components/NotFound.js';
-import Login from './components/login.js';
-import Dossier from './components/dossier.js';
+import NotFound from './components/MISC/NotFound.js';
+import Login from './components/MISC/login.js';
+import Dossier from './components/Dossier/dossier.js';
 import Search from './components/UserSearch/search.js';
 import Menu from './components/Menu/menu.js';
 import AddUser from './components/AddComponents/addUser.js';
-import Password from './components/password.js';
-import adminPassword from './components/adminPassword.js';
+import Password from './components/PasswordChange/password.js';
+import adminPassword from './components/PasswordChange/adminPassword.js';
 import PrivateRoute from './components/routes/PrivateRoute.js';
 import AccessRoute from './components/routes/AccessRoute.js';
 import addTheme from './components/AddComponents/addTheme.js';
 import addConcept from './components/AddComponents/addConcept.js';
-import conceptOverview from './components/conceptOverview.js';
+import conceptOverview from './components/ConceptOverview/conceptOverview.js';
 import addLocation from './components/AddComponents/addLocation.js';
 import addBundle from './components/AddComponents/addBundle.js';
 import review from './components/Review/review.js';
 import docentAddReview from './components/Review/docentAddReview.js';
+
 class App extends React.Component {
     
     constructor(props) {

@@ -1,7 +1,7 @@
-
 import React from 'react';
 import {Link} from 'react-router-dom';
-import './AddComponents/form.css'
+
+import '../AddComponents/form.css'
 
 class NotFound extends React.Component {
     

@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import {config} from '../constants';
-import Permissions from '../permissions.js'
-import './form.css'
-import Utils from '../Utils.js'
 import { Link } from 'react-router-dom';
+import {Select} from '@material-ui/core';
 import { FaPlus, FaTimes } from "react-icons/fa";
-import {Select, TextField} from '@material-ui/core';
+
+import './form.css'
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js'
+import Utils from '../MISC/Utils.js'
 
 class BundleConceptTable extends React.Component {
 

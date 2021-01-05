@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { FormControlLabel, Checkbox,Slider, Button, Switch } from '@material-ui/core';
 
-import './Review/review.css'
-
+import '../Review/review.css'
 import { config } from './constants';
 
-import { FormControlLabel, Checkbox,Slider, Button, Switch } from '@material-ui/core';
 
 class SliderSelection extends React.Component {
     render (){

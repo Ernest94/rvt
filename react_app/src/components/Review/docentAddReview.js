@@ -1,23 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 import TextareaAutosize from 'react-textarea-autosize';
-import { withRouter } from 'react-router-dom';
-
-import {Select, MenuItem } from '@material-ui/core';
-import { confirmAlert } from 'react-confirm-alert'; 
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import Rating from '@material-ui/lab/Rating';
-
-import { Checkbox} from '@material-ui/core';
-import './review.css'
-
-import { config } from '../constants';
-import Permissions from '../permissions.js'
-import {SelectionTable} from '../Selection.js'
+import { Link, withRouter } from 'react-router-dom';
+import {Select, MenuItem,Checkbox } from '@material-ui/core';
+import { confirmAlert } from 'react-confirm-alert'; 
 import { GiFeather } from "react-icons/gi";
 import { BsDot } from "react-icons/bs";
-import Utils from '../Utils';
-import { Link} from 'react-router-dom';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import './review.css'
+import {config} from '../MISC/constants.js';
+import {SelectionTable} from '../MISC/Selection.js'
+import Permissions from '../MISC/Permissions.js'
+
 
 
 class docentAddReview extends React.Component {

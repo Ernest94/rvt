@@ -1,12 +1,12 @@
 
 import React from 'react';
 import axios from 'axios';
-
-import {config} from '../constants';
-import Permissions from '../permissions.js';
-import Utils from '../Utils.js';
-import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
+import {Link} from 'react-router-dom';
+
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import Utils from '../MISC/Utils.js';
 
 class addLocation extends React.Component {
     

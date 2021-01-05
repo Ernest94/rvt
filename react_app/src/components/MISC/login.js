@@ -2,10 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter } from 'react-router-dom'
-import Util from './Utils.js'
-import constraints from '../constraints/loginConstraints';
 
 import {config} from './constants';
+import Util from './Utils.js'
+import constraints from '../../constraints/loginConstraints';
+
 
 class Login extends React.Component {
     
