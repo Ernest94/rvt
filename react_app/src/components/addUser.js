@@ -51,8 +51,8 @@ class AddUser extends React.Component {
                     const roleName = "Trainee";
                     let role = roleResponse.data.find(element => element.name === roleName);
                     this.setState({
-                        roles: roleResponse,
-                        locations: locationResponse,
+                        roles: roleResponse.data,
+                        locations: locationResponse.data,
                         pageLoading: false,
                         role: role,
                         roleId: role.id
