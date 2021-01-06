@@ -1,4 +1,6 @@
-package nu.educom.rvt.models;
+package nu.educom.rvt.models.view;
+
+import nu.educom.rvt.models.User;
 
 public class PasswordChange {
 

@@ -1,6 +1,4 @@
-package nu.educom.rvt.models;
-
-import nu.educom.rvt.models.view.ConceptPlusRating;
+package nu.educom.rvt.models.view;
 
 public class ConceptRatingUpdate {
   private int reviewId;

@@ -19,11 +19,11 @@ import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Concept;
 import nu.educom.rvt.models.ConceptRating;
-import nu.educom.rvt.models.ConceptRatingUpdate;
 import nu.educom.rvt.models.Review;
 import nu.educom.rvt.models.User;
 import nu.educom.rvt.models.view.ConceptPlusRating;
 import nu.educom.rvt.models.view.ConceptRatingJSON;
+import nu.educom.rvt.models.view.ConceptRatingUpdate;
 import nu.educom.rvt.rest.filter.Secured;
 import nu.educom.rvt.services.ReviewService;
 import nu.educom.rvt.services.ThemeConceptService;

@@ -17,14 +17,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nu.educom.rvt.models.Location;
-import nu.educom.rvt.models.PasswordChange;
 import nu.educom.rvt.models.Role;
-import nu.educom.rvt.models.Search;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
 import nu.educom.rvt.models.User;
+import nu.educom.rvt.models.view.PasswordChange;
+import nu.educom.rvt.models.view.Search;
 import nu.educom.rvt.models.view.UserLocationView;
 import nu.educom.rvt.models.view.UserSearchJson;
 import nu.educom.rvt.rest.filter.Secured;

@@ -1,6 +1,9 @@
-package nu.educom.rvt.models;
+package nu.educom.rvt.models.view;
 
 import java.util.List;
+
+import nu.educom.rvt.models.Location;
+import nu.educom.rvt.models.Role;
 
 public class Search {
 
