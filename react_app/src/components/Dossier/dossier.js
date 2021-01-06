@@ -2,14 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { Link, withRouter } from 'react-router-dom';
-import {config} from './constants';
-import './form.css';
-import Permissions from './permissions.js';
-import constraints from '../constraints/dossierConstraints';
-import Utils from './Utils';
 import { FaPlus, FaTimes } from "react-icons/fa";
 import {Select, Input, MenuItem, TextField} from '@material-ui/core'
 
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import constraints from '../../constraints/dossierConstraints';
+import Utils from '../MISC/Utils';
 
 class BundleTable extends React.Component {
 
@@ -487,7 +486,7 @@ class Dossier extends React.Component {
                         <div>
                             <Link
                                 className="btn btn-danger btn-block"
-                                to={'/adminPassword/' + this.state.userId}
+                                to={'/password/' + this.state.userId}
                                 hidden={!Permissions.isUserAdmin()}
                                 role="button"
                             >
@@ -496,7 +495,7 @@ class Dossier extends React.Component {
                         </div>
 
                         <div>
-                            <Link className="btn btn-danger btn-block" to={"/settings"}>
+                            <Link className="btn btn-danger btn-block" to={"/menu"}>
                                     Terug naar menu
                                 </Link>
                         </div>
@@ -512,7 +511,7 @@ class Dossier extends React.Component {
                         <div>
                             <Link
                                 className="btn btn-danger btn-block"
-                                    to={"/docentAddReview/" + userId}
+                                    to={"/review/" + userId}
                                     hidden={!traineeDossier || !(Permissions.canAddReview() && Utils.compareLocations(dossierLocation, userLocation))}
                                     >
                                     Review aanmaken/aanpassen

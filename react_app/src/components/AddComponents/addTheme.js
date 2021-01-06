@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import {TextField} from '@material-ui/core'
-import {config} from './constants';
-import Permissions from './permissions.js';
-import Utils from './Utils.js'
 import {Link} from 'react-router-dom';
+
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import Utils from '../MISC/Utils.js'
 
 class addTheme extends React.Component {
     
@@ -83,7 +84,7 @@ class addTheme extends React.Component {
             <div className="container">
                 
                 <h2 className="text-center">Thema toevoegen</h2>
-                <div className="text-danger" >{this.state.errors}</div>
+                <div className="text-danger text-center" >{this.state.errors}</div>
                     <form onSubmit={this.handleSubmit}>
                         <div className="row justify-content-center">
 
@@ -114,7 +115,7 @@ class addTheme extends React.Component {
                         <div className="col-4 m-1">
                             {(this.state.loading) ? 
                                 <button className="btn btn-danger btn-block" type="submit" disabled> Laden...</button>: 
-                                <Link className="btn btn-danger btn-block" to={"/settings"}>Annuleren</Link>}
+                                <Link className="btn btn-danger btn-block" to={"/menu"}>Annuleren</Link>}
                         </div>
                     </div> 
 

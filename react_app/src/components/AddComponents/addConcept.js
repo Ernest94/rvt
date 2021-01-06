@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import {config} from './constants';
-import Permissions from './permissions.js'
-import './form.css'
-import Utils from './Utils.js'
 import { Link } from 'react-router-dom';
+import {Select} from '@material-ui/core';
 import { FaPlus, FaTimes } from "react-icons/fa";
-import {Select, TextField} from '@material-ui/core';
+
+import './form.css'
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js'
+import Utils from '../MISC/Utils.js'
 
 class BundleConceptTable extends React.Component {
 
@@ -152,7 +153,13 @@ class addConcept extends React.Component {
     
     createConceptJson() {
         return {
-            concept:{ name: this.state.name, description: this.state.description, theme: { id: this.state.theme.id }},
+            concept:{ 
+                name: this.state.name, 
+                description: this.state.description, 
+                theme: { 
+                    id: this.state.theme.id 
+                }
+            },
             bundles: this.state.chosenBundles,
         }
     }
@@ -170,7 +177,6 @@ class addConcept extends React.Component {
         });
     }
 
-
     onChangeTheme = (e) => {
         var selectedTheme = this.state.themes.find(theme=> theme.id === parseInt(e.target.value));
         this.setState({
@@ -178,13 +184,6 @@ class addConcept extends React.Component {
             themeDisplayName: e.target.value
         });
     }
-
-    // handleChangeDate = (e) => {
-    //     var selectDate = (e.target.value).toString();
-    //         this.setState({
-    //             startDate: selectDate,
-    //         }); 
-    // }
 
     getThemes() {
         axios.get(config.url.API_URL + '/webapi/themes')
@@ -246,15 +245,6 @@ class addConcept extends React.Component {
         console.log(this.state.counter);
     }
     
-    // setErrors = (errors) => {
-    //     const foundErrors = Object.keys(errors).map((key) =>
-    //         <li key={key}>{errors[key][0]}</li>
-    //     );
-    //     this.setState({
-    //        errors: foundErrors 
-    //     });
-    // }
-
     addBundle() {
         this.setState((prevState) => ({ chosenBundles: [...prevState.chosenBundles, { bundle: { id: -1 }, week: 0 }] }));
     }
@@ -357,7 +347,7 @@ class addConcept extends React.Component {
                             <div>
                                 <Link 
                                     className="btn btn-danger btn-block" 
-                                    to={"/settings/"}
+                                    to={"/menu"}
                                     role="button"
                                     >                        
                                     Annuleren

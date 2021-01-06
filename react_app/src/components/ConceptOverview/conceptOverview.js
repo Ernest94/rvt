@@ -1,17 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 
-import {config} from './constants';
+import {config} from '../MISC/constants';
 import './conceptOverview.css';
-import Permissions from './permissions.js'
-import Utils from './Utils.js'
+import Permissions from '../MISC/Permissions.js'
+import Utils from '../MISC/Utils.js'
 import {Select, Checkbox} from '@material-ui/core';
 import { FaPlus } from "react-icons/fa";
 
 import {Link, withRouter} from 'react-router-dom';
-
-
-
 
 class conceptOverview extends React.Component {
 
@@ -124,7 +121,7 @@ class conceptOverview extends React.Component {
             this.setState({
                 message: "De wijzigingen in de bundel zijn verwerkt"
             });
-            this.props.history.push('/settings');
+            this.props.history.push('/menu');
         })
         .catch((error) => {
             this.setState({errors: ["Mislukt om bundel op te slaan"]}); 
@@ -134,7 +131,7 @@ class conceptOverview extends React.Component {
 
 
     handleAddBundle() {
-        this.props.history.push('/addBundle');
+        this.props.history.push('/bundle');
     }
 
     render() {
@@ -171,7 +168,7 @@ class conceptOverview extends React.Component {
                                     value={weekoffset}
                                     onChange={this.onChangeWeek}
                                     required
-                                    disabled={!selected}>
+                                    disabled={!selected||sessionStorage.getItem("userRole")!=="Admin"&&sessionStorage.getItem("userName")!==this.state.selectedBundleCreator}>
                                     <option hidden value=''></option>
                                     {weekOptions}
                         </select>
@@ -217,7 +214,7 @@ class conceptOverview extends React.Component {
                     <div className="col-2">
                         <span>
                             <Link className="btn btn-danger" 
-                                to={{pathname:"/addBundle/",                                
+                                to={{pathname:"/bundle/",                                
                                     state:{bundleId:-1}}}>
 
                                 <FaPlus/>
@@ -229,7 +226,7 @@ class conceptOverview extends React.Component {
                         {(this.state.selectedBundle!=="") ? 
                         <span>
                             <Link className="btn btn-danger" 
-                                to={{pathname:"/addBundle/",                                
+                                to={{pathname:"/bundle/",                                
                                     state:{
                                             bundleId:this.state.selectedBundle,
                                             bundleName:this.state.selectedBundleName,

@@ -2,11 +2,11 @@
 import React from 'react';
 import axios from 'axios';
 import { withRouter, Link } from 'react-router-dom'
-
-import {config} from './constants';
-import Permissions from './permissions.js';
-import Utils from './Utils.js';
 import {TextField} from '@material-ui/core'
+
+import {config} from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import Utils from '../MISC/Utils.js';
 
 
 class addBundle extends React.Component {
@@ -48,7 +48,7 @@ class addBundle extends React.Component {
                 .then(response => {
                     this.setState({loading: false, errors: null});
                     this.succesfullAdd();
-                    this.props.history.push('/conceptOverview');
+                    this.props.history.push('/bundles');
                 })
                 .catch((error) => {
                     this.setState({loading: false, 
@@ -126,7 +126,7 @@ class addBundle extends React.Component {
                             Maak aan
                         </button>}
                     
-                        <Link className="btn btn-danger btn-block" to={"/conceptOverview"}>
+                        <Link className="btn btn-danger btn-block" to={"/bundles"}>
                             Annuleer
                         </Link>
                     </div>

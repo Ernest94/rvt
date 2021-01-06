@@ -2,11 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import { validate } from 'validate.js';
 import { withRouter,Link } from 'react-router-dom'
-
-import Util from './Utils.js'
-import constraints from '../constraints/passwordChangeConstraints';
-import {config} from './constants';
 import { TextField } from '@material-ui/core';
+
+import {config} from '../MISC/constants';
+import Util from '../MISC/Utils.js'
+import constraints from '../../constraints/passwordChangeConstraints';
 
 class Password extends React.Component {
     
@@ -99,7 +99,7 @@ class Password extends React.Component {
                             {(buttonDisabled)?"Laden...": "Verander wachtwoord"}
                         </button>
 
-                        <Link className="btn btn-danger btn-block" to={"/settings"}>
+                        <Link className="btn btn-danger btn-block" to={"/menu"}>
                             Annuleer
                         </Link>
                         

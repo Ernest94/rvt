@@ -118,11 +118,11 @@ public class Filler {
             users.add(adminJeffrey);
             User docentJeroen = new User("Jeroen Heemskerk", "jeroen.heemskerk@educom.nu", "Zc^CN3;qXttu[7Q{zu", docent, LocalDate.of(2018, 6, 4), endDateLD);
             users.add(docentJeroen);
-            User docentGeert = new User("Geert Weggemans", "rene.krewinkel@educom.nu", "BH>C5}UXp{$y!S>E7D", docent, LocalDate.of(2015, 3, 2), endDateLD);
+            User docentGeert = new User("Geert Weggemans", "coach@man-kind.nl", "BH>C5}UXp{$y!S>E7D", docent, LocalDate.of(2015, 3, 2), endDateLD);
             users.add(docentGeert);
             User docentFrank = new User("Frank Hoens", "f.hoens@online.nl", "w%a\\EFk!#Z2y2aD6K~", docent, nowLD, endDateLD);
             users.add(docentFrank);
-            User docentRene = new User("Rene", "rene.krewinkel@educom.nu", "BL!FF&+d2\"Bu*T*r\\R", docent, LocalDate.of(2013, 6, 3), endDateLD);
+            User docentRene = new User("Rene Krewinkel", "rene.krewinkel@educom.nu", "BL!FF&+d2\"Bu*T*r\\R", docent, LocalDate.of(2013, 6, 3), endDateLD);
             users.add(docentRene);
             UserService userService = new UserService(session);
             for (User user : users) {

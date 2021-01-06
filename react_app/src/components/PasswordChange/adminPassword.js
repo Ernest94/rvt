@@ -1,14 +1,14 @@
 
 import React from 'react';
 import axios from 'axios';
-
-import { config } from './constants';
-import { validate } from 'validate.js';
-import Permissions from './permissions.js';
-import Util from './Utils.js'
-import constraints from '../constraints/adminPasswordChangeConstraints';
 import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
+import { validate } from 'validate.js';
+
+import { config } from '../MISC/constants';
+import Permissions from '../MISC/Permissions.js';
+import Util from '../MISC/Utils.js'
+import constraints from '../../constraints/adminPasswordChangeConstraints';
 
 class adminPassword extends React.Component {
     

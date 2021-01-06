@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link,withRouter } from 'react-router-dom';
+
 import './header.css';
 
 class Header extends React.Component {
@@ -21,12 +22,12 @@ class Header extends React.Component {
                             <span className="userName">Welkom {sessionStorage.getItem("userName")}</span>
                             <button className="btn rvtbutton logoutbutton" onClick={() => this.handleLogOut()}> Log uit </button>
                         </div>;
-               accountSettings = <Link to="/settings" className="header-link">Menu</Link> ;
+               accountSettings = <Link to="/menu" className="header-link">Menu</Link> ;
         }
         return (
             <header className="App-header">
                 <nav className="navigation navbar mr-auto">
-                    <Link className="navbar-brand header-link" to="/">
+                    <Link className="navbar-brand header-link" to="/menu">
                         <img className="logo" alt="educom logo" src={process.env.PUBLIC_URL + "/pictures/educom.jpg"} /> Registratie Voortgang Trainee
                     </Link>
                     {accountSettings}

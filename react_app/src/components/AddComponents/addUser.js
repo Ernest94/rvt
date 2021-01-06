@@ -4,13 +4,11 @@ import { validate } from 'validate.js';
 import { Link,withRouter } from 'react-router-dom';
 import {Select, Input, MenuItem, TextField} from '@material-ui/core'
 
-import constraints from '../constraints/addUserConstraints';
-import {config} from './constants';
-import Utils from './Utils.js';
-import Permissions from './permissions.js';
+import {config} from '../MISC/constants';
+import constraints from '../../constraints/addUserConstraints';
+import Utils from '../MISC/Utils.js';
+import Permissions from '../MISC/Permissions.js';
 // import BundleTable from './dossier.js';
-
-
 
 class AddUser extends React.Component {
 
@@ -280,7 +278,7 @@ class AddUser extends React.Component {
 
                     <div className="row">
                         <div className="buttons">
-                            <Link to="/settings"  className="btn btn-danger btn-block">Annuleer</Link>
+                            <Link to="/menu"  className="btn btn-danger btn-block">Annuleer</Link>
                         </div>
                     </div>
                 </form>

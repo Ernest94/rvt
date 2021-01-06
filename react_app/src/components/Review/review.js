@@ -2,12 +2,14 @@ import React from 'react'
 import axios from 'axios'
 import TextareaAutosize from 'react-textarea-autosize'
 import Rating from '@material-ui/lab/Rating'
-import './review.css'
-import { config } from '../constants'
-import Permissions from '../permissions.js'
-import {SelectionTable} from '../Selection.js'
 import { GiFeather } from "react-icons/gi";
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+import './review.css'
+import { config } from '../MISC/constants'
+import { SelectionTable } from '../MISC/Selection.js'
+import Permissions from '../MISC/Permissions.js'
+
 
 class review extends React.Component {
 

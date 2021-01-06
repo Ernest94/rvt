@@ -1,13 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-
-import {config} from '../constants.js';
-import './search.css';
-
 import { withRouter,Link } from 'react-router-dom'
-import Util from '../Utils';
-import Permissions from '../permissions.js'
-import {Select, Input, MenuItem, FormHelperText, InputLabel, TextField} from '@material-ui/core'
+import {Select, Input, MenuItem, InputLabel, TextField} from '@material-ui/core'
+
+import './search.css';
+import { config } from '../MISC/constants.js';
+import Util from '../MISC/Utils';
+import Permissions from '../MISC/Permissions.js'
 
 class Search extends React.Component {
 
@@ -217,7 +216,7 @@ class Search extends React.Component {
                             <TextField id="criteria" type="criteria" name="criteria" onChange={this.handleFormChange} />
                           </div>
                         <div className="m-auto col-1">
-                        <Link className="btn btn-outline-secondary m-2" to={"/settings"}>
+                        <Link className="btn btn-outline-secondary m-2" to={"/menu"}>
                             Annuleer
                         </Link>
                         </div>
