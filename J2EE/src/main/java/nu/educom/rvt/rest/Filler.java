@@ -98,31 +98,31 @@ public class Filler {
             
             //FILL THE USER TABLE   
             List<User> users = new ArrayList<User>();
-            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
+            User trainee1 = new User("Trainee1", "trainee1@educom.nu", "", trainee, nowLD, endDateLD);
             users.add(trainee1);
-            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
+            User trainee2 = new User("Trainee2", "trainee2@educom.nu", "", trainee, nowLD, endDateLD);
             users.add(trainee2);
-            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "3vDOqHO*B%5i6O@HlW", trainee, nowLD, endDateLD);
+            User trainee3 = new User("Trainee3", "trainee3@educom.nu", "", trainee, nowLD, endDateLD);
             users.add(trainee3);
-            User docent1 = new User("Docent1", "docent1@educom.nu", "5^mBejfdV0Rt509x$n", docent,nowLD,endDateLD);
+            User docent1 = new User("Docent1", "docent1@educom.nu", "", docent,nowLD,endDateLD);
             users.add(docent1);
-            User docent2 = new User("Docent2", "docent2@educom.nu", "5^mBejfdV0Rt509x$n", docent, nowLD,endDateLD);
+            User docent2 = new User("Docent2", "docent2@educom.nu", "", docent, nowLD,endDateLD);
             users.add(docent2);
-            User userAdmin = new User("Admin", "admin@educom.nu", "AyW0BdSKojK^Uw4LRQ", admin, nowLD, endDateLD);
+            User userAdmin = new User("Admin", "admin@educom.nu", "", admin, nowLD, endDateLD);
             users.add(userAdmin);
-            User userSales = new User("Sales", "sales@educom.nu", "xA8PF&0yN*Ye5#2Vnz", sales, nowLD, endDateLD);
+            User userSales = new User("Sales", "sales@educom.nu", "", sales, nowLD, endDateLD);
             users.add(userSales);
-            User userOffice = new User("Office", "office@educom.nu", "eYOPEzEDq^YMlJ7$9D", office, nowLD, endDateLD);
+            User userOffice = new User("Office", "office@educom.nu", "", office, nowLD, endDateLD);
             users.add(userOffice);    
-            User adminJeffrey = new User("Jeffrey Manders", "jem@edu-deta.com", "a5G&36wOfL644ZJ!2y", admin, LocalDate.of(2017, 6, 5), endDateLD);
+            User adminJeffrey = new User("Jeffrey Manders", "jem@edu-deta.com", "", admin, LocalDate.of(2017, 6, 5), endDateLD);
             users.add(adminJeffrey);
-            User docentJeroen = new User("Jeroen Heemskerk", "jeroen.heemskerk@educom.nu", "Zc^CN3;qXttu[7Q{zu", docent, LocalDate.of(2018, 6, 4), endDateLD);
+            User docentJeroen = new User("Jeroen Heemskerk", "jeroen.heemskerk@educom.nu", "", docent, LocalDate.of(2018, 6, 4), endDateLD);
             users.add(docentJeroen);
-            User docentGeert = new User("Geert Weggemans", "coach@man-kind.nl", "BH>C5}UXp{$y!S>E7D", docent, LocalDate.of(2015, 3, 2), endDateLD);
+            User docentGeert = new User("Geert Weggemans", "coach@man-kind.nl", "", docent, LocalDate.of(2015, 3, 2), endDateLD);
             users.add(docentGeert);
-            User docentFrank = new User("Frank Hoens", "f.hoens@online.nl", "w%a\\EFk!#Z2y2aD6K~", docent, nowLD, endDateLD);
+            User docentFrank = new User("Frank Hoens", "f.hoens@online.nl", "", docent, nowLD, endDateLD);
             users.add(docentFrank);
-            User docentRene = new User("Rene Krewinkel", "rene.krewinkel@educom.nu", "BL!FF&+d2\"Bu*T*r\\R", docent, LocalDate.of(2013, 6, 3), endDateLD);
+            User docentRene = new User("Rene Krewinkel", "rene.krewinkel@educom.nu", "", docent, LocalDate.of(2013, 6, 3), endDateLD);
             users.add(docentRene);
             UserService userService = new UserService(session);
             for (User user : users) {
