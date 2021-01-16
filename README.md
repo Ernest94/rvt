@@ -191,28 +191,7 @@ Dit wordt apart van elkaar gedaan op de production branch. Deze branch zal altij
 3. Kijk naar de regel met aan het einde "java -jar J2EE.jar" en onthoud het nummer in de 2de kolom
 4. Kill de server met "kill {nummer}" 
 
-##### De gegevens
-
-URL: https://voortgang.educom.nu
-
-###### FTP
-server: voortgang.educom.nu
-user: edu-voortgang
-Ww: @j0v22nS
-
-
-###### SSH
-> ssh edu-voortgang@edu-deta.com
-Ww: @j0v22nS
-
-
-###### MySQL
-DB: db_voortgang
-User: usr_voortgang
-Ww: ?120qhZl
-Host: localhost
-
 ### Help! Wie moet ik contacten? ###
 
 * Neem contact op met een van de ontwikkelaars
-* Neem contact op met de docent Jeroen van locatie Utrecht _jeroen.heemskerk@educom.nu_
+* Neem contact op met de docent Jeroen van locatie Utrecht
